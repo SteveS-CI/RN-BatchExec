@@ -1,0 +1,151 @@
+[
+  {
+    "batchID": 27778,
+    "stageID": 0,
+    "code": "BASE-001",
+    "productCode": "MMSPRD2",
+    "productName": "Paracetamol-500",
+    "quantity": "500.000 k",
+    "status": "Ready",
+    "productionDate": "2018-09-14T15:35:17.483",
+    "recipeCode": "BaseRecipe",
+    "recipeVersion": 1.147,
+    "startErrors": 256
+  },
+  {
+    "batchID": 27809,
+    "stageID": 0,
+    "code": "BASE-002",
+    "productCode": "MMSPRD2",
+    "productName": "Paracetamol-500",
+    "quantity": "500.000 k",
+    "status": "Ready",
+    "productionDate": "2018-09-14T15:35:31.75",
+    "recipeCode": "BaseRecipe",
+    "recipeVersion": 1.147,
+    "startErrors": 256
+  },
+  {
+    "batchID": 27840,
+    "stageID": 0,
+    "code": "BASE-003",
+    "productCode": "MMSPRD2",
+    "productName": "Paracetamol-500",
+    "quantity": "500.000 k",
+    "status": "Ready",
+    "productionDate": "2018-09-14T15:35:42.12",
+    "recipeCode": "BaseRecipe",
+    "recipeVersion": 1.147,
+    "startErrors": 256
+  },
+  {
+    "batchID": 27871,
+    "stageID": 0,
+    "code": "BASE-004",
+    "productCode": "MMSPRD2",
+    "productName": "Paracetamol-500",
+    "quantity": "500.000 k",
+    "status": "Ready",
+    "productionDate": "2018-09-14T15:35:55.39",
+    "recipeCode": "BaseRecipe",
+    "recipeVersion": 1.147,
+    "startErrors": 256
+  },
+  {
+    "batchID": 27902,
+    "stageID": 0,
+    "code": "BASE-005",
+    "productCode": "MMSPRD2",
+    "productName": "Paracetamol-500",
+    "quantity": "500.000 k",
+    "status": "Ready",
+    "productionDate": "2018-09-14T15:36:03.32",
+    "recipeCode": "BaseRecipe",
+    "recipeVersion": 1.147,
+    "startErrors": 256
+  }
+  ,
+  {
+    "batchID": 27903,
+    "stageID": 0,
+    "code": "BASE-006",
+    "productCode": "MMSPRD2",
+    "productName": "Paracetamol-500",
+    "quantity": "500.000 k",
+    "status": "Ready",
+    "productionDate": "2018-09-14T15:36:03.32",
+    "recipeCode": "BaseRecipe",
+    "recipeVersion": 1.147,
+    "startErrors": 256
+  }
+  ,
+  {
+    "batchID": 27904,
+    "stageID": 0,
+    "code": "BASE-007",
+    "productCode": "MMSPRD2",
+    "productName": "Paracetamol-500",
+    "quantity": "500.000 k",
+    "status": "Ready",
+    "productionDate": "2018-09-14T15:36:03.32",
+    "recipeCode": "BaseRecipe",
+    "recipeVersion": 1.147,
+    "startErrors": 256
+  }
+  ,
+  {
+    "batchID": 27905,
+    "stageID": 0,
+    "code": "BASE-008",
+    "productCode": "MMSPRD2",
+    "productName": "Paracetamol-500",
+    "quantity": "500.000 k",
+    "status": "Ready",
+    "productionDate": "2018-09-14T15:36:03.32",
+    "recipeCode": "BaseRecipe",
+    "recipeVersion": 1.147,
+    "startErrors": 256
+  }
+  ,
+  {
+    "batchID": 27906,
+    "stageID": 0,
+    "code": "BASE-009",
+    "productCode": "MMSPRD2",
+    "productName": "Paracetamol-500",
+    "quantity": "500.000 k",
+    "status": "Ready",
+    "productionDate": "2018-09-14T15:36:03.32",
+    "recipeCode": "BaseRecipe",
+    "recipeVersion": 1.147,
+    "startErrors": 256
+  }
+  ,
+  {
+    "batchID": 27907,
+    "stageID": 0,
+    "code": "BASE-010",
+    "productCode": "MMSPRD2",
+    "productName": "Paracetamol-500",
+    "quantity": "500.000 k",
+    "status": "Ready",
+    "productionDate": "2018-09-14T15:36:03.32",
+    "recipeCode": "BaseRecipe",
+    "recipeVersion": 1.147,
+    "startErrors": 256
+  }
+  ,
+  {
+    "batchID": 27908,
+    "stageID": 0,
+    "code": "BASE-011",
+    "productCode": "MMSPRD2",
+    "productName": "Paracetamol-500",
+    "quantity": "500.000 k",
+    "status": "Ready",
+    "productionDate": "2018-09-14T15:36:03.32",
+    "recipeCode": "BaseRecipe",
+    "recipeVersion": 1.147,
+    "startErrors": 256
+  }
+]

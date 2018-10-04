@@ -1,0 +1,245 @@
+[
+  {
+    "id": 100,
+    "code": "BLEND1",
+    "name": "Blending One",
+    "condition": "Functional",
+    "cleanStatus": "Clean",
+    "availability": "Available",
+    "functionCode": "BLEND"
+  },
+  {
+    "id": 101,
+    "code": "BLEND2",
+    "name": "Blending Two",
+    "condition": "Functional",
+    "cleanStatus": "Clean",
+    "availability": "Available",
+    "functionCode": "BLEND"
+  },
+  {
+    "id": 102,
+    "code": "COMP1",
+    "name": "Compression One",
+    "condition": "Functional",
+    "cleanStatus": "Clean",
+    "availability": "Available",
+    "functionCode": "COMP"
+  },
+  {
+    "id": 103,
+    "code": "COMP2",
+    "name": "Compression Two",
+    "condition": "Functional",
+    "cleanStatus": "Clean",
+    "availability": "Available",
+    "functionCode": "COMP"
+  },
+  {
+    "id": 104,
+    "code": "DRY1",
+    "name": "Drying One",
+    "condition": "Functional",
+    "cleanStatus": "Clean",
+    "availability": "Available",
+    "functionCode": "DRY"
+  },
+  {
+    "id": 105,
+    "code": "DRY2",
+    "name": "Drying Two",
+    "condition": "Functional",
+    "cleanStatus": "Clean",
+    "availability": "Available",
+    "functionCode": "DRY"
+  },
+  {
+    "id": 106,
+    "code": "GRAN1",
+    "name": "Granulation One",
+    "condition": "Functional",
+    "cleanStatus": "Clean",
+    "availability": "Available",
+    "functionCode": "GRAN"
+  },
+  {
+    "id": 107,
+    "code": "GRAN2",
+    "name": "Granulation Two",
+    "condition": "Functional",
+    "cleanStatus": "Clean",
+    "availability": "Available",
+    "functionCode": "GRAN"
+  },
+  {
+    "id": 108,
+    "code": "GRAN3",
+    "name": "Granulation Three",
+    "condition": "Functional",
+    "cleanStatus": "Clean",
+    "availability": "Available",
+    "functionCode": "GRAN"
+  },
+  {
+    "id": 109,
+    "code": "BLEND1",
+    "name": "Blending One",
+    "condition": "Functional",
+    "cleanStatus": "Clean",
+    "availability": "Available",
+    "functionCode": "BLEND"
+  },
+  {
+    "id": 110,
+    "code": "BLEND2",
+    "name": "Blending Two",
+    "condition": "Functional",
+    "cleanStatus": "Clean",
+    "availability": "Available",
+    "functionCode": "BLEND"
+  },
+  {
+    "id": 111,
+    "code": "COMP1",
+    "name": "Compression One",
+    "condition": "Functional",
+    "cleanStatus": "Clean",
+    "availability": "Available",
+    "functionCode": "COMP"
+  },
+  {
+    "id": 112,
+    "code": "COMP2",
+    "name": "Compression Two",
+    "condition": "Functional",
+    "cleanStatus": "Clean",
+    "availability": "Available",
+    "functionCode": "COMP"
+  },
+  {
+    "id": 113,
+    "code": "DRY1",
+    "name": "Drying One",
+    "condition": "Functional",
+    "cleanStatus": "Clean",
+    "availability": "Available",
+    "functionCode": "DRY"
+  },
+  {
+    "id": 114,
+    "code": "DRY2",
+    "name": "Drying Two",
+    "condition": "Functional",
+    "cleanStatus": "Clean",
+    "availability": "Available",
+    "functionCode": "DRY"
+  },
+  {
+    "id": 115,
+    "code": "GRAN1",
+    "name": "Granulation One",
+    "condition": "Functional",
+    "cleanStatus": "Clean",
+    "availability": "Available",
+    "functionCode": "GRAN"
+  },
+  {
+    "id": 116,
+    "code": "GRAN2",
+    "name": "Granulation Two",
+    "condition": "Functional",
+    "cleanStatus": "Clean",
+    "availability": "Available",
+    "functionCode": "GRAN"
+  },
+  {
+    "id": 117,
+    "code": "GRAN3",
+    "name": "Granulation Three",
+    "condition": "Functional",
+    "cleanStatus": "Clean",
+    "availability": "Available",
+    "functionCode": "GRAN"
+  },
+  {
+    "id": 118,
+    "code": "BLEND1",
+    "name": "Blending One",
+    "condition": "Functional",
+    "cleanStatus": "Clean",
+    "availability": "Available",
+    "functionCode": "BLEND"
+  },
+  {
+    "id": 119,
+    "code": "BLEND2",
+    "name": "Blending Two",
+    "condition": "Functional",
+    "cleanStatus": "Clean",
+    "availability": "Available",
+    "functionCode": "BLEND"
+  },
+  {
+    "id": 120,
+    "code": "COMP1",
+    "name": "Compression One",
+    "condition": "Functional",
+    "cleanStatus": "Clean",
+    "availability": "Available",
+    "functionCode": "COMP"
+  },
+  {
+    "id": 121,
+    "code": "COMP2",
+    "name": "Compression Two",
+    "condition": "Functional",
+    "cleanStatus": "Clean",
+    "availability": "Available",
+    "functionCode": "COMP"
+  },
+  {
+    "id": 122,
+    "code": "DRY1",
+    "name": "Drying One",
+    "condition": "Functional",
+    "cleanStatus": "Clean",
+    "availability": "Available",
+    "functionCode": "DRY"
+  },
+  {
+    "id": 123,
+    "code": "DRY2",
+    "name": "Drying Two",
+    "condition": "Functional",
+    "cleanStatus": "Clean",
+    "availability": "Available",
+    "functionCode": "DRY"
+  },
+  {
+    "id": 124,
+    "code": "GRAN1",
+    "name": "Granulation One",
+    "condition": "Functional",
+    "cleanStatus": "Clean",
+    "availability": "Available",
+    "functionCode": "GRAN"
+  },
+  {
+    "id": 125,
+    "code": "GRAN2",
+    "name": "Granulation Two",
+    "condition": "Functional",
+    "cleanStatus": "Clean",
+    "availability": "Available",
+    "functionCode": "GRAN"
+  },
+  {
+    "id": 126,
+    "code": "GRAN3",
+    "name": "Granulation Three",
+    "condition": "Functional",
+    "cleanStatus": "Clean",
+    "availability": "Available",
+    "functionCode": "GRAN"
+  }
+]
