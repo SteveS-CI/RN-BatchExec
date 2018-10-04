@@ -6,7 +6,7 @@ import AppNavigator from './navigation/AppNavigator';
 
 import endpoints from './api/endpoints';
 import API from './api/api';
-import Settings from './Store/Settings'
+import store from './Store/store'
 
 export default class App extends React.Component {
   constructor(props) {
@@ -54,7 +54,7 @@ export default class App extends React.Component {
       ).then(res => {
         console.log('API Responded OK')
       }).catch((error) => {
-        this.setState({mocked: true})
+        store.setMocked(true)
         Alert.alert('Network Error','API not present, will use simulated data')
       }) 
     ]);

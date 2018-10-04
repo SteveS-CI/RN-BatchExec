@@ -7,6 +7,7 @@ import api from '../api/api';
 import endpoints from '../api/endpoints';
 import Settings from '../Store/Settings'
 import RoundedButton from '../components/RoundedButton'
+import store from '../Store/store'
 
 const tableRowOdd = { backgroundColor: NexaColours.GreyUltraLight }
 const tableRowEven=  { backgroundColor: NexaColours.GreyLight }
@@ -23,7 +24,7 @@ export default class LocationSelectScreen extends React.Component {
   }
 
   componentDidMount() {
-    const mocked = false
+    const mocked = store.getMocked()
     if (mocked) {
       this.setState({locations: mockedLocations})
     } else {
