@@ -1,14 +1,29 @@
 import { AsyncStorage } from 'react-native'
 
 export default {
-  saveSetting: async (key, value) => {
-    await AsyncStorage.setItem(key, value)
+  readSettings: async () => {
+    const json = await AsyncStorage.getItem('settings')
+    const value = JSON.parse(json)
+    return value
   },
-  getSetting: async (key) => {
+  saveSettings: async (settings) => {
+    const json = JSON.stringify(settings)
+    await AsyncStorage.setItem('settings', json)
+  },
+  readItem: async (key) => {
     const value = await AsyncStorage.getItem(key)
     return value
   },
-  keys: {
-    locationCode: 'locationCode'
+  saveItem: async (key, value) => {
+    await AsyncStorage.setItem(key, value)
+  },
+  readObject: async (key) => {
+    const json = await AsyncStorage.getItem(key)
+    const value = JSON.parse(json)
+    return value
+  },
+  saveObject: async (key, value) => {
+    const json = JSON.stringify(value)
+    await AsyncStorage.setItem(key, json)
   }
 }

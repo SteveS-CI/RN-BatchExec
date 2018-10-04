@@ -8,7 +8,6 @@ import {
   createMaterialTopTabNavigator}
 from 'react-navigation';
 
-import NexaIcon from '../assets/images/nexa-icon.png'
 import NexaColours from '../constants/NexaColours'
 
 import BatchSelectScreen from '../screens/BatchSelectScreen';
@@ -22,11 +21,16 @@ import BatchEquipScreen from '../screens/BatchEquipScreen';
 import LoginScreen from '../screens/LoginScreen';
 import LocationSelectScreen from '../screens/LocationSelectScreen';
 import DropdownMenu from '../components/DropdownMenu';
+import RoundedButton from '../components/RoundedButton'
+
+import LocationHeader from '../components/LocationHeader'
 
 const screenHeaderStyling = {
   headerTintColor: NexaColours.GreyLight,
-  headerStyle: {backgroundColor: NexaColours.Blue},
-  headerTitleStyle: {fontFamily: 'eurostile-ext-bold', fontWeight: 'normal'},
+  headerStyle: { 
+    backgroundColor: NexaColours.Blue,
+  },
+  headerTitleStyle: {fontFamily: 'euro-ext-bold', fontWeight: 'normal'},
 }
 
 const BatchNav = createMaterialTopTabNavigator(
@@ -42,7 +46,7 @@ const BatchNav = createMaterialTopTabNavigator(
       upperCaseLabel: false,
       activeTintColor: '#FFFFFF',
       inactiveTintColor: NexaColours.GreyLight,
-      labelStyle: {fontFamily: 'eurostile-std', fontSize: 16},
+      labelStyle: {fontFamily: 'euro-std', fontSize: 16},
       style: {backgroundColor: NexaColours.BlueAccent}
     }
   }
@@ -97,7 +101,8 @@ const MainNav = createStackNavigator(
         if (route==='BatchDetail') {
           return {...screenHeaderStyling,
             title: 'Batch Details',
-            headerRight: <Button title='Continue' onPress={() => navigation.navigate('NodeSelect')}/>}
+            headerRight: <RoundedButton title='Continue' onPress={() => navigation.navigate('NodeSelect')}/>
+          }
         } else {
           return screenHeaderStyling
         }
@@ -129,9 +134,10 @@ export default AppNavigator = createStackNavigator(
     navigationOptions: ({navigation}) => ({
       title: 'Batch Execution',
       headerTintColor: NexaColours.Blue,
-      headerStyle: {backgroundColor: NexaColours.LightGrey},
-      headerTitleStyle: {fontFamily: 'eurostile-ext-bold', fontWeight: 'normal'},
-      headerLeft: <DropdownMenu data={dropDownItems} navigation={navigation}/>
+      headerStyle: {backgroundColor: NexaColours.GreyLight},
+      headerTitleStyle: {fontFamily: 'euro-ext-bold', fontWeight: 'normal'},
+      headerLeft: <DropdownMenu data={dropDownItems} navigation={navigation}/>,
+      headerRight: <LocationHeader/>
     })
   }
 )

@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, TextInput, TouchableHighlight, Button } from 'react-native';
+import RoundedButton from '../components/RoundedButton'
 import { SecureStore } from 'expo';
 
 export default class SettingsScreen extends React.Component {
@@ -55,8 +56,8 @@ export default class SettingsScreen extends React.Component {
           <Text>{JSON.stringify(settings.useDarkTheme)}</Text>
         </View>
         <View style={{flexDirection: 'row'}}>
-          <Button title='Cancel' onPress={() => this.update(false)}/>
-          <Button title='Save' onPress={() => this.update(true)}/>
+          <RoundedButton title='Cancel' onPress={() => this.update(false)}/>
+          <RoundedButton title='Save' onPress={() => this.update(true)}/>
         </View>
       </View>
     )

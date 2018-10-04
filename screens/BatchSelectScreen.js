@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, View, Button, ScrollView, TouchableOpacity, Text } from 'react-native';
 import mockedBatchList from '../Mocked/batchlist.json'
 import BatchItem from '../components/BatchItem';
+import RoundedButton from '../components/RoundedButton'
 import NexaColours from '../constants/NexaColours';
 import api from '../api/api'
 import endpoints from '../api/endpoints'
@@ -19,8 +20,7 @@ export default class BatchSelectScreen extends React.Component {
 
   static navigationOptions = ({navigation}) => {
     return {
-      title: 'Batch Selection',
-      headerRight: <Button title='Next' onPress={() => navigation.navigate('BatchProps')} />
+      title: 'Batch Selection'
     };
   }
 
@@ -29,7 +29,10 @@ export default class BatchSelectScreen extends React.Component {
     if (mocked) {
       this.setState({batchList: mockedBatchList})
     } else {
-      Settings.getSetting(Settings.keys.locationCode).then((locationCode) => {this.getBatchList(locationCode)})
+      Settings.readObject('location').then((location) => {
+        this.locationCode = location.code
+        this.getBatchList(location.code)
+      })
     }
   }
 
@@ -45,13 +48,21 @@ export default class BatchSelectScreen extends React.Component {
 
   rowClicked = (item) => {
     const id = item.batchID
-    this.item = item
+    this.batch = item
     this.setState({selectedItem: id})
   }
 
   buttClicked = () => {
-    if (this.item) {
-      this.props.navigation.navigate('BatchDetail', {batchID: this.item.batchID})
+    if (this.batch) {
+      const request = {...endpoints.getBatch, params: {locationCode: this.locationCode, batchID: this.batch.batchID}}
+      api.request(
+        request
+      ).then((response) => {
+        // Navigate to the TabNavigator, not any of the screens (Props/Comps/Equip)
+        // The parameter is passed to all screens of the TabNavigator
+        // (all screens are rendered at once)
+        this.props.navigation.navigate('BatchDetail', {batch: response.data})
+      })
     }
   }
 
@@ -75,7 +86,7 @@ export default class BatchSelectScreen extends React.Component {
     return (
       <View style={{flex: 1}}>
         <View>
-          <Button title='Select' onPress={this.buttClicked}/>
+          <RoundedButton title='Select' onPress={this.buttClicked}/>
         </View>
         <View style={{flex: 1}}>
           <ScrollView>

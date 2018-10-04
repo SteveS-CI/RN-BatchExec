@@ -8,6 +8,7 @@ export default class BatchEquipScreen extends React.Component {
 
   render() {
     const nav = this.props.navigation
+    const bid = nav.getParam('batch')
     return (
       <View>
         <Text>This screen will show the selected batch Equipment</Text>

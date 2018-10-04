@@ -43,8 +43,11 @@ export default class App extends React.Component {
       Font.loadAsync({
         // This is the font that we are using for our tab bar
         ...Icon.Ionicons.font,
-        'eurostile-ext-bold': require('./assets/fonts/EurostileLTStd-BoldEx2.otf'),
-        'eurostile-std': require('./assets/fonts/EurostileLTStd.otf'),
+        'euro-bold': require('./assets/fonts/Eurostile-Bold.otf'),
+        'euro-demi': require('./assets/fonts/Eurostile-Demi.otf'),
+        'euro-ext-bold': require('./assets/fonts/Eurostile-Extended-Bold.otf'),
+        'euro-ext': require('./assets/fonts/Eurostile-Extended.otf'),
+        'euro-std': require('./assets/fonts/Eurostile-Regular.otf')
       }),
       API.request(
         {...endpoints.info}

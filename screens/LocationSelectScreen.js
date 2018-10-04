@@ -6,6 +6,7 @@ import NexaColours from '../constants/NexaColours';
 import api from '../api/api';
 import endpoints from '../api/endpoints';
 import Settings from '../Store/Settings'
+import RoundedButton from '../components/RoundedButton'
 
 const tableRowOdd = { backgroundColor: NexaColours.GreyUltraLight }
 const tableRowEven=  { backgroundColor: NexaColours.GreyLight }
@@ -42,7 +43,8 @@ export default class LocationSelectScreen extends React.Component {
 
   buttClicked = () => {
     if (this.item) {
-      Settings.saveSetting(Settings.keys.locationCode, this.item.code)
+      const location = {code: this.item.code, name: this.item.name} 
+      Settings.saveObject('location', location)
       .then(() => {
         this.props.navigation.navigate('BatchList'), {locationCode: this.item.code}}
       )
@@ -68,8 +70,18 @@ export default class LocationSelectScreen extends React.Component {
     }
     return (
       <View style={{flex: 1}}>
-        <View>
-          <Button title='Select' onPress={this.buttClicked}/>
+        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+          <RoundedButton 
+            backColor={NexaColours.AlertYellow} 
+            title='Cancel' 
+            onPress={() => {this.props.navigation.navigate('BatchList')}}
+          />
+          <RoundedButton
+            backColor={NexaColours.AlertGreen} 
+            title='Select' 
+            onPress={this.buttClicked}
+            disabled={this.state.selectedItem==0}
+          />
         </View>
         <View style={{flex: 1}}>
           <ScrollView>
