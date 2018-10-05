@@ -1,0 +1,15 @@
+{
+    "batchID": 27778,
+    "stageID": 0,
+    "code": "BASE-001",
+    "productCode": "MMSPRD2",
+    "productName": "Paracetamol-500",
+    "quantity": "500.000 k",
+    "status": "Ready",
+    "productionDate": "2018-09-14T15:35:17.483",
+    "recipeCode": "BaseRecipe",
+    "recipeVersion": 1.147,
+    "startErrors": 256,
+    "components": [],
+    "equipment": []
+}

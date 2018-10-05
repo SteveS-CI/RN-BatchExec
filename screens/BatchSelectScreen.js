@@ -7,6 +7,8 @@ import NexaColours from '../constants/NexaColours';
 import api from '../api/api'
 import endpoints from '../api/endpoints'
 import Settings from '../Store/Settings'
+import store from '../Store/store'
+import mockBatch from '../Mocked/batch.json'
 
 const tableRowOdd = { backgroundColor: NexaColours.GreyUltraLight }
 const tableRowEven=  { backgroundColor: NexaColours.GreyLight }
@@ -25,7 +27,7 @@ export default class BatchSelectScreen extends React.Component {
   }
 
   componentDidMount() {
-    const mocked = false
+    const mocked = store.getMocked()
     if (mocked) {
       this.setState({batchList: mockedBatchList})
     } else {
@@ -54,15 +56,22 @@ export default class BatchSelectScreen extends React.Component {
 
   buttClicked = () => {
     if (this.batch) {
-      const request = {...endpoints.getBatch, params: {locationCode: this.locationCode, batchID: this.batch.batchID}}
-      api.request(
-        request
-      ).then((response) => {
-        // Navigate to the TabNavigator, not any of the screens (Props/Comps/Equip)
-        // The parameter is passed to all screens of the TabNavigator
-        // (all screens are rendered at once)
-        this.props.navigation.navigate('BatchDetail', {batch: response.data})
-      })
+      const mocked = store.getMocked()
+      if (mocked) {
+        this.batch = mockBatch
+        this.props.navigation.navigate('BatchDetail', {batch: this.batch})
+      } else {
+        const request = {...endpoints.getBatch, params: {locationCode: this.locationCode, batchID: this.batch.batchID}}
+        api.request(
+          request
+        ).then((response) => {
+          this.batch = response.data
+          // Navigate to the TabNavigator, not any of the screens (Props/Comps/Equip)
+          // The parameter is passed to all screens of the TabNavigator
+          // (all screens are rendered at once)
+          this.props.navigation.navigate('BatchDetail', {batch: this.batch})
+        })
+      }
     }
   }
 
