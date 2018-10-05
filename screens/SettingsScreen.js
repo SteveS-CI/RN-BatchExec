@@ -1,13 +1,15 @@
 import React from 'react';
-import { View, Text, TextInput, TouchableHighlight, Button } from 'react-native';
+import {StyleSheet, ScrollView, Switch, View, Text, TextInput, TouchableHighlight, Button } from 'react-native';
 import RoundedButton from '../components/RoundedButton'
-import { SecureStore } from 'expo';
+import Settings from '../Store/Settings';
+import NexaColours from '../constants/NexaColours';
+import SwitchSetting from '../components/SwitchSetting'
+import TextSetting from '../components/TextSetting'
 
 export default class SettingsScreen extends React.Component {
   constructor(props) {
     super(props)
     this.state = {settings: null}
-    SecureStore.deleteItemAsync('settings')
   }
   
   static navigationOptions = ({navigation}) => {
@@ -17,16 +19,17 @@ export default class SettingsScreen extends React.Component {
   }
   
   componentDidMount() {
-    SecureStore.getItemAsync('settings').then((result) => {
-      let settings = JSON.parse(result)
+    Settings.readSettings().then((result) => {
       if (!result) {
         // Default settings object
-        settings = {
-          ApiUrl: '',
+        const settings = {
+          apiUrl: '',
           useDarkTheme: false
         }
+        this.setState({settings})
+      } else {
+        this.setState({settings: result})
       }
-      this.setState({settings})
     }).catch((error) => {
       console.log(JSON.stringify(error))
       Alert.alert('Failed to read settings')
@@ -35,8 +38,7 @@ export default class SettingsScreen extends React.Component {
 
   update = (doSave) => {
     if (doSave) {
-      const settings = JSON.stringify(this.state.settings)
-      SecureStore.setItemAsync('settings', settings).then(this.returnToMain())
+      Settings.saveSettings(this.state.settings).then(this.returnToMain())
     } else {
       this.returnToMain()
     }   
@@ -46,20 +48,43 @@ export default class SettingsScreen extends React.Component {
     this.props.navigation.navigate('Main')
   }
 
+  onThemeChange = (value) => {
+    let settings = this.state.settings
+    settings.useDarkTheme = value
+    this.setState({settings})
+  }
+
+  onUrlChange = (value) => {
+    let settings = this.state.settings
+    settings.apiUrl = value
+    this.setState({settings})
+  }
+
   render() {
     const settings = this.state.settings
+    console.log(JSON.stringify(settings))
     return (
-      settings && 
+      settings ? 
       <View>
-        <View>
-          <Text>{JSON.stringify(settings.ApiUrl)}</Text>
-          <Text>{JSON.stringify(settings.useDarkTheme)}</Text>
-        </View>
-        <View style={{flexDirection: 'row'}}>
-          <RoundedButton title='Cancel' onPress={() => this.update(false)}/>
+        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+          <RoundedButton title='Cancel' onPress={() => this.update(false)} backColor={NexaColours.AlertYellow}/>
           <RoundedButton title='Save' onPress={() => this.update(true)}/>
         </View>
+        <ScrollView>
+          <TextSetting
+            value={settings.apiUrl}
+            onValueChange={this.onUrlChange}
+            title='API Url'
+          />
+          <SwitchSetting
+            value={settings.useDarkTheme}
+            onValueChange={this.onThemeChange}
+            title='Use Dark Theme'
+            subTitle='Show darker backgrounds with light text'
+          />
+        </ScrollView>
       </View>
+      : null
     )
   }
 }

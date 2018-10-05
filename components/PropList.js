@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react'
-import {ScrollView, View } from 'react-native'
+import {StyleSheet, ScrollView, View } from 'react-native'
 import PropTypes from 'prop-types'
 import FieldHeader from './FieldHeader';
 import FieldValue from './FieldValue';
@@ -13,14 +13,14 @@ class PropList extends PureComponent {
     const cols = headers.map((head, idx) => {
       const backCol = (idx % 2 == 0) ? NexaColours.GreyUltraLight : NexaColours.GreyLight
       return (
-        <View key={idx} style={{backgroundColor: backCol, flexDirection: 'row'}}>
+        <View key={idx} style={{backgroundColor: backCol, flexDirection: 'column', borderTopWidth: StyleSheet.hairlineWidth}}>
           <FieldHeader>{head.display}</FieldHeader>
           <FieldValue>{data[head.source]}</FieldValue>
         </View>
       )
     })
     return (
-      <ScrollView style={{flexDirection: 'column'}}>
+      <ScrollView style={{flexDirection: 'column', borderBottomWidth: StyleSheet.hairlineWidth}}>
         {cols}
       </ScrollView>
     )

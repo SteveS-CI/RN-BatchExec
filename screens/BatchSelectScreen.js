@@ -85,8 +85,8 @@ export default class BatchSelectScreen extends React.Component {
     }
     return (
       <View style={{flex: 1}}>
-        <View>
-          <RoundedButton title='Select' onPress={this.buttClicked}/>
+        <View style={{flexDirection: 'row', justifyContent: 'flex-end'}}>
+          <RoundedButton disabled={this.state.selectedItem==0} title='Select' onPress={this.buttClicked}/>
         </View>
         <View style={{flex: 1}}>
           <ScrollView>

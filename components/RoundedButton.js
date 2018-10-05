@@ -7,20 +7,21 @@ const styles =
   {
     container: {
       margin: 5,
-      padding: 8,
+      paddingHorizontal: 8,
+      paddingVertical: 5,
       alignSelf: 'flex-start',
       borderTopLeftRadius: 15,
       borderBottomRightRadius: 15,
     },
     text: {
-      fontFamily: 'euro-bold', fontSize: 18,
+      fontFamily: 'euro-std', fontSize: 16,
       color: 'white'
     }
   }
 
 export default class RoundedButton extends PureComponent {
   render() {
-    const backColor = this.props.backColor ? this.props.backColor : NexaColours.AlertGreen
+    const backColor = this.props.disabled ? NexaColours.Grey : this.props.backColor ? this.props.backColor : NexaColours.AlertGreen
     const style = {...styles.container, backgroundColor: backColor}
     return (
       <TouchableOpacity disabled={this.props.disabled} onPress={() => this.props.onPress()} style={style}>

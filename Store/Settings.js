@@ -10,6 +10,9 @@ export default {
     const json = JSON.stringify(settings)
     await AsyncStorage.setItem('settings', json)
   },
+  deleteSettings: async () => {
+    await AsyncStorage.removeItem('settings')
+  },
   readItem: async (key) => {
     const value = await AsyncStorage.getItem(key)
     return value

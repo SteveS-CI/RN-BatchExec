@@ -28,9 +28,9 @@ import LocationHeader from '../components/LocationHeader'
 const screenHeaderStyling = {
   headerTintColor: NexaColours.GreyLight,
   headerStyle: { 
-    backgroundColor: NexaColours.Blue,
+    backgroundColor: NexaColours.Blue
   },
-  headerTitleStyle: {fontFamily: 'euro-ext-bold', fontWeight: 'normal'},
+  headerTitleStyle: {fontFamily: 'euro-ext-bold', fontWeight: 'normal'}
 }
 
 const BatchNav = createMaterialTopTabNavigator(
@@ -101,7 +101,7 @@ const MainNav = createStackNavigator(
         if (route==='BatchDetail') {
           return {...screenHeaderStyling,
             title: 'Batch Details',
-            headerRight: <RoundedButton title='Continue' onPress={() => navigation.navigate('NodeSelect')}/>
+            headerRight: <RoundedButton title='Continue' onPress={() => navigation.navigate('NodeSelect')}/>,
           }
         } else {
           return screenHeaderStyling
