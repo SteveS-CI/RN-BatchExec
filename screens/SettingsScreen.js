@@ -55,6 +55,7 @@ export default class SettingsScreen extends React.Component {
   }
 
   onUrlChange = (value) => {
+    console.log(JSON.stringify(value))
     let settings = this.state.settings
     settings.apiUrl = value
     this.setState({settings})
@@ -62,7 +63,6 @@ export default class SettingsScreen extends React.Component {
 
   render() {
     const settings = this.state.settings
-    console.log(JSON.stringify(settings))
     return (
       settings ? 
       <View>
@@ -70,7 +70,7 @@ export default class SettingsScreen extends React.Component {
           <RoundedButton title='Cancel' onPress={() => this.update(false)} backColor={NexaColours.AlertYellow}/>
           <RoundedButton title='Save' onPress={() => this.update(true)}/>
         </View>
-        <ScrollView>
+        <ScrollView style={{borderTopWidth: 1}}>
           <TextSetting
             value={settings.apiUrl}
             onValueChange={this.onUrlChange}

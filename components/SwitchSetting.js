@@ -6,7 +6,7 @@ import NexaColours from '../constants/NexaColours'
 export default class SwitchSetting extends PureComponent {
   render() {
     return (
-      <View style={{flexDirection: 'row', justifyContent: 'space-between', borderWidth: StyleSheet.hairlineWidth}}>
+      <View style={{flexDirection: 'row', justifyContent: 'space-between', borderWidth: StyleSheet.hairlineWidth, padding: 8}}>
         <View style={{flexDirection: 'column'}}>
           <Text>{this.props.title}</Text>
           <Text style={{color: NexaColours.Grey}}>{this.props.subTitle}</Text>
