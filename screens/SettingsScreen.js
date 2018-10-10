@@ -5,6 +5,7 @@ import Settings from '../Store/Settings';
 import NexaColours from '../constants/NexaColours';
 import SwitchSetting from '../components/SwitchSetting'
 import TextSetting from '../components/TextSetting'
+import ButtonBar from '../components/ButtonBar'
 
 export default class SettingsScreen extends React.Component {
   constructor(props) {
@@ -24,7 +25,8 @@ export default class SettingsScreen extends React.Component {
         // Default settings object
         const settings = {
           apiUrl: '',
-          useDarkTheme: false
+          useDarkTheme: false,
+          language: 'en'
         }
         this.setState({settings})
       } else {
@@ -55,9 +57,14 @@ export default class SettingsScreen extends React.Component {
   }
 
   onUrlChange = (value) => {
-    console.log(JSON.stringify(value))
     let settings = this.state.settings
     settings.apiUrl = value
+    this.setState({settings})
+  }
+
+  onLangChange = (value) => {
+    let settings = this.state.settings
+    settings.language = value
     this.setState({settings})
   }
 
@@ -66,10 +73,10 @@ export default class SettingsScreen extends React.Component {
     return (
       settings ? 
       <View>
-        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+        <ButtonBar justify='space-between'>
           <RoundedButton title='Cancel' onPress={() => this.update(false)} backColor={NexaColours.AlertYellow}/>
           <RoundedButton title='Save' onPress={() => this.update(true)}/>
-        </View>
+        </ButtonBar>
         <ScrollView style={{borderTopWidth: 1}}>
           <TextSetting
             value={settings.apiUrl}
@@ -81,6 +88,11 @@ export default class SettingsScreen extends React.Component {
             onValueChange={this.onThemeChange}
             title='Use Dark Theme'
             subTitle='Show darker backgrounds with light text'
+          />
+          <TextSetting
+            value={settings.language}
+            onValueChange={this.onLangChange}
+            title='Language'
           />
         </ScrollView>
       </View>

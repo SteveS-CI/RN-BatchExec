@@ -30,7 +30,7 @@ const screenHeaderStyling = {
   headerStyle: { 
     backgroundColor: NexaColours.Blue
   },
-  headerTitleStyle: {fontFamily: 'euro-ext-bold', fontWeight: 'normal'}
+  headerTitleStyle: {fontFamily: 'euro-demi', fontWeight: 'normal'}
 }
 
 const BatchNav = createMaterialTopTabNavigator(
@@ -135,7 +135,7 @@ export default AppNavigator = createStackNavigator(
       title: 'Batch Execution',
       headerTintColor: NexaColours.Blue,
       headerStyle: {backgroundColor: NexaColours.GreyLight},
-      headerTitleStyle: {fontFamily: 'euro-ext-bold', fontWeight: 'normal'},
+      headerTitleStyle: {fontFamily: 'euro-demi', fontWeight: 'normal'},
       headerLeft: <DropdownMenu data={dropDownItems} navigation={navigation}/>,
       headerRight: <LocationHeader/>
     })

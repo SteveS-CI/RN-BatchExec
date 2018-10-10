@@ -44,9 +44,8 @@ export default class TextSetting extends PureComponent {
           >
           <View style={{
             width: 300,
-            height: 300,
             backgroundColor: '#fff',
-            padding: 20}}>
+            padding: 10}}>
             <Text>{this.props.title}</Text>
             <TextInput
               textContentType='URL'

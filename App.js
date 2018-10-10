@@ -4,8 +4,9 @@ import { Platform, StatusBar, StyleSheet, View, Alert } from 'react-native';
 import { AppLoading, Asset, Font, Icon } from 'expo';
 import AppNavigator from './navigation/AppNavigator';
 
+import Settings from './Store/Settings'
 import endpoints from './api/endpoints';
-import API from './api/api';
+import api, {setBaseURL} from './api/api';
 import store from './Store/store'
 
 export default class App extends React.Component {
@@ -49,14 +50,7 @@ export default class App extends React.Component {
         'euro-ext': require('./assets/fonts/Eurostile-Extended.otf'),
         'euro-std': require('./assets/fonts/Eurostile-Regular.otf')
       }),
-      API.request(
-        {...endpoints.info}
-      ).then(res => {
-        console.log('API Responded OK')
-      }).catch((error) => {
-        store.setMocked(true)
-        Alert.alert('Network Error','API not present, will use simulated data')
-      }) 
+      Settings.readSettings().then((settings) => {api.defaults.baseURL = settings.apiUrl})
     ]);
   };
 
@@ -67,7 +61,15 @@ export default class App extends React.Component {
   };
 
   _handleFinishLoading = () => {
-    this.setState({ isLoadingComplete: true });
+    api.request(
+      {...endpoints.info}
+    ).then(res => {
+      console.log('API Responded OK')
+    }).catch((error) => {
+      store.setMocked(true)
+      alert('Network Error','API not present, will use simulated data')
+    }) 
+  this.setState({ isLoadingComplete: true });
   };
 }
 

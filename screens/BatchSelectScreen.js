@@ -91,6 +91,8 @@ export default class BatchSelectScreen extends React.Component {
           rowStyle={style}
         />)
       })
+    } else {
+      batchlist = <Text>LOADING</Text>
     }
     return (
       <View style={{flex: 1}}>
