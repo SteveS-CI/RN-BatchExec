@@ -6,7 +6,7 @@ import AppNavigator from './navigation/AppNavigator';
 
 import Settings from './Store/Settings'
 import endpoints from './api/endpoints';
-import api, {setBaseURL} from './api/api';
+import api from './api/api';
 import store from './Store/store'
 
 export default class App extends React.Component {
@@ -14,6 +14,10 @@ export default class App extends React.Component {
     super(props)
     Expo.ScreenOrientation.allow(Expo.ScreenOrientation.Orientation.ALL)
     this.state = {isLoadingComplete: false, mocked: false}
+  }
+
+  appReload = () => {
+    this.setState({isLoadingComplete: false})
   }
 
   render() {
@@ -29,7 +33,7 @@ export default class App extends React.Component {
       return (
         <View style={styles.container}>
           {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-          <AppNavigator mocked={this.state.mocked} />
+          <AppNavigator screenProps={{mocked: this.state.mocked, reload: this.appReload, other: 'other'}} />
         </View>
       );
     }

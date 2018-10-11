@@ -59,7 +59,7 @@ export default class BatchSelectScreen extends React.Component {
       const mocked = store.getMocked()
       if (mocked) {
         this.batch = mockBatch
-        this.props.navigation.navigate('BatchDetail', {batch: this.batch})
+        this.props.navigation.navigate('BatchDetail', {batch: this.batch, location: this.locationCode})
       } else {
         const request = {...endpoints.getBatch, params: {locationCode: this.locationCode, batchID: this.batch.batchID}}
         api.request(
@@ -69,7 +69,7 @@ export default class BatchSelectScreen extends React.Component {
           // Navigate to the TabNavigator, not any of the screens (Props/Comps/Equip)
           // The parameter is passed to all screens of the TabNavigator
           // (all screens are rendered at once)
-          this.props.navigation.navigate('BatchDetail', {batch: this.batch})
+          this.props.navigation.navigate('BatchDetail', {batch: this.batch, location: this.locationCode})
         })
       }
     }
