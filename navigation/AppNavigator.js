@@ -90,7 +90,6 @@ const MainNav = createStackNavigator(
   {
     BatchList: BatchSelectScreen,
     BatchDetail: BatchNav,
-    Processes: Processes,
     NodeSelect: NodeSelectScreen,
     NodeDetail: NodeDetailScreen,
     ActionDetail: ActionDetailScreen

@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, View, Button, ScrollView, TouchableOpacity, Text } from 'react-native';
 import mockedBatchList from '../Mocked/batchlist.json'
 import BatchItem from '../components/BatchItem';
+import ButtonBar from '../components/ButtonBar'
 import RoundedButton from '../components/RoundedButton'
 import NexaColours from '../constants/NexaColours';
 import api from '../api/api'
@@ -54,7 +55,7 @@ export default class BatchSelectScreen extends React.Component {
     this.setState({selectedItem: id})
   }
 
-  buttClicked = () => {
+  detailClicked = () => {
     if (this.batch) {
       const mocked = store.getMocked()
       if (mocked) {
@@ -71,6 +72,28 @@ export default class BatchSelectScreen extends React.Component {
           // (all screens are rendered at once)
           this.props.navigation.navigate('BatchDetail', {batch: this.batch, location: this.locationCode})
         })
+      }
+    }
+  }
+
+  continueClicked = () => {
+    if (this.batch) {
+      const mocked = store.getMocked()
+      if (mocked) {
+        this.batch = mockBatch
+        this.props.navigation.navigate('BatchDetail', {batch: this.batch, location: this.locationCode})
+      } else {
+        const request = {...endpoints.nextProc, params: {batchID: this.batch.batchID, procID: 0, location: this.locationCode}}
+        api.request(
+          request
+        ).then((response) => {
+          const batchData = response.data
+          console.log(JSON.stringify(batchData))
+          // depending on data shape, navigate to the appropriate screen, passing data
+          // this.props.navigation.navigate('NodeSelect', {batchData})
+          // this.props.navigation.navigate('NodeDetail', {batchData})
+          this.props.navigation.navigate('ActionDetail', {batchData})
+        }).catch((error) => {console.log(JSON.stringify(error))})
       }
     }
   }
@@ -96,9 +119,10 @@ export default class BatchSelectScreen extends React.Component {
     }
     return (
       <View style={{flex: 1}}>
-        <View style={{flexDirection: 'row', justifyContent: 'flex-end'}}>
-          <RoundedButton disabled={this.state.selectedItem==0} title='Select' onPress={this.buttClicked}/>
-        </View>
+        <ButtonBar justify='flex-end'>
+          <RoundedButton disabled={this.state.selectedItem==0} title='Details' onPress={this.detailClicked}/>
+          <RoundedButton disabled={this.state.selectedItem==0} title='Continue' onPress={this.continueClicked}/>
+        </ButtonBar>
         <View style={{flex: 1}}>
           <ScrollView>
             {batchList}

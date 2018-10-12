@@ -69,11 +69,13 @@ export default class App extends React.Component {
       {...endpoints.info}
     ).then(res => {
       console.log('API Responded OK')
+      this.setState({ isLoadingComplete: true });
     }).catch((error) => {
       store.setMocked(true)
-      alert('Network Error','API not present, will use simulated data')
+      const msg = JSON.stringify(error)
+      Alert.alert('Network Error', msg)
+      this.setState({ isLoadingComplete: true });
     }) 
-  this.setState({ isLoadingComplete: true });
   };
 }
 
