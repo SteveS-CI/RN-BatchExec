@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
-import {StyleSheet, View, Text, TouchableOpacity } from 'react-native'
+import {StyleSheet, View, Text, TouchableOpacity, TouchableWithoutFeedback } from 'react-native'
 import PropTypes from 'prop-types'
+import FieldValue from '../components/FieldValue'
+import FieldHeader from '../components/FieldHeader'
 import NexaColours from '../constants/NexaColours';
 
 const rowSelected = {color: 'white'}
@@ -11,17 +13,20 @@ export default class LocationItem extends Component {
   render() {
     const loc = this.props.item
     const textStyle = this.props.selected ? rowSelected : rowPlain
-    const style = {...textStyle, padding: 3}
+    const style = {...textStyle, paddingVertical: 8, paddingHorizontal: 3}
     return (
-      <TouchableOpacity onPress={() => this.props.rowClicked(loc)}>
+      <TouchableWithoutFeedback onPressIn={() => this.props.rowClicked(loc)}>
         <View style={this.props.rowStyle}>
-          <View style={{flexDirection: 'row'}}>
-            <Text style={style}>ID: {loc.id}, </Text>
-            <Text style={style}>Code: {loc.code}</Text>
+          <View style={{flexDirection: 'row', paddingVertical: 12}}>
+            {/* <FieldHeader>ID:</FieldHeader>
+            <FieldValue>{loc.id}</FieldValue> */}
+            <FieldHeader>Code:</FieldHeader>
+            <FieldValue>{loc.code}</FieldValue>
+            <FieldHeader>Name:</FieldHeader>
+            <FieldValue>{loc.name}</FieldValue>
           </View>
-          <Text style={style}>Name: {loc.name}</Text>
         </View>
-      </TouchableOpacity>
+      </TouchableWithoutFeedback>
     )
   }
 }

@@ -72,8 +72,7 @@ export default class App extends React.Component {
       this.setState({ isLoadingComplete: true });
     }).catch((error) => {
       store.setMocked(true)
-      const msg = JSON.stringify(error)
-      Alert.alert('Network Error', msg)
+      Alert.alert('Network Error', 'Unable to contact the API.\nPlease check your settings')
       this.setState({ isLoadingComplete: true });
     }) 
   };
