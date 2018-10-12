@@ -4,8 +4,9 @@ import { Platform, StatusBar, StyleSheet, View, Alert } from 'react-native';
 import { AppLoading, Asset, Font, Icon } from 'expo';
 import AppNavigator from './navigation/AppNavigator';
 
+import Settings from './Store/Settings'
 import endpoints from './api/endpoints';
-import API from './api/api';
+import api from './api/api';
 import store from './Store/store'
 
 export default class App extends React.Component {
@@ -13,6 +14,10 @@ export default class App extends React.Component {
     super(props)
     Expo.ScreenOrientation.allow(Expo.ScreenOrientation.Orientation.ALL)
     this.state = {isLoadingComplete: false, mocked: false}
+  }
+
+  appReload = () => {
+    this.setState({isLoadingComplete: false})
   }
 
   render() {
@@ -28,7 +33,7 @@ export default class App extends React.Component {
       return (
         <View style={styles.container}>
           {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-          <AppNavigator mocked={this.state.mocked} />
+          <AppNavigator screenProps={{mocked: this.state.mocked, reload: this.appReload, other: 'other'}} />
         </View>
       );
     }
@@ -49,14 +54,7 @@ export default class App extends React.Component {
         'euro-ext': require('./assets/fonts/Eurostile-Extended.otf'),
         'euro-std': require('./assets/fonts/Eurostile-Regular.otf')
       }),
-      API.request(
-        {...endpoints.info}
-      ).then(res => {
-        console.log('API Responded OK')
-      }).catch((error) => {
-        store.setMocked(true)
-        Alert.alert('Network Error','API not present, will use simulated data')
-      }) 
+      Settings.readSettings().then((settings) => {api.defaults.baseURL = settings.apiUrl})
     ]);
   };
 
@@ -67,7 +65,17 @@ export default class App extends React.Component {
   };
 
   _handleFinishLoading = () => {
-    this.setState({ isLoadingComplete: true });
+    api.request(
+      {...endpoints.info}
+    ).then(res => {
+      console.log('API Responded OK')
+      this.setState({ isLoadingComplete: true });
+    }).catch((error) => {
+      store.setMocked(true)
+      const msg = JSON.stringify(error)
+      Alert.alert('Network Error', msg)
+      this.setState({ isLoadingComplete: true });
+    }) 
   };
 }
 

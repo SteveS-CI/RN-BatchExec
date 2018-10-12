@@ -42,13 +42,14 @@ export default class LocationSelectScreen extends React.Component {
     this.setState({selectedItem: id})
   }
 
-  buttClicked = () => {
+  selectClicked = () => {
     if (this.item) {
       const location = {code: this.item.code, name: this.item.name} 
       Settings.saveObject('location', location)
       .then(() => {
-        this.props.navigation.navigate('BatchList'), {locationCode: this.item.code}}
-      )
+        this.props.screenProps.reload()
+        //this.props.navigation.navigate('BatchList'), {locationCode: this.item.code}})
+      })
     }
   }
 
@@ -80,7 +81,7 @@ export default class LocationSelectScreen extends React.Component {
           <RoundedButton
             backColor={NexaColours.AlertGreen} 
             title='Select' 
-            onPress={this.buttClicked}
+            onPress={this.selectClicked}
             disabled={this.state.selectedItem==0}
           />
         </View>

@@ -11,6 +11,7 @@ from 'react-navigation';
 import NexaColours from '../constants/NexaColours'
 
 import BatchSelectScreen from '../screens/BatchSelectScreen';
+import Processes from '../screens/Processes'
 import NodeSelectScreen from '../screens/NodeSelectScreen';
 import ActionDetailScreen from '../screens/ActionDetailScreen';
 import NodeDetailScreen from '../screens/NodeDetailScreen';
@@ -30,7 +31,7 @@ const screenHeaderStyling = {
   headerStyle: { 
     backgroundColor: NexaColours.Blue
   },
-  headerTitleStyle: {fontFamily: 'euro-ext-bold', fontWeight: 'normal'}
+  headerTitleStyle: {fontFamily: 'euro-demi', fontWeight: 'normal'}
 }
 
 const BatchNav = createMaterialTopTabNavigator(
@@ -99,9 +100,11 @@ const MainNav = createStackNavigator(
       {
         const route = navigation.state.routeName
         if (route==='BatchDetail') {
+          const batch = navigation.getParam('batch')
+          const location = navigation.getParam('location')
           return {...screenHeaderStyling,
             title: 'Batch Details',
-            headerRight: <RoundedButton title='Continue' onPress={() => navigation.navigate('NodeSelect')}/>,
+            headerRight: <RoundedButton title='Continue' onPress={() => navigation.navigate('Processes', {batchID: batch.batchID, procID: 0, location})}/>,
           }
         } else {
           return screenHeaderStyling
@@ -135,7 +138,7 @@ export default AppNavigator = createStackNavigator(
       title: 'Batch Execution',
       headerTintColor: NexaColours.Blue,
       headerStyle: {backgroundColor: NexaColours.GreyLight},
-      headerTitleStyle: {fontFamily: 'euro-ext-bold', fontWeight: 'normal'},
+      headerTitleStyle: {fontFamily: 'euro-demi', fontWeight: 'normal'},
       headerLeft: <DropdownMenu data={dropDownItems} navigation={navigation}/>,
       headerRight: <LocationHeader/>
     })
