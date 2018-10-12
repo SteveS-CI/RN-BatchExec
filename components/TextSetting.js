@@ -40,13 +40,12 @@ export default class TextSetting extends PureComponent {
           transparent={true}
           visible={this.state.editing}
           onRequestClose={() => {this.hideModal()}}>
-        <View style={{flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center', backgroundColor: '#00000080'}}
+        <View style={{flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'flex-start', backgroundColor: '#00000080'}}
           >
           <View style={{
             width: 300,
-            height: 300,
             backgroundColor: '#fff',
-            padding: 20}}>
+            padding: 10}}>
             <Text>{this.props.title}</Text>
             <TextInput
               textContentType='URL'
