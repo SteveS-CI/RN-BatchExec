@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react'
-import {Alert, StyleSheet, Switch, TextInput, Modal, View, Text} from 'react-native';
+import {Alert, StyleSheet, TouchableWithoutFeedback, Switch, TextInput, Modal, View, Text} from 'react-native';
 import PropTypes from 'prop-types'
 import RoundedButton from './RoundedButton'
 import NexaColours from '../constants/NexaColours'
@@ -15,53 +15,37 @@ export default class TextSetting extends PureComponent {
     this.setState({value: this.props.value})
   }
 
-  hideModal = () => {
-    this.setState({editing: false})
-  }
-
-  submitChange = () => {
-    this.props.onValueChange(this.state.value)
-    this.setState({editing: false})
-  }
-
   onChangeText = (value) => {
+    this.props.onValueChange(value)
     this.setState({value})
   }
 
+  setEditMode = () => {
+    this.setState({editing: true})
+  }
+
   render() {
+    const editing = this.state.editing
+    const baseStyle = {paddingHorizontal: 5}
+    const textStyle = this.state.editing 
+      ? {...baseStyle, borderRadius: 5, borderWidth: StyleSheet.hairlineWidth}
+      : {...baseStyle, color: NexaColours.Grey}
     return (
-      <View style={{flexDirection: 'column', padding: 8}}>
-        <Text onPress={() => {this.setState({editing: true})}}>{this.props.title}</Text>
-        <Text style={{color: NexaColours.Grey}}>
-          {this.props.value}
-        </Text>
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={this.state.editing}
-          onRequestClose={() => {this.hideModal()}}>
-        <View style={{flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'flex-start', backgroundColor: '#00000080'}}
-          >
-          <View style={{
-            width: 300,
-            backgroundColor: '#fff',
-            padding: 10}}>
-            <Text>{this.props.title}</Text>
-            <TextInput
-              textContentType='URL'
-              value={this.state.value}
-              onChangeText={this.onChangeText}
-              underlineColorAndroid={'#00000000'}
-              style={{borderRadius: 5, borderWidth: StyleSheet.hairlineWidth, paddingHorizontal: 5}}
-              />
-            <ButtonBar justify='space-evenly'>
-              <RoundedButton title='Cancel' backColor={NexaColours.AlertYellow} onPress={() => {this.hideModal()}} />
-              <RoundedButton title='OK' onPress={() => {this.submitChange()}} />
-            </ButtonBar>
-          </View>
+      <TouchableWithoutFeedback onPress={() => {this.setState({editing: !editing})}}>
+        <View style={{flexDirection: 'column', padding: 8}}>
+          <Text>{this.props.title}</Text>
+          <TextInput
+                textContentType='URL'
+                value={this.state.value}
+                blurOnSubmit={true}
+                onChangeText={this.onChangeText}
+                onBlur={() => {this.setState({editing: false})}}
+                underlineColorAndroid={'#00000000'}
+                style={textStyle}
+                editable={editing}
+                />
         </View>
-      </Modal>
-    </View>
+      </TouchableWithoutFeedback>  
     )
   }
 }
