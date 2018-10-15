@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Component} from 'react';
 import { StyleSheet, View, Button, ScrollView, TouchableOpacity, Text } from 'react-native';
 import mockedBatchList from '../Mocked/batchlist.json'
 import BatchItem from '../components/BatchItem';
@@ -16,7 +16,7 @@ const tableRowOdd = { backgroundColor: NexaColours.GreyUltraLight }
 const tableRowEven=  { backgroundColor: NexaColours.GreyLight }
 const tableRowSelected = {backgroundColor: NexaColours.Orange}
 
-export default class BatchSelectScreen extends React.Component {
+export default class BatchSelectScreen extends Component {
   constructor(props) {
     super(props)
     this.state = {batchList: null, selectedItem: 0, loading: false}
@@ -61,11 +61,11 @@ export default class BatchSelectScreen extends React.Component {
       const mocked = store.getMocked()
       if (mocked) {
         this.batch = mockBatch
-        this.props.navigation.navigate('BatchDetail', {batch: this.batch, location: this.locationCode})
+        this.props.navigation.navigate('BatchDetail', {batch: this.batch, locationCode: this.locationCode})
       } else {
         // set loading prior to request
         this.setState({loading: true})
-        const request = {...endpoints.getBatch, params: {locationCode: this.locationCode, batchID: this.batch.batchID}}
+        const request = {...endpoints.getBatch, params: {batchID: this.batch.batchID, locationCode: this.locationCode}}
         api.request(
           request
         ).then((response) => {
@@ -74,7 +74,7 @@ export default class BatchSelectScreen extends React.Component {
           // Navigate to the TabNavigator, not a specific screen (Props/Comps/Equip)
           // The parameter is passed to all screens of the TabNavigator
           // (all screens are rendered at once)
-          this.props.navigation.navigate('BatchDetail', {batch: this.batch, location: this.locationCode})
+          this.props.navigation.navigate('BatchDetail', {batch: this.batch, locationCode: this.locationCode})
         }).catch((error) => {
           this.setState({loading: false})
           console.log(JSON.stringify(error))
@@ -89,7 +89,7 @@ export default class BatchSelectScreen extends React.Component {
       const mocked = store.getMocked()
       if (mocked) {
         this.batch = mockBatch
-        nav.navigate('ActionDetail', {batch: this.batch, location: this.locationCode})
+        nav.navigate('ActionDetail', {batch: this.batch, locationCode: this.locationCode})
       } else {
         // set loading prior to request
         this.setState({loading: true})
@@ -102,15 +102,15 @@ export default class BatchSelectScreen extends React.Component {
           // depending on data shape, navigate to the appropriate screen, passing batchData
           if (batchData.nodes.length > 1) {
             // Multiple nodes
-            nav.navigate('NodeSelect', {batchData})
+            nav.navigate('NodeSelect', {batchData, locationCode: this.locationCode})
           } else {
             // Single nodes
             if (batchData.nodeDepth===3) {
               // Action node
-              nav.navigate('ActionDetail', {batchData})    
+              nav.navigate('ActionDetail', {batchData, locationCode: this.locationCode})    
             } else {
               // Operation/Stage/Process - for Confirmation/Signature/Approval
-              nav.navigate('NodeDetail', {batchData})
+              nav.navigate('NodeDetail', {batchData, locationCode: this.locationCode})
             }
           }
         }).catch((error) => {

@@ -15,7 +15,7 @@ const styles =
     },
     text: {
       fontFamily: 'euro-std', fontSize: 16,
-      color: 'white'
+      color: 'black'
     }
   }
 

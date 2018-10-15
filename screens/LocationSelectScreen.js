@@ -19,9 +19,7 @@ export default class LocationSelectScreen extends React.Component {
     this.state = {locations: null, selectedItem: 0}
   }
 
-  static navigationOptions = {
-    title: 'Select Location'
-  }
+  static navigationOptions = {title: 'Select Location'}
 
   componentDidMount() {
     const mocked = store.getMocked()
