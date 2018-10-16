@@ -82,7 +82,6 @@ export default class SettingsScreen extends React.Component {
 
   render() {
     const settings = this.state.settings
-    console.log(JSON.stringify(settings))
     return (
       settings ? 
       <View>

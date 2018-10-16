@@ -2,16 +2,12 @@ import React, { Component } from 'react';
 import { StyleSheet, View, Button, ScrollView, Text } from 'react-native';
 import mockedLocations from '../Mocked/locations.json'
 import LocationItem from '../components/LocationItem';
-import NexaColours from '../constants/NexaColours';
+import NexaColours, {tableRowEven, tableRowOdd, tableRowSelected} from '../constants/NexaColours';
 import api from '../api/api';
 import endpoints from '../api/endpoints';
 import Settings from '../Store/Settings'
 import RoundedButton from '../components/RoundedButton'
 import store from '../Store/store'
-
-const tableRowOdd = { backgroundColor: NexaColours.GreyUltraLight }
-const tableRowEven=  { backgroundColor: NexaColours.GreyLight }
-const tableRowSelected = {backgroundColor: NexaColours.Orange}
 
 export default class LocationSelectScreen extends React.Component {
   constructor(props) {

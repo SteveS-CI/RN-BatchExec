@@ -1,17 +1,13 @@
 import React from "react";
 import { View, ScrollView, Text, Button } from "react-native";
-import NexaColours from "../constants/NexaColours";
+import NexaColours, {tableRowEven, tableRowOdd, tableRowSelected} from "../constants/NexaColours";
 import ButtonBar from '../components/ButtonBar'
 import RoundedButton from "../components/RoundedButton";
 import NodeItem from "../components/NodeItem";
 import LoadingOverlay from '../components/LoadingOverlay'
-import PromptText from '../components/PromptText'
+import TextBar from '../components/TextBar'
 import api from '../api/api'
 import endpoints from '../api/endpoints'
-
-const tableRowOdd = { backgroundColor: NexaColours.GreyUltraLight };
-const tableRowEven = { backgroundColor: NexaColours.GreyLight };
-const tableRowSelected = { backgroundColor: NexaColours.Orange };
 
 export default class NodeSelectScreen extends React.Component {
   constructor(props) {
@@ -97,7 +93,6 @@ export default class NodeSelectScreen extends React.Component {
     }
     return (
       <View style={{flex: 1}}>
-        <PromptText backColor={NexaColours.AlertCyan}>Select one of the following {level}:</PromptText>
         <ButtonBar justify="space-between">
           <RoundedButton
             backColor={NexaColours.AlertYellow}
@@ -106,6 +101,7 @@ export default class NodeSelectScreen extends React.Component {
               nav.navigate("BatchList");
             }}
           />
+          <TextBar backColor={NexaColours.CyanAccent}>Select one of the following {level}:</TextBar>
           <RoundedButton
             backColor={NexaColours.AlertGreen}
             title="Select"

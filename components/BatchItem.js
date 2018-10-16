@@ -13,27 +13,19 @@ export default class BatchItem extends Component {
     const textStyle = this.props.selected ? rowSelected : rowPlain
     const style = {...textStyle, padding: 3}
     const fieldStyle = {...style, color: NexaColours.Blue}
-    const rowStyle = {...this.props.rowStyle, borderBottomWidth: StyleSheet.hairlineWidth}
+    const rowStyle = {...this.props.rowStyle}
     return (
-      <TouchableOpacity onPress={() => this.props.rowClicked(batch)} style={rowStyle}>
+      <TouchableOpacity onPressIn={() => this.props.rowClicked(batch)} style={rowStyle}>
         <View>
-          <View style={{flexDirection: 'row'}}>
-            <Text style={style}>ID:</Text>
-            <Text style={fieldStyle}>{batch.batchID}, </Text>
-            <Text style={style}>Code:</Text>
-            <Text style={fieldStyle}>{batch.code}</Text>
-          </View>
-          <View style={{flexDirection: 'row'}}>
-            <Text style={style}>Product Code:</Text>
-            <Text style={fieldStyle}>{batch.productCode}</Text>
-            <Text style={style}>Product Name:</Text>
-            <Text style={fieldStyle}>{batch.productName}</Text>
-          </View>
-          <View style={{flexDirection: 'row'}}>
-            <Text style={style}>Quantity:</Text>
-            <Text style={fieldStyle}>{batch.quantity}</Text>
-            <Text style={style}>Status:</Text>
-            <Text style={fieldStyle}>{batch.status}</Text>
+          <View style={{flexDirection: 'row', paddingVertical: 12}}>
+            <Text style={fieldStyle}>Code:</Text>
+            <Text style={style}>{batch.code}</Text>
+            <Text style={fieldStyle}>Product Name:</Text>
+            <Text style={style}>{batch.productName}</Text>
+            <Text style={fieldStyle}>Quantity:</Text>
+            <Text style={style}>{batch.quantity}</Text>
+            <Text style={fieldStyle}>Status:</Text>
+            <Text style={style}>{batch.status}</Text>
           </View>
         </View>
       </TouchableOpacity>

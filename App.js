@@ -21,6 +21,7 @@ export default class App extends React.Component {
   }
 
   render() {
+    store.setMocked(false)
     if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
       return (
         <AppLoading
@@ -65,14 +66,17 @@ export default class App extends React.Component {
   };
 
   _handleFinishLoading = () => {
-    api.request(
-      {...endpoints.info}
-    ).then(res => {
-      console.log('API Responded OK')
-      this.setState({ isLoadingComplete: true });
+    api.request({...endpoints.info}).then(response => {
+      if (response.headers['content-type'].contains('application/json')) {
+        this.setState({ isLoadingComplete: true });
+      } else {
+        store.setMocked(true)
+        Alert.alert('Network Error', 'Invalid return data type.\nPlease check API Url in the settings')
+        this.setState({ isLoadingComplete: true });
+      }
     }).catch((error) => {
       store.setMocked(true)
-      Alert.alert('Network Error', 'Unable to contact the API.\nPlease check your settings')
+      Alert.alert('Network Error', error.message + '\nPlease check your settings')
       this.setState({ isLoadingComplete: true });
     }) 
   };
@@ -81,6 +85,6 @@ export default class App extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#FFFFFF',
   },
 });

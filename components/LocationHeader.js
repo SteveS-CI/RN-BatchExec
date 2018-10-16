@@ -3,11 +3,14 @@ import {StyleSheet, Text} from 'react-native'
 import Settings from '../Store/Settings'
 import NexaColours from '../constants/NexaColours'
 
-styles = StyleSheet.create({
-  styleLight: {marginRight: 8, color: NexaColours.GreyDark, padding: 5, backgroundColor: NexaColours.GreyUltraLight, borderRadius: 5},
-  styleDark: {marginRight: 8, color: NexaColours.GreyUltraLight, padding: 5, backgroundColor: NexaColours.GreyDark, borderRadius: 5}
- })
-
+style = {
+  marginRight: 8,
+  color: 'black',
+  padding: 5,
+  backgroundColor: NexaColours.GreyUltraLight,
+  borderRadius: 5,
+  fontSize: 16
+}
 
 export default class LocationHeader extends Component {
   constructor(props) {
@@ -22,7 +25,7 @@ export default class LocationHeader extends Component {
   render() {
     return (
     this.state.location
-    ? <Text style={styles.styleLight}>{this.state.location.name}</Text>
+    ? <Text style={style}>{this.state.location.name}</Text>
     : null
     )
   }

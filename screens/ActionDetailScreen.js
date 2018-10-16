@@ -1,8 +1,9 @@
 import React from 'react';
 import { View, Text, Button } from 'react-native'
-import PromptText from '../components/PromptText'
+import TextBar from '../components/TextBar'
 import NexaColours from '../constants/NexaColours'
-
+import {ActionTitle, ActionPrompt} from '../components/ActionElements'
+ 
 export default class ActionDetailScreen extends React.Component {
   constructor(props) {
     super(props)
@@ -25,10 +26,16 @@ export default class ActionDetailScreen extends React.Component {
 
   render() {
     const nav = this.props.navigation
-    return (
-      <View style={{flex: 1}}>
-        {this.state.node && <PromptText backColor={NexaColours.AlertCyan}>{this.state.node.name}</PromptText>}
-      </View>
-    )
+    const node = this.state.node
+    if (node) {
+      return (
+        <View style={{flex: 1}}>
+          <ActionTitle backColor={NexaColours.AlertCyan} title={this.state.node.name}/>
+          {node.prompt && <ActionPrompt prompt={node.prompt}/>}
+        </View>
+      )
+    } else {
+      return (null)
+    }
   }
 }

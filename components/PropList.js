@@ -1,8 +1,8 @@
 import React, {PureComponent} from 'react'
 import {StyleSheet, ScrollView, View } from 'react-native'
 import PropTypes from 'prop-types'
-import FieldHeader from './FieldHeader';
-import FieldValue from './FieldValue';
+import PropHeader from './PropHeader';
+import PropValue from './PropValue';
 import NexaColours from '../constants/NexaColours';
 
 class PropList extends PureComponent {
@@ -13,9 +13,9 @@ class PropList extends PureComponent {
     const cols = headers.map((head, idx) => {
       const backCol = (idx % 2 == 0) ? NexaColours.GreyUltraLight : NexaColours.GreyLight
       return (
-        <View key={idx} style={{backgroundColor: backCol, flexDirection: 'column', borderTopWidth: StyleSheet.hairlineWidth}}>
-          <FieldHeader>{head.display}</FieldHeader>
-          <FieldValue>{data[head.source]}</FieldValue>
+        <View key={idx} style={{backgroundColor: backCol, flexDirection: 'column', borderTopWidth: StyleSheet.hairlineWidth, paddingVertical: 12}}>
+          <PropHeader>{head.display}</PropHeader>
+          <PropValue>{data[head.source]}</PropValue>
         </View>
       )
     })

@@ -45,3 +45,7 @@ const NexaColours = {
 }
 
 export default NexaColours
+
+export const tableRowOdd = { backgroundColor: NexaColours.GreyUltraLight }
+export const tableRowEven=  { backgroundColor: NexaColours.GreyLight }
+export const tableRowSelected = {backgroundColor: NexaColours.CyanAccent}
