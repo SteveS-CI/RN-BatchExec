@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { View, TouchableHighlight, TouchableOpacity, Image, StyleSheet, NativeModules, findNodeHandle } from 'react-native';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import Expo from 'expo';
+
+import Settings from '../Store/Settings'
 import NexaIcon from '../assets/images/nexa-icon.png'
 import {BackHandler} from 'react-native'
 
@@ -18,10 +20,16 @@ export default class DropdownMenu extends Component {
         if (navigation) {
           const action = this.props.data.actions[index]
           if (action) {
-            if (action==='EXIT') {
-              BackHandler.exitApp()
-            } else {
-              navigation.navigate(action)
+            switch (action) {
+              case 'EXIT':
+                BackHandler.exitApp()
+                break
+              case 'CLEAR':
+                // Clear settings and restart
+                Settings.removeItem('location').then(() => Expo.Updates.reload())
+                break
+              default:
+                navigation.navigate(action)
             }
           }
         }

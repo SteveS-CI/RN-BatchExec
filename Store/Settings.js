@@ -28,5 +28,8 @@ export default {
   saveObject: async (key, value) => {
     const json = JSON.stringify(value)
     await AsyncStorage.setItem(key, json)
+  },
+  removeItem: async (key) => {
+    await AsyncStorage.removeItem(key)
   }
 }

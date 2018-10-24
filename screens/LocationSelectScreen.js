@@ -41,7 +41,7 @@ export default class LocationSelectScreen extends React.Component {
       const location = {code: this.item.code, name: this.item.name} 
       Settings.saveObject('location', location)
       .then(() => {
-        this.props.screenProps.reload()
+        this.props.screenProps.refresh()
         //this.props.navigation.navigate('BatchList'), {locationCode: this.item.code}})
       })
     }

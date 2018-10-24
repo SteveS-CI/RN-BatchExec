@@ -124,8 +124,8 @@ const DropdownNav = createSwitchNavigator(
 )
 
 const dropDownItems = {
-  labels: ['Change Location','Settings','Login','Exit'],
-  actions: ['Location','Settings','Login','EXIT']
+  labels: ['Change Location','Settings','Login','Exit', 'Clear Location'],
+  actions: ['Location','Settings','Login','EXIT', 'CLEAR']
 }
 
 export default AppNavigator = createStackNavigator(
@@ -134,12 +134,12 @@ export default AppNavigator = createStackNavigator(
   },
   {
     headerMode: "float",
-    navigationOptions: ({navigation}) => ({
+    navigationOptions: ({navigation, props}) => ({
       title: 'Batch Execution',
       headerTintColor: NexaColours.Blue,
       headerStyle: {backgroundColor: NexaColours.GreyLight},
       headerTitleStyle: {fontFamily: 'euro-demi', fontWeight: 'normal'},
-      headerLeft: <DropdownMenu data={dropDownItems} navigation={navigation}/>,
+      headerLeft: <DropdownMenu data={dropDownItems} navigation={navigation} />,
       headerRight: <LocationHeader/>
     })
   }

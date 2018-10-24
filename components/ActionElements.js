@@ -13,3 +13,9 @@ export function ActionPrompt(props) {
     <TextBar backColor={NexaColours.AlertCyan}>{props.prompt}</TextBar>
   )
 }
+
+export function ActionNotes(props) {
+  return (
+    <TextBar backColor={NexaColours.GreyAccent}>{props.notes}</TextBar>
+  )
+}

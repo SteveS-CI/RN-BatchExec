@@ -45,8 +45,10 @@ export default class BatchSelectScreen extends Component {
       this.setState({ batchList: mockedBatchList });
     } else {
       Settings.readObject("location").then(location => {
-        this.locationCode = location.code;
-        this.getBatchList(location.code);
+        if (location) {
+          this.locationCode = location.code;
+          this.getBatchList(location.code);
+        }
       });
     }
   }
@@ -174,25 +176,37 @@ export default class BatchSelectScreen extends Component {
     const batchData = this.state.batchList;
     let batchList = null;
     let contDisabled = true;
-    if (batchData) {
-      if (batchData.length > 0) {
-        batchList = batchData.map((batch, index) => {
-          const rowStyle = index & 1 ? tableRowOdd : tableRowEven;
-          const selected = batch.batchID === this.state.selectedItem;
-          const style = selected ? tableRowSelected : rowStyle;
-          return (
-            <BatchItem
-              key={index}
-              item={batch}
-              rowClicked={this.rowClicked}
-              selected={selected}
-              rowStyle={style}
-            />
+    if (this.locationCode) {
+      if (batchData) {
+        if (batchData.length > 0) {
+          batchList = batchData.map((batch, index) => {
+            const rowStyle = index & 1 ? tableRowOdd : tableRowEven;
+            const selected = batch.batchID === this.state.selectedItem;
+            const style = selected ? tableRowSelected : rowStyle;
+            return (
+              <BatchItem
+                key={index}
+                item={batch}
+                rowClicked={this.rowClicked}
+                selected={selected}
+                rowStyle={style}
+              />
+            );
+          });
+        } else {
+          batchList = (
+            <TextBar backColor={NexaColours.AlertYellow}>
+              There are no Batches available for the selected location.
+            </TextBar>
           );
-        });
-      } else {
-        batchList = <TextBar backColor={NexaColours.AlertRed}>There are no Batches available for the selected location.</TextBar>
+        }
       }
+    } else {
+      batchList = (
+        <TextBar backColor={NexaColours.AlertRed}>
+          There is no Location set
+        </TextBar>
+      );
     }
     contDisabled = this.state.continueDisabled || this.state.selectedItem == 0;
     return (
@@ -209,8 +223,8 @@ export default class BatchSelectScreen extends Component {
             onPress={this.continueClicked}
           />
         </ButtonBar>
-        <View style={{ flex: 1}}>
-          <ScrollView style={{backgroundColor: NexaColours.GreyLight }}>
+        <View style={{ flex: 1 }}>
+          <ScrollView style={{ backgroundColor: NexaColours.GreyLight }}>
             {batchList}
           </ScrollView>
         </View>

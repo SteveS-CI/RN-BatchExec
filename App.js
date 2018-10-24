@@ -17,6 +17,10 @@ export default class App extends React.Component {
   }
 
   appReload = () => {
+    Expo.Updates.reload()
+  }
+
+  appRefresh = () => {
     this.setState({isLoadingComplete: false})
   }
 
@@ -34,7 +38,7 @@ export default class App extends React.Component {
       return (
         <View style={styles.container}>
           {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-          <AppNavigator screenProps={{mocked: this.state.mocked, reload: this.appReload, other: 'other'}} />
+          <AppNavigator screenProps={{mocked: this.state.mocked, reload: this.appReload, refresh: this.appRefresh}} />
         </View>
       );
     }
@@ -85,6 +89,6 @@ export default class App extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#FFF'
   },
 });
