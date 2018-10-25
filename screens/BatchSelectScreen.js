@@ -18,8 +18,7 @@ import NexaColours, {
   tableRowEven,
   tableRowSelected
 } from "../constants/NexaColours";
-import api from "../api/api";
-import endpoints from "../api/endpoints";
+import {getBatchList, getBatch, nextProc} from "../api/api";
 import Settings from "../Store/Settings";
 import store from "../Store/store";
 import mockBatch from "../Mocked/batch.json";
@@ -46,19 +45,18 @@ export default class BatchSelectScreen extends Component {
     } else {
       Settings.readObject("location").then(location => {
         if (location) {
+          console.log('Location: ' + location.code)
           this.locationCode = location.code;
-          this.getBatchList(location.code);
+          this.fetchBatchList(location.code);
         }
       });
     }
   }
 
-  getBatchList(locationCode) {
-    const request = { ...endpoints.batchlist, params: { locationCode } };
-    this.setState({ loading: true });
-    api
-      .request(request)
+  fetchBatchList(locationCode) {
+    getBatchList(locationCode)
       .then(response => {
+        console.log(JSON.stringify(response));
         this.setState({ batchList: response.data, loading: false });
       })
       .catch(error => {
@@ -86,15 +84,7 @@ export default class BatchSelectScreen extends Component {
       } else {
         // set loading prior to request
         this.setState({ loading: true });
-        const request = {
-          ...endpoints.getBatch,
-          params: {
-            batchID: this.batch.batchID,
-            locationCode: this.locationCode
-          }
-        };
-        api
-          .request(request)
+        getBatch(this.batch.batchID, this.locationCode)
           .then(response => {
             this.setState({ loading: false });
             this.batch = response.data;
@@ -127,16 +117,7 @@ export default class BatchSelectScreen extends Component {
       } else {
         // set loading prior to request
         this.setState({ loading: true });
-        const request = {
-          ...endpoints.nextProc,
-          data: {
-            batchID: this.batch.batchID,
-            procID: 0,
-            location: this.locationCode
-          }
-        };
-        api
-          .request(request)
+        nextProc(this.batch.batchID, 0, this.locationCode)
           .then(response => {
             this.setState({ loading: false });
             const batchData = response.data;

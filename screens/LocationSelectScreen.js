@@ -3,7 +3,7 @@ import { StyleSheet, View, Button, ScrollView, Text } from 'react-native';
 import mockedLocations from '../Mocked/locations.json'
 import LocationItem from '../components/LocationItem';
 import NexaColours, {tableRowEven, tableRowOdd, tableRowSelected} from '../constants/NexaColours';
-import api from '../api/api';
+import {getLocations} from '../api/api';
 import endpoints from '../api/endpoints';
 import Settings from '../Store/Settings'
 import RoundedButton from '../components/RoundedButton'
@@ -22,9 +22,7 @@ export default class LocationSelectScreen extends React.Component {
     if (mocked) {
       this.setState({locations: mockedLocations})
     } else {
-      api.request(
-        {...endpoints.locations}
-      ).then((response) => {
+      getLocations().then((response) => {
         this.setState({locations: response.data})
       })
     }

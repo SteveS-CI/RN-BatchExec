@@ -6,7 +6,7 @@ import AppNavigator from './navigation/AppNavigator';
 
 import Settings from './Store/Settings'
 import endpoints from './api/endpoints';
-import api from './api/api';
+import api, {getInfo} from './api/api';
 import store from './Store/store'
 
 export default class App extends React.Component {
@@ -37,7 +37,6 @@ export default class App extends React.Component {
     } else {
       return (
         <View style={styles.container}>
-          {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
           <AppNavigator screenProps={{mocked: this.state.mocked, reload: this.appReload, refresh: this.appRefresh}} />
         </View>
       );
@@ -70,7 +69,14 @@ export default class App extends React.Component {
   };
 
   _handleFinishLoading = () => {
-    api.request({...endpoints.info}).then(response => {
+    getInfo().then((response) => {
+      this.setState({ isLoadingComplete: true })
+    }).catch((error) => {
+      store.setMocked(true)
+      Alert.alert('Network Error', error.message + '\nPlease check your settings')
+      this.setState({ isLoadingComplete: true });
+    })
+/*     api.request({...endpoints.info}).then(response => {
       if (response.headers['content-type'].contains('application/json')) {
         this.setState({ isLoadingComplete: true });
       } else {
@@ -83,7 +89,7 @@ export default class App extends React.Component {
       Alert.alert('Network Error', error.message + '\nPlease check your settings')
       this.setState({ isLoadingComplete: true });
     }) 
-  };
+ */  };
 }
 
 const styles = StyleSheet.create({

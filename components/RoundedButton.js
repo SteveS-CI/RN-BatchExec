@@ -2,7 +2,7 @@ import React, {PureComponent}  from 'react'
 import PropTypes from 'prop-types'
 import { Button, TouchableOpacity, Text, StyleSheet } from 'react-native'
 import NexaColours from '../constants/NexaColours'
-import {optimalForeColor} from '../Utils/utils'
+import {optimalForeColor, shadeBlendConvert} from '../Utils/utils'
 
 const styles = 
   {
@@ -11,9 +11,14 @@ const styles =
       padding: 8,
       alignSelf: 'flex-start',
       borderRadius: 8,
+      elevation: 8,
+      minWidth: 100,
+      borderWidth: 2,
     },
     text: {
-      fontFamily: 'euro-std', fontSize: 16,
+      fontFamily: 'euro-std',
+      fontSize: 16,
+      textAlign: 'center'
     }
   }
 
@@ -32,9 +37,10 @@ export default class RoundedButton extends PureComponent {
   }
 
   render() {
-    const backColor = this.props.disabled ? NexaColours.GreyAccent : this.props.backColor// ? this.props.backColor : NexaColours.AlertGreen
-    const viewStyle = {...styles.container, backgroundColor: backColor}
-    const textStyle = {...styles.text, color: optimalForeColor(backColor)}
+    const backgroundColor = this.props.disabled ? NexaColours.GreyAccent : this.props.backColor
+    const borderColor = this.props.disabled ? NexaColours.GreyDark : 'white'
+    const viewStyle = {...styles.container, backgroundColor, borderColor}
+    const textStyle = {...styles.text, color: optimalForeColor(backgroundColor)}
     return (
       <TouchableOpacity disabled={this.props.disabled} onPress={() => this.props.onPress()} style={viewStyle}>
         <Text style={textStyle}>{this.props.title}</Text>
