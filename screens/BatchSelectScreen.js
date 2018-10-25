@@ -45,7 +45,6 @@ export default class BatchSelectScreen extends Component {
     } else {
       Settings.readObject("location").then(location => {
         if (location) {
-          console.log('Location: ' + location.code)
           this.locationCode = location.code;
           this.fetchBatchList(location.code);
         }
@@ -56,7 +55,6 @@ export default class BatchSelectScreen extends Component {
   fetchBatchList(locationCode) {
     getBatchList(locationCode)
       .then(response => {
-        console.log(JSON.stringify(response));
         this.setState({ batchList: response.data, loading: false });
       })
       .catch(error => {

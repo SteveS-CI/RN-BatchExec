@@ -6,8 +6,7 @@ import RoundedButton from "../components/RoundedButton";
 import NodeItem from "../components/NodeItem";
 import LoadingOverlay from '../components/LoadingOverlay'
 import TextBar from '../components/TextBar'
-import api from '../api/api'
-import endpoints from '../api/endpoints'
+import {nextProc} from '../api/api'
 
 export default class NodeSelectScreen extends React.Component {
   constructor(props) {
@@ -35,22 +34,14 @@ export default class NodeSelectScreen extends React.Component {
       const nav = this.props.navigation;
       // set loading prior to request
       this.setState({ loading: true });
-      const request = {
-        ...endpoints.nextProc,
-        data: {
-          batchID: this.state.batchData.batchID,
-          procID: this.node.procID,
-          location: this.locationCode
-        }
-      };
-      api.request(request)
+      nextProc(this.state.batchData.batchID, this.node.procID, this.locationCode)
         .then(response => {
           this.setState({ loading: false });
           const batchData = response.data;
           // depending on data shape, navigate to the appropriate screen, passing batchData
           if (batchData.nodes.length > 1) {
             // Multiple nodes; stay on this screen
-            this.setState({batchData})
+            this.setState({batchData, selectedItem: 0})
           } else {
             // Single nodes
             if (batchData.nodeDepth === 3) {

@@ -18,7 +18,8 @@ const styles =
     text: {
       fontFamily: 'euro-std',
       fontSize: 16,
-      textAlign: 'center'
+      textAlign: 'center',
+      fontStyle: 'italic'
     }
   }
 
@@ -26,7 +27,8 @@ export default class RoundedButton extends PureComponent {
 
   static defaultProps = {
     title: 'Title',
-    backColor: NexaColours.AlertGreen
+    backColor: NexaColours.AlertGreen,
+    disabled: false
   }
 
   static propTypes = {
