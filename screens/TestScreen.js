@@ -1,10 +1,12 @@
 import React from 'react';
 import {StyleSheet, ScrollView, Switch, View, Text, TextInput, TouchableHighlight, Button, Image } from 'react-native';
 import RoundedButton from '../components/RoundedButton'
-import NexaColours from '../constants/NexaColours';
+import ActionButtons, {ButtonStyles} from '../components/ActionButtons'
+import NexaColours from '../constants/NexaColours'
 import ButtonBar from '../components/ButtonBar'
 import FileContent from '../components/FileContent'
-import {getTextFile} from '../api/api'
+import ActionImage from '../components/ActionImage'
+import {ActionTitle, ActionPrompt, ActionNotes} from '../components/ActionElements'
 
 export default class TestScreen extends React.Component {
   constructor(props) {
@@ -19,20 +21,22 @@ export default class TestScreen extends React.Component {
   componentDidMount() {
   }
 
+  onPress = (name) => {
+    if (name==='cancel') this.props.navigation.navigate('BatchList')
+  }
+
   render() {
-    
+    const buttons = [ButtonStyles.Back, ButtonStyles.No, ButtonStyles.Yes]
     return (
-      <View>
-        <ButtonBar justify='flex-start'>
-          <RoundedButton title='Back' backColor={NexaColours.AlertYellow} onPress={() => this.props.navigation.navigate('BatchList')}/>
-        </ButtonBar>
-        <View style={{flexDirection: 'column'}}>
-          <Image
-            source={{uri: 'http://192.168.1.225:8080/api/File/Image?name=lid-open.gif&language=en'}}
-            style={{width: 200, height: 200, resizeMode: Image.resizeMode.contain}}
-          />
+      <View style={{flexDirection: 'column', flex: 1}}>
+        <ActionButtons onPress={this.onPress} buttons={buttons}/>
+        <ActionTitle text='The Action Name'/>
+        <ScrollView style={{flexDirection: 'column'}}>
+          <ActionNotes text='Action Notes'/>
+          <ActionPrompt text='Action Prompt'/>
+          <ActionImage fileName='setup.jpg' />
           <FileContent fileName='General05.txt' backColor={NexaColours.BlueAccent}/>
-        </View>
+        </ScrollView>
       </View>
     )
   }

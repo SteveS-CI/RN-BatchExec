@@ -1,21 +1,56 @@
-import React from 'react'
+import React, {PureComponent} from 'react'
+import {StyleSheet} from 'react-native'
+import PropTypes from 'prop-types'
 import TextBar from './TextBar'
 import NexaColours from '../constants/NexaColours'
 
-export function ActionTitle(props) {
-  return (
-    <TextBar backColor={NexaColours.Grey}>{props.title}</TextBar>
-  )
+const styles = StyleSheet.create(
+  {
+    title: {
+      borderRadius: 0,
+      marginHorizontal: 0
+    },
+    prompt: {
+
+    },
+    notes: {
+
+    }
+  }
+)
+
+export class ActionTitle extends PureComponent {
+  static propTypes = {
+    text: PropTypes.string.isRequired
+  }
+
+  render() {
+    return (
+      <TextBar backColor={NexaColours.Grey} style={styles.title}>{this.props.text}</TextBar>
+    )
+  }
 }
 
-export function ActionPrompt(props) {
-  return (
-    <TextBar backColor={NexaColours.AlertCyan}>{props.prompt}</TextBar>
-  )
+export class ActionPrompt extends PureComponent {
+  static propTypes = {
+    text: PropTypes.string.isRequired
+  }
+
+  render() {
+    return (
+      <TextBar backColor={NexaColours.AlertCyan} style={styles.prompt}>{this.props.text}</TextBar>
+    )
+  }
 }
 
-export function ActionNotes(props) {
-  return (
-    <TextBar backColor={NexaColours.GreyAccent}>{props.notes}</TextBar>
-  )
+export class ActionNotes extends PureComponent {
+  static propTypes = {
+    text: PropTypes.string.isRequired
+  }
+
+  render() {
+    return (
+      <TextBar backColor={NexaColours.GreyAccent} style={styles.notes}>{this.props.text}</TextBar>
+    )
+  }
 }

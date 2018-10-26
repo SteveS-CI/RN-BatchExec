@@ -1,0 +1,10 @@
+export const ButtonCancel = {name: "cancel", display: "Cancel", bsStyle: "default"}
+export const ButtonOK = {name: "ok", display: "OK", bsStyle: "primary"}
+export const ButtonNo = {name: "no", display: "No", bsStyle: "danger"}
+export const ButtonYes = {name: "yes", display: "Yes", bsStyle: "success"}
+export const ButtonBack = {name: "back", display: "Back", bsStyle: "info"}
+export const ButtonComments = {name: "comments", display: "Comments...", bsStyle: "info"}
+export const ButtonConfirm = {name: "confirm", display: "Confirm", bsStyle: "warning"}
+export const ButtonSign = {name: "sign", display: "Sign", bsStyle: "warning"}
+export const ButtonApprove = {name: "approve", display: "Approve", bsStyle: "danger"}
+export const ButtonComponents = {name: "components", display: "Components", bsStyle: "warning"}

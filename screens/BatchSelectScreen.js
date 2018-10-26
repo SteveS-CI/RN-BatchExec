@@ -5,7 +5,8 @@ import {
   Button,
   ScrollView,
   TouchableOpacity,
-  Text
+  Text,
+  RefreshControl
 } from "react-native";
 import mockedBatchList from "../Mocked/batchlist.json";
 import BatchItem from "../components/BatchItem";
@@ -53,13 +54,14 @@ export default class BatchSelectScreen extends Component {
   }
 
   fetchBatchList(locationCode) {
+    this.setState({loading: true})
     getBatchList(locationCode)
       .then(response => {
-        this.setState({ batchList: response.data, loading: false });
+        this.setState({ batchList: response.data, loading: false});
       })
       .catch(error => {
         console.log(JSON.stringify(error));
-        this.setState({ loading: false });
+        this.setState({ loading: false});
       });
   }
 
@@ -151,6 +153,10 @@ export default class BatchSelectScreen extends Component {
     }
   };
 
+  onRefresh = () => {
+    this.fetchBatchList(this.locationCode)
+  }
+
   render() {
     const batchData = this.state.batchList;
     let batchList = null;
@@ -203,11 +209,14 @@ export default class BatchSelectScreen extends Component {
           />
         </ButtonBar>
         <View style={{ flex: 1 }}>
-          <ScrollView style={{ backgroundColor: NexaColours.GreyLight }}>
+          <ScrollView 
+            style={{ backgroundColor: NexaColours.GreyLight }}
+            refreshControl={<RefreshControl refreshing={this.state.loading} onRefresh={this.onRefresh}/>}
+          >
             {batchList}
           </ScrollView>
         </View>
-        <LoadingOverlay loading={this.state.loading} />
+        {/* <LoadingOverlay loading={this.state.loading} /> */}
       </View>
     );
   }

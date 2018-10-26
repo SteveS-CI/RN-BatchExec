@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, Button } from 'react-native'
-import TextBar from '../components/TextBar'
+import ActionButtons, {ButtonStyles} from '../components/ActionButtons'
 import NexaColours from '../constants/NexaColours'
 import {ActionTitle, ActionPrompt} from '../components/ActionElements'
  
@@ -24,14 +24,19 @@ export default class ActionDetailScreen extends React.Component {
     this.setState({node})
   }
 
+  onPress = (name) => {
+    if (name==='cancel') this.props.navigation.navigate('BatchList')
+  }
+
   render() {
     const nav = this.props.navigation
     const node = this.state.node
     if (node) {
       return (
         <View style={{flex: 1}}>
-          <ActionTitle backColor={NexaColours.AlertCyan} title={this.state.node.name}/>
-          {node.prompt && <ActionPrompt prompt={node.prompt}/>}
+          <ActionButtons buttons={[ButtonStyles.OK]} onPress={this.onPress}/>
+          <ActionTitle backColor={NexaColours.AlertCyan} text={this.state.node.name}/>
+          {node.prompt && <ActionPrompt text={node.prompt}/>}
         </View>
       )
     } else {

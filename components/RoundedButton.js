@@ -10,10 +10,10 @@ const styles =
       margin: 8,
       padding: 8,
       alignSelf: 'flex-start',
-      borderRadius: 8,
+      borderRadius: 12,
       elevation: 8,
-      minWidth: 100,
-      borderWidth: 2,
+      minWidth: 80,
+      borderWidth: 3,
     },
     text: {
       fontFamily: 'euro-std',

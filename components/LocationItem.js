@@ -15,7 +15,7 @@ export default class LocationItem extends Component {
     const textStyle = this.props.selected ? rowSelected : rowPlain
     const style = {...textStyle, paddingVertical: 8, paddingHorizontal: 3}
     return (
-      <TouchableWithoutFeedback onPressIn={() => this.props.rowClicked(loc)}>
+      <TouchableWithoutFeedback onPress={() => this.props.rowClicked(loc)}>
         <View style={this.props.rowStyle}>
           <View style={{flexDirection: 'row', paddingVertical: 12}}>
             {/* <FieldHeader>ID:</FieldHeader>

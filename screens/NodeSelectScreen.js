@@ -1,5 +1,5 @@
 import React from "react";
-import { View, ScrollView, Text, Button } from "react-native";
+import { View, ScrollView, Text, Button, RefreshControl } from "react-native";
 import NexaColours, {tableRowEven, tableRowOdd, tableRowSelected} from "../constants/NexaColours";
 import ButtonBar from '../components/ButtonBar'
 import RoundedButton from "../components/RoundedButton";
@@ -60,6 +60,10 @@ export default class NodeSelectScreen extends React.Component {
     }
   };
 
+  onRefresh = () => {
+
+  }
+
   render() {
     const nav = this.props.navigation
     const batchData = this.state.batchData
@@ -101,9 +105,11 @@ export default class NodeSelectScreen extends React.Component {
           />
         </ButtonBar>
         <View style={{ flex: 1 }}>
-          <ScrollView>{nodeList}</ScrollView>
+          <ScrollView>
+            {nodeList}
+          </ScrollView>
         </View>
-        <LoadingOverlay loading={this.state.loading} />      
+        <LoadingOverlay loading={this.state.loading} />
       </View>
     );
   }

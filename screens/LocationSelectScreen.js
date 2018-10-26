@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Button, ScrollView, Text } from 'react-native';
+import { StyleSheet, View, Button, ScrollView, Text, RefreshControl } from 'react-native';
 import mockedLocations from '../Mocked/locations.json'
 import LocationItem from '../components/LocationItem';
 import NexaColours, {tableRowEven, tableRowOdd, tableRowSelected} from '../constants/NexaColours';
@@ -12,7 +12,7 @@ import store from '../Store/store'
 export default class LocationSelectScreen extends React.Component {
   constructor(props) {
     super(props)
-    this.state = {locations: null, selectedItem: 0}
+    this.state = {locations: null, selectedItem: 0, loading: false}
   }
 
   static navigationOptions = {title: 'Select Location'}
@@ -22,10 +22,15 @@ export default class LocationSelectScreen extends React.Component {
     if (mocked) {
       this.setState({locations: mockedLocations})
     } else {
-      getLocations().then((response) => {
-        this.setState({locations: response.data})
-      })
+      this.fetch()
     }
+  }
+
+  fetch = () => {
+    this.setState({loading: true})
+    getLocations().then((response) => {
+      this.setState({locations: response.data, loading: false})
+    })
   }
 
   rowClicked = (item) => {
@@ -43,6 +48,10 @@ export default class LocationSelectScreen extends React.Component {
         //this.props.navigation.navigate('BatchList'), {locationCode: this.item.code}})
       })
     }
+  }
+
+  onRefresh = () => {
+    this.fetch()
   }
 
   render() {
@@ -78,7 +87,8 @@ export default class LocationSelectScreen extends React.Component {
           />
         </View>
         <View style={{flex: 1}}>
-          <ScrollView>
+          <ScrollView refreshControl={<RefreshControl refreshing={this.state.loading} onRefresh={this.onRefresh}/>}
+          >
             {locList}
           </ScrollView>
         </View>      

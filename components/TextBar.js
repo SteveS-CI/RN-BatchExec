@@ -4,32 +4,39 @@ import PropTypes from 'prop-types'
 import NexaColours from '../constants/NexaColours'
 import {optimalForeColor} from '../Utils/utils'
 
-const styles = {
-    prompt: {
+const styles = StyleSheet.create(
+  {
+    base: {
       fontFamily: 'euro-std',
       fontSize: 16,
       padding: 8,
-      margin: 8,
+      marginHorizontal: 8,
+      marginBottom: 8,
       borderRadius: 5,
-      alignSelf: 'center'
+      textAlign: 'center',
+      //alignSelf: 'center'
     }
   }
+)
 
 export default class TextBar extends React.Component {
 
   static defaultProps = {
-    backColor: NexaColours.AlertCyan
+    backColor: NexaColours.AlertCyan,
+    style: {}
   }
 
   static propTypes = {
-    backColor: PropTypes.oneOf(Object.values(NexaColours)).isRequired
+    backColor: PropTypes.oneOf(Object.values(NexaColours)).isRequired,
+    style: PropTypes.any
   }
 
   render() {
     const bc = this.props.backColor
     const fc = optimalForeColor(bc)
+    const style = StyleSheet.flatten([styles.base, {backgroundColor: bc, color: fc}, this.props.style])
     return (
-      <Text style={{...styles.prompt, backgroundColor: bc, color: fc}} >
+      <Text style={style} >
         {this.props.children}
       </Text>
     )

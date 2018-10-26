@@ -4,21 +4,22 @@ import {View, Text, StyleSheet} from 'react-native'
 import LoadingOverlay from './LoadingOverlay'
 
 import api, {getTextFile} from '../api/api'
+import {optimalForeColor} from '../Utils/utils'
 import NexaColours from '../constants/NexaColours';
 
 const styles = StyleSheet.create(
   {
     bar: {
-      borderStyle: 'solid', borderWidth: 2, borderColor: 'white',
+      borderStyle: 'solid', borderWidth: 2, borderColor: NexaColours.BlueAccent,
       marginHorizontal: 5, marginTop: 5,
       paddingHorizontal: 12, paddingVertical: 8,
       borderTopLeftRadius: 12, borderTopRightRadius: 12
     },
     content: {
-      borderStyle: 'solid', borderWidth: 2, borderColor: 'white',
+      borderStyle: 'solid', borderWidth: 2, borderColor: NexaColours.BlueAccent,
       borderTopWidth: 0,
       marginHorizontal: 5, marginBottom: 5,
-      paddingHorizontal: 12, paddingVertical: 5,
+      paddingHorizontal: 12, paddingTop: 5,
       borderBottomLeftRadius: 12, borderBottomRightRadius: 12,
       backgroundColor: NexaColours.GreyUltraLight
     }
@@ -32,7 +33,7 @@ export default class FileContent extends PureComponent {
   }
 
   static defaultProps = {
-    backColor: NexaColours.CyanAccent
+    backColor: NexaColours.BlueAccent
   }
 
   static propTypes = {
@@ -50,7 +51,8 @@ export default class FileContent extends PureComponent {
   }
 
   render() {
-    const barStyle = StyleSheet.flatten([styles.bar, {backgroundColor: this.props.backColor}])
+    const foreColor = optimalForeColor(this.props.backColor)
+    const barStyle = StyleSheet.flatten([styles.bar, {backgroundColor: this.props.backColor, color: foreColor}])
     return (
       <View style={{flexDirection: 'column'}}>
         <Text style={barStyle}>{this.props.fileName}</Text>

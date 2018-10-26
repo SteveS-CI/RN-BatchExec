@@ -1,3 +1,4 @@
+import React from 'react'
 import axios from "axios";
 import endpoints from "./endpoints";
 
@@ -24,7 +25,8 @@ function getData(request) {
 
 export function getInfo() {
   const request = { ...endpoints.info };
-  return getData(request);
+  const result = getData(request)
+  return result
 }
 
 export function getLocations() {
@@ -62,7 +64,20 @@ export function getTextFile(name) {
 
 export function getImageFile(name) {
   const request = { ...endpoints.getImageFile, params: { name } };
-  return getData(request);
+  return new Promise((resolve, reject) => {
+    api
+      .request(request)
+      .then(response => {
+        if (response.headers["content-type"].contains("application/octet-stream")) {
+          resolve({ success: true, data: response.data });
+        } else {
+          reject({ success: false, data: null });
+        }
+      })
+      .catch(error => {
+        reject(error);
+      });
+  });
 }
 
 export function nextProc(batchID, procID, location) {
