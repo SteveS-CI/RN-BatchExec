@@ -19,7 +19,7 @@ import NexaColours, {
   tableRowEven,
   tableRowSelected
 } from "../constants/NexaColours";
-import {getBatchList, getBatch, nextProc} from "../api/api";
+import { getBatchList, getBatch, nextProc } from "../api/api";
 import Settings from "../Store/Settings";
 import store from "../Store/store";
 import mockBatch from "../Mocked/batch.json";
@@ -54,14 +54,14 @@ export default class BatchSelectScreen extends Component {
   }
 
   fetchBatchList(locationCode) {
-    this.setState({loading: true})
+    this.setState({ loading: true })
     getBatchList(locationCode)
       .then(response => {
-        this.setState({ batchList: response.data, loading: false});
+        this.setState({ batchList: response.data, loading: false });
       })
       .catch(error => {
         console.log(JSON.stringify(error));
-        this.setState({ loading: false});
+        this.setState({ loading: false });
       });
   }
 
@@ -209,9 +209,9 @@ export default class BatchSelectScreen extends Component {
           />
         </ButtonBar>
         <View style={{ flex: 1 }}>
-          <ScrollView 
+          <ScrollView
             style={{ backgroundColor: NexaColours.GreyLight }}
-            refreshControl={<RefreshControl refreshing={this.state.loading} onRefresh={this.onRefresh}/>}
+            refreshControl={<RefreshControl refreshing={this.state.loading} onRefresh={this.onRefresh} />}
           >
             {batchList}
           </ScrollView>

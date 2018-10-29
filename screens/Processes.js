@@ -1,4 +1,4 @@
-import React, {PureComponent} from 'react'
+import React, { PureComponent } from 'react'
 
 class Processes extends PureComponent {
   constructor(props) {

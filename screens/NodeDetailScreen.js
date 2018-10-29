@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, Button } from 'react-native'
 
 export default class NodeDetailScreen extends React.Component {
-  static navigationOptions = ({navigation}) => {
+  static navigationOptions = ({ navigation }) => {
     return {
       title: 'Node Details',
       headerRight: <Button title='Next' onPress={() => navigation.navigate('ActionDetail')} />

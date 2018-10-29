@@ -5,7 +5,7 @@ import NexaColours from '../constants/NexaColours';
 import BatchEquipment from '../components/BatchEquipment'
 
 const tableRowOdd = { backgroundColor: NexaColours.GreyUltraLight }
-const tableRowEven=  { backgroundColor: NexaColours.GreyLight }
+const tableRowEven = { backgroundColor: NexaColours.GreyLight }
 
 export default class BatchCompsScreen extends React.Component {
   static navigationOptions = {
@@ -28,11 +28,11 @@ export default class BatchCompsScreen extends React.Component {
       })
     }
     return (
-      <View style={{flex: 1}}>
+      <View style={{ flex: 1 }}>
         <ScrollView>
           {equipList}
         </ScrollView>
-      </View>      
+      </View>
     )
   }
 

@@ -15,7 +15,7 @@
  * @memberof module:constants
  */
 const NexaColours = {
-  
+
   // Key Colours
   // The blues are the main branding colours for nexa and are to be used throughout the interface for headings and buttons.
   // The nexa Orange colour is to be used for messages and highlighted sections through the app as an accent colour.
@@ -24,7 +24,7 @@ const NexaColours = {
   Cyan: '#00ABE5',
   CyanAccent: '#82CFEF',
   Orange: '#E35C12',
-  
+
   // Grey Tones
   // The three grey tones for nexa are to be used for the background of the app and in tables.
   // Text should be in either white or the darkest grey, based on which will be more readable.
@@ -34,7 +34,7 @@ const NexaColours = {
   GreyAccent: '#A2ACB1',
   GreyLight: '#D0D6D9', // Table row background (odd)
   GreyUltraLight: '#ECECED', // Table row background (even)
-  
+
   //Alert Colours
   // These colours are to be used for status alerts and progress bars in the nexa app.
   AlertGreen: '#7AB41D', // Go Ahead / In Progress
@@ -47,5 +47,5 @@ const NexaColours = {
 export default NexaColours
 
 export const tableRowOdd = { backgroundColor: NexaColours.GreyUltraLight }
-export const tableRowEven=  { backgroundColor: NexaColours.GreyLight }
-export const tableRowSelected = {backgroundColor: NexaColours.CyanAccent}
+export const tableRowEven = { backgroundColor: NexaColours.GreyLight }
+export const tableRowSelected = { backgroundColor: NexaColours.CyanAccent }
