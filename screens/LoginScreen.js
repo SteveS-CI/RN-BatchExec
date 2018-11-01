@@ -1,5 +1,5 @@
 import React from 'react'
-import {View, Text, Button} from 'react-native'
+import { View, Text, Button } from 'react-native'
 
 export default class LoginScreen extends React.Component {
   static navigationOptions = {
@@ -10,7 +10,7 @@ export default class LoginScreen extends React.Component {
     return (
       <View>
         <Text>This is the login screen</Text>
-        <Button title='Login (simulated)' onPress={() => {this.props.navigation.navigate('BatchSelect')}} />
+        <Button title='Login (simulated)' onPress={() => { this.props.navigation.navigate('BatchSelect') }} />
       </View>
     )
   }

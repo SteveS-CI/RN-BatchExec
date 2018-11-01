@@ -1,12 +1,13 @@
 import React from 'react';
 import { Text, Image, Button, TouchableHighlight } from 'react-native';
-import { 
+import {
   createStackNavigator,
   createDrawerNavigator,
   createBottomTabNavigator,
   createSwitchNavigator,
-  createMaterialTopTabNavigator}
-from 'react-navigation';
+  createMaterialTopTabNavigator
+}
+  from 'react-navigation';
 
 import NexaColours from '../constants/NexaColours'
 
@@ -31,10 +32,10 @@ import LocationHeader from '../components/LocationHeader'
 
 const screenHeaderStyling = {
   headerTintColor: NexaColours.GreyLight,
-  headerStyle: { 
+  headerStyle: {
     backgroundColor: NexaColours.Blue
   },
-  headerTitleStyle: {fontFamily: 'euro-demi', fontWeight: 'normal'}
+  headerTitleStyle: { fontFamily: 'euro-demi', fontWeight: 'normal' }
 }
 
 const BatchNav = createMaterialTopTabNavigator(
@@ -50,8 +51,8 @@ const BatchNav = createMaterialTopTabNavigator(
       upperCaseLabel: false,
       activeTintColor: '#FFFFFF',
       inactiveTintColor: NexaColours.GreyLight,
-      labelStyle: {fontFamily: 'euro-std', fontSize: 16},
-      style: {backgroundColor: NexaColours.BlueAccent}
+      labelStyle: { fontFamily: 'euro-std', fontSize: 16 },
+      style: { backgroundColor: NexaColours.BlueAccent }
     }
   }
 )
@@ -99,15 +100,16 @@ const MainNav = createStackNavigator(
   },
   {
     headerMode: 'float',
-    navigationOptions: ({navigation}) => {
+    navigationOptions: ({ navigation }) => {
       {
         const route = navigation.state.routeName
-        if (route==='BatchDetail') {
+        if (route === 'BatchDetail') {
           const batch = navigation.getParam('batch')
           const location = navigation.getParam('location')
-          return {...screenHeaderStyling,
+          return {
+            ...screenHeaderStyling,
             title: 'Batch Details',
-            headerRight: <RoundedButton title='Continue' onPress={() => navigation.navigate('Processes', {batchID: batch.batchID, procID: 0, location})}/>,
+            headerRight: <RoundedButton title='Continue' onPress={() => navigation.navigate('Processes', { batchID: batch.batchID, procID: 0, location })} />,
           }
         } else {
           return screenHeaderStyling
@@ -129,8 +131,13 @@ const DropdownNav = createSwitchNavigator(
 )
 
 const dropDownItems = {
+<<<<<<< HEAD
   labels: ['Change Location','Settings','Login','Test Screen','Exit', 'Clear Location', 'About'],
   actions: ['Location','Settings','Login','Test','EXIT', 'CLEAR', 'About']
+=======
+  labels: ['Change Location', 'Settings', 'Login', 'Test Screen', 'Exit', 'Clear Location'],
+  actions: ['Location', 'Settings', 'Login', 'Test', 'EXIT', 'CLEAR']
+>>>>>>> b0c0b3d92122cfeb813676be4595d40e65b1d534
 }
 
 export default AppNavigator = createStackNavigator(
@@ -139,13 +146,13 @@ export default AppNavigator = createStackNavigator(
   },
   {
     headerMode: "float",
-    navigationOptions: ({navigation, props}) => ({
+    navigationOptions: ({ navigation, props }) => ({
       title: 'Batch Execution',
       headerTintColor: NexaColours.Blue,
-      headerStyle: {backgroundColor: NexaColours.GreyLight},
-      headerTitleStyle: {fontFamily: 'euro-demi', fontWeight: 'normal'},
+      headerStyle: { backgroundColor: NexaColours.GreyLight },
+      headerTitleStyle: { fontFamily: 'euro-demi', fontWeight: 'normal' },
       headerLeft: <DropdownMenu data={dropDownItems} navigation={navigation} />,
-      headerRight: <LocationHeader/>
+      headerRight: <LocationHeader />
     })
   }
 )

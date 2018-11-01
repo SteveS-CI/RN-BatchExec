@@ -1,12 +1,12 @@
 import React from "react";
 import { View, ScrollView, Text, Button, RefreshControl } from "react-native";
-import NexaColours, {tableRowEven, tableRowOdd, tableRowSelected} from "../constants/NexaColours";
+import NexaColours, { tableRowEven, tableRowOdd, tableRowSelected } from "../constants/NexaColours";
 import ButtonBar from '../components/ButtonBar'
 import RoundedButton from "../components/RoundedButton";
 import NodeItem from "../components/NodeItem";
 import LoadingOverlay from '../components/LoadingOverlay'
 import TextBar from '../components/TextBar'
-import {nextProc} from '../api/api'
+import { nextProc } from '../api/api'
 
 export default class NodeSelectScreen extends React.Component {
   constructor(props) {
@@ -20,7 +20,7 @@ export default class NodeSelectScreen extends React.Component {
     const batchData = this.props.navigation.getParam("batchData")
     const locationCode = this.props.navigation.getParam("locationCode")
     this.locationCode = locationCode
-    this.setState({batchData})
+    this.setState({ batchData })
   }
 
   rowClicked = node => {
@@ -41,7 +41,7 @@ export default class NodeSelectScreen extends React.Component {
           // depending on data shape, navigate to the appropriate screen, passing batchData
           if (batchData.nodes.length > 1) {
             // Multiple nodes; stay on this screen
-            this.setState({batchData, selectedItem: 0})
+            this.setState({ batchData, selectedItem: 0 })
           } else {
             // Single nodes
             if (batchData.nodeDepth === 3) {
@@ -70,7 +70,7 @@ export default class NodeSelectScreen extends React.Component {
     let nodeList = null
     let level = ''
     if (batchData) {
-      level = ['','Stages','Operations','Actions'][this.state.batchData.nodeDepth]
+      level = ['', 'Stages', 'Operations', 'Actions'][this.state.batchData.nodeDepth]
       nodeList = batchData.nodes.map((node, index) => {
         const rowStyle = index & 1 ? tableRowOdd : tableRowEven;
         const selected = node.procID === this.state.selectedItem;
@@ -87,7 +87,7 @@ export default class NodeSelectScreen extends React.Component {
       });
     }
     return (
-      <View style={{flex: 1}}>
+      <View style={{ flex: 1 }}>
         <ButtonBar justify="space-between">
           <RoundedButton
             backColor={NexaColours.AlertYellow}

@@ -11,20 +11,20 @@ export default class BatchPropsScreen extends React.Component {
   };
 
   headers = [
-    {display: 'Batch ID', source: 'batchID'},
-    {display: 'Batch Code', source: 'code'},
-    {display: 'Product Code', source: 'productCode'},
-    {display: 'Product Name', source: 'productName'},
-    {display: 'Quantity', source: 'quantity'},
-    {display: 'Status', source: 'status'},
-    {display: 'Start Errors', source: 'startErrors'}
+    { display: 'Batch ID', source: 'batchID' },
+    { display: 'Batch Code', source: 'code' },
+    { display: 'Product Code', source: 'productCode' },
+    { display: 'Product Name', source: 'productName' },
+    { display: 'Quantity', source: 'quantity' },
+    { display: 'Status', source: 'status' },
+    { display: 'Start Errors', source: 'startErrors' }
   ]
 
   render() {
     const nav = this.props.navigation
     const bat = nav.getParam('batch')
     return (
-      <PropList headers={this.headers} data={bat}/>
+      <PropList headers={this.headers} data={bat} />
     )
   }
 

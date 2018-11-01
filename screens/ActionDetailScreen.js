@@ -1,13 +1,13 @@
 import React from 'react';
 import { View, Text, Button } from 'react-native'
-import ActionButtons, {ButtonStyles} from '../components/ActionButtons'
+import ActionButtons, { ButtonStyles } from '../components/ActionButtons'
 import NexaColours from '../constants/NexaColours'
-import {ActionTitle, ActionPrompt} from '../components/ActionElements'
- 
+import { ActionTitle, ActionPrompt } from '../components/ActionElements'
+
 export default class ActionDetailScreen extends React.Component {
   constructor(props) {
     super(props)
-    this.state = {node: null, loading: false}
+    this.state = { node: null, loading: false }
   }
 
   static navigationOptions = {
@@ -21,11 +21,11 @@ export default class ActionDetailScreen extends React.Component {
     const locationCode = this.props.navigation.getParam("locationCode")
     this.locationCode = locationCode
     console.log(JSON.stringify(node))
-    this.setState({node})
+    this.setState({ node })
   }
 
   onPress = (name) => {
-    if (name==='cancel') this.props.navigation.navigate('BatchList')
+    if (name === 'cancel') this.props.navigation.navigate('BatchList')
   }
 
   render() {
@@ -33,10 +33,17 @@ export default class ActionDetailScreen extends React.Component {
     const node = this.state.node
     if (node) {
       return (
+<<<<<<< HEAD
         <View style={{flex: 1}}>
           <ActionTitle backColor={NexaColours.AlertCyan} text={this.state.node.name}/>
           <ActionButtons buttons={[ButtonStyles.OK]} onPress={this.onPress}/>
           {node.prompt && <ActionPrompt text={node.prompt}/>}
+=======
+        <View style={{ flex: 1 }}>
+          <ActionButtons buttons={[ButtonStyles.OK]} onPress={this.onPress} />
+          <ActionTitle backColor={NexaColours.AlertCyan} text={this.state.node.name} />
+          {node.prompt && <ActionPrompt text={node.prompt} />}
+>>>>>>> b0c0b3d92122cfeb813676be4595d40e65b1d534
         </View>
       )
     } else {
