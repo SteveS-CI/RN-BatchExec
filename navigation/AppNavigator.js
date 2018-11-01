@@ -22,6 +22,7 @@ import BatchEquipScreen from '../screens/BatchEquipScreen';
 import LoginScreen from '../screens/LoginScreen';
 import LocationSelectScreen from '../screens/LocationSelectScreen';
 import TestScreen from '../screens/TestScreen'
+import AboutScreen from '../screens/AboutScreen'
 
 import DropdownMenu from '../components/DropdownMenu';
 import RoundedButton from '../components/RoundedButton'
@@ -122,13 +123,14 @@ const DropdownNav = createSwitchNavigator(
     Location: LocationNav,
     Settings: SettingsNav,
     Login: LoginNav,
-    Test: TestScreen
+    Test: TestScreen,
+    About: AboutScreen
   }
 )
 
 const dropDownItems = {
-  labels: ['Change Location','Settings','Login','Test Screen','Exit', 'Clear Location'],
-  actions: ['Location','Settings','Login','Test','EXIT', 'CLEAR']
+  labels: ['Change Location','Settings','Login','Test Screen','Exit', 'Clear Location', 'About'],
+  actions: ['Location','Settings','Login','Test','EXIT', 'CLEAR', 'About']
 }
 
 export default AppNavigator = createStackNavigator(

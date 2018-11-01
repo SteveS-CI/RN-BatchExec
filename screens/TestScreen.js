@@ -29,8 +29,8 @@ export default class TestScreen extends React.Component {
     const buttons = [ButtonStyles.Back, ButtonStyles.No, ButtonStyles.Yes]
     return (
       <View style={{flexDirection: 'column', flex: 1}}>
-        <ActionButtons onPress={this.onPress} buttons={buttons}/>
         <ActionTitle text='The Action Name'/>
+        <ActionButtons onPress={this.onPress} buttons={buttons}/>
         <ScrollView style={{flexDirection: 'column'}}>
           <ActionNotes text='Action Notes'/>
           <ActionPrompt text='Action Prompt'/>

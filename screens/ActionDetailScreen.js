@@ -34,8 +34,8 @@ export default class ActionDetailScreen extends React.Component {
     if (node) {
       return (
         <View style={{flex: 1}}>
-          <ActionButtons buttons={[ButtonStyles.OK]} onPress={this.onPress}/>
           <ActionTitle backColor={NexaColours.AlertCyan} text={this.state.node.name}/>
+          <ActionButtons buttons={[ButtonStyles.OK]} onPress={this.onPress}/>
           {node.prompt && <ActionPrompt text={node.prompt}/>}
         </View>
       )
