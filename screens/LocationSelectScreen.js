@@ -13,6 +13,7 @@ export default class LocationSelectScreen extends React.Component {
   constructor(props) {
     super(props)
     this.state = { locations: null, selectedItem: 0, loading: false }
+    this.methods = this.props.screenProps
   }
 
   static navigationOptions = { title: 'Select Location' }
@@ -28,8 +29,8 @@ export default class LocationSelectScreen extends React.Component {
 
   fetch = () => {
     this.setState({ loading: true })
-    getLocations().then((response) => {
-      this.setState({ locations: response.data, loading: false })
+    this.methods.getLocations().then(data => {
+      this.setState({ locations: data, loading: false })
     })
   }
 

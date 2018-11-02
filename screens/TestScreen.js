@@ -28,21 +28,12 @@ export default class TestScreen extends React.Component {
   render() {
     const buttons = [ButtonStyles.Back, ButtonStyles.No, ButtonStyles.Yes]
     return (
-<<<<<<< HEAD
       <View style={{flexDirection: 'column', flex: 1}}>
         <ActionTitle text='The Action Name'/>
         <ActionButtons onPress={this.onPress} buttons={buttons}/>
         <ScrollView style={{flexDirection: 'column'}}>
           <ActionNotes text='Action Notes'/>
           <ActionPrompt text='Action Prompt'/>
-=======
-      <View style={{ flexDirection: 'column', flex: 1 }}>
-        <ActionButtons onPress={this.onPress} buttons={buttons} />
-        <ActionTitle text='The Action Name' />
-        <ScrollView style={{ flexDirection: 'column' }}>
-          <ActionNotes text='Action Notes' />
-          <ActionPrompt text='Action Prompt' />
->>>>>>> b0c0b3d92122cfeb813676be4595d40e65b1d534
           <ActionImage fileName='setup.jpg' />
           <FileContent fileName='General05.txt' backColor={NexaColours.BlueAccent} />
         </ScrollView>

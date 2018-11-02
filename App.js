@@ -5,8 +5,7 @@ import { AppLoading, Asset, Font, Icon } from 'expo';
 import AppNavigator from './navigation/AppNavigator';
 
 import Settings from './Store/Settings'
-import endpoints from './api/endpoints';
-import api, {getInfo} from './api/api';
+import api, {methods} from './api/api';
 import store from './Store/store'
 
 export default class App extends React.Component {
@@ -25,6 +24,20 @@ export default class App extends React.Component {
   }
 
   render() {
+    const functions = {
+      mocked: this.state.mocked, 
+      reload: this.appReload, 
+      refresh: this.appRefresh,
+
+      getLocations: methods.getLocations,
+      getBatchList: methods.getBatchList,
+      getBatch: methods.getBatch,
+      nextProc: methods.nextProc,
+      completeAction: methods.completeAction,
+      confirmAction: methods.confirmAction,
+      signAction: methods.signAction,
+      approveAction: methods.approveAction
+    }
     store.setMocked(false)
     if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
       return (
@@ -37,7 +50,7 @@ export default class App extends React.Component {
     } else {
       return (
         <View style={styles.container}>
-          <AppNavigator screenProps={{mocked: this.state.mocked, reload: this.appReload, refresh: this.appRefresh}} />
+          <AppNavigator screenProps={functions} />
         </View>
       );
     }
@@ -69,27 +82,14 @@ export default class App extends React.Component {
   };
 
   _handleFinishLoading = () => {
-    getInfo().then((response) => {
+    methods.getInfo().then((response) => {
       this.setState({ isLoadingComplete: true })
     }).catch((error) => {
       store.setMocked(true)
       Alert.alert('Network Error', error.message + '\nPlease check your settings')
       this.setState({ isLoadingComplete: true });
     })
-/*     api.request({...endpoints.info}).then(response => {
-      if (response.headers['content-type'].contains('application/json')) {
-        this.setState({ isLoadingComplete: true });
-      } else {
-        store.setMocked(true)
-        Alert.alert('Network Error', 'Invalid return data type.\nPlease check API Url in the settings')
-        this.setState({ isLoadingComplete: true });
-      }
-    }).catch((error) => {
-      store.setMocked(true)
-      Alert.alert('Network Error', error.message + '\nPlease check your settings')
-      this.setState({ isLoadingComplete: true });
-    }) 
- */  };
+  };
 }
 
 const styles = StyleSheet.create({

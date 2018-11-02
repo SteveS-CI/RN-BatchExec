@@ -12,9 +12,13 @@ export default class NodeSelectScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = { batchData: null, selectedItem: 0, loading: false };
+    this.methods = this.props.screenProps
   }
 
-  static navigationOptions = { title: "Node Selection" };
+  static navigationOptions = { 
+    title: "Node Selection",
+    headerLeft: null
+  };
 
   componentDidMount() {
     const batchData = this.props.navigation.getParam("batchData")
@@ -34,10 +38,10 @@ export default class NodeSelectScreen extends React.Component {
       const nav = this.props.navigation;
       // set loading prior to request
       this.setState({ loading: true });
-      nextProc(this.state.batchData.batchID, this.node.procID, this.locationCode)
-        .then(response => {
+      this.methods.nextProc(this.state.batchData.batchID, this.node.procID, this.locationCode)
+        .then(data => {
           this.setState({ loading: false });
-          const batchData = response.data;
+          const batchData = data;
           // depending on data shape, navigate to the appropriate screen, passing batchData
           if (batchData.nodes.length > 1) {
             // Multiple nodes; stay on this screen
@@ -96,7 +100,7 @@ export default class NodeSelectScreen extends React.Component {
               nav.navigate("BatchList");
             }}
           />
-          <TextBar backColor={NexaColours.CyanAccent}>Select one of the following {level}:</TextBar>
+          <TextBar backColor={NexaColours.CyanAccent} style={{alignSelf: 'center'}}>Select one of the following {level}:</TextBar>
           <RoundedButton
             backColor={NexaColours.AlertGreen}
             title="Select"

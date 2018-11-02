@@ -32,10 +32,14 @@ import LocationHeader from '../components/LocationHeader'
 
 const screenHeaderStyling = {
   headerTintColor: NexaColours.GreyLight,
-  headerStyle: {
-    backgroundColor: NexaColours.Blue
+  headerStyle: { 
+    backgroundColor: NexaColours.Blue,
   },
-  headerTitleStyle: { fontFamily: 'euro-demi', fontWeight: 'normal' }
+  headerTitleStyle: { 
+    fontFamily: 'euro-demi', 
+    fontWeight: 'normal',
+    fontSize: 22
+  },
 }
 
 const BatchNav = createMaterialTopTabNavigator(
@@ -109,7 +113,6 @@ const MainNav = createStackNavigator(
           return {
             ...screenHeaderStyling,
             title: 'Batch Details',
-            headerRight: <RoundedButton title='Continue' onPress={() => navigation.navigate('Processes', { batchID: batch.batchID, procID: 0, location })} />,
           }
         } else {
           return screenHeaderStyling
@@ -131,13 +134,8 @@ const DropdownNav = createSwitchNavigator(
 )
 
 const dropDownItems = {
-<<<<<<< HEAD
   labels: ['Change Location','Settings','Login','Test Screen','Exit', 'Clear Location', 'About'],
   actions: ['Location','Settings','Login','Test','EXIT', 'CLEAR', 'About']
-=======
-  labels: ['Change Location', 'Settings', 'Login', 'Test Screen', 'Exit', 'Clear Location'],
-  actions: ['Location', 'Settings', 'Login', 'Test', 'EXIT', 'CLEAR']
->>>>>>> b0c0b3d92122cfeb813676be4595d40e65b1d534
 }
 
 export default AppNavigator = createStackNavigator(

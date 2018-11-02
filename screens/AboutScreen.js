@@ -3,6 +3,7 @@ import {View} from 'react-native'
 import NexaColours from '../constants/NexaColours'
 import ButtonBar from '../components/ButtonBar'
 import RoundedButton from '../components/RoundedButton'
+import PropList from '../components/PropList'
 import Expo from 'expo'
 
 export default class AboutScreen extends PureComponent {
@@ -13,7 +14,11 @@ export default class AboutScreen extends PureComponent {
 
   render() {
     const nav = this.props.navigation
-    console.log(JSON.stringify(Expo.Constants))
+    const headers = [
+      {display: 'Name', source: 'name'},
+      {display: 'Description', source: 'description'},
+      {display: 'Version', source: 'version'},
+    ]
     return (
       <View style={{flexDirection: 'column', flex: 1}}>
         <ButtonBar justify="space-between">
@@ -25,6 +30,7 @@ export default class AboutScreen extends PureComponent {
             }}
           />
         </ButtonBar>
+        <PropList headers={headers} data={Expo.Constants.manifest} />
       </View>
     )
   }

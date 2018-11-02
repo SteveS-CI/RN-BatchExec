@@ -1,14 +1,25 @@
 import React, {PureComponent} from 'react'
-import {StyleSheet} from 'react-native'
+import {StyleSheet, Text} from 'react-native'
 import PropTypes from 'prop-types'
 import TextBar from './TextBar'
 import NexaColours from '../constants/NexaColours'
 
 const styles = StyleSheet.create(
   {
+    breadcrumb: {
+      marginRight: 8,
+      color: 'white',
+      padding: 5,
+      backgroundColor: NexaColours.BlueAccent,
+      borderRadius: 5,
+      fontSize: 16
+    },
     title: {
       borderRadius: 0,
-      marginHorizontal: 0
+      marginHorizontal: 0,
+      marginBottom: 0,
+      borderColor: 'black',
+      borderBottomWidth: StyleSheet.hairlineWidth
     },
     prompt: {
 
@@ -19,7 +30,21 @@ const styles = StyleSheet.create(
   }
 )
 
+export class ActionBreadcrumb extends PureComponent {
+
+  static propTypes = {
+    text: PropTypes.string.isRequired
+  }
+
+  render() {
+    return (
+      <Text style={styles.breadcrumb}>{this.props.text}</Text>
+    )
+  }
+}
+
 export class ActionTitle extends PureComponent {
+
   static propTypes = {
     text: PropTypes.string.isRequired
   }
@@ -32,6 +57,7 @@ export class ActionTitle extends PureComponent {
 }
 
 export class ActionPrompt extends PureComponent {
+
   static propTypes = {
     text: PropTypes.string.isRequired
   }
@@ -44,6 +70,7 @@ export class ActionPrompt extends PureComponent {
 }
 
 export class ActionNotes extends PureComponent {
+
   static propTypes = {
     text: PropTypes.string.isRequired
   }

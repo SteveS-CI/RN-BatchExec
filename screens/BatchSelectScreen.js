@@ -19,7 +19,6 @@ import NexaColours, {
   tableRowEven,
   tableRowSelected
 } from "../constants/NexaColours";
-import { getBatchList, getBatch, nextProc } from "../api/api";
 import Settings from "../Store/Settings";
 import store from "../Store/store";
 import mockBatch from "../Mocked/batch.json";
@@ -33,10 +32,11 @@ export default class BatchSelectScreen extends Component {
       loading: false,
       continueDisabled: false
     };
+    this.methods = this.props.screenProps
   }
 
   static navigationOptions = {
-    title: "Batch Selection"
+    title: "Batch Selection",
   };
 
   componentDidMount() {
@@ -55,9 +55,9 @@ export default class BatchSelectScreen extends Component {
 
   fetchBatchList(locationCode) {
     this.setState({ loading: true })
-    getBatchList(locationCode)
-      .then(response => {
-        this.setState({ batchList: response.data, loading: false });
+    this.methods.getBatchList(locationCode)
+      .then(data => {
+        this.setState({ batchList: data, loading: false });
       })
       .catch(error => {
         console.log(JSON.stringify(error));
@@ -84,7 +84,7 @@ export default class BatchSelectScreen extends Component {
       } else {
         // set loading prior to request
         this.setState({ loading: true });
-        getBatch(this.batch.batchID, this.locationCode)
+        this.methods.getBatch(this.batch.batchID, this.locationCode)
           .then(response => {
             this.setState({ loading: false });
             this.batch = response.data;
@@ -117,10 +117,10 @@ export default class BatchSelectScreen extends Component {
       } else {
         // set loading prior to request
         this.setState({ loading: true });
-        nextProc(this.batch.batchID, 0, this.locationCode)
-          .then(response => {
+        this.methods.nextProc(this.batch.batchID, 0, this.locationCode)
+          .then(data => {
             this.setState({ loading: false });
-            const batchData = response.data;
+            const batchData = data
             // depending on data shape, navigate to the appropriate screen, passing batchData
             if (batchData.nodes.length > 1) {
               // Multiple nodes

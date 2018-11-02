@@ -12,36 +12,15 @@ function getData(request) {
       .request(request)
       .then(response => {
         if (response.headers["content-type"].contains("application/json")) {
-          resolve({ success: true, data: response.data });
+          resolve(response.data);
         } else {
-          reject({ success: false, data: null });
+          reject(null);
         }
       })
       .catch(error => {
         reject(error);
       });
   });
-}
-
-export function getInfo() {
-  const request = { ...endpoints.info };
-  const result = getData(request)
-  return result
-}
-
-export function getLocations() {
-  const request = { ...endpoints.locations };
-  return getData(request);
-}
-
-export function getBatchList(locationCode) {
-  const request = { ...endpoints.batchlist, params: { locationCode } };
-  return getData(request);
-}
-
-export function getBatch(batchID, locationCode) {
-  const request = { ...endpoints.getBatch, params: { batchID, locationCode } };
-  return getData(request);
 }
 
 export function getTextFile(name) {
@@ -80,50 +59,64 @@ export function getImageFile(name) {
   });
 }
 
-export function nextProc(batchID, procID, location) {
-  const request = {
-    ...endpoints.nextProc,
-    data: { batchID, procID, location }
-  };
-  return getData(request);
-}
-
-export function completeAction(batchID, procID, input, location) {
-  const request = {
-    ...endpoints.completeAction,
-    data: { batchID, procID, input, location }
-  };
-  return getData(request);
-}
-
-export function confirmAction(batchID, procID, input, location) {
-  const request = {
-    ...endpoints.confirmAction,
-    data: { batchID, procID, input, location }
-  };
-  return getData(request);
-}
-
-export function signAction(batchID, procID, input, location) {
-  const request = {
-    ...endpoints.signAction,
-    data: { batchID, procID, input, location }
-  };
-  return getData(request);
-}
-
-export function approveAction(batchID, procID, input, location) {
-  const request = {
-    ...endpoints.approveAction,
-    data: { batchID, procID, input, location }
-  };
-  return getData(request);
-}
-
-export function revertAction(batchID, procID, input, location) {
-  const request = {
-    ...endpoints.revertAction,
-    data: { batchID, procID, input, location }
-  };
-  return getData(request);
+export const methods = {
+  getInfo: () => {
+    const request = { ...endpoints.info };
+    const result = getData(request)
+    return result
+  },
+  getLocations: () => {
+    const request = { ...endpoints.locations };
+    return getData(request);
+  },
+  getBatch: (batchID, locationCode) => {
+    const request = { ...endpoints.getBatch, params: { batchID, locationCode } };
+    return getData(request);
+  },
+  getBatchList: (locationCode) => {
+    const request = { ...endpoints.batchlist, params: { locationCode } };
+    return getData(request);
+  },
+  nextProc: (batchID, procID, location) => {
+    const request = {
+      ...endpoints.nextProc,
+      data: { batchID, procID, location }
+    };
+    return getData(request);
+  },
+  completeAction: (batchID, procID, input, location) => {
+    const request = {
+      ...endpoints.completeAction,
+      data: { batchID, procID, input, location }
+    };
+    return getData(request);
+  },
+  confirmAction: (batchID, procID, input, location) => {
+    const request = {
+      ...endpoints.confirmAction,
+      data: { batchID, procID, input, location }
+    };
+    return getData(request);
+  },
+  signAction: (batchID, procID, input, location) => {
+    const request = {
+      ...endpoints.signAction,
+      data: { batchID, procID, input, location }
+    };
+    return getData(request);
+  },
+  approveAction: (batchID, procID, input, location) => {
+    const request = {
+      ...endpoints.approveAction,
+      data: { batchID, procID, input, location }
+    };
+    return getData(request);
+  },
+  revertAction: (batchID, procID, input, location) => {
+    const request = {
+      ...endpoints.revertAction,
+      data: { batchID, procID, input, location }
+    };
+    return getData(request);
+  }
 }
