@@ -20,7 +20,7 @@ import NexaColours, {
   tableRowSelected
 } from "../constants/NexaColours";
 import Settings from "../Store/Settings";
-import store from "../Store/store";
+import {methods} from '../api/api'
 import mockBatch from "../Mocked/batch.json";
 
 export default class BatchSelectScreen extends Component {
@@ -32,7 +32,7 @@ export default class BatchSelectScreen extends Component {
       loading: false,
       continueDisabled: false
     };
-    this.methods = this.props.screenProps
+    this.mocked = this.props.screenProps.mocked
   }
 
   static navigationOptions = {
@@ -40,8 +40,7 @@ export default class BatchSelectScreen extends Component {
   };
 
   componentDidMount() {
-    const mocked = store.getMocked();
-    if (mocked) {
+    if (this.mocked) {
       this.setState({ batchList: mockedBatchList });
     } else {
       Settings.readObject("location").then(location => {
@@ -54,8 +53,8 @@ export default class BatchSelectScreen extends Component {
   }
 
   fetchBatchList(locationCode) {
-    this.setState({ loading: true })
-    this.methods.getBatchList(locationCode)
+    this.setState({batchList: null, loading: true })
+    methods.getBatchList(locationCode)
       .then(data => {
         this.setState({ batchList: data, loading: false });
       })
@@ -74,8 +73,7 @@ export default class BatchSelectScreen extends Component {
 
   detailClicked = () => {
     if (this.batch) {
-      const mocked = store.getMocked();
-      if (mocked) {
+      if (this.mocked) {
         this.batch = mockBatch;
         this.props.navigation.navigate("BatchDetail", {
           batch: this.batch,
@@ -84,10 +82,10 @@ export default class BatchSelectScreen extends Component {
       } else {
         // set loading prior to request
         this.setState({ loading: true });
-        this.methods.getBatch(this.batch.batchID, this.locationCode)
-          .then(response => {
+        methods.getBatch(this.batch.batchID, this.locationCode)
+          .then(data => {
             this.setState({ loading: false });
-            this.batch = response.data;
+            this.batch = data;
             // Navigate to the TabNavigator, not a specific screen (Props/Comps/Equip)
             // The parameter is passed to all screens of the TabNavigator
             // (all screens are rendered at once)
@@ -107,8 +105,7 @@ export default class BatchSelectScreen extends Component {
   continueClicked = () => {
     if (this.batch) {
       const nav = this.props.navigation;
-      const mocked = store.getMocked();
-      if (mocked) {
+      if (this.mocked) {
         this.batch = mockBatch;
         nav.navigate("ActionDetail", {
           batch: this.batch,
@@ -117,7 +114,8 @@ export default class BatchSelectScreen extends Component {
       } else {
         // set loading prior to request
         this.setState({ loading: true });
-        this.methods.nextProc(this.batch.batchID, 0, this.locationCode)
+        console.log('BatchID: ', this.batch.batchID, ' Location: ', this.locationCode)
+        methods.nextProc(this.batch.batchID, 0, this.locationCode)
           .then(data => {
             this.setState({ loading: false });
             const batchData = data
@@ -147,7 +145,7 @@ export default class BatchSelectScreen extends Component {
           })
           .catch(error => {
             this.setState({ loading: false });
-            console.log(JSON.stringify(error));
+            console.log('continueClicked-ERROR: ',JSON.stringify(error));
           });
       }
     }

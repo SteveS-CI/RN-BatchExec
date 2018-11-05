@@ -7,19 +7,18 @@ import { getLocations } from '../api/api';
 import endpoints from '../api/endpoints';
 import Settings from '../Store/Settings'
 import RoundedButton from '../components/RoundedButton'
-import store from '../Store/store'
+import {methods} from '../api/api'
 
 export default class LocationSelectScreen extends React.Component {
   constructor(props) {
     super(props)
     this.state = { locations: null, selectedItem: 0, loading: false }
-    this.methods = this.props.screenProps
   }
 
   static navigationOptions = { title: 'Select Location' }
 
   componentDidMount() {
-    const mocked = store.getMocked()
+    const mocked = this.props.screenProps.mocked
     if (mocked) {
       this.setState({ locations: mockedLocations })
     } else {
@@ -29,7 +28,7 @@ export default class LocationSelectScreen extends React.Component {
 
   fetch = () => {
     this.setState({ loading: true })
-    this.methods.getLocations().then(data => {
+    methods.getLocations().then(data => {
       this.setState({ locations: data, loading: false })
     })
   }

@@ -118,5 +118,11 @@ export const methods = {
       data: { batchID, procID, input, location }
     };
     return getData(request);
+  },
+  resetHardware: () => {
+    const request ={
+      ...endpoints.resetHardware
+    }
+    return getData(request);
   }
 }

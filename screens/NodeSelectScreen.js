@@ -6,13 +6,12 @@ import RoundedButton from "../components/RoundedButton";
 import NodeItem from "../components/NodeItem";
 import LoadingOverlay from '../components/LoadingOverlay'
 import TextBar from '../components/TextBar'
-import { nextProc } from '../api/api'
+import { methods } from '../api/api'
 
 export default class NodeSelectScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = { batchData: null, selectedItem: 0, loading: false };
-    this.methods = this.props.screenProps
   }
 
   static navigationOptions = { 
@@ -38,7 +37,7 @@ export default class NodeSelectScreen extends React.Component {
       const nav = this.props.navigation;
       // set loading prior to request
       this.setState({ loading: true });
-      this.methods.nextProc(this.state.batchData.batchID, this.node.procID, this.locationCode)
+      methods.nextProc(this.state.batchData.batchID, this.node.procID, this.locationCode)
         .then(data => {
           this.setState({ loading: false });
           const batchData = data;

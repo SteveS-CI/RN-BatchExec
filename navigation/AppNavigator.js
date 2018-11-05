@@ -24,6 +24,7 @@ import LoginScreen from '../screens/LoginScreen';
 import LocationSelectScreen from '../screens/LocationSelectScreen';
 import TestScreen from '../screens/TestScreen'
 import AboutScreen from '../screens/AboutScreen'
+import DevScreen from '../screens/DevScreen'
 
 import DropdownMenu from '../components/DropdownMenu';
 import RoundedButton from '../components/RoundedButton'
@@ -129,13 +130,14 @@ const DropdownNav = createSwitchNavigator(
     Settings: SettingsNav,
     Login: LoginNav,
     Test: TestScreen,
-    About: AboutScreen
+    About: AboutScreen,
+    Dev: DevScreen
   }
 )
 
 const dropDownItems = {
-  labels: ['Change Location','Settings','Login','Test Screen','Exit', 'Clear Location', 'About'],
-  actions: ['Location','Settings','Login','Test','EXIT', 'CLEAR', 'About']
+  labels: ['Change Location','Settings','Login','Test Screen','Exit', 'About','Developer Tools'],
+  actions: ['Location','Settings','Login','Test','EXIT', 'About', 'Dev']
 }
 
 export default AppNavigator = createStackNavigator(

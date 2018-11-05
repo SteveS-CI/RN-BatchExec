@@ -6,7 +6,6 @@ import AppNavigator from './navigation/AppNavigator';
 
 import Settings from './Store/Settings'
 import api, {methods} from './api/api';
-import store from './Store/store'
 
 export default class App extends React.Component {
   constructor(props) {
@@ -20,25 +19,15 @@ export default class App extends React.Component {
   }
 
   appRefresh = () => {
-    this.setState({isLoadingComplete: false})
+    this.setState({isLoadingComplete: false, mocked: false})
   }
 
   render() {
     const functions = {
       mocked: this.state.mocked, 
       reload: this.appReload, 
-      refresh: this.appRefresh,
-
-      getLocations: methods.getLocations,
-      getBatchList: methods.getBatchList,
-      getBatch: methods.getBatch,
-      nextProc: methods.nextProc,
-      completeAction: methods.completeAction,
-      confirmAction: methods.confirmAction,
-      signAction: methods.signAction,
-      approveAction: methods.approveAction
+      refresh: this.appRefresh
     }
-    store.setMocked(false)
     if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
       return (
         <AppLoading
@@ -85,9 +74,8 @@ export default class App extends React.Component {
     methods.getInfo().then((response) => {
       this.setState({ isLoadingComplete: true })
     }).catch((error) => {
-      store.setMocked(true)
       Alert.alert('Network Error', error.message + '\nPlease check your settings')
-      this.setState({ isLoadingComplete: true });
+      this.setState({ isLoadingComplete: true, mocked: true });
     })
   };
 }
