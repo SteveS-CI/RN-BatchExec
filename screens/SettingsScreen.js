@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, ScrollView, Switch, View, Text, TextInput, TouchableHighlight, Button } from 'react-native';
+import ScreenHeader from '../components/ScreenHeader'
 import RoundedButton from '../components/RoundedButton'
 import Settings from '../Store/Settings';
 import NexaColours from '../constants/NexaColours';
@@ -85,10 +86,12 @@ export default class SettingsScreen extends React.Component {
     return (
       settings ?
         <View>
-          <ButtonBar justify='space-between'>
-            <RoundedButton title='Cancel' onPress={() => this.update(false)} backColor={NexaColours.AlertYellow} />
-            <RoundedButton title='Save' onPress={() => this.update(true)} />
-          </ButtonBar>
+          <ScreenHeader
+            onCancel={() => this.update(false)}
+            onOK={() => this.update(true)}
+            okCaption='Save'
+            title='Settings'
+          />
           <ScrollView style={{ borderTopWidth: 1 }}>
             <TextSetting
               value={settings.apiUrl}

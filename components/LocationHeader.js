@@ -1,21 +1,32 @@
 import React, {Component} from 'react'
-import {StyleSheet, Text} from 'react-native'
+import {StyleSheet, View, Text, TouchableOpacity} from 'react-native'
+import PropTypes from 'prop-types'
 import Settings from '../Store/Settings'
 import NexaColours from '../constants/NexaColours'
 
-style = {
-  marginRight: 8,
-  color: 'black',
-  padding: 5,
-  backgroundColor: NexaColours.GreyUltraLight,
-  borderRadius: 5,
-  fontSize: 16
-}
+const styles = StyleSheet.create(
+  {
+    container: {
+      marginRight: 8,
+      padding: 5,
+      backgroundColor: NexaColours.GreyUltraLight,
+      borderRadius: 5,
+    }
+  }
+) 
 
 export default class LocationHeader extends Component {
   constructor(props) {
     super(props)
     this.state = {location: null}
+  }
+
+  static propTypes = {
+    navigation: PropTypes.any
+  }
+
+  navigate = () => {
+    if (this.props.navigation) this.props.navigation.navigate('Location')
   }
 
   componentDidMount() {
@@ -25,7 +36,9 @@ export default class LocationHeader extends Component {
   render() {
     return (
     this.state.location
-    ? <Text style={style}>{this.state.location.name}</Text>
+    ? <TouchableOpacity style={styles.container} onPress={this.navigate}>
+        <Text style={{color: 'black', fontSize: 16}}>{this.state.location.name}</Text>
+      </TouchableOpacity>
     : null
     )
   }

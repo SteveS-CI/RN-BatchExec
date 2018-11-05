@@ -6,6 +6,9 @@ import NexaColours, { tableRowEven, tableRowOdd, tableRowSelected } from '../con
 import { getLocations } from '../api/api';
 import endpoints from '../api/endpoints';
 import Settings from '../Store/Settings'
+import ScreenHeader from '../components/ScreenHeader'
+import ButtonBar from '../components/ButtonBar'
+import TextBar from '../components/TextBar'
 import RoundedButton from '../components/RoundedButton'
 import {methods} from '../api/api'
 
@@ -13,13 +16,13 @@ export default class LocationSelectScreen extends React.Component {
   constructor(props) {
     super(props)
     this.state = { locations: null, selectedItem: 0, loading: false }
+    this.mocked = this.props.screenProps.mocked
   }
 
   static navigationOptions = { title: 'Select Location' }
 
   componentDidMount() {
-    const mocked = this.props.screenProps.mocked
-    if (mocked) {
+    if (this.mocked) {
       this.setState({ locations: mockedLocations })
     } else {
       this.fetch()
@@ -73,19 +76,13 @@ export default class LocationSelectScreen extends React.Component {
     }
     return (
       <View style={{ flex: 1 }}>
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-          <RoundedButton
-            backColor={NexaColours.AlertYellow}
-            title='Cancel'
-            onPress={() => { this.props.navigation.navigate('BatchList') }}
-          />
-          <RoundedButton
-            backColor={NexaColours.AlertGreen}
-            title='Select'
-            onPress={this.selectClicked}
-            disabled={this.state.selectedItem == 0}
-          />
-        </View>
+        <ScreenHeader
+          title='Select a Location'
+          okCaption='Select'
+          onOK={this.selectClicked}
+          onCancel={() => { this.props.navigation.navigate('BatchList') }}
+          okDisabled={this.state.selectedItem == 0}
+        />
         <View style={{ flex: 1 }}>
           <ScrollView refreshControl={<RefreshControl refreshing={this.state.loading} onRefresh={this.onRefresh} />}
           >

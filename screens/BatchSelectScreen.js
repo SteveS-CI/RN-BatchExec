@@ -114,10 +114,9 @@ export default class BatchSelectScreen extends Component {
       } else {
         // set loading prior to request
         this.setState({ loading: true });
-        console.log('BatchID: ', this.batch.batchID, ' Location: ', this.locationCode)
         methods.nextProc(this.batch.batchID, 0, this.locationCode)
           .then(data => {
-            this.setState({ loading: false });
+            this.setState({loading: false});
             const batchData = data
             // depending on data shape, navigate to the appropriate screen, passing batchData
             if (batchData.nodes.length > 1) {

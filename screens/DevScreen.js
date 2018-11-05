@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react'
-import {View, Button} from 'react-native'
+import {View, Button, StyleSheet} from 'react-native'
 import Expo from 'expo'
 import Settings from '../Store/Settings'
 import NexaColours from '../constants/NexaColours'
@@ -7,29 +7,49 @@ import ButtonBar from '../components/ButtonBar'
 import RoundedButton from '../components/RoundedButton'
 import { methods } from '../api/api'
 
+const styles = StyleSheet.create(
+  {
+    button: {
+      alignSelf: 'center',
+      marginVertical: 8
+    }
+  }
+)
+
+
 export default class DevScreen extends PureComponent {
+  constructor(props) {
+    super(props)
+    this.nav = this.props.navigation
+  }
 
   static navigationOptions = {
     title: 'About'
   }
 
   resetHardware = () => {
-    methods.resetHardware().then(() => Expo.Updates.reload())
+    methods.resetHardware().then(() => this.nav.navigate('Location'))
+  }
+
+  clearCache = () => {
+    methods.clearCache().then(() => this.nav.navigate('BatchList'))
   }
 
   render() {
-    const nav = this.props.navigation
     return (
       <View style={{flexDirection: 'column', flex: 1}}>
         <ButtonBar justify="space-between">
           <RoundedButton
             backColor={NexaColours.AlertYellow}
             title="Cancel"
-            onPress={() => {nav.navigate('BatchList')}}
+            onPress={() => {this.nav.navigate('BatchList')}}
           />
         </ButtonBar>
-        <Button title='Clear Location' onPress={() => {Settings.removeItem('location').then(() => Expo.Updates.reload())}}/>
-        <Button title='Reset Location & Equipment States' onPress={this.resetHardware}/>
+        <View style={{flexDirection: 'column'}}>
+          <Button style={styles.button} title='Clear Location' onPress={() => {Settings.removeItem('location').then(() => Expo.Updates.reload())}}/>
+          <Button style={styles.button} title='Reset Location & Equipment States' onPress={this.resetHardware}/>
+          <Button style={styles.button} title='Clear Batch Cache' onPress={this.clearCache}/>
+        </View>
       </View>
     )
   }

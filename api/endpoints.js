@@ -152,6 +152,12 @@ export default {
     headers: postHeaders
   },
 
+  clearCache: {
+    method: 'post',
+    url: 'Demo/ClearCache',
+    headers: postHeaders
+  },
+
   //{StageID}
   compList: {
     method: 'get',

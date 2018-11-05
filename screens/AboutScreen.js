@@ -1,6 +1,7 @@
 import React, {PureComponent} from 'react'
 import {View} from 'react-native'
 import NexaColours from '../constants/NexaColours'
+import ScreenHeader from '../components/ScreenHeader'
 import ButtonBar from '../components/ButtonBar'
 import RoundedButton from '../components/RoundedButton'
 import PropList from '../components/PropList'
@@ -21,15 +22,10 @@ export default class AboutScreen extends PureComponent {
     ]
     return (
       <View style={{flexDirection: 'column', flex: 1}}>
-        <ButtonBar justify="space-between">
-          <RoundedButton
-            backColor={NexaColours.AlertYellow}
-            title="Cancel"
-            onPress={() => {
-              nav.navigate('BatchList')
-            }}
-          />
-        </ButtonBar>
+        <ScreenHeader
+          title='About'
+          onCancel={() => nav.navigate('BatchList')}
+        />
         <PropList headers={headers} data={Expo.Constants.manifest} />
       </View>
     )

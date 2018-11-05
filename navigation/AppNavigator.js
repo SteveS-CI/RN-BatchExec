@@ -73,28 +73,6 @@ const LoginNav = createStackNavigator(
   }
 )
 
-const SettingsNav = createStackNavigator(
-  {
-    Settings: SettingsScreen
-  },
-  {
-    navigationOptions: {
-      ...screenHeaderStyling
-    }
-  }
-)
-
-const LocationNav = createStackNavigator(
-  {
-    Location: LocationSelectScreen
-  },
-  {
-    navigationOptions: {
-      ...screenHeaderStyling
-    }
-  }
-)
-
 const MainNav = createStackNavigator(
   {
     BatchList: BatchSelectScreen,
@@ -126,8 +104,8 @@ const MainNav = createStackNavigator(
 const DropdownNav = createSwitchNavigator(
   {
     Main: MainNav,
-    Location: LocationNav,
-    Settings: SettingsNav,
+    Location: LocationSelectScreen,
+    Settings: SettingsScreen,
     Login: LoginNav,
     Test: TestScreen,
     About: AboutScreen,
@@ -152,7 +130,7 @@ export default AppNavigator = createStackNavigator(
       headerStyle: { backgroundColor: NexaColours.GreyLight },
       headerTitleStyle: { fontFamily: 'euro-demi', fontWeight: 'normal' },
       headerLeft: <DropdownMenu data={dropDownItems} navigation={navigation} />,
-      headerRight: <LocationHeader />
+      headerRight: <LocationHeader navigation={navigation}/>
     })
   }
 )

@@ -124,5 +124,11 @@ export const methods = {
       ...endpoints.resetHardware
     }
     return getData(request);
+  },
+  clearCache: () => {
+    const request ={
+      ...endpoints.clearCache
+    }
+    return getData(request);
   }
 }
