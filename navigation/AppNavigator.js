@@ -128,7 +128,7 @@ export default AppNavigator = createStackNavigator(
       title: 'Batch Execution',
       headerTintColor: NexaColours.Blue,
       headerStyle: { backgroundColor: NexaColours.GreyLight },
-      headerTitleStyle: { fontFamily: 'euro-demi', fontWeight: 'normal' },
+      headerTitleStyle: { fontFamily: 'euro-demi', fontWeight: 'normal', fontSize: 22 },
       headerLeft: <DropdownMenu data={dropDownItems} navigation={navigation} />,
       headerRight: <LocationHeader navigation={navigation}/>
     })

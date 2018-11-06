@@ -32,10 +32,10 @@ export default class TestScreen extends React.Component {
         <ActionTitle text='The Action Name'/>
         <ActionButtons onPress={this.onPress} buttons={buttons}/>
         <ScrollView style={{flexDirection: 'column'}}>
-          <ActionNotes text='Action Notes'/>
-          <ActionPrompt text='Action Prompt'/>
+          <ActionPrompt prompt='This is the text of an action prompt' notes='This is the text for optional action notes'/>
           <ActionImage fileName='setup.jpg' />
-          <FileContent fileName='General05.txt' backColor={NexaColours.BlueAccent} />
+          <ActionImage fileName='db_Russell_Sieve1.jpg' />
+          <FileContent fileName='General09.txt' backColor={NexaColours.BlueAccent} />
         </ScrollView>
       </View>
     )

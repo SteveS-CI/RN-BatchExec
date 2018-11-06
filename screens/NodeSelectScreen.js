@@ -49,6 +49,7 @@ export default class NodeSelectScreen extends React.Component {
             // Single nodes
             if (batchData.nodeDepth === 3) {
               // Action node
+              console.log(JSON.stringify(batchData))
               nav.navigate("ActionDetail", { batchData, locationCode: this.locationCode });
             } else {
               // Operation/Stage/Process - for Confirmation/Signature/Approval

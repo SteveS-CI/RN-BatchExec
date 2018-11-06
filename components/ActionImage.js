@@ -1,4 +1,4 @@
-import React, {PureComponent} from 'react'
+import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import {View, Text, StyleSheet, Image} from 'react-native'
 import LoadingOverlay from './LoadingOverlay'
@@ -23,7 +23,7 @@ const styles = StyleSheet.create(
   }
 )
 
-export default class ActionImage extends PureComponent {
+export default class ActionImage extends Component {
   constructor(props) {
     super(props)
     this.state = {error: false, loading: false, height: imageDim, width: imageDim}
@@ -33,7 +33,11 @@ export default class ActionImage extends PureComponent {
     fileName: PropTypes.string.isRequired,
   }
 
-  componentDidMount() {
+  onError = (error) => {
+    console.log('error')
+  }
+
+  onLoadStart = () => {
     const source = api.defaults.baseURL + '/File/Image?name=' + this.props.fileName
     Image.getSize(source, (w, h) => {
       if (w > h) {
@@ -44,8 +48,8 @@ export default class ActionImage extends PureComponent {
     })
   }
 
-  onError = (error) => {
-    console.log('error')
+  onLoadEnd = () => {
+    this.setState({loading: false})
   }
 
   render() {
@@ -57,8 +61,8 @@ export default class ActionImage extends PureComponent {
         {this.state.error && <Text>Error loading image</Text>}
         <Image style={imgStyle} source={source}
           onError={() => this.setState({error: true})}
-          onLoadStart={() => this.setState({loading: true})}
-          onLoadEnd={() => this.setState({loading: false})}
+          onLoadStart={this.onLoadStart}
+          onLoadEnd={this.onLoadEnd}
         />
         <LoadingOverlay loading={this.state.loading} />
       </View>

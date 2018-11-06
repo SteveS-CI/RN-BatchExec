@@ -3,6 +3,8 @@ import { View, Text, Button, Alert } from 'react-native'
 import ActionButtons, { ButtonStyles } from '../components/ActionButtons'
 import NexaColours from '../constants/NexaColours'
 import { ActionBreadcrumb, ActionTitle, ActionPrompt } from '../components/ActionElements'
+import ActionImage from '../components/ActionImage'
+import FileContent from '../components/FileContent'
 import { methods } from '../api/api'
 import LoadingOverlay from '../components/LoadingOverlay';
 
@@ -31,23 +33,6 @@ export default class ActionDetailScreen extends Component {
     this.setState({ node })
   }
 
-  onPress = (name) => {
-    switch (name) {
-      case 'cancel':
-        this.props.navigation.navigate('BatchList')
-        break
-      case 'ok':
-        this.setState({loading: true})
-        methods.completeAction(this.batchData.batchID, this.procID, '', this.locationCode).then(data => {
-          this.chooseNav(data)
-        }).catch(error => {
-          console.log(JSON.stringify(error))
-        })
-        break
-      default:
-    }
-  }
-
   chooseNav(batchData) {
     const nav = this.props.navigation
     // depending on data shape, navigate to the appropriate screen, passing batchData
@@ -60,7 +45,7 @@ export default class ActionDetailScreen extends Component {
       nav.replace('BatchList', {refresh: true})
     } else if (batchData.nodes.length > 1) {
       // Multiple nodes
-      nav.navigate("NodeSelect", {
+      nav.replace("NodeSelect", {
         batchData,
         locationCode: this.locationCode
       });
@@ -81,15 +66,76 @@ export default class ActionDetailScreen extends Component {
     }
   }
 
+  createButtons(node) {
+    var buttons = []
+    if (node.backable) buttons.push(ButtonStyles.Back)
+    switch (node.status) {
+      case 'PendingSignature':
+        buttons.push(ButtonStyles.Sign)
+      case 'PendingApproval':
+        buttons.push(ButtonStyles.Approve)
+      default: // NotStarted
+        if (node.actionType==='Question') {
+          // Only ever Yes & No
+          buttons.push(ButtonStyles.No)
+          buttons.push(ButtonStyles.Yes)
+        } else {
+          // Additional buttons depending on specific action type
+          if (node.actionType==='ScanWeighing' || node.actionType==='WeighInfo') buttons.push(ButtonStyles.Components) 
+          buttons.push(ButtonStyles.OK)
+        }
+    }
+    // Always add Comments?
+    buttons.push(ButtonStyles.Comments)
+    return buttons
+  }
+
+  onPress = (name) => {
+    switch (name) {
+      case 'cancel':
+        this.props.navigation.replace('BatchList')
+        break
+      case 'back':
+        this.setState({loading: true})
+        methods.revertAction(this.batchData.batchID, this.procID, '', this.locationCode).then(data => {
+          this.chooseNav(data)
+        }).catch(error => {
+          console.log(JSON.stringify(error))
+        })
+        break
+      case 'ok':
+        this.completeAction('')
+        break
+      case 'yes':
+        this.completeAction('Y')
+      break
+      case 'no':
+        this.completeAction('N')
+      break
+      default:
+    }
+  }
+
+  completeAction(data) {
+    this.setState({loading: true})
+    methods.completeAction(this.batchData.batchID, this.procID, data, this.locationCode).then(data => {
+      this.chooseNav(data)
+    }).catch(error => {
+      console.log(JSON.stringify(error))
+    })
+  }
+
   render() {
-    const nav = this.props.navigation
     const node = this.state.node
     if (node) {
+      const buttons = this.createButtons(node)
       return (
         <View style={{flex: 1}}>
           <ActionTitle backColor={NexaColours.AlertCyan} text={this.state.node.name}/>
-          <ActionButtons buttons={[ButtonStyles.OK]} onPress={this.onPress}/>
-          {node.prompt && <ActionPrompt text={node.prompt}/>}
+          <ActionButtons buttons={buttons} onPress={this.onPress}/>
+          {node.prompt && <ActionPrompt prompt={node.prompt} notes={node.notes}/>}
+          {node.picture && <ActionImage fileName={node.picture} />}
+          {node.fileName && <FileContent fileName={node.fileName}/>}
           <LoadingOverlay loading={this.state.loading} />
         </View>
       )

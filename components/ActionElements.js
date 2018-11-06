@@ -1,8 +1,9 @@
 import React, {PureComponent} from 'react'
-import {StyleSheet, Text} from 'react-native'
+import {StyleSheet, View, Text} from 'react-native'
 import PropTypes from 'prop-types'
 import TextBar from './TextBar'
 import NexaColours from '../constants/NexaColours'
+import {optimalForeColor} from '../Utils/utils'
 
 const styles = StyleSheet.create(
   {
@@ -18,14 +19,29 @@ const styles = StyleSheet.create(
       borderRadius: 0,
       marginHorizontal: 0,
       marginBottom: 0,
-      borderColor: 'black',
-      borderBottomWidth: StyleSheet.hairlineWidth
+      borderTopColor: 'white',
+      borderBottomColor: 'black',
+      borderTopWidth: StyleSheet.hairlineWidth,
+      borderBottomWidth: StyleSheet.hairlineWidth,
+      fontSize: 20
+    },
+    promptContainer: {
+      marginHorizontal: 8,
+      padding: 8,
+      borderRadius: 5,
+      backgroundColor: NexaColours.Cyan
     },
     prompt: {
-
+      marginBottom:5,
+      alignSelf: 'center',
+      fontSize: 18
     },
     notes: {
-
+      padding: 5,
+      borderRadius: 5,
+      textAlign: 'center',
+      backgroundColor: NexaColours.CyanAccent,
+      fontSize: 16
     }
   }
 )
@@ -51,7 +67,7 @@ export class ActionTitle extends PureComponent {
 
   render() {
     return (
-      <TextBar backColor={NexaColours.Grey} style={styles.title}>{this.props.text}</TextBar>
+      <TextBar backColor={NexaColours.BlueAccent} style={styles.title}>{this.props.text}</TextBar>
     )
   }
 }
@@ -59,25 +75,47 @@ export class ActionTitle extends PureComponent {
 export class ActionPrompt extends PureComponent {
 
   static propTypes = {
-    text: PropTypes.string.isRequired
+    prompt: PropTypes.string.isRequired,
+    notes: PropTypes.string
   }
 
   render() {
+    const promptColor = optimalForeColor(NexaColours.Cyan)
+    const noteColor = optimalForeColor(NexaColours.CyanAccent)
+    const promptStyle = StyleSheet.flatten([styles.prompt, {color: promptColor}])
+    const noteStyle = StyleSheet.flatten([styles.notes, {color: noteColor}])
     return (
-      <TextBar backColor={NexaColours.AlertCyan} style={styles.prompt}>{this.props.text}</TextBar>
+      <View style={styles.promptContainer}>
+        <Text style={promptStyle}>
+          {this.props.prompt}
+        </Text>
+        {this.props.notes && 
+          <Text style={noteStyle}>{this.props.notes}</Text>
+        }
+      </View>
     )
   }
 }
 
-export class ActionNotes extends PureComponent {
+export class ActionEntry extends PureComponent {
 
   static propTypes = {
-    text: PropTypes.string.isRequired
+    value: PropTypes.any
+  }
+
+  onChangeText = () => {
+
   }
 
   render() {
-    return (
-      <TextBar backColor={NexaColours.GreyAccent} style={styles.notes}>{this.props.text}</TextBar>
-    )
+    <View style={{flexDirection: 'column', padding: 8}}>
+      <Text>{this.props.title}</Text>
+      <TextInput
+        textContentType='URL'
+        value={this.props.value}
+        onChangeText={this.onChangeText}
+        underlineColorAndroid={'#00000000'}
+      />
+    </View>
   }
 }
