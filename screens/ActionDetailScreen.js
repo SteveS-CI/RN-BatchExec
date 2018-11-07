@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, Text, Button, Alert } from 'react-native'
 import ActionButtons, { ButtonStyles } from '../components/ActionButtons'
 import NexaColours from '../constants/NexaColours'
-import { ActionBreadcrumb, ActionTitle, ActionPrompt } from '../components/ActionElements'
+import { ActionBreadcrumb, ActionTitle, ActionPrompt, ActionEntry } from '../components/ActionElements'
 import ActionImage from '../components/ActionImage'
 import FileContent from '../components/FileContent'
 import { methods } from '../api/api'
@@ -11,7 +11,7 @@ import LoadingOverlay from '../components/LoadingOverlay';
 export default class ActionDetailScreen extends Component {
   constructor(props) {
     super(props)
-    this.state = { node: null, loading: false }
+    this.state = { node: null, loading: false, value: null }
   }
 
   static navigationOptions = ({navigation}) => {
@@ -104,7 +104,7 @@ export default class ActionDetailScreen extends Component {
         })
         break
       case 'ok':
-        this.completeAction('')
+        this.completeAction()
         break
       case 'yes':
         this.completeAction('Y')
@@ -116,24 +116,35 @@ export default class ActionDetailScreen extends Component {
     }
   }
 
-  completeAction(data) {
+  completeAction(value) {
     this.setState({loading: true})
-    methods.completeAction(this.batchData.batchID, this.procID, data, this.locationCode).then(data => {
+    if (value) { 
+      this.setState({value})
+    } else {
+      value = this.state.value
+    }
+    methods.completeAction(this.batchData.batchID, this.procID, value, this.locationCode).then(data => {
       this.chooseNav(data)
     }).catch(error => {
       console.log(JSON.stringify(error))
     })
   }
 
+  entryValueChange = (value) => {
+    this.setState({value})
+  }
+
   render() {
     const node = this.state.node
     if (node) {
-      const buttons = this.createButtons(node)
+        const buttons = this.createButtons(node)
+        const entry = node.inputs ? node.inputs[0] : null
       return (
         <View style={{flex: 1}}>
-          <ActionTitle backColor={NexaColours.AlertCyan} text={this.state.node.name}/>
-          <ActionButtons buttons={buttons} onPress={this.onPress}/>
-          {node.prompt && <ActionPrompt prompt={node.prompt} notes={node.notes}/>}
+          <ActionTitle backColor={NexaColours.AlertCyan} text={this.state.node.name} />
+          <ActionButtons buttons={buttons} onPress={this.onPress} />
+          {node.prompt && <ActionPrompt prompt={node.prompt} notes={node.notes} />}
+          {entry && <ActionEntry value={this.value} entry={entry} onChange={this.entryValueChange}/>}
           {node.picture && <ActionImage fileName={node.picture} />}
           {node.fileName && <FileContent fileName={node.fileName}/>}
           <LoadingOverlay loading={this.state.loading} />
