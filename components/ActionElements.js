@@ -74,6 +74,30 @@ const styles = StyleSheet.create(
       borderTopWidth: inputBorderWidth,
       paddingHorizontal: 8, paddingVertical: 5,
       minWidth: 200
+    },
+    pickerContainer: {
+      flexDirection: 'row',
+      alignSelf: 'flex-start',
+      marginHorizontal: 8, marginTop: 8,
+      borderColor: NexaColours.GreyDark, borderWidth: inputBorderWidth,
+      borderRadius: inputBorderRadius,
+      backgroundColor: NexaColours.GreyLight
+    },
+    pickerLabel: {
+      backgroundColor: NexaColours.GreyAccent,
+      paddingHorizontal: 8,
+      textAlignVertical: 'center',
+      borderColor: NexaColours.GreyDark, borderWidth: inputBorderWidth,
+      borderTopLeftRadius: inputBorderRadius,
+      borderBottomLeftRadius: inputBorderRadius
+    },
+    pickerSuffix: {
+      backgroundColor: NexaColours.GreyAccent,
+      paddingHorizontal: 8,
+      textAlignVertical: 'center',
+      borderColor: NexaColours.GreyDark, borderWidth: inputBorderWidth,
+      borderTopRightRadius: inputBorderRadius,
+      borderBottomRightRadius: inputBorderRadius
     }
   }
 )
@@ -206,32 +230,25 @@ export class DistinctEntry extends PureComponent {
     const entry = this.props.entry
     const label = entry ? entry.label : null
     const suffix = entry ? entry.suffix : null
-    const boxColor = NexaColours.GreyUltraLight
-    const boxLeft = !suffix ? {
-      borderTopRightRadius: inputBorderRadius,
-      borderBottomRightRadius: inputBorderRadius,
-      borderRightWidth: inputBorderWidth
-    } : null
-    const boxRight = !label ? {
-      borderTopLeftRadius: inputBorderRadius,
-      borderBottomLeftRadius: inputBorderRadius,
-      borderLeftWidth: inputBorderWidth
-    } : null
-    const boxStyle = StyleSheet.flatten([styles.inputBox, {backgroundColor: boxColor}, boxLeft, boxRight])
+    const validation = entry.validation
+    const choices = validation.choices
+    const items = choices.map((item, idx) => {
+      return (
+        <Picker.Item key={idx} label={item} value={item}/>
+      )
+    })
     return (
-      <View style={styles.inputContainer}>
-      {label && <Text style={styles.inputLabel}>{label}</Text>}
-      <Picker style={boxStyle}
-        selectedValue={this.props.value}
-        onValueChange={this.onValueChange}
-        enabled = {this.props.enabled}
-        mode='dropdown'
-        >
-        <Picker.Item label="Java" value="java" />
-        <Picker.Item label="JavaScript" value="js" />
-      </Picker>
-      {suffix && <Text style={styles.inputSuffix}>{suffix}</Text>}
-    </View>
+      <View style={styles.pickerContainer}>
+        {label && <Text style={styles.pickerLabel}>Label</Text>}
+        <Picker style={{minWidth: 200}}
+          selectedValue={this.props.value}
+          onValueChange={this.onValueChange}
+          enabled = {this.props.enabled}
+          mode='dropdown'>
+          {items}
+        </Picker>
+        {suffix && <Text style={styles.pickerSuffix}>Suffix</Text>}
+      </View>
     )
   }
 }

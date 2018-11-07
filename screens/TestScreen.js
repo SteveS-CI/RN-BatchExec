@@ -15,8 +15,7 @@ const stringEntry = {
   entryType: 'String'
 }
 
-const distinctEntry = {
-  label: 'Items',
+const distinctEntry1 = {
   entryType: 'Distinct',
   validation: {
     choices: [
@@ -25,10 +24,39 @@ const distinctEntry = {
   }
 }
 
+const distinctEntry2 = {
+  label: 'Items',
+  entryType: 'Distinct',
+  validation: {
+    choices: [
+      'One', 'Two','Three'
+    ]
+  }
+}
+const distinctEntry3 = {
+  suffix: 'Kg',
+  entryType: 'Distinct',
+  validation: {
+    choices: [
+      '100', '110','120'
+    ]
+  }
+}
+const distinctEntry4 = {
+  label: 'Weight',
+  suffix: 'Kg',
+  entryType: 'Distinct',
+  validation: {
+    choices: [
+      '250', '275','300'
+    ]
+  }
+}
+
 export default class TestScreen extends React.Component {
   constructor(props) {
     super(props)
-    this.state = { text: '', value: 'ABC' }
+    this.state = { text: '', value: 'ABC', distinctValue: '3' }
   }
 
   static navigationOptions = {
@@ -43,7 +71,6 @@ export default class TestScreen extends React.Component {
   }
 
   render() {
-    console.log('Render: ', this.value)
     const buttons = [ButtonStyles.Back, ButtonStyles.No, ButtonStyles.Yes]
     return (
       <View style={{flexDirection: 'column', flex: 1}}>
@@ -51,6 +78,17 @@ export default class TestScreen extends React.Component {
         <ActionButtons onPress={this.onPress} buttons={buttons}/>
         <ScrollView style={{flexDirection: 'column'}}>
           <ActionPrompt prompt='This is the text of an action prompt' notes='This is the text for optional action notes'/>
+          <ActionEntry value={this.state.value} entry={{}} onChange={(value) => this.setState({value})}/>
+          <ActionEntry value={this.state.value} entry={{label: 'Label'}} onChange={(value) => this.setState({value})}/>
+          <ActionEntry value={this.state.value} entry={{suffix: 'Suffix'}} onChange={(value) => this.setState({value})}/>
+          <ActionEntry value={this.state.value} entry={stringEntry} onChange={(value) => this.setState({value})}/>
+          <ActionEntry value={this.state.distinctValue} entry={distinctEntry1} onChange={(distinctValue) => this.setState({distinctValue})} enabled={true}/>
+          <ActionEntry value={this.state.distinctValue} entry={distinctEntry2} onChange={(distinctValue) => this.setState({distinctValue})} enabled={true}/>
+          <ActionEntry value={this.state.distinctValue} entry={distinctEntry3} onChange={(distinctValue) => this.setState({distinctValue})} enabled={true}/>
+          <ActionEntry value={this.state.distinctValue} entry={distinctEntry4} onChange={(distinctValue) => this.setState({distinctValue})} enabled={true}/>
+          <ActionImage fileName='setup.jpg' />
+          <ActionImage fileName='db_Russell_Sieve1.jpg' />
+          <FileContent fileName='General05.txt' backColor={NexaColours.BlueAccent} />
           <TextBar backColor={NexaColours.Cyan}>Cyan</TextBar>
           <TextBar backColor={NexaColours.CyanAccent}>Cyan Accent</TextBar>
           <TextBar backColor={NexaColours.Blue}>Blue</TextBar>
@@ -64,14 +102,6 @@ export default class TestScreen extends React.Component {
           <TextBar backColor={NexaColours.AlertOrange}>Orange</TextBar>
           <TextBar backColor={NexaColours.AlertRed}>Red</TextBar>
           <TextBar backColor={NexaColours.AlertYellow}>Yellow</TextBar>
-          <ActionEntry value={this.state.value} entry={{}} onChange={(value) => this.setState({value})}/>
-          <ActionEntry value={this.state.value} entry={{label: 'Label'}} onChange={(value) => this.setState({value})}/>
-          <ActionEntry value={this.state.value} entry={{suffix: 'Suffix'}} onChange={(value) => this.setState({value})}/>
-          <ActionEntry value={this.state.value} entry={stringEntry} onChange={(value) => this.setState({value})}/>
-          <ActionEntry value={this.state.value} entry={distinctEntry} onChange={(value) => this.setState({value})}/>
-          <ActionImage fileName='setup.jpg' />
-          <ActionImage fileName='db_Russell_Sieve1.jpg' />
-          <FileContent fileName='General05.txt' backColor={NexaColours.BlueAccent} />
         </ScrollView>
       </View>
     )

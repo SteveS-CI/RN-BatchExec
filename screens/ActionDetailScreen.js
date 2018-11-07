@@ -30,7 +30,11 @@ export default class ActionDetailScreen extends Component {
     this.procID = node.procID
     const locationCode = this.props.navigation.getParam("locationCode")
     this.locationCode = locationCode
-    this.setState({ node })
+    if (node.actionType==='Evaluation') {
+      this.completeAction('Y')
+    } else {
+      this.setState({ node })
+    }
   }
 
   chooseNav(batchData) {
@@ -55,7 +59,12 @@ export default class ActionDetailScreen extends Component {
         // Action node - just change state
         this.batchData = batchData
         this.procID = batchData.nodes[0].procID
-        this.setState({node: batchData.nodes[0], loading: false})
+        // If non-interactive then execute 
+        if (this.batchData.nodes[0].actionType==='Evaluation') {
+          this.completeAction('Y')
+        } else {
+          this.setState({node: batchData.nodes[0], loading: false})
+        }
       } else {
         // Operation/Stage/Process - for Confirmation/Signature/Approval
         nav.navigate("NodeDetail", {
@@ -144,7 +153,7 @@ export default class ActionDetailScreen extends Component {
           <ActionTitle backColor={NexaColours.AlertCyan} text={this.state.node.name} />
           <ActionButtons buttons={buttons} onPress={this.onPress} />
           {node.prompt && <ActionPrompt prompt={node.prompt} notes={node.notes} />}
-          {entry && <ActionEntry value={this.value} entry={entry} onChange={this.entryValueChange}/>}
+          {entry && <ActionEntry value={this.state.value} entry={entry} onChange={this.entryValueChange}/>}
           {node.picture && <ActionImage fileName={node.picture} />}
           {node.fileName && <FileContent fileName={node.fileName}/>}
           <LoadingOverlay loading={this.state.loading} />
