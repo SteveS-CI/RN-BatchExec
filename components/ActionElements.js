@@ -239,7 +239,7 @@ export class DistinctEntry extends PureComponent {
     })
     return (
       <View style={styles.pickerContainer}>
-        {label && <Text style={styles.pickerLabel}>Label</Text>}
+        {label && <Text style={styles.pickerLabel}>{label}</Text>}
         <Picker style={{minWidth: 200}}
           selectedValue={this.props.value}
           onValueChange={this.onValueChange}

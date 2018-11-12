@@ -10,8 +10,9 @@ import { methods } from '../api/api'
 const styles = StyleSheet.create(
   {
     button: {
-      alignSelf: 'center',
-      marginVertical: 8
+      margin: 8,
+      padding: 8,
+      backgroundColor: 'red'
     }
   }
 )
@@ -46,9 +47,9 @@ export default class DevScreen extends PureComponent {
           />
         </ButtonBar>
         <View style={{flexDirection: 'column'}}>
-          <Button style={styles.button} title='Clear Location' onPress={() => {Settings.removeItem('location').then(() => Expo.Updates.reload())}}/>
-          <Button style={styles.button} title='Reset Location & Equipment States' onPress={this.resetHardware}/>
-          <Button style={styles.button} title='Clear Batch Cache' onPress={this.clearCache}/>
+          <RoundedButton style={styles.button} title='Clear Location' onPress={() => {Settings.removeItem('location').then(() => Expo.Updates.reload())}}/>
+          <RoundedButton style={styles.button} title='Reset Location & Equipment States' onPress={this.resetHardware}/>
+          <RoundedButton style={styles.button} title='Clear Batch Cache' onPress={this.clearCache}/>
         </View>
       </View>
     )

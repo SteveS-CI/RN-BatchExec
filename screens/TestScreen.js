@@ -8,6 +8,8 @@ import FileContent from '../components/FileContent'
 import ActionImage from '../components/ActionImage'
 import TextBar from '../components/TextBar'
 import { ActionTitle, ActionPrompt, ActionEntry } from '../components/ActionElements'
+import Signature from '../components/Signature'
+import Comments from '../components/Comments'
 
 const stringEntry = {
   label: 'Label',
@@ -56,7 +58,7 @@ const distinctEntry4 = {
 export default class TestScreen extends React.Component {
   constructor(props) {
     super(props)
-    this.state = { text: '', value: 'ABC', distinctValue: '3' }
+    this.state = { text: '', value: 'ABC', distinctValue: '3', signing: false, approving: false, commenting: false }
   }
 
   static navigationOptions = {
@@ -70,6 +72,16 @@ export default class TestScreen extends React.Component {
     if (name === 'cancel') this.props.navigation.navigate('BatchList')
   }
 
+  onSign = (sign, token) => {
+    console.log(sign, token)
+    this.setState({signing: false, approving: false})
+  }
+
+  onComment = (valid, comments) => {
+    console.log('Comments: ', valid, JSON.stringify(comments))
+    this.setState({commenting: false})
+  }
+
   render() {
     const buttons = [ButtonStyles.Back, ButtonStyles.No, ButtonStyles.Yes]
     return (
@@ -78,6 +90,9 @@ export default class TestScreen extends React.Component {
         <ActionButtons onPress={this.onPress} buttons={buttons}/>
         <ScrollView style={{flexDirection: 'column'}}>
           <ActionPrompt prompt='This is the text of an action prompt' notes='This is the text for optional action notes'/>
+          <RoundedButton title='Sign Test' onPress={() => this.setState({signing: true})}/>
+          <RoundedButton title='Approval Test' onPress={() => this.setState({approving: true})}/>
+          <RoundedButton title='Comment Test' onPress={() => this.setState({commenting: true})}/>
           <ActionEntry value={this.state.value} entry={{}} onChange={(value) => this.setState({value})}/>
           <ActionEntry value={this.state.value} entry={{label: 'Label'}} onChange={(value) => this.setState({value})}/>
           <ActionEntry value={this.state.value} entry={{suffix: 'Suffix'}} onChange={(value) => this.setState({value})}/>
@@ -102,6 +117,9 @@ export default class TestScreen extends React.Component {
           <TextBar backColor={NexaColours.AlertOrange}>Orange</TextBar>
           <TextBar backColor={NexaColours.AlertRed}>Red</TextBar>
           <TextBar backColor={NexaColours.AlertYellow}>Yellow</TextBar>
+          <Signature visible={this.state.signing} onSign={this.onSign} isApproval={false} title='This Action requires a signature'/>
+          <Signature visible={this.state.approving} onSign={this.onSign} isApproval={true} title='This Action requires approval'/>
+          <Comments visible={this.state.commenting} onComment={this.onComment} />
         </ScrollView>
       </View>
     )

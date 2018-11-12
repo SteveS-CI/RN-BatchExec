@@ -7,11 +7,12 @@ import ActionImage from '../components/ActionImage'
 import FileContent from '../components/FileContent'
 import { methods } from '../api/api'
 import LoadingOverlay from '../components/LoadingOverlay';
+import Signature from '../components/Signature'
 
 export default class ActionDetailScreen extends Component {
   constructor(props) {
     super(props)
-    this.state = { node: null, loading: false, value: null }
+    this.state = { node: null, loading: false, value: null, signing: false, approving: false }
   }
 
   static navigationOptions = ({navigation}) => {
@@ -81,8 +82,10 @@ export default class ActionDetailScreen extends Component {
     switch (node.status) {
       case 'PendingSignature':
         buttons.push(ButtonStyles.Sign)
+        break
       case 'PendingApproval':
         buttons.push(ButtonStyles.Approve)
+        break
       default: // NotStarted
         if (node.actionType==='Question') {
           // Only ever Yes & No
@@ -117,12 +120,19 @@ export default class ActionDetailScreen extends Component {
         break
       case 'yes':
         this.completeAction('Y')
-      break
+        break
       case 'no':
         this.completeAction('N')
-      break
+        break
+      case 'sign':
+        this.setState({signing: true})
+        break
       default:
     }
+  }
+
+  signed = () => {
+    this.setState({signing: false})
   }
 
   completeAction(value) {
@@ -156,6 +166,7 @@ export default class ActionDetailScreen extends Component {
           {entry && <ActionEntry value={this.state.value} entry={entry} onChange={this.entryValueChange}/>}
           {node.picture && <ActionImage fileName={node.picture} />}
           {node.fileName && <FileContent fileName={node.fileName}/>}
+          {this.state.signing && <Signature onSign={this.signed}/>}
           <LoadingOverlay loading={this.state.loading} />
         </View>
       )
