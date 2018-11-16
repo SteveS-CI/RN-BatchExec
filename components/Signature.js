@@ -2,7 +2,8 @@ import React, {Component} from 'react'
 import {StyleSheet, View, Modal, Text} from 'react-native'
 import PropTypes from 'prop-types'
 import TextEntry from './TextEntry'
-import ActionButtons, {ButtonStyles} from './ActionButtons';
+import ActionButtons, {ButtonStyles, ActionButton} from './ActionButtons';
+import ButtonBar from '../components/ButtonBar'
 import Comments from './Comments'
 import NexaColours from '../constants/NexaColours';
 
@@ -78,17 +79,20 @@ export default class Signature extends Component {
   render() {
     if (this.props.visible) {
       const title = this.props.title
-      const buttons = this.props.isApproval
-        ? [ButtonStyles.Approve, ButtonStyles.Comments]
-        : [ButtonStyles.Sign, ButtonStyles.Comments]
+      const buttSign = this.props.isApproval ? ButtonStyles.Approve : ButtonStyles.Sign
+      const enabled = this.state.user && this.state.pass
       return (
         <Modal onRequestClose={() => this.props.onSign(false)} transparent={true}>
           <View style={styles.outer}>
             <View style={styles.inner}>
               <Text style={styles.title}>{title}</Text>
-              <TextEntry label='User ID' value={this.state.user} onChange={(value) => this.setState({user: value})}/>
-              <TextEntry label='Password' secure={true}/>
-              <ActionButtons buttons={buttons} onPress={this.onPress}/>
+              <TextEntry label='User ID' value={this.state.user} onChange={(user) => this.setState({user})}/>
+              <TextEntry label='Password' secure={true} value={this.state.pass} onChange={(pass) => this.setState({pass})}/>
+              <ButtonBar justify='space-between'>
+                <ActionButton buttonStyle={ButtonStyles.Cancel} onPress={() => this.onPress(ButtonStyles.Cancel.name)}/>
+                <ActionButton buttonStyle={buttSign} disabled={!enabled} onPress={() => this.onPress(buttSign.name)}/>
+                <ActionButton buttonStyle={ButtonStyles.Comments} onPress={() => this.onPress(ButtonStyles.Comments.name)}/>
+              </ButtonBar>
               <Comments visible={this.state.commenting} onComment={this.onComment} />
             </View>
           </View>

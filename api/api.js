@@ -94,7 +94,7 @@ export const methods = {
   confirmAction: (postData) => {
     const request = {
       ...endpoints.confirmAction,
-      data: { postData }
+      data: { ...postData }
     };
     return getData(request);
   },

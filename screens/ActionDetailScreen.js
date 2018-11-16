@@ -8,6 +8,7 @@ import FileContent from '../components/FileContent'
 import { methods } from '../api/api'
 import LoadingOverlay from '../components/LoadingOverlay';
 import Signature from '../components/Signature'
+import Comments from '../components/Comments'
 
 export default class ActionDetailScreen extends Component {
   constructor(props) {
@@ -105,12 +106,14 @@ export default class ActionDetailScreen extends Component {
   onPress = (name) => {
     console.log(name)
     switch (name) {
-      case 'cancel':
-        this.props.navigation.replace('BatchList')
-        break
       case 'back':
         this.setState({loading: true})
-        methods.revertAction(this.batchData.batchID, this.procID, '', this.locationCode).then(data => {
+        const postData = {
+          batchID: this.batchData.batchID,
+          procID: this.procID,
+          location: this.locationCode,
+        }
+        methods.revertAction(postData).then(data => {
           this.chooseNav(data)
         }).catch(error => {
           console.log(JSON.stringify(error))
@@ -131,7 +134,11 @@ export default class ActionDetailScreen extends Component {
       case 'approve':
         this.setState({approving: true})
         break
+      case 'comments':
+        this.setState({commenting: true})
+        break
       default:
+        this.props.navigation.replace('BatchList')
     }
   }
 
@@ -182,7 +189,8 @@ export default class ActionDetailScreen extends Component {
       batchID: this.batchData.batchID,
       procID: this.procID,
       input: value,
-      location: this.locationCode
+      location: this.locationCode,
+      deviation: this.comment
     }
     methods.completeAction(postData).then(data => {
       this.chooseNav(data)
@@ -195,19 +203,31 @@ export default class ActionDetailScreen extends Component {
     this.setState({value})
   }
 
+  onComment = (valid, comment) => {
+    if (valid) {
+      this.comment = comment
+    } else {
+      this.comment = null
+    }
+    this.setState({commenting: false})
+  }
+
   render() {
     const node = this.state.node
     if (node) {
         const buttons = this.createButtons(node)
         const entry = node.inputs ? node.inputs[0] : null
+        const enabled = (node.status==="NotStarted")
+        console.log(node.status)
       return (
         <View style={{flex: 1}}>
-          <ActionTitle backColor={NexaColours.AlertCyan} text={this.state.node.name} />
+          <ActionTitle text={this.state.node.name} />
           <ActionButtons buttons={buttons} onPress={this.onPress} />
           {node.prompt && <ActionPrompt prompt={node.prompt} notes={node.notes} />}
-          {entry && <ActionEntry value={this.state.value} entry={entry} onChange={this.entryValueChange}/>}
+          {entry && <ActionEntry value={this.state.value} entry={entry} onChange={this.entryValueChange} enabled={enabled}/>}
           {node.picture && <ActionImage fileName={node.picture} />}
           {node.fileName && <FileContent fileName={node.fileName}/>}
+          <Comments visible={this.state.commenting} onComment={this.onComment} />
           <Signature visible={this.state.signing} onSign={this.signed} isApproval={false}/>
           <Signature visible={this.state.approving} onSign={this.approved} isApproval={true}/>
           <LoadingOverlay loading={this.state.loading} />

@@ -117,13 +117,18 @@ export class ActionBreadcrumb extends PureComponent {
 
 export class ActionTitle extends PureComponent {
 
+  static defaultProps = {
+    backColor: NexaColours.BlueAccent
+  }
+
   static propTypes = {
+    backColor: PropTypes.string,
     text: PropTypes.string.isRequired
   }
 
   render() {
     return (
-      <TextBar backColor={NexaColours.BlueAccent} style={styles.title}>{this.props.text}</TextBar>
+      <TextBar backColor={this.props.backColor} style={styles.title}>{this.props.text}</TextBar>
     )
   }
 }
@@ -202,6 +207,7 @@ export class StringEntry extends PureComponent {
           onBlur={() => this.setState({editing: false})}
           underlineColorAndroid='transparent'
           editable={this.props.enabled}
+          autoFocus={true}
         />
         {suffix && <Text style={styles.inputSuffix}>{suffix}</Text>}
       </View>
@@ -220,6 +226,10 @@ export class DistinctEntry extends PureComponent {
     value: PropTypes.any,
     onChange: PropTypes.func,
     enabled: PropTypes.bool
+  }
+
+  componentDidMount() {
+    this.onValueChange(this.props.entry.validation.choices[0])
   }
 
   onValueChange = (itemValue, itemIndex) => {
