@@ -37,7 +37,12 @@ export default class NodeSelectScreen extends React.Component {
       const nav = this.props.navigation;
       // set loading prior to request
       this.setState({ loading: true });
-      methods.nextProc(this.state.batchData.batchID, this.node.procID, this.locationCode)
+      const postData = {
+        batchID: this.state.batchData.batchID,
+        procID: this.node.procID,
+        location: this.locationCode
+      }
+      methods.nextProc(postData)
         .then(data => {
           this.setState({ loading: false });
           const batchData = data;

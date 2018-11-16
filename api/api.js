@@ -77,45 +77,45 @@ export const methods = {
     const request = { ...endpoints.batchlist, params: { locationCode } };
     return getData(request);
   },
-  nextProc: (batchID, procID, location) => {
+  nextProc: (postData) => {
     const request = {
       ...endpoints.nextProc,
-      data: { batchID, procID, location }
+      data: { ...postData }
     };
     return getData(request);
   },
-  completeAction: (batchID, procID, input, location) => {
+  completeAction: (postData) => {
     const request = {
       ...endpoints.completeAction,
-      data: { batchID, procID, input, location }
+      data: { ...postData }
     };
     return getData(request);
   },
-  confirmAction: (batchID, procID, input, location) => {
+  confirmAction: (postData) => {
     const request = {
       ...endpoints.confirmAction,
-      data: { batchID, procID, input, location }
+      data: { postData }
     };
     return getData(request);
   },
-  signAction: (batchID, procID, input, location) => {
+  signAction: (postData) => {
     const request = {
       ...endpoints.signAction,
-      data: { batchID, procID, input, location }
+      data: { ...postData }
     };
     return getData(request);
   },
-  approveAction: (batchID, procID, input, location) => {
+  approveAction: (postData) => {
     const request = {
       ...endpoints.approveAction,
-      data: { batchID, procID, input, location }
+      data: { ...postData }
     };
     return getData(request);
   },
-  revertAction: (batchID, procID, input, location) => {
+  revertAction: (postData) => {
     const request = {
       ...endpoints.revertAction,
-      data: { batchID, procID, input, location }
+      data: { ...postData }
     };
     return getData(request);
   },

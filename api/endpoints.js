@@ -110,35 +110,35 @@ export default {
     headers: postHeaders
   },
 
-  //{batchID, procID, input, location}
+  //{batchID, procID, input, location, deviation}
   completeAction: {
     method: 'post',
     url: '/Batch/Complete',
     headers: postHeaders
   },
 
-  //{batchID, procID, input, location}
+  //{batchID, procID, input, location, deviation}
   confirmAction: {
     method: 'post',
     url: '/Batch/Confirm',
     headers: postHeaders
   },
   
-  //{batchID, procID, input, location}
+  //{batchID, procID, input, location, deviation}
   signAction: {
     method: 'post',
     url: '/Batch/Sign',
     headers: postHeaders
   },
   
-  //{batchID, procID, input, location}
+  //{batchID, procID, input, location, deviation}
   approveAction: {
     method: 'post',
     url: '/Batch/Approve',
     headers: postHeaders
   },
  
-  //{batchID, procID, input, location}
+  //{batchID, procID, input, location, deviation}
   revertAction: {
     method: 'post',
     url: '/Batch/Revert',

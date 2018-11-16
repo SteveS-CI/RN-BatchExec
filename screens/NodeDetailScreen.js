@@ -2,20 +2,37 @@ import React from 'react';
 import { View, Text, Button } from 'react-native'
 
 export default class NodeDetailScreen extends React.Component {
-  static navigationOptions = ({ navigation }) => {
-    return {
-      title: 'Node Details',
-      headerRight: <Button title='Next' onPress={() => navigation.navigate('ActionDetail')} />
-    }
+  constructor(props) {
+    super(props);
+    this.state = { batchData: null};
+  }
+
+  static navigationOptions = { 
+    title: "Node Details",
+    headerLeft: null
   };
 
+  componentDidMount() {
+    const batchData = this.props.navigation.getParam("batchData")
+    const locationCode = this.props.navigation.getParam("locationCode")
+    this.locationCode = locationCode
+    this.setState({ batchData })
+  }
+
   render() {
-    const nav = this.props.navigation
-    return (
-      <View>
-        <Text>This is where you would Confirm, Sign or Approve a node.</Text>
-        <Text>The node type could be a Process, a Stage or an Operation.</Text>
-      </View>
-    )
+    if (this.state.batchData) {
+      const data = this.state.batchData
+      const node = data.nodes[0]
+      return (
+        <View>
+          <Text>This is where you would Confirm, Sign or Approve a node.</Text>
+          <Text>The node type could be a Process, a Stage or an Operation.</Text>
+          <Text>{data.nodeDepth}</Text>
+          <Text>{node.name}</Text>
+        </View>
+      )
+    } else {
+      return null
+    }
   }
 }

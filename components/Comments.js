@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import {StyleSheet, View, Modal, Text, TextInput, Switch, Picker} from 'react-native'
 import PropTypes from 'prop-types'
 import ActionButtons, {ButtonStyles} from './ActionButtons';
+import TextEntry from '../components/TextEntry'
 import NexaColours from '../constants/NexaColours';
 
 const styles = StyleSheet.create(
@@ -11,9 +12,8 @@ const styles = StyleSheet.create(
     },
     inner: {
       position: 'absolute',
-      padding: 12,
-      marginTop: 120,
-      backgroundColor: NexaColours.GreyUltraLight,
+      padding: 12, marginTop: 120,
+      backgroundColor: 'white',
       borderWidth: 1, borderRadius: 12,
       borderColor: NexaColours.Blue,
       elevation: 8,
@@ -25,7 +25,7 @@ const styles = StyleSheet.create(
       alignItems: 'center',
       backgroundColor: 'rgba(0,0,0,0.5)'
     },
-    comments: {
+    comment: {
       backgroundColor: NexaColours.GreyLight,
       textAlign: 'left', textAlignVertical: 'top'
     },
@@ -44,7 +44,7 @@ const styles = StyleSheet.create(
 export default class Comments extends Component {
   constructor(props) {
     super(props)
-    this.state = {comments: null, isDeviation: false, severity: 'none'}
+    this.state = {comment: null, isDeviation: false, editing: false, severity: 'None', reference: null}
   }
 
   static defaultProps = {
@@ -59,31 +59,48 @@ export default class Comments extends Component {
 
   onPress = (name) => {
     if (name==='ok') {
-      this.props.onComment(true, 'Comment [Deviation]')
+      const deviation = {
+        comment: this.state.comment,
+        severity: this.state.severity,
+        reference: this.state.reference
+      }
+      this.props.onComment(true, deviation)
     } else {
-      this.props.onComment(false)
-      this.setState({isDeviation: false})
+      this.props.onComment(false, null)
+      this.setState({severity: 'None'})
     }
   }
 
   isDeviation = (value) => {
     this.setState({isDeviation: value})
-    if (!value) this.setState({severity: 'None'})
+    if (value) {
+      this.setState({severity: 'Minor'})
+    } else {
+      this.setState({severity: 'None', reference: null})
+    }
+  }
+
+  referenceChange = (value) => {
+    this.setState({reference: value})
   }
 
   render() {
     if (this.props.visible) {
       const buttons = [ButtonStyles.OK]
+      const bgColor = this.state.editing ? NexaColours.GreyUltraLight: NexaColours.GreyLight
+      const commentStyle = StyleSheet.flatten([styles.comment, {backgroundColor: bgColor}])
       return (
         <Modal onRequestClose={() => this.props.onComment(false)} transparent={true}>
           <View style={styles.outer}>
             <View style={styles.inner}>
               <Text style={styles.title}>Comments</Text>
               <TextInput 
-                value={this.state.comments} 
+                value={this.state.comment} 
                 multiline={true} numberOfLines={5} 
-                style={styles.comments} 
-                onChangeText={(value => this.setState({comments: value}))}
+                style={commentStyle} 
+                onFocus={() => this.setState({editing: true})}
+                onBlur={() => this.setState({editing: false})}
+                onChangeText={(value => this.setState({comment: value}))}
               />
               <View style={styles.switchContainer}>
                 <Switch 
@@ -93,16 +110,21 @@ export default class Comments extends Component {
                 <Text style={styles.title}>Is Deviation</Text>
               </View>
               {this.state.isDeviation && 
-                <View style={styles.pickerContainer}>
-                  <Picker
-                    mode='dropdown'
-                    selectedValue={this.state.severity}
-                    onValueChange={(value, index) => this.setState({severity: value})}
-                  >
-                    <Picker.Item label='Minor' value='Minor' />
-                    <Picker.Item label='Major' value='Major' />
-                    <Picker.Item label='Critical' value='Critical' />
-                  </Picker>
+                <View>
+                  <View style={styles.pickerContainer}>
+                    <Picker
+                      mode='dropdown'
+                      selectedValue={this.state.severity}
+                      onValueChange={(value, index) => this.setState({severity: value})}
+                    >
+                      <Picker.Item label='Minor' value='Minor' />
+                      <Picker.Item label='Major' value='Major' />
+                      <Picker.Item label='Critical' value='Critical' />
+                    </Picker>
+                  </View>
+                  <View>
+                    <TextEntry label='Deviation Ref.' value={this.state.reference} onChange={this.referenceChange}/>
+                  </View>
                 </View>
               }
               <ActionButtons buttons={buttons} onPress={this.onPress}/>

@@ -13,8 +13,8 @@ const styles = StyleSheet.create(
     },
     inner: {
       position: 'absolute',
-      padding: 12,
-      backgroundColor: NexaColours.GreyUltraLight,
+      padding: 12, marginTop: 120,
+      backgroundColor: 'white',
       borderWidth: 1,
       borderRadius: 12,
       borderColor: NexaColours.Blue,
@@ -22,7 +22,7 @@ const styles = StyleSheet.create(
     },
     outer: {
       flex: 1,
-      justifyContent: 'center',
+      //justifyContent: 'center',
       alignItems: 'center',
       backgroundColor: 'rgba(0,0,0,0.5)'
     }
@@ -32,7 +32,8 @@ const styles = StyleSheet.create(
 export default class Signature extends Component {
   constructor(props) {
     super(props)
-    this.state = {commenting: false}
+    this.state = {commenting: false, user: null}
+    this.comment = null
   }
 
   static defaultProps = {
@@ -48,20 +49,20 @@ export default class Signature extends Component {
   }
 
   onPress = (name) => {
-    console.log(name)
     switch (name) {
       case 'sign':
-        this.props.onSign(true, 'comments')
+        this.props.onSign(true, this.state.user, this.comment)
         break
       case 'approve':
-        this.props.onSign(true, 'token & comments')
+        this.props.onSign(true, this.state.user, this.comment)
         break
       case 'comments':
         this.setState({commenting: true})
         break
       default:
         //Cancel
-        this.props.onSign(false, 'default?')
+        this.props.onSign(false, null, null)
+        this.setState({user: null})
     }
   }
 
@@ -85,10 +86,10 @@ export default class Signature extends Component {
           <View style={styles.outer}>
             <View style={styles.inner}>
               <Text style={styles.title}>{title}</Text>
-              <TextEntry label='User ID'/>
+              <TextEntry label='User ID' value={this.state.user} onChange={(value) => this.setState({user: value})}/>
               <TextEntry label='Password' secure={true}/>
               <ActionButtons buttons={buttons} onPress={this.onPress}/>
-              <Comments visible={this.state.commenting} onComment={this.onComment}/>
+              <Comments visible={this.state.commenting} onComment={this.onComment} />
             </View>
           </View>
         </Modal>

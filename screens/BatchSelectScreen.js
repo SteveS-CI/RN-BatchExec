@@ -114,7 +114,12 @@ export default class BatchSelectScreen extends Component {
       } else {
         // set loading prior to request
         this.setState({ loading: true });
-        methods.nextProc(this.batch.batchID, 0, this.locationCode)
+        const postData = {
+          batchID: this.batch.batchID,
+          procID: 0,
+          location: this.locationCode
+        }
+        methods.nextProc(postData)
           .then(data => {
             this.setState({loading: false});
             const batchData = data

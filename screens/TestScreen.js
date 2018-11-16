@@ -72,8 +72,8 @@ export default class TestScreen extends React.Component {
     if (name === 'cancel') this.props.navigation.navigate('BatchList')
   }
 
-  onSign = (sign, token) => {
-    console.log(sign, token)
+  onSign = (sign, token, comment) => {
+    console.log(sign, token, JSON.stringify(comment))
     this.setState({signing: false, approving: false})
   }
 

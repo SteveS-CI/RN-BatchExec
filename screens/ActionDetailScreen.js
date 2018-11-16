@@ -96,13 +96,14 @@ export default class ActionDetailScreen extends Component {
           if (node.actionType==='ScanWeighing' || node.actionType==='WeighInfo') buttons.push(ButtonStyles.Components) 
           buttons.push(ButtonStyles.OK)
         }
+        // Alway add comments (on non-started actions)
+        buttons.push(ButtonStyles.Comments)
     }
-    // Always add Comments?
-    buttons.push(ButtonStyles.Comments)
     return buttons
   }
 
   onPress = (name) => {
+    console.log(name)
     switch (name) {
       case 'cancel':
         this.props.navigation.replace('BatchList')
@@ -127,12 +128,47 @@ export default class ActionDetailScreen extends Component {
       case 'sign':
         this.setState({signing: true})
         break
+      case 'approve':
+        this.setState({approving: true})
+        break
       default:
     }
   }
 
-  signed = () => {
+  signed = (success, token, comment) => {
     this.setState({signing: false})
+    if (success) {
+      const postData = {
+        batchID: this.batchData.batchID,
+        procID: this.procID,
+        input: token,
+        location: this.locationCode,
+        deviation: comment
+      }
+      methods.signAction(postData).then(data => {
+        this.chooseNav(data)
+      }).catch(error => {
+        console.log(JSON.stringify(error))
+      })
+    }
+  }
+
+  approved = (success, token, comment) => {
+    this.setState({approving: false})
+    if (success) {
+      const postData = {
+        batchID: this.batchData.batchID,
+        procID: this.procID,
+        input: token,
+        location: this.locationCode,
+        deviation: comment
+      }
+      methods.approveAction(postData).then(data => {
+        this.chooseNav(data)
+      }).catch(error => {
+        console.log(JSON.stringify(error))
+      })
+    }
   }
 
   completeAction(value) {
@@ -142,7 +178,13 @@ export default class ActionDetailScreen extends Component {
     } else {
       value = this.state.value
     }
-    methods.completeAction(this.batchData.batchID, this.procID, value, this.locationCode).then(data => {
+    const postData = {
+      batchID: this.batchData.batchID,
+      procID: this.procID,
+      input: value,
+      location: this.locationCode
+    }
+    methods.completeAction(postData).then(data => {
       this.chooseNav(data)
     }).catch(error => {
       console.log(JSON.stringify(error))
@@ -166,7 +208,8 @@ export default class ActionDetailScreen extends Component {
           {entry && <ActionEntry value={this.state.value} entry={entry} onChange={this.entryValueChange}/>}
           {node.picture && <ActionImage fileName={node.picture} />}
           {node.fileName && <FileContent fileName={node.fileName}/>}
-          {this.state.signing && <Signature onSign={this.signed}/>}
+          <Signature visible={this.state.signing} onSign={this.signed} isApproval={false}/>
+          <Signature visible={this.state.approving} onSign={this.approved} isApproval={true}/>
           <LoadingOverlay loading={this.state.loading} />
         </View>
       )
