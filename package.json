@@ -15,15 +15,18 @@
   "dependencies": {
     "@expo/samples": "2.1.1",
     "axios": "^0.18.0",
-    "expo": "^30.0.1",
+    "expo": "^31.0.2",
     "prop-types": "^15.6.2",
-    "react": "16.3.1",
-    "react-native": "https://github.com/expo/react-native/archive/sdk-30.0.0.tar.gz",
+    "react": "16.5.0",
+    "react-native": "https://github.com/expo/react-native/archive/sdk-31.0.0.tar.gz",
     "react-native-exit-app": "^1.0.0",
     "react-native-vector-icons": "^5.0.0",
-    "react-navigation": "^2.16.0"
+    "react-navigation": "^2.18.2"
   },
   "devDependencies": {
-    "jest-expo": "30.0.0"
+    "@babel/core": "^7.1.6",
+    "babel": "^6.23.0",
+    "babel-preset-expo": "^5.0.0",
+    "jest-expo": "31.0.0"
   }
 }

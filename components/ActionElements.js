@@ -172,7 +172,8 @@ export class StringEntry extends PureComponent {
     entry: PropTypes.any.isRequired,
     value: PropTypes.any,
     onChange: PropTypes.func,
-    enabled: PropTypes.bool
+    enabled: PropTypes.bool,
+    keyboardType: PropTypes.string
   }
 
   onChangeText = (value) => {
@@ -208,6 +209,7 @@ export class StringEntry extends PureComponent {
           underlineColorAndroid='transparent'
           editable={this.props.enabled}
           autoFocus={true}
+          keyboardType={this.props.keyboardType}
         />
         {suffix && <Text style={styles.inputSuffix}>{suffix}</Text>}
       </View>
@@ -277,7 +279,8 @@ export class ActionEntry extends PureComponent {
     entry: PropTypes.any.isRequired,
     value: PropTypes.any,
     onChange: PropTypes.func,
-    enabled: PropTypes.bool
+    enabled: PropTypes.bool,
+    keyboardType: PropTypes.string
   }
 
   render() {

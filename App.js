@@ -1,6 +1,6 @@
 import React from 'react';
-import Expo from 'expo';
-import { Platform, StatusBar, StyleSheet, View, Alert } from 'react-native';
+import * as Expo from 'expo';
+import {Platform, StatusBar, StyleSheet, View, Alert } from 'react-native';
 import { AppLoading, Asset, Font, Icon } from 'expo';
 import AppNavigator from './navigation/AppNavigator';
 
@@ -10,7 +10,7 @@ import api, {methods} from './api/api';
 export default class App extends React.Component {
   constructor(props) {
     super(props)
-    Expo.ScreenOrientation.allow(Expo.ScreenOrientation.Orientation.ALL)
+    Expo.ScreenOrientation.allowAsync(Expo.ScreenOrientation.Orientation.ALL)
     this.state = {isLoadingComplete: false, mocked: false}
   }
 

@@ -98,7 +98,6 @@ export default class NodeDetailScreen extends React.Component {
   }
 
   onPress = (name) => {
-    console.log(name)
     const data = this.state.batchData
     const node = data.nodes[0]
     const postData = {
