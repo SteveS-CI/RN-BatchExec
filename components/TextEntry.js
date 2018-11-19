@@ -44,7 +44,9 @@ export default class TextEntry extends PureComponent {
   static defaultProps = {
     secure: false,
     enabled: true,
-    autoFocus: false
+    autoFocus: false,
+    blurOnSubmit: true,
+    onSubmit: () => {}
   }
 
   static propTypes = {
@@ -55,7 +57,13 @@ export default class TextEntry extends PureComponent {
     enabled: PropTypes.bool,
     autoFocus: PropTypes.bool,
     returnKeyType: PropTypes.string,
-    keyboardType: PropTypes.string
+    keyboardType: PropTypes.string,
+    blurOnSubmit: PropTypes.bool,
+    onSubmit: PropTypes.func
+  }
+
+  focus() {
+    this.ref.focus()
   }
 
   onChangeText = (value) => {
@@ -71,9 +79,10 @@ export default class TextEntry extends PureComponent {
       <View style={styles.inputContainer}>
         {label && <Text style={styles.inputLabel}>{label}</Text>}
         <TextInput style={boxStyle}
+          ref={(ref) => this.ref = ref}
           value={this.props.value}
           onChangeText={this.onChangeText}
-          blurOnSubmit={true}
+          blurOnSubmit={this.props.blurOnSubmit}
           onFocus={() => this.setState({editing: true})}
           onBlur={() => this.setState({editing: false})}
           underlineColorAndroid='transparent'
@@ -82,6 +91,7 @@ export default class TextEntry extends PureComponent {
           autoFocus={this.props.autoFocus}
           returnKeyType={this.props.returnKeyType}
           keyboardType={this.props.keyboardType}
+          onSubmitEditing={this.props.onSubmit}
         />
       </View>
     )

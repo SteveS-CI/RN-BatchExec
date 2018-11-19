@@ -12,7 +12,7 @@ function getData(request) {
     api
       .request(request)
       .then(response => {
-        if (response.headers["content-type"].contains("application/json")) {
+        if (response.headers["content-type"].includes("application/json")) {
           console.log('RX: ', response.data)
           resolve(response.data);
         } else {
@@ -31,7 +31,7 @@ export function getTextFile(name) {
     api
       .request(request)
       .then(response => {
-        if (response.headers["content-type"].contains("text/plain")) {
+        if (response.headers["content-type"].includes("text/plain")) {
           resolve({ success: true, data: response.data });
         } else {
           reject({ success: false, data: null });
@@ -49,7 +49,7 @@ export function getImageFile(name) {
     api
       .request(request)
       .then(response => {
-        if (response.headers["content-type"].contains("application/octet-stream")) {
+        if (response.headers["content-type"].includes("application/octet-stream")) {
           resolve({ success: true, data: response.data });
         } else {
           reject({ success: false, data: null });

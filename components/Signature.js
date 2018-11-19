@@ -35,6 +35,7 @@ export default class Signature extends Component {
     super(props)
     this.state = {commenting: false, user: null}
     this.comment = null
+    this.pass = null
   }
 
   static defaultProps = {
@@ -76,6 +77,11 @@ export default class Signature extends Component {
     this.setState({commenting: false})
   }
 
+  onSubmit = () => {
+    console.log('submit')
+    this.pass.focus()
+  }
+
   render() {
     if (this.props.visible) {
       const title = this.props.title
@@ -92,13 +98,15 @@ export default class Signature extends Component {
                 onChange={(user) => this.setState({user})}
                 autoFocus={true}
                 returnKeyType='next'
+                blurOnSubmit={false}
+                onSubmit={this.onSubmit}
               />
               <TextEntry
+                ref={(pass) => {this.pass = pass}}
                 label='Password'
                 secure={true}
                 value={this.state.pass}
                 onChange={(pass) => this.setState({pass})}
-                returnKeyType='done'
               />
               <ButtonBar justify='space-between'>
                 <ActionButton buttonStyle={ButtonStyles.Cancel} onPress={() => this.onPress(ButtonStyles.Cancel.name)}/>
