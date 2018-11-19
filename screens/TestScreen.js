@@ -58,7 +58,7 @@ const distinctEntry4 = {
 export default class TestScreen extends React.Component {
   constructor(props) {
     super(props)
-    this.state = { text: '', value: 'ABC', distinctValue: '3', signing: false, approving: false, commenting: false }
+    this.state = { text: '', value: '123', distinctValue: '3', signing: false, approving: false, commenting: false }
   }
 
   static navigationOptions = {
@@ -96,7 +96,12 @@ export default class TestScreen extends React.Component {
           <ActionEntry value={this.state.value} entry={{}} onChange={(value) => this.setState({value})}/>
           <ActionEntry value={this.state.value} entry={{label: 'Label'}} onChange={(value) => this.setState({value})}/>
           <ActionEntry value={this.state.value} entry={{suffix: 'Suffix'}} onChange={(value) => this.setState({value})}/>
-          <ActionEntry value={this.state.value} entry={stringEntry} onChange={(value) => this.setState({value})}/>
+          <ActionEntry
+            value={this.state.value}
+            entry={stringEntry}
+            onChange={(value) => this.setState({value})}
+            keyboardType='numeric'
+          />
           <ActionEntry value={this.state.distinctValue} entry={distinctEntry1} onChange={(distinctValue) => this.setState({distinctValue})} enabled={true}/>
           <ActionEntry value={this.state.distinctValue} entry={distinctEntry2} onChange={(distinctValue) => this.setState({distinctValue})} enabled={true}/>
           <ActionEntry value={this.state.distinctValue} entry={distinctEntry3} onChange={(distinctValue) => this.setState({distinctValue})} enabled={true}/>

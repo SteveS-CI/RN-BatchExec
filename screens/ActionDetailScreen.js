@@ -104,7 +104,6 @@ export default class ActionDetailScreen extends Component {
   }
 
   onPress = (name) => {
-    console.log(name)
     switch (name) {
       case 'back':
         this.setState({loading: true})
@@ -218,7 +217,6 @@ export default class ActionDetailScreen extends Component {
         const buttons = this.createButtons(node)
         const entry = node.inputs ? node.inputs[0] : null
         const enabled = (node.status==="NotStarted")
-        console.log(node.status)
       return (
         <View style={{flex: 1}}>
           <ActionTitle text={this.state.node.name} />

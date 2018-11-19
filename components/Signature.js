@@ -86,8 +86,20 @@ export default class Signature extends Component {
           <View style={styles.outer}>
             <View style={styles.inner}>
               <Text style={styles.title}>{title}</Text>
-              <TextEntry label='User ID' value={this.state.user} onChange={(user) => this.setState({user})}/>
-              <TextEntry label='Password' secure={true} value={this.state.pass} onChange={(pass) => this.setState({pass})}/>
+              <TextEntry
+                label='User ID'
+                value={this.state.user}
+                onChange={(user) => this.setState({user})}
+                autoFocus={true}
+                returnKeyType='next'
+              />
+              <TextEntry
+                label='Password'
+                secure={true}
+                value={this.state.pass}
+                onChange={(pass) => this.setState({pass})}
+                returnKeyType='done'
+              />
               <ButtonBar justify='space-between'>
                 <ActionButton buttonStyle={ButtonStyles.Cancel} onPress={() => this.onPress(ButtonStyles.Cancel.name)}/>
                 <ActionButton buttonStyle={buttSign} disabled={!enabled} onPress={() => this.onPress(buttSign.name)}/>

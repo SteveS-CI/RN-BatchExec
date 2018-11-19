@@ -43,7 +43,8 @@ export default class TextEntry extends PureComponent {
 
   static defaultProps = {
     secure: false,
-    enabled: true
+    enabled: true,
+    autoFocus: false
   }
 
   static propTypes = {
@@ -51,7 +52,10 @@ export default class TextEntry extends PureComponent {
     value: PropTypes.any,
     secure: PropTypes.bool,
     onChange: PropTypes.func,
-    enabled: PropTypes.bool
+    enabled: PropTypes.bool,
+    autoFocus: PropTypes.bool,
+    returnKeyType: PropTypes.string,
+    keyboardType: PropTypes.string
   }
 
   onChangeText = (value) => {
@@ -75,6 +79,9 @@ export default class TextEntry extends PureComponent {
           underlineColorAndroid='transparent'
           editable={this.props.enabled}
           secureTextEntry={this.props.secure}
+          autoFocus={this.props.autoFocus}
+          returnKeyType={this.props.returnKeyType}
+          keyboardType={this.props.keyboardType}
         />
       </View>
     )
