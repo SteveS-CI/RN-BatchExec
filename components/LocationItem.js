@@ -9,32 +9,31 @@ const rowSelected = {color: 'white'}
 const rowPlain = {color: NexaColours.GreyDark}
 
 export default class LocationItem extends Component {
+  constructor(props) {
+    super(props)
+    this.maxWidth = 0
+  }
 
   static propTypes = {
     item: PropTypes.any.isRequired,
     rowClicked: PropTypes.func.isRequired,
     selected: PropTypes.bool.isRequired,
-    rowStyle: PropTypes.any
+    rowStyle: PropTypes.any,
   }
 
   render() {
     const loc = this.props.item
     const textStyle = this.props.selected ? rowSelected : rowPlain
-    const style = {...textStyle, paddingVertical: 8, paddingHorizontal: 3}
+    const style = {...textStyle, padding: 8, fontSize: 16, flexBasis: '30%'}
     return (
-      <TouchableWithoutFeedback onPress={() => this.props.rowClicked(loc)}>
+      <TouchableOpacity onPress={() => this.props.rowClicked(loc)}>
         <View style={this.props.rowStyle}>
-          <View style={{flexDirection: 'row', paddingVertical: 12}}>
-            {/* <FieldHeader>ID:</FieldHeader>
-            <FieldValue>{loc.id}</FieldValue>
-            <FieldHeader>Code:</FieldHeader>
-            <FieldValue>{loc.code}</FieldValue>
-            <FieldHeader>Name:</FieldHeader>
-            <FieldValue>{loc.name}</FieldValue> */}
-            <Text style={style}>{loc.name} ({loc.code})</Text>
+          <View style={{flexDirection: 'row', paddingVertical: 8}}>
+            <Text style={style}>{loc.name}</Text>
+            <Text style={style}>{loc.code}</Text>
           </View>
         </View>
-      </TouchableWithoutFeedback>
+      </TouchableOpacity>
     )
   }
 }

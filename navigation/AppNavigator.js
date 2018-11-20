@@ -30,6 +30,7 @@ import DropdownMenu from '../components/DropdownMenu';
 import RoundedButton from '../components/RoundedButton'
 
 import LocationHeader from '../components/LocationHeader'
+import { ActionButton } from '../components/ActionButtons';
 
 const screenHeaderStyling = {
   headerTintColor: NexaColours.GreyLight,
@@ -39,7 +40,8 @@ const screenHeaderStyling = {
   headerTitleStyle: { 
     fontFamily: 'euro-demi', 
     fontWeight: 'normal',
-    fontSize: 22
+    fontSize: 22,
+    textAlign: 'center'
   },
 }
 
@@ -91,7 +93,7 @@ const MainNav = createStackNavigator(
           const location = navigation.getParam('location')
           return {
             ...screenHeaderStyling,
-            title: 'Batch Details',
+            title: 'Batch Details'
           }
         } else {
           return screenHeaderStyling

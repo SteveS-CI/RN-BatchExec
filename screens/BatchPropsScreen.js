@@ -16,8 +16,8 @@ export default class BatchPropsScreen extends React.Component {
     { display: 'Product Code', source: 'productCode' },
     { display: 'Product Name', source: 'productName' },
     { display: 'Quantity', source: 'quantity' },
-    { display: 'Status', source: 'status' },
-    { display: 'Start Errors', source: 'startErrors' }
+    { display: 'Status', source: 'state' },
+    { display: 'Start Errors', source: 'errors' }
   ]
 
   render() {

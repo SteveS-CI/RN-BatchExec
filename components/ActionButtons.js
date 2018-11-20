@@ -3,6 +3,7 @@ import {TouchableOpacity, Text, View, StyleSheet} from 'react-native'
 import PropTypes from 'prop-types'
 import {optimalForeColor} from '../Utils/utils'
 import NexaColours from '../constants/NexaColours'
+import ButtonStyles, {ButtonStyleProps} from '../constants/ButtonStyles'
 
 const styles = 
   {
@@ -23,27 +24,6 @@ const styles =
     }
   }
 
-const ButtonStyle = PropTypes.shape(
-  {
-    name: PropTypes.string.isRequired,
-    display: PropTypes.string.isRequired,
-    color: PropTypes.string.isRequired
-  }
-)
-
-export const ButtonStyles = {
-  Cancel: {name: "cancel", display: "Cancel", color: NexaColours.Grey},
-  OK: {name: "ok", display: "OK", color: NexaColours.AlertGreen},
-  No: {name: "no", display: "No", color: NexaColours.AlertRed},
-  Yes: {name: "yes", display: "Yes", color: NexaColours.AlertGreen},
-  Back: {name: "back", display: "Back", color: NexaColours.CyanAccent},
-  Comments: {name: "comments", display: "Comments...", color: NexaColours.Cyan},
-  Confirm: {name: "confirm", display: "Confirm", color: NexaColours.AlertYellow},
-  Sign: {name: "sign", display: "Sign", color: NexaColours.AlertOrange},
-  Approve: {name: "approve", display: "Approve", color: NexaColours.AlertRed},
-  Components: {name: "components", display: "Components", color: NexaColours.Cyan}
-}
-
 export class ActionButton extends PureComponent {
 
   static defaultProps = {
@@ -52,7 +32,7 @@ export class ActionButton extends PureComponent {
   }
 
   static propTypes = {
-    buttonStyle: ButtonStyle,
+    buttonStyle: ButtonStyleProps,
     onPress: PropTypes.func.isRequired,
     disabled: PropTypes.bool,
     style: PropTypes.any
@@ -74,7 +54,7 @@ export class ActionButton extends PureComponent {
 export default class ActionButtons extends PureComponent {
 
   static propTypes = {
-    buttons: PropTypes.arrayOf(ButtonStyle).isRequired,
+    buttons: PropTypes.arrayOf(ButtonStyleProps).isRequired,
     onPress: PropTypes.func.isRequired
   }
 

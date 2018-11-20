@@ -55,6 +55,10 @@ export default class LocationSelectScreen extends React.Component {
     this.fetch()
   }
 
+  onWidth = (index, width) => {
+    console.log(index, width)
+  }
+
   render() {
     const locData = this.state.locations
     let locList = null
@@ -69,6 +73,7 @@ export default class LocationSelectScreen extends React.Component {
           rowClicked={this.rowClicked}
           selected={selected}
           rowStyle={style}
+          onWidth={this.onWidth}
         />)
       })
     }

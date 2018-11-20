@@ -22,6 +22,8 @@ import NexaColours, {
 import Settings from "../Store/Settings";
 import {methods} from '../api/api'
 import mockBatch from "../Mocked/batch.json";
+import BatchStates from "../constants/BatchStates.js";
+import {GetBatchStartErrors} from '../constants/StartErrors'
 
 export default class BatchSelectScreen extends Component {
   constructor(props) {
@@ -90,7 +92,10 @@ export default class BatchSelectScreen extends Component {
             // The parameter is passed to all screens of the TabNavigator
             // (all screens are rendered at once)
             this.props.navigation.navigate("BatchDetail", {
-              batch: this.batch,
+              batch: {...data,
+                state: BatchStates[data.status],
+                errors: GetBatchStartErrors(data.startErrors)
+              },
               locationCode: this.locationCode
             });
           })
@@ -218,7 +223,6 @@ export default class BatchSelectScreen extends Component {
             {batchList}
           </ScrollView>
         </View>
-        {/* <LoadingOverlay loading={this.state.loading} /> */}
       </View>
     );
   }

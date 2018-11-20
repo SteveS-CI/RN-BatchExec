@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, Button, Alert } from 'react-native'
-import ActionButtons, { ButtonStyles } from '../components/ActionButtons'
+import ActionButtons from '../components/ActionButtons'
+import ButtonStyles from '../constants/ButtonStyles'
 import NexaColours from '../constants/NexaColours'
 import { ActionBreadcrumb, ActionTitle, ActionPrompt, ActionEntry } from '../components/ActionElements'
 import ActionImage from '../components/ActionImage'
@@ -9,12 +10,12 @@ import { methods } from '../api/api'
 import LoadingOverlay from '../components/LoadingOverlay';
 import Signature from '../components/Signature'
 import Comments from '../components/Comments'
-import TextBar from '../components/TextBar'
+import ErrorBar from '../components/ErrorBar'
 
 export default class ActionDetailScreen extends Component {
   constructor(props) {
     super(props)
-    this.state = { node: null, loading: false, value: null, signing: false, approving: false, error: false }
+    this.state = { node: null, loading: false, value: null, signing: false, approving: false, error: null }
   }
 
   static navigationOptions = ({navigation}) => {
@@ -199,14 +200,13 @@ export default class ActionDetailScreen extends Component {
     methods.completeAction(postData).then(data => {
       this.chooseNav(data)
     }).catch(error => {
-      this.setState({loading: false, error: true})
-      Alert.alert('API Error',error.response.data.Message)
       console.log(JSON.stringify(error))
+      this.setState({loading: false, error: error.response.data.Message})
     })
   }
 
   entryValueChange = (value) => {
-    this.setState({value})
+    this.setState({value, error: null})
   }
 
   onComment = (valid, comment) => {
@@ -230,7 +230,7 @@ export default class ActionDetailScreen extends Component {
           <ActionButtons buttons={buttons} onPress={this.onPress} />
           {node.prompt && <ActionPrompt prompt={node.prompt} notes={node.notes} />}
           {entry && <ActionEntry value={this.state.value} entry={entry} onChange={this.entryValueChange} enabled={enabled}/>}
-          {this.state.error && <TextBar backColor={NexaColours.AlertRed}>This is where the error goes</TextBar>}
+          {this.state.error && <ErrorBar text={this.state.error} onPress={() => this.setState({error: null})}/>}
           {node.picture && <ActionImage fileName={node.picture} />}
           {node.fileName && <FileContent fileName={node.fileName}/>}
           <Comments visible={this.state.commenting} onComment={this.onComment} />
