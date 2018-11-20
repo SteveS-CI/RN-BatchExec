@@ -9,11 +9,12 @@ import { methods } from '../api/api'
 import LoadingOverlay from '../components/LoadingOverlay';
 import Signature from '../components/Signature'
 import Comments from '../components/Comments'
+import TextBar from '../components/TextBar'
 
 export default class ActionDetailScreen extends Component {
   constructor(props) {
     super(props)
-    this.state = { node: null, loading: false, value: null, signing: false, approving: false }
+    this.state = { node: null, loading: false, value: null, signing: false, approving: false, error: false }
   }
 
   static navigationOptions = ({navigation}) => {
@@ -154,6 +155,8 @@ export default class ActionDetailScreen extends Component {
       methods.signAction(postData).then(data => {
         this.chooseNav(data)
       }).catch(error => {
+        this.setState({loading: false})
+        Alert.alert('API Error',error.response.data.Message)
         console.log(JSON.stringify(error))
       })
     }
@@ -172,6 +175,8 @@ export default class ActionDetailScreen extends Component {
       methods.approveAction(postData).then(data => {
         this.chooseNav(data)
       }).catch(error => {
+        this.setState({loading: false})
+        Alert.alert('API Error',error.response.data.Message)
         console.log(JSON.stringify(error))
       })
     }
@@ -194,6 +199,8 @@ export default class ActionDetailScreen extends Component {
     methods.completeAction(postData).then(data => {
       this.chooseNav(data)
     }).catch(error => {
+      this.setState({loading: false, error: true})
+      Alert.alert('API Error',error.response.data.Message)
       console.log(JSON.stringify(error))
     })
   }
@@ -223,6 +230,7 @@ export default class ActionDetailScreen extends Component {
           <ActionButtons buttons={buttons} onPress={this.onPress} />
           {node.prompt && <ActionPrompt prompt={node.prompt} notes={node.notes} />}
           {entry && <ActionEntry value={this.state.value} entry={entry} onChange={this.entryValueChange} enabled={enabled}/>}
+          {this.state.error && <TextBar backColor={NexaColours.AlertRed}>This is where the error goes</TextBar>}
           {node.picture && <ActionImage fileName={node.picture} />}
           {node.fileName && <FileContent fileName={node.fileName}/>}
           <Comments visible={this.state.commenting} onComment={this.onComment} />

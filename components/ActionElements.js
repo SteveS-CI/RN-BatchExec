@@ -158,7 +158,7 @@ export class ActionPrompt extends PureComponent {
   }
 }
 
-export class StringEntry extends PureComponent {
+export class GenericEntry extends PureComponent {
   constructor(props) {
     super(props)
     this.state = {editing: false}
@@ -172,8 +172,7 @@ export class StringEntry extends PureComponent {
     entry: PropTypes.any.isRequired,
     value: PropTypes.any,
     onChange: PropTypes.func,
-    enabled: PropTypes.bool,
-    keyboardType: PropTypes.string
+    enabled: PropTypes.bool
   }
 
   onChangeText = (value) => {
@@ -185,6 +184,7 @@ export class StringEntry extends PureComponent {
     const entry = this.props.entry
     const label = entry ? entry.label : null
     const suffix = entry ? entry.suffix : null
+    const keyboardType = (entry.entryType==='Integer'||entry.entryType==='Decimal') ? 'numeric' : 'default'
     const boxColor = editing ? NexaColours.GreyUltraLight : NexaColours.GreyLight
     const boxLeft = !suffix ? {
       borderTopRightRadius: inputBorderRadius,
@@ -209,7 +209,7 @@ export class StringEntry extends PureComponent {
           underlineColorAndroid='transparent'
           editable={this.props.enabled}
           autoFocus={true}
-          keyboardType={this.props.keyboardType}
+          keyboardType={keyboardType}
         />
         {suffix && <Text style={styles.inputSuffix}>{suffix}</Text>}
       </View>
@@ -279,8 +279,7 @@ export class ActionEntry extends PureComponent {
     entry: PropTypes.any.isRequired,
     value: PropTypes.any,
     onChange: PropTypes.func,
-    enabled: PropTypes.bool,
-    keyboardType: PropTypes.string
+    enabled: PropTypes.bool
   }
 
   render() {
@@ -291,7 +290,7 @@ export class ActionEntry extends PureComponent {
       )
     } else {
       return (
-        <StringEntry {...this.props}/>
+        <GenericEntry {...this.props}/>
       )
     }
   }

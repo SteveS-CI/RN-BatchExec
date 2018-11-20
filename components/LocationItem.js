@@ -10,6 +10,13 @@ const rowPlain = {color: NexaColours.GreyDark}
 
 export default class LocationItem extends Component {
 
+  static propTypes = {
+    item: PropTypes.any.isRequired,
+    rowClicked: PropTypes.func.isRequired,
+    selected: PropTypes.bool.isRequired,
+    rowStyle: PropTypes.any
+  }
+
   render() {
     const loc = this.props.item
     const textStyle = this.props.selected ? rowSelected : rowPlain
@@ -19,21 +26,15 @@ export default class LocationItem extends Component {
         <View style={this.props.rowStyle}>
           <View style={{flexDirection: 'row', paddingVertical: 12}}>
             {/* <FieldHeader>ID:</FieldHeader>
-            <FieldValue>{loc.id}</FieldValue> */}
+            <FieldValue>{loc.id}</FieldValue>
             <FieldHeader>Code:</FieldHeader>
             <FieldValue>{loc.code}</FieldValue>
             <FieldHeader>Name:</FieldHeader>
-            <FieldValue>{loc.name}</FieldValue>
+            <FieldValue>{loc.name}</FieldValue> */}
+            <Text style={style}>{loc.name} ({loc.code})</Text>
           </View>
         </View>
       </TouchableWithoutFeedback>
     )
   }
-}
-
-LocationItem.propTypes = {
-  item: PropTypes.any.isRequired,
-  rowClicked: PropTypes.func.isRequired,
-  selected: PropTypes.bool.isRequired,
-  rowStyle: PropTypes.any
 }

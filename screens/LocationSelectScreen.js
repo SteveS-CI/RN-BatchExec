@@ -19,8 +19,6 @@ export default class LocationSelectScreen extends React.Component {
     this.mocked = this.props.screenProps.mocked
   }
 
-  static navigationOptions = { title: 'Select Location' }
-
   componentDidMount() {
     if (this.mocked) {
       this.setState({ locations: mockedLocations })

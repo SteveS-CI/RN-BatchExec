@@ -8,6 +8,13 @@ const rowPlain = {color: NexaColours.GreyDark}
 
 export default class BatchItem extends Component {
 
+  static propTypes = {
+    item: PropTypes.any.isRequired,
+    rowClicked: PropTypes.func.isRequired,
+    selected: PropTypes.bool.isRequired,
+    rowStyle: PropTypes.any
+  }
+
   render() {
     const batch = this.props.item
     const textStyle = this.props.selected ? rowSelected : rowPlain
@@ -31,11 +38,4 @@ export default class BatchItem extends Component {
       </TouchableOpacity>
     )
   }
-}
-
-BatchItem.propTypes = {
-  item: PropTypes.any.isRequired,
-  rowClicked: PropTypes.func.isRequired,
-  selected: PropTypes.bool.isRequired,
-  rowStyle: PropTypes.any
 }
