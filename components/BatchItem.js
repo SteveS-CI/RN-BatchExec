@@ -1,13 +1,57 @@
-import React, { Component } from 'react'
-import {StyleSheet, View, Text, TouchableOpacity } from 'react-native'
+import React, { Component, PureComponent } from 'react'
+import {StyleSheet, View, Text, TouchableOpacity, Dimensions } from 'react-native'
 import PropTypes from 'prop-types'
 import NexaColours from '../constants/NexaColours';
 import BatchStates from '../constants/BatchStates'
 
-const rowSelected = {color: 'white'}
-const rowPlain = {color: NexaColours.GreyDark}
+const styles = StyleSheet.create({
+  columnOuter: {
+    flexDirection: 'row',
+    backgroundColor: NexaColours.Grey,
+    borderColor: 'black',
+    borderBottomWidth: StyleSheet.hairlineWidth
+  },
+  columns: {
+    color: 'white',
+    padding: 8,
+    fontSize: 16
+  },
+  rowOuter: {
+    flexDirection: 'row',
+    padding: 8
+  },
+  rows: {
+    color: NexaColours.GreyDark,
+    padding: 8,
+    fontSize: 14
+  }
+})
 
-export default class BatchItem extends Component {
+const widths = [
+  "25%",
+  "20%",
+  "20%",
+  "20%",
+  "15%"
+]
+
+export class BatchHeader extends Component {
+
+  render() {
+    const style = StyleSheet.flatten([styles.columns, this.props.style])
+    return (
+      <View style={styles.columnOuter}>
+        <Text style={{...style, flexBasis: widths[0]}}>Product Name</Text>
+        <Text style={{...style, flexBasis: widths[1]}}>Batch Code</Text>
+        <Text style={{...style, flexBasis: widths[2]}}>Quantity</Text>
+        <Text style={{...style, flexBasis: widths[3]}}>Status</Text>
+        <Text style={{...style, flexBasis: widths[4]}}>Can Start</Text>
+      </View>
+    )
+  }
+}
+
+export default class BatchItem extends PureComponent {
 
   static propTypes = {
     item: PropTypes.any.isRequired,
@@ -18,20 +62,16 @@ export default class BatchItem extends Component {
 
   render() {
     const batch = this.props.item
-    const textStyle = this.props.selected ? rowSelected : rowPlain
-    const style = {...textStyle, padding: 8, fontSize: 16}
+    const style = StyleSheet.flatten(styles.rows)
+    const canStart = (batch.startErrors == 0) ? 'Yes' : 'No'
     return (
       <TouchableOpacity onPressIn={() => this.props.rowClicked(batch)} style={this.props.rowStyle}>
-        <View style={{flexDirection: 'column'}}>
-          <View style={{flexDirection: 'row', paddingTop: 8}}>
-            <Text style={{...style, flexBasis: '30%'}}>{batch.productName}</Text>
-            <Text style={{...style, flexBasis: '20%'}}>{batch.code}</Text>
-            <Text style={{...style, flexBasis: '20%'}}>{batch.quantity}</Text>
-            <Text style={style}>{BatchStates[batch.status]}</Text>
-          </View>
-          <View style={{flexDirection: 'row', paddingBottom: 8}}>
-            <Text style={style}>{batch.startErrors}</Text>
-          </View>
+        <View style={styles.rowOuter}>
+          <Text style={{...style, flexBasis: widths[0]}}>{batch.productName}</Text>
+          <Text style={{...style, flexBasis: widths[1]}}>{batch.code}</Text>
+          <Text style={{...style, flexBasis: widths[2]}}>{batch.quantity}</Text>
+          <Text style={{...style, flexBasis: widths[3]}}>{BatchStates[batch.status]}</Text>
+          <Text style={{...style, flexBasis: widths[4]}}>{canStart}</Text>
         </View>
       </TouchableOpacity>
     )

@@ -1,40 +1,43 @@
 import React, {PureComponent} from 'react'
-import {StyleSheet, ScrollView, View } from 'react-native'
+import {StyleSheet, ScrollView, View, Text } from 'react-native'
 import PropTypes from 'prop-types'
-import PropHeader from './PropHeader';
-import PropValue from './PropValue';
 import NexaColours from '../constants/NexaColours';
+import PropItem from '../components/PropItem'
 
-class PropList extends PureComponent {
+const styles = StyleSheet.create({
+  scroll: {
+    flexDirection: 'column'
+  }
+})
 
+export default class PropList extends PureComponent {
+
+  static propTypes = {
+    headers: PropTypes.arrayOf(PropTypes.shape(
+      {
+        display: PropTypes.string.isRequired,
+        source: PropTypes.string.isRequired
+      })).isRequired,
+    data: PropTypes.any.isRequired
+  }
+  
   render() {
     const headers = this.props.headers
     const data = this.props.data
     const cols = headers.map((head, idx) => {
-      const backCol = (idx % 2 == 0) ? NexaColours.GreyUltraLight : NexaColours.GreyLight
+      const brighten = (idx % 2 == 0)
       return (
-        <View key={idx} style={{backgroundColor: backCol, flexDirection: 'column', borderTopWidth: StyleSheet.hairlineWidth, paddingVertical: 12}}>
-          <PropHeader>{head.display}</PropHeader>
-          <PropValue>{data[head.source]}</PropValue>
-        </View>
+        <PropItem key={idx}
+          caption={head.display}
+          value={data[head.source]}
+          brighten={brighten}
+        />
       )
     })
     return (
-      <ScrollView style={{flexDirection: 'column', borderBottomWidth: StyleSheet.hairlineWidth}}>
+      <ScrollView style={styles.scroll}>
         {cols}
       </ScrollView>
     )
   }
 }
-
-PropList.propTypes = {
-  headers: PropTypes.arrayOf(PropTypes.shape(
-    {
-      display: PropTypes.string.isRequired,
-      source: PropTypes.string.isRequired
-    })).isRequired,
-  data: PropTypes.any.isRequired
-}
-
-export default PropList
-

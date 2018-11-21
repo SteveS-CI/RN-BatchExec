@@ -11,9 +11,9 @@ export default class App extends React.Component {
   constructor(props) {
     super(props)
     Expo.ScreenOrientation.allowAsync(Expo.ScreenOrientation.Orientation.ALL)
-    this.state = {isLoadingComplete: false, mocked: false}
+    this.state = {isLoadingComplete: false, mocked: false, toggle: false}
   }
-
+  
   appReload = () => {
     Expo.Updates.reload()
   }
@@ -38,8 +38,8 @@ export default class App extends React.Component {
       );
     } else {
       return (
-        <View style={styles.container}>
-          <AppNavigator screenProps={functions} />
+        <View style={styles.container} toggle={this.state.toggle}>
+          <AppNavigator screenProps={functions}/>
         </View>
       );
     }

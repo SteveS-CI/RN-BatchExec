@@ -6,14 +6,14 @@ import {
   ScrollView,
   TouchableOpacity,
   Text,
-  RefreshControl
+  RefreshControl,
+  Dimensions
 } from "react-native";
 import mockedBatchList from "../Mocked/batchlist.json";
-import BatchItem from "../components/BatchItem";
+import BatchItem, {BatchHeader} from "../components/BatchItem";
 import ButtonBar from "../components/ButtonBar";
 import TextBar from "../components/TextBar";
 import RoundedButton from "../components/RoundedButton";
-import LoadingOverlay from "../components/LoadingOverlay";
 import NexaColours, {
   tableRowOdd,
   tableRowEven,
@@ -23,7 +23,6 @@ import Settings from "../Store/Settings";
 import {methods} from '../api/api'
 import mockBatch from "../Mocked/batch.json";
 import BatchStates from "../constants/BatchStates.js";
-import {GetBatchStartErrors} from '../constants/StartErrors'
 
 export default class BatchSelectScreen extends Component {
   constructor(props) {
@@ -35,6 +34,10 @@ export default class BatchSelectScreen extends Component {
       continueDisabled: false
     };
     this.mocked = this.props.screenProps.mocked
+        
+    Dimensions.addEventListener('change', () => {
+      this.onRefresh()
+    })
   }
 
   static navigationOptions = {
@@ -93,8 +96,7 @@ export default class BatchSelectScreen extends Component {
             // (all screens are rendered at once)
             this.props.navigation.navigate("BatchDetail", {
               batch: {...data,
-                state: BatchStates[data.status],
-                errors: GetBatchStartErrors(data.startErrors)
+                state: BatchStates[data.status]
               },
               locationCode: this.locationCode
             });
@@ -187,7 +189,7 @@ export default class BatchSelectScreen extends Component {
           });
         } else {
           batchList = (
-            <TextBar backColor={NexaColours.AlertYellow}>
+            <TextBar backColor={NexaColours.AlertYellow} style={{marginTop: 12}}>
               There are no Batches available for the selected location.
             </TextBar>
           );
@@ -195,7 +197,7 @@ export default class BatchSelectScreen extends Component {
       }
     } else {
       batchList = (
-        <TextBar backColor={NexaColours.AlertRed}>
+        <TextBar backColor={NexaColours.AlertOrange} style={{marginTop: 12}}>
           There is no Location set
         </TextBar>
       );
@@ -216,6 +218,7 @@ export default class BatchSelectScreen extends Component {
           />
         </ButtonBar>
         <View style={{ flex: 1 }}>
+          <BatchHeader />
           <ScrollView
             style={{ backgroundColor: NexaColours.GreyLight }}
             refreshControl={<RefreshControl refreshing={this.state.loading} onRefresh={this.onRefresh} />}

@@ -4,15 +4,58 @@ import PropTypes from "prop-types";
 import PropList from "../components/PropList";
 import NexaColours from "../constants/NexaColours";
 
-const rowSelected = { color: "white" };
-const rowPlain = { color: NexaColours.GreyDark };
+const styles = StyleSheet.create({
+  columnOuter: {
+    flexDirection: 'row',
+    backgroundColor: NexaColours.Grey,
+    borderColor: 'black',
+    borderBottomWidth: StyleSheet.hairlineWidth
+  },
+  columns: {
+    color: 'white',
+    padding: 8,
+    fontSize: 16
+  },
+  rowOuter: {
+    flexDirection: 'row',
+    padding: 8
+  },
+  rows: {
+    color: NexaColours.GreyDark,
+    padding: 8,
+    fontSize: 14
+  }
+})
 
-export default class BatchComponent extends Component {
+const widths = [
+  "35%",
+  "30%",
+  "25%",
+]
+
+export class EquipmentHeader extends Component {
+  render() {
+    const style = StyleSheet.flatten([styles.columns, this.props.style])
+    return (
+      <View style={styles.columnOuter}>
+        <Text style={{...style, flexBasis: widths[0]}}>Category</Text>
+        <Text style={{...style, flexBasis: widths[1]}}>Model</Text>
+        <Text style={{...style, flexBasis: widths[2]}}>Serial No</Text>
+      </View>
+    )
+  }
+}
+
+export default class BatchEquipment extends Component {
+
+  static propTypes = {
+    item: PropTypes.any.isRequired,
+    rowStyle: PropTypes.any
+  }
 
   render() {
     const equip = this.props.item;
-    const textStyle = rowPlain;
-    const style = { ...textStyle, padding: 3 };
+    const style = { color: 'white', padding: 3 };
     const fieldStyle = { ...style, color: NexaColours.Blue };
     const rowStyle = {
       ...this.props.rowStyle,
@@ -46,8 +89,3 @@ export default class BatchComponent extends Component {
 "status": "NotStarted"
 */
 }
-
-BatchComponent.propTypes = {
-  item: PropTypes.any.isRequired,
-  rowStyle: PropTypes.any
-};

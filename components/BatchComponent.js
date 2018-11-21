@@ -4,9 +4,6 @@ import PropTypes from 'prop-types'
 import PropList from '../components/PropList'
 import NexaColours from '../constants/NexaColours';
 
-const rowSelected = {color: 'white'}
-const rowPlain = {color: NexaColours.GreyDark}
-
 export default class BatchComponent extends Component {
 
   headers1 = [
@@ -27,8 +24,7 @@ export default class BatchComponent extends Component {
 
   render() {
     const comp = this.props.item
-    const textStyle = rowPlain
-    const style = {...textStyle, padding: 3}
+    const style = {color: 'black', padding: 3}
     const fieldStyle = {...style, color: NexaColours.Blue}
     const rowStyle = {...this.props.rowStyle, borderBottomWidth: StyleSheet.hairlineWidth}
     return (
