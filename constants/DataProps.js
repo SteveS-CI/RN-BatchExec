@@ -19,7 +19,8 @@ export const ValidationProps = {
 export const ListHeaderProps = {
   caption: PropTypes.string.isRequired,
   source: PropTypes.string.isRequired,
-  width: PropTypes.string.isRequired
+  flex: PropTypes.number,
+  align: PropTypes.oneOf(['left','center','right'])
 }
 
 export const DataProps = {

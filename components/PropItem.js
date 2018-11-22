@@ -6,18 +6,25 @@ import NexaColours from '../constants/NexaColours';
 const styles = StyleSheet.create({
   item: {
     flexDirection: 'row',
-    paddingVertical: 12,
-    paddingHorizontal: 8
+    marginBottom: StyleSheet.hairlineWidth,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderColor: NexaColours.GreyDark
   },
   caption: {
     textAlign: 'right',
-    marginRight: 8,
-    flexBasis: '25%',
+    paddingVertical: 8,
+    paddingRight: 8,
+    flex: 2,
     fontSize: 16,
     color: NexaColours.Blue,
-    textAlignVertical: 'center'
+    textAlignVertical: 'center',
+    borderRightWidth: StyleSheet.hairlineWidth,
+    borderColor: NexaColours.GreyDark
   },
   value: {
+    paddingVertical: 8,
+    paddingLeft: 8,
+    flex: 5,
     textAlignVertical: 'center'
   }
 })

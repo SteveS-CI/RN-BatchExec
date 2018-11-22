@@ -1,21 +1,38 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Button, ScrollView, Text, RefreshControl } from 'react-native';
+import { View } from 'react-native';
 import mockedLocations from '../Mocked/locations.json'
-import LocationItem from '../components/LocationItem';
-import NexaColours, { tableRowEven, tableRowOdd, tableRowSelected } from '../constants/NexaColours';
-import { getLocations } from '../api/api';
-import endpoints from '../api/endpoints';
 import Settings from '../Store/Settings'
 import ScreenHeader from '../components/ScreenHeader'
-import ButtonBar from '../components/ButtonBar'
-import TextBar from '../components/TextBar'
-import RoundedButton from '../components/RoundedButton'
+import ScrollList from '../components/ScrollList'
 import {methods} from '../api/api'
 
-export default class LocationSelectScreen extends React.Component {
+const headers = [
+  {
+    caption: "Name",
+    source: "name",
+    flex: 2
+  },
+  {
+    caption: "Code",
+    source: "code",
+    flex: 1
+  },
+  {
+    caption: "Status",
+    source: "status",
+    flex: 3
+  }
+]
+
+export default class LocationSelectScreen extends Component {
   constructor(props) {
     super(props)
-    this.state = { locations: null, selectedItem: 0, loading: false }
+    this.state = {
+      locations: null,
+      selectedIndex: -1,
+      selectedItemID: 0,
+      loading: false
+    }
     this.mocked = this.props.screenProps.mocked
   }
 
@@ -34,10 +51,10 @@ export default class LocationSelectScreen extends React.Component {
     })
   }
 
-  rowClicked = (item) => {
+  rowClicked = (index, item) => {
     const id = item.id
     this.item = item
-    this.setState({ selectedItem: id })
+    this.setState({ selectedItemID: id, selectedIndex: index })
   }
 
   selectClicked = () => {
@@ -46,37 +63,20 @@ export default class LocationSelectScreen extends React.Component {
       Settings.saveObject('location', location)
         .then(() => {
           this.props.screenProps.refresh()
-          //this.props.navigation.navigate('BatchList'), {locationCode: this.item.code}})
         })
     }
   }
 
-  onRefresh = () => {
-    this.fetch()
-  }
-
-  onWidth = (index, width) => {
-    console.log(index, width)
+  transform = (data) => {
+    const newData = {
+      ...data,
+      status: data.availability + ', ' + data.cleanStatus + ', ' + data.condition
+    }
+    return newData
   }
 
   render() {
     const locData = this.state.locations
-    let locList = null
-    if (locData) {
-      locList = locData.map((location, index) => {
-        const rowStyle = (index & 1) ? tableRowOdd : tableRowEven
-        const selected = (location.id === this.state.selectedItem)
-        const style = selected ? tableRowSelected : rowStyle
-        return (<LocationItem
-          key={index}
-          item={location}
-          rowClicked={this.rowClicked}
-          selected={selected}
-          rowStyle={style}
-          onWidth={this.onWidth}
-        />)
-      })
-    }
     return (
       <View style={{ flex: 1 }}>
         <ScreenHeader
@@ -84,14 +84,19 @@ export default class LocationSelectScreen extends React.Component {
           okCaption='Select'
           onOK={this.selectClicked}
           onCancel={() => { this.props.navigation.navigate('BatchList') }}
-          okDisabled={this.state.selectedItem == 0}
+          okDisabled={this.state.selectedItemID == 0}
         />
-        <View style={{ flex: 1 }}>
-          <ScrollView refreshControl={<RefreshControl refreshing={this.state.loading} onRefresh={this.onRefresh} />}
-          >
-            {locList}
-          </ScrollView>
-        </View>
+        <ScrollList
+          headers={headers}
+          data={locData}
+          selectedIndex={this.state.selectedIndex}
+          onPress={this.rowClicked}
+          noData='No Locations available'
+          loading={this.state.loading}
+          onRefresh={this.fetch}
+          topMargin={false}
+          transform={this.transform}
+        />
       </View>
     )
   }

@@ -23,6 +23,7 @@ import BatchEquipScreen from '../screens/BatchEquipScreen';
 import LoginScreen from '../screens/LoginScreen';
 import LocationSelectScreen from '../screens/LocationSelectScreen';
 import TestScreen from '../screens/TestScreen'
+import TestScreen2 from '../screens/TestScreen2'
 import AboutScreen from '../screens/AboutScreen'
 import DevScreen from '../screens/DevScreen'
 
@@ -58,7 +59,7 @@ const BatchNav = createMaterialTopTabNavigator(
       upperCaseLabel: false,
       activeTintColor: '#FFFFFF',
       inactiveTintColor: NexaColours.GreyLight,
-      labelStyle: { fontFamily: 'euro-std', fontSize: 16 },
+      labelStyle: {fontSize: 16 },
       style: { backgroundColor: NexaColours.BlueAccent }
     }
   }
@@ -110,14 +111,15 @@ const DropdownNav = createSwitchNavigator(
     Settings: SettingsScreen,
     Login: LoginNav,
     Test: TestScreen,
+    Test2: TestScreen2,
     About: AboutScreen,
     Dev: DevScreen
   }
 )
 
 const dropDownItems = {
-  labels: ['Change Location','Settings','Login','Test Screen','Exit', 'About','Developer Tools'],
-  actions: ['Location','Settings','Login','Test','EXIT', 'About', 'Dev']
+  labels: ['Change Location','Settings','Login','Exit', 'About','Developer Tools'],
+  actions: ['Location','Settings','Login','EXIT', 'About', 'Dev']
 }
 
 export default AppNavigator = createStackNavigator(

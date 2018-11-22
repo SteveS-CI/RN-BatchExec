@@ -1,38 +1,59 @@
 import React from 'react';
-import { View, Button, ScrollView } from 'react-native'
-import PropList from '../components/PropList';
 import NexaColours from '../constants/NexaColours';
-import BatchComponent from '../components/BatchComponent'
+import ScrollList from '../components/ScrollList'
 
-const tableRowOdd = { backgroundColor: NexaColours.GreyUltraLight }
-const tableRowEven = { backgroundColor: NexaColours.GreyLight }
+const headers = [
+  {
+    caption: "Line",
+    source: "lineNumber",
+    flex: 1
+  },
+  {
+    caption: "Type",
+    source: "componentType",
+    flex: 2
+  },
+  {
+    caption: "Material",
+    source: "material",
+    flex: 4
+  },
+  {
+    caption: "Quantity",
+    source: "quantity",
+    flex: 2
+  },
+  {
+    caption: "Status",
+    source: "state",
+    flex: 2
+  }
+]
 
 export default class BatchCompsScreen extends React.Component {
   static navigationOptions = {
     title: 'Components',
   };
 
+  transform = (data) => {
+    const newData = {
+      ...data,
+      material: data.materialCode + '\n' + data.materialName,
+      state: data.status //transform from Enum name to text
+    }
+    return newData
+  }
+
   render() {
     const nav = this.props.navigation
     const bat = nav.getParam('batch')
     const compData = bat.components
-    let compList = null
-    if (compData) {
-      compList = compData.map((comp, index) => {
-        const rowStyle = (index & 1) ? tableRowOdd : tableRowEven
-        return (<BatchComponent
-          key={index}
-          item={comp}
-          rowStyle={rowStyle}
-        />)
-      })
-    }
     return (
-      <View style={{ flex: 1 }}>
-        <ScrollView>
-          {compList}
-        </ScrollView>
-      </View>
+      <ScrollList 
+        headers={headers}
+        data={compData}
+        transform={this.transform}
+      />
     )
   }
 

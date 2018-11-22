@@ -6,14 +6,13 @@ import {
   ScrollView,
   TouchableOpacity,
   Text,
-  RefreshControl,
-  Dimensions
-} from "react-native";
-import mockedBatchList from "../Mocked/batchlist.json";
-import BatchItem, {BatchHeader} from "../components/BatchItem";
-import ButtonBar from "../components/ButtonBar";
-import TextBar from "../components/TextBar";
-import RoundedButton from "../components/RoundedButton";
+  RefreshControl
+} from "react-native"
+import mockedBatchList from "../Mocked/batchlist.json"
+import ButtonBar from "../components/ButtonBar"
+import TextBar from "../components/TextBar"
+import RoundedButton from "../components/RoundedButton"
+import ScrollList from '../components/ScrollList'
 import NexaColours, {
   tableRowOdd,
   tableRowEven,
@@ -24,20 +23,40 @@ import {methods} from '../api/api'
 import mockBatch from "../Mocked/batch.json";
 import BatchStates from "../constants/BatchStates.js";
 
+const headers = [
+  {
+    caption: "Product",
+    source: "productName",
+    flex: 4
+  },
+  {
+    caption: "Batch Code",
+    source: "code",
+    flex: 3
+  },
+  {
+    caption: "Quantity",
+    source: "quantity",
+    flex: 2
+  },
+  {
+    caption: "Status",
+    source: "state",
+    flex: 2
+  }
+]
+
 export default class BatchSelectScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
       batchList: null,
-      selectedItem: 0,
+      selectedIndex: -1,
+      selectedItemID: 0,
       loading: false,
       continueDisabled: false
     };
     this.mocked = this.props.screenProps.mocked
-        
-    Dimensions.addEventListener('change', () => {
-      this.onRefresh()
-    })
   }
 
   static navigationOptions = {
@@ -69,11 +88,11 @@ export default class BatchSelectScreen extends Component {
       });
   }
 
-  rowClicked = item => {
-    const selectedItem = item.batchID;
+  listOnPress = (index, item) => {
+    const selectedItemID = item.batchID;
     this.batch = item;
     const continueDisabled = item.startErrors > 0;
-    this.setState({ selectedItem, continueDisabled });
+    this.setState({ selectedItemID, continueDisabled, selectedIndex: index });
   };
 
   detailClicked = () => {
@@ -162,52 +181,46 @@ export default class BatchSelectScreen extends Component {
     }
   };
 
-  onRefresh = () => {
+  listOnRefresh = () => {
     this.fetchBatchList(this.locationCode)
+  }
+
+  transform = (row) => {
+    const newRow = {
+      ...row,
+      state: BatchStates[row.status]
+    }
+    return newRow
   }
 
   render() {
     const batchData = this.state.batchList;
     let batchList = null;
     let contDisabled = true;
-    if (this.locationCode) {
-      if (batchData) {
-        if (batchData.length > 0) {
-          batchList = batchData.map((batch, index) => {
-            const rowStyle = index & 1 ? tableRowOdd : tableRowEven;
-            const selected = batch.batchID === this.state.selectedItem;
-            const style = selected ? tableRowSelected : rowStyle;
-            return (
-              <BatchItem
-                key={index}
-                item={batch}
-                rowClicked={this.rowClicked}
-                selected={selected}
-                rowStyle={style}
-              />
-            );
-          });
-        } else {
-          batchList = (
-            <TextBar backColor={NexaColours.AlertYellow} style={{marginTop: 12}}>
-              There are no Batches available for the selected location.
-            </TextBar>
-          );
-        }
-      }
-    } else {
+    if (!this.locationCode) {
       batchList = (
         <TextBar backColor={NexaColours.AlertOrange} style={{marginTop: 12}}>
           There is no Location set
         </TextBar>
-      );
+      )
+    } else {
+      batchList = <ScrollList
+        headers={headers} data={batchData}
+        selectedIndex={this.state.selectedIndex}
+        onPress={this.listOnPress}
+        noData='No Batches are available'
+        loading={this.state.loading}
+        onRefresh={this.listOnRefresh}
+        topMargin={false}
+        transform={this.transform}
+      />
     }
-    contDisabled = this.state.continueDisabled || this.state.selectedItem == 0;
+    contDisabled = this.state.continueDisabled || this.state.selectedItemID == 0;
     return (
       <View style={{ flex: 1 }}>
         <ButtonBar justify="flex-end">
           <RoundedButton
-            disabled={this.state.selectedItem == 0}
+            disabled={this.state.selectedItemID == 0}
             title="Details"
             onPress={this.detailClicked}
           />
@@ -217,15 +230,7 @@ export default class BatchSelectScreen extends Component {
             onPress={this.continueClicked}
           />
         </ButtonBar>
-        <View style={{ flex: 1 }}>
-          <BatchHeader />
-          <ScrollView
-            style={{ backgroundColor: NexaColours.GreyLight }}
-            refreshControl={<RefreshControl refreshing={this.state.loading} onRefresh={this.onRefresh} />}
-          >
-            {batchList}
-          </ScrollView>
-        </View>
+        {batchList}
       </View>
     );
   }

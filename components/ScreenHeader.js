@@ -1,16 +1,8 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Button, ScrollView, Text, RefreshControl } from 'react-native';
-import mockedLocations from '../Mocked/locations.json'
-import LocationItem from '../components/LocationItem';
-import NexaColours, { tableRowEven, tableRowOdd, tableRowSelected } from '../constants/NexaColours';
-import { getLocations } from '../api/api';
-import endpoints from '../api/endpoints';
-import Settings from '../Store/Settings'
+import { StyleSheet, View, Text } from 'react-native';
+import NexaColours from '../constants/NexaColours';
 import PropTypes from 'prop-types'
-import ButtonBar from '../components/ButtonBar'
-import TextBar from '../components/TextBar'
 import RoundedButton from '../components/RoundedButton'
-import {methods} from '../api/api'
 
 const styles = StyleSheet.create(
   {
@@ -26,7 +18,7 @@ const styles = StyleSheet.create(
   }
 )
 
-export default class ScreenHeader extends React.Component {
+export default class ScreenHeader extends Component {
   constructor(props) {
     super(props)
   }

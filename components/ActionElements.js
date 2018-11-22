@@ -165,14 +165,16 @@ export class GenericEntry extends PureComponent {
   }
 
   static defaultProps = {
-    enabled: true
+    enabled: true,
+    autoFocus: false
   }
 
   static propTypes = {
     entry: PropTypes.any.isRequired,
     value: PropTypes.any,
     onChange: PropTypes.func,
-    enabled: PropTypes.bool
+    enabled: PropTypes.bool,
+    autoFocus: PropTypes.bool,
   }
 
   onChangeText = (value) => {
@@ -208,7 +210,7 @@ export class GenericEntry extends PureComponent {
           onBlur={() => this.setState({editing: false})}
           underlineColorAndroid='transparent'
           editable={this.props.enabled}
-          autoFocus={true}
+          autoFocus={this.props.autoFocus}
           keyboardType={keyboardType}
         />
         {suffix && <Text style={styles.inputSuffix}>{suffix}</Text>}
@@ -272,14 +274,16 @@ export class ActionEntry extends PureComponent {
   }
 
   static defaultProps = {
-    enabled: true
+    enabled: true,
+    autoFocus: false
   }
 
   static propTypes = {
     entry: PropTypes.any.isRequired,
     value: PropTypes.any,
     onChange: PropTypes.func,
-    enabled: PropTypes.bool
+    enabled: PropTypes.bool,
+    autoFocus: PropTypes.bool
   }
 
   render() {

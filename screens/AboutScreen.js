@@ -5,7 +5,7 @@ import ScreenHeader from '../components/ScreenHeader'
 import ButtonBar from '../components/ButtonBar'
 import RoundedButton from '../components/RoundedButton'
 import PropList from '../components/PropList'
-import Expo from 'expo'
+import {Constants} from 'expo'
 
 export default class AboutScreen extends PureComponent {
 
@@ -19,14 +19,19 @@ export default class AboutScreen extends PureComponent {
       {display: 'Name', source: 'name'},
       {display: 'Description', source: 'description'},
       {display: 'Version', source: 'version'},
+      {display: 'SDK Version', source: 'sdkVersion'},
     ]
+    data = {
+      ...Constants.manifest,
+
+    }
     return (
       <View style={{flexDirection: 'column', flex: 1}}>
         <ScreenHeader
           title='About'
           onCancel={() => nav.navigate('BatchList')}
         />
-        <PropList headers={headers} data={Expo.Constants.manifest} />
+        <PropList headers={headers} data={Constants.manifest} />
       </View>
     )
   }

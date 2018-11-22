@@ -17,7 +17,6 @@ const styles = StyleSheet.create(
   }
 )
 
-
 export default class DevScreen extends PureComponent {
   constructor(props) {
     super(props)
@@ -36,6 +35,14 @@ export default class DevScreen extends PureComponent {
     methods.clearCache().then(() => this.nav.navigate('BatchList'))
   }
 
+  testScreen = () => {
+    this.nav.navigate("Test")
+  }
+
+  testScreen2 = () => {
+    this.nav.navigate("Test2")
+  }
+
   render() {
     return (
       <View style={{flexDirection: 'column', flex: 1}}>
@@ -50,6 +57,8 @@ export default class DevScreen extends PureComponent {
           <RoundedButton style={styles.button} title='Clear Location' onPress={() => {Settings.removeItem('location').then(() => Expo.Updates.reload())}}/>
           <RoundedButton style={styles.button} title='Reset Location & Equipment States' onPress={this.resetHardware}/>
           <RoundedButton style={styles.button} title='Clear Batch Cache' onPress={this.clearCache}/>
+          <RoundedButton style={styles.button} title='Show Test Screen' onPress={this.testScreen}/>
+          <RoundedButton style={styles.button} title='Show Test Screen 2' onPress={this.testScreen2}/>
         </View>
       </View>
     )

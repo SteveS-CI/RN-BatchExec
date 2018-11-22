@@ -57,46 +57,19 @@ const distinctEntry4 = {
   }
 }
 
-const ListHeaders = [
-  {
-    caption: "Column One",
-    source: "valueA",
-    width: "20%"
-  },
-  {
-    caption: "Column Two",
-    source: "valueB",
-    width: "25%"
-  },
-  {
-    caption: "Column Three",
-    source: "valueC",
-    width: "30%"
-  }
-]
-
-const ListData = [
-  {
-    valueA: "One",
-    valueB: "Two",
-    ValueC: "Three"
-  },
-  {
-    valueA: "First",
-    valueB: "Second",
-    ValueC: "Third"
-  },
-  {
-    valueA: "Primary",
-    valueB: "Secondary",
-    ValueC: "Tertiary"
-  }
-]
-
 export default class TestScreen extends React.Component {
   constructor(props) {
     super(props)
-    this.state = { text: '', value: '123', distinctValue: '3', signing: false, approving: false, commenting: false }
+    this.state = {
+      text: '',
+      value: '123',
+      distinctValue: '3',
+      signing: false,
+      approving: false,
+      commenting: false,
+      selectedRow: 0,
+      scrollLoading: false
+    }
   }
 
   static navigationOptions = {
@@ -120,6 +93,10 @@ export default class TestScreen extends React.Component {
     this.setState({commenting: false})
   }
 
+  onScrollRefresh = () => {
+    this.setState({scrollLoading: true})
+  }
+
   render() {
     const buttons = [ButtonStyles.Back, ButtonStyles.No, ButtonStyles.Yes]
     return (
@@ -131,24 +108,29 @@ export default class TestScreen extends React.Component {
           <RoundedButton title='Sign Test' onPress={() => this.setState({signing: true})}/>
           <RoundedButton title='Approval Test' onPress={() => this.setState({approving: true})}/>
           <RoundedButton title='Comment Test' onPress={() => this.setState({commenting: true})}/>
-          <ScrollList headers={ListHeaders} data={ListData}/>
+          <ScrollList
+            headers={ListHeaders}
+            data={ListData}
+            onPress={(index, data) => this.setState({selectedRow: index})}
+            selectedIndex={this.state.selectedRow}
+            loading={this.state.scrollLoading}
+            onRefresh={this.onScrollRefresh}
+          />
           <ActionEntry
             value={this.state.value}
             entry={{}}
             onChange={(value) => this.setState({value})}
-            keyboardType='default'
           />
           <ActionEntry
             value={this.state.value}
-            entry={{label: 'Label'}}
+            entry={{label: 'Label', entryType: 'Decimal'}}
             onChange={(value) => this.setState({value})}
-            keyboardType='numeric'
+            autoFocus={true}
           />
           <ActionEntry
             value={this.state.value}
             entry={{suffix: 'Suffix'}}
             onChange={(value) => this.setState({value})}
-            keyboardType='email-address'
           />
           <ActionEntry
             value={this.state.value}
