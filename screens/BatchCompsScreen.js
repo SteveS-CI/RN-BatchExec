@@ -1,6 +1,6 @@
 import React from 'react';
-import NexaColours from '../constants/NexaColours';
 import ScrollList from '../components/ScrollList'
+import i18n from 'i18n-js'
 
 const headers = [
   {
@@ -31,9 +31,11 @@ const headers = [
 ]
 
 export default class BatchCompsScreen extends React.Component {
-  static navigationOptions = {
-    title: 'Components',
-  };
+  static navigationOptions = () => {
+    return {
+      title: i18n.t('screens.batchDetail.components')
+    }
+  }
 
   transform = (data) => {
     const newData = {

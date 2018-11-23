@@ -1,17 +1,15 @@
 import React from 'react';
-import { StyleSheet, ScrollView, Switch, View, Text, TextInput, TouchableHighlight, Button, Image } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import RoundedButton from '../components/RoundedButton'
 import ActionButtons from '../components/ActionButtons'
 import ButtonStyles from '../constants/ButtonStyles'
 import NexaColours from '../constants/NexaColours'
-import ButtonBar from '../components/ButtonBar'
 import FileContent from '../components/FileContent'
 import ActionImage from '../components/ActionImage'
 import TextBar from '../components/TextBar'
 import { ActionTitle, ActionPrompt, ActionEntry } from '../components/ActionElements'
 import Signature from '../components/Signature'
 import Comments from '../components/Comments'
-import ScrollList from '../components/ScrollList'
 
 const stringEntry = {
   label: 'Label',
@@ -66,9 +64,7 @@ export default class TestScreen extends React.Component {
       distinctValue: '3',
       signing: false,
       approving: false,
-      commenting: false,
-      selectedRow: 0,
-      scrollLoading: false
+      commenting: false
     }
   }
 
@@ -93,12 +89,8 @@ export default class TestScreen extends React.Component {
     this.setState({commenting: false})
   }
 
-  onScrollRefresh = () => {
-    this.setState({scrollLoading: true})
-  }
-
   render() {
-    const buttons = [ButtonStyles.Back, ButtonStyles.No, ButtonStyles.Yes]
+    const buttons = [ButtonStyles.Previous, ButtonStyles.No, ButtonStyles.Yes]
     return (
       <View style={{flexDirection: 'column', flex: 1}}>
         <ActionTitle text='The Action Name'/>
@@ -108,14 +100,6 @@ export default class TestScreen extends React.Component {
           <RoundedButton title='Sign Test' onPress={() => this.setState({signing: true})}/>
           <RoundedButton title='Approval Test' onPress={() => this.setState({approving: true})}/>
           <RoundedButton title='Comment Test' onPress={() => this.setState({commenting: true})}/>
-          <ScrollList
-            headers={ListHeaders}
-            data={ListData}
-            onPress={(index, data) => this.setState({selectedRow: index})}
-            selectedIndex={this.state.selectedRow}
-            loading={this.state.scrollLoading}
-            onRefresh={this.onScrollRefresh}
-          />
           <ActionEntry
             value={this.state.value}
             entry={{}}

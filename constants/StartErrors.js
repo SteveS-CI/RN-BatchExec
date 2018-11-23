@@ -1,22 +1,14 @@
-export default StartErrors = [
-  "Another batch (stage) is already in progress at this location.",
-  "Cannot continue batch until dependent stage(s) have completed.",
-  "Required equipment not present.",
-  "Equipment dirty (incompatible product).",
-  "Equipment is unserviceable.",
-  "Location is unavailable.",
-  "Location is dirty.",
-  "Location is out of order.",
-  "Components have not been dispensed."
-]
+import i18n from 'i18n-js'
 
 export function GetBatchStartErrors(value) {
-  if (value==0) return "None"
+  if (value==0) return ""
   var ctr = 0
   var errors = ""
   for (ctr; ctr < 9; ctr++) {
     if ((2**ctr) & value) {
-      errors = errors.concat(StartErrors[ctr], "\n")
+      const err = i18n.t('startErrors.' + ctr)
+      console.log(err)
+      errors = errors.concat(err, "\n")
     }
   } 
   return errors.trim()

@@ -3,18 +3,22 @@ import { View, ScrollView, Text, Button, RefreshControl } from "react-native";
 import NexaColours, { tableRowEven, tableRowOdd, tableRowSelected } from "../constants/NexaColours";
 import ButtonBar from '../components/ButtonBar'
 import RoundedButton from "../components/RoundedButton";
-import NodeItem from "../components/NodeItem";
-import LoadingOverlay from '../components/LoadingOverlay'
 import TextBar from '../components/TextBar'
+import ScrollList from '../components/ScrollList'
 import { methods } from '../api/api'
 
 export default class NodeSelectScreen extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { batchData: null, selectedItem: 0, loading: false };
+    this.state = {
+      batchData: null,
+      selectedIndex: -1,
+      selectedItemID: 0,
+      loading: false
+    };
   }
 
-  static navigationOptions = { 
+  static navigationOptions = {
     title: "Node Selection",
     headerLeft: null
   };
@@ -26,10 +30,12 @@ export default class NodeSelectScreen extends React.Component {
     this.setState({ batchData })
   }
 
-  rowClicked = node => {
-    const procID = node.procID;
+  rowClicked = (index, node) => {
     this.node = node;
-    this.setState({ selectedItem: procID });
+    this.setState({
+      selectedItemID: node.procID,
+      selectedIndex: index
+    });
   };
 
   selectClicked = () => {
@@ -39,7 +45,7 @@ export default class NodeSelectScreen extends React.Component {
       this.setState({ loading: true });
       const postData = {
         batchID: this.state.batchData.batchID,
-        procID: this.node.procID,
+        procID: this.state.selectedItemID,
         location: this.locationCode
       }
       methods.nextProc(postData)
@@ -69,57 +75,46 @@ export default class NodeSelectScreen extends React.Component {
     }
   };
 
-  onRefresh = () => {
-
-  }
-
   render() {
     const nav = this.props.navigation
     const batchData = this.state.batchData
-    let nodeList = null
-    let level = ''
     if (batchData) {
-      level = ['', 'Stages', 'Operations', 'Actions'][this.state.batchData.nodeDepth]
-      nodeList = batchData.nodes.map((node, index) => {
-        const rowStyle = index & 1 ? tableRowOdd : tableRowEven;
-        const selected = node.procID === this.state.selectedItem;
-        const style = selected ? tableRowSelected : rowStyle;
-        return (
-          <NodeItem
-            key={index}
-            item={node}
-            rowClicked={this.rowClicked}
-            selected={selected}
-            rowStyle={style}
-          />
-        );
-      });
-    }
-    return (
-      <View style={{ flex: 1 }}>
-        <ButtonBar justify="space-between">
-          <RoundedButton
-            backColor={NexaColours.AlertYellow}
-            title="Cancel"
-            onPress={() => {
-              nav.navigate("BatchList");
-            }}
-          />
-          <TextBar backColor={NexaColours.CyanAccent} style={{alignSelf: 'center'}}>Select one of the following {level}:</TextBar>
-          <RoundedButton
-            backColor={NexaColours.AlertGreen}
-            title="Select"
-            onPress={this.selectClicked}
-            disabled={this.state.selectedItem == 0}
-          />
-        </ButtonBar>
+      const depth = this.state.batchData.nodeDepth
+      const name = ['Stage', 'Operation', 'Action'][depth - 1]
+      const headers = [
+        { caption: "ID", source: "procID", flex: 1 },
+        { caption: name + " Name", source: "name", flex: 2 },
+        { caption: "Notes", source: "notes", flex: 4 }
+      ]
+      const level = ['Stages', 'Operations', 'Actions'][depth - 1]
+      return (
         <View style={{ flex: 1 }}>
-          <ScrollView>
-            {nodeList}
-          </ScrollView>
+          <ButtonBar justify="space-between">
+            <RoundedButton
+              backColor={NexaColours.AlertYellow}
+              title="Cancel"
+              onPress={() => {
+                nav.navigate("BatchList");
+              }}
+            />
+            <TextBar backColor={NexaColours.CyanAccent} style={{ alignSelf: 'center' }}>Select one of the following {level}:</TextBar>
+            <RoundedButton
+              backColor={NexaColours.AlertGreen}
+              title="Select"
+              onPress={this.selectClicked}
+              disabled={this.state.selectedItemID == 0}
+            />
+          </ButtonBar>
+          <ScrollList
+            headers={headers}
+            data={batchData.nodes}
+            selectedIndex={this.state.selectedIndex}
+            onPress={this.rowClicked}
+          />
         </View>
-        <LoadingOverlay loading={this.state.loading} />
-      </View>
-    );
+      )
+    } else {
+      return null
+    }
   }
 }

@@ -1,18 +1,24 @@
 import React, { Component } from 'react';
-import { View, TouchableHighlight, TouchableOpacity, Image, StyleSheet, NativeModules, findNodeHandle } from 'react-native';
-import Expo from 'expo';
-
+import { View, TouchableOpacity, Image, StyleSheet, findNodeHandle, NativeModules } from 'react-native';
+//import {NativeModules} from 'expo';
+import i18n from 'i18n-js'
 import Settings from '../Store/Settings'
 import NexaIcon from '../assets/images/nexa-icon.png'
 import {BackHandler} from 'react-native'
 
-const UIManager = NativeModules.UIManager;
-
 export default class DropdownMenu extends Component {
+  constructor(props) {
+    super(props)
+    this.items = []
+    this.props.data.labels.map(item => {
+      this.items.push(i18n.t('menus.dropdown.' + item))
+    })
+  }
+
   onMenuPressed = (labels) => {
     const { navigation } = this.props;
 
-    UIManager.showPopupMenu(
+    NativeModules.UIManager.showPopupMenu(
       findNodeHandle(this.menu),
       labels,
       () => {},
@@ -38,8 +44,6 @@ export default class DropdownMenu extends Component {
   };
 
   render() {
-    const labels = this.props.data.labels;
-
     return (
       <View style={{flexDirection: 'row'}}>
         <View>
@@ -51,7 +55,7 @@ export default class DropdownMenu extends Component {
               height: StyleSheet.hairlineWidth,
             }}
           />
-          <TouchableOpacity onPress={() => this.onMenuPressed(labels)}>
+          <TouchableOpacity onPress={() => this.onMenuPressed(this.items)}>
             <Image source={NexaIcon} style={{height: 40, width: 40, marginLeft: 8}}/>
           </TouchableOpacity>
         </View>

@@ -8,14 +8,7 @@ import SwitchSetting from '../components/SwitchSetting'
 import TextSetting from '../components/TextSetting'
 import PickerSetting from '../components/PickerSetting'
 import ButtonBar from '../components/ButtonBar'
-
-const languages = [
-  { label: "English", value: 'en' },
-  { label: "French", value: 'fr' },
-  { label: "German", value: 'de' },
-  { label: "Italian", value: 'it' },
-  { label: "Spanish", value: 'es' },
-]
+import i18n from 'i18n-js'
 
 export default class SettingsScreen extends React.Component {
   constructor(props) {
@@ -23,12 +16,20 @@ export default class SettingsScreen extends React.Component {
     this.state = { settings: null }
   }
 
-  static navigationOptions = ({ navigation }) => {
-    return {
-      title: 'Settings'
-    };
-  }
-
+  languages = [
+    {
+      label: i18n.t("languages.english"),
+      value: 'en'
+    },
+    {
+      label: i18n.t("languages.french"),
+      value: 'fr'
+    },
+    {
+      label: i18n.t("languages.spanish"),
+      value: 'es' },
+  ]
+  
   componentDidMount() {
     Settings.readSettings().then((result) => {
       if (!result) {
@@ -79,6 +80,7 @@ export default class SettingsScreen extends React.Component {
     let settings = this.state.settings
     settings.language = value
     this.setState({ settings })
+    i18n.locale = value
   }
 
   render() {
@@ -90,25 +92,25 @@ export default class SettingsScreen extends React.Component {
             onCancel={() => this.update(false)}
             onOK={() => this.update(true)}
             okCaption='Save'
-            title='Settings'
+            title={i18n.t('screens.settings.title')}
           />
           <ScrollView style={{ borderTopWidth: 1 }}>
             <TextSetting
               value={settings.apiUrl}
               onValueChange={this.onUrlChange}
-              title='API Url'
+              title={i18n.t('screens.settings.api')}
             />
             <SwitchSetting
               value={settings.useDarkTheme}
               onValueChange={this.onThemeChange}
-              title='Use Dark Theme'
-              subTitle='Show darker backgrounds with light text'
+              title={i18n.t('screens.settings.theme')}
+              subTitle={i18n.t('screens.settings.themeDescription')}
             />
             <PickerSetting
               value={settings.language}
               onValueChange={this.onLangChange}
-              title='Language'
-              values={languages}
+              title={i18n.t('screens.settings.language')}
+              values={this.languages}
             />
           </ScrollView>
         </View>

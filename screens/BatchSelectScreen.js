@@ -1,50 +1,15 @@
 import React, { Component } from "react";
-import {
-  StyleSheet,
-  View,
-  Button,
-  ScrollView,
-  TouchableOpacity,
-  Text,
-  RefreshControl
-} from "react-native"
+import { View } from "react-native"
+import i18n from 'i18n-js';
 import mockedBatchList from "../Mocked/batchlist.json"
 import ButtonBar from "../components/ButtonBar"
 import TextBar from "../components/TextBar"
 import RoundedButton from "../components/RoundedButton"
 import ScrollList from '../components/ScrollList'
-import NexaColours, {
-  tableRowOdd,
-  tableRowEven,
-  tableRowSelected
-} from "../constants/NexaColours";
+import NexaColours from "../constants/NexaColours";
 import Settings from "../Store/Settings";
 import {methods} from '../api/api'
 import mockBatch from "../Mocked/batch.json";
-import BatchStates from "../constants/BatchStates.js";
-
-const headers = [
-  {
-    caption: "Product",
-    source: "productName",
-    flex: 4
-  },
-  {
-    caption: "Batch Code",
-    source: "code",
-    flex: 3
-  },
-  {
-    caption: "Quantity",
-    source: "quantity",
-    flex: 2
-  },
-  {
-    caption: "Status",
-    source: "state",
-    flex: 2
-  }
-]
 
 export default class BatchSelectScreen extends Component {
   constructor(props) {
@@ -59,9 +24,34 @@ export default class BatchSelectScreen extends Component {
     this.mocked = this.props.screenProps.mocked
   }
 
-  static navigationOptions = {
-    title: "Batch Selection",
+  static navigationOptions = () => {
+    return {
+      title: i18n.t('screens.batchList.title')
+    }
   };
+
+  headers = [
+    {
+      caption: i18n.t('batchList.header.product'),
+      source: "product",
+      flex: 4
+    },
+    {
+      caption: i18n.t("batchList.header.batchCode"),
+      source: "code",
+      flex: 2
+    },
+    {
+      caption: i18n.t("batchList.header.quantity"),
+      source: "quantity",
+      flex: 2
+    },
+    {
+      caption: i18n.t("batchList.header.status"),
+      source: "state",
+      flex: 2
+    }
+  ]
 
   componentDidMount() {
     if (this.mocked) {
@@ -74,6 +64,7 @@ export default class BatchSelectScreen extends Component {
         }
       });
     }
+    console.log(i18n.locale)
   }
 
   fetchBatchList(locationCode) {
@@ -115,7 +106,7 @@ export default class BatchSelectScreen extends Component {
             // (all screens are rendered at once)
             this.props.navigation.navigate("BatchDetail", {
               batch: {...data,
-                state: BatchStates[data.status]
+                state: i18n.t("enums.batchStatus." + data.status)
               },
               locationCode: this.locationCode
             });
@@ -188,7 +179,8 @@ export default class BatchSelectScreen extends Component {
   transform = (row) => {
     const newRow = {
       ...row,
-      state: BatchStates[row.status]
+      product: row.productCode + '\n' + row.productName,
+      state: i18n.t("enums.batchStatus." + row.status)
     }
     return newRow
   }
@@ -205,7 +197,7 @@ export default class BatchSelectScreen extends Component {
       )
     } else {
       batchList = <ScrollList
-        headers={headers} data={batchData}
+        headers={this.headers} data={batchData}
         selectedIndex={this.state.selectedIndex}
         onPress={this.listOnPress}
         noData='No Batches are available'
@@ -221,12 +213,12 @@ export default class BatchSelectScreen extends Component {
         <ButtonBar justify="flex-end">
           <RoundedButton
             disabled={this.state.selectedItemID == 0}
-            title="Details"
+            title={i18n.t("buttons.caption.details")}
             onPress={this.detailClicked}
           />
           <RoundedButton
             disabled={contDisabled}
-            title="Continue"
+            title={i18n.t("buttons.caption.continue")}
             onPress={this.continueClicked}
           />
         </ButtonBar>

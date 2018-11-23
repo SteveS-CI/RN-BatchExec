@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import ScrollList from '../components/ScrollList';
+import i18n from 'i18n-js'
 
 const headers = [
   {
@@ -25,8 +26,10 @@ const headers = [
 ]
 
 export default class BatchCompsScreen extends Component {
-  static navigationOptions = {
-    title: 'Equipment',
+  static navigationOptions = () => {
+    return {
+      title: i18n.t('screens.batchDetail.equipment')
+    }
   };
 
   transform = (data) => {

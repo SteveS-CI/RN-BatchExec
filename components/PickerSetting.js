@@ -29,7 +29,7 @@ export default class PickerSetting extends PureComponent {
     const item = this.props.values.find((item) => {return item.value === this.props.value})
     return (
       <View style={{ flexDirection: 'row', justifyContent: 'space-between', borderWidth: StyleSheet.hairlineWidth, padding: 8, alignItems: 'center' }}>
-        <Text>{this.props.title}</Text>
+        <Text style={{fontSize:16}}>{this.props.title}</Text>
         <Picker prompt={this.props.title} 
                 selectedValue={this.state.value} onValueChange={this.submitChange}
                 style={{width: 150}}>

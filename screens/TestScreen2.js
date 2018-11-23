@@ -1,7 +1,7 @@
 import React from 'react';
-import {View, Dimensions } from 'react-native';
-import ActionButtons from '../components/ActionButtons'
+import {View } from 'react-native';
 import ButtonStyles from '../constants/ButtonStyles'
+import ActionButtons from '../components/ActionButtons'
 import ScrollList from '../components/ScrollList'
 
 const ListHeaders = [
@@ -65,7 +65,7 @@ export default class TestScreen extends React.Component {
   }
 
   render() {
-    const buttons = [ButtonStyles.Back, ButtonStyles.No, ButtonStyles.Yes]
+    const buttons = [ButtonStyles.Previous, ButtonStyles.No, ButtonStyles.Yes]
     return (
       <View style={{flexDirection: 'column', flex: 1}}>
         <ActionButtons onPress={this.onPress} buttons={buttons}/>

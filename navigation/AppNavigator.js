@@ -1,5 +1,5 @@
-import React from 'react';
-import { Text, Image, Button, TouchableHighlight } from 'react-native';
+import React from 'react'
+import i18n from 'i18n-js'
 import {
   createStackNavigator,
   createDrawerNavigator,
@@ -12,7 +12,6 @@ import {
 import NexaColours from '../constants/NexaColours'
 
 import BatchSelectScreen from '../screens/BatchSelectScreen';
-import Processes from '../screens/Processes'
 import NodeSelectScreen from '../screens/NodeSelectScreen';
 import ActionDetailScreen from '../screens/ActionDetailScreen';
 import NodeDetailScreen from '../screens/NodeDetailScreen';
@@ -26,12 +25,8 @@ import TestScreen from '../screens/TestScreen'
 import TestScreen2 from '../screens/TestScreen2'
 import AboutScreen from '../screens/AboutScreen'
 import DevScreen from '../screens/DevScreen'
-
 import DropdownMenu from '../components/DropdownMenu';
-import RoundedButton from '../components/RoundedButton'
-
 import LocationHeader from '../components/LocationHeader'
-import { ActionButton } from '../components/ActionButtons';
 
 const screenHeaderStyling = {
   headerTintColor: NexaColours.GreyLight,
@@ -94,7 +89,7 @@ const MainNav = createStackNavigator(
           const location = navigation.getParam('location')
           return {
             ...screenHeaderStyling,
-            title: 'Batch Details'
+            title: i18n.t('screens.batchDetail.title')
           }
         } else {
           return screenHeaderStyling
@@ -117,8 +112,16 @@ const DropdownNav = createSwitchNavigator(
   }
 )
 
+// pointers to menus.dropdown.x
 const dropDownItems = {
-  labels: ['Change Location','Settings','Login','Exit', 'About','Developer Tools'],
+  labels: [
+    'changeLocation',
+    'settings',
+    'login',
+    'exit',
+    'about',
+    'developer'
+  ],
   actions: ['Location','Settings','Login','EXIT', 'About', 'Dev']
 }
 
@@ -129,7 +132,7 @@ export default AppNavigator = createStackNavigator(
   {
     headerMode: "float",
     navigationOptions: ({ navigation, props }) => ({
-      title: 'Batch Execution',
+      title: i18n.t('screens.main.title'),
       headerTintColor: NexaColours.Blue,
       headerStyle: { backgroundColor: NexaColours.GreyLight },
       headerTitleStyle: { fontFamily: 'euro-demi', fontWeight: 'normal', fontSize: 22 },

@@ -3,6 +3,7 @@ import {TouchableOpacity, Text, View, StyleSheet} from 'react-native'
 import PropTypes from 'prop-types'
 import {optimalForeColor} from '../Utils/utils'
 import NexaColours from '../constants/NexaColours'
+import i18n from 'i18n-js'
 import ButtonStyles, {ButtonStyleProps} from '../constants/ButtonStyles'
 
 const styles = 
@@ -45,7 +46,7 @@ export class ActionButton extends PureComponent {
     const textStyle = StyleSheet.flatten([styles.text, {color: optimalForeColor(backgroundColor)}])
     return (
       <TouchableOpacity disabled={this.props.disabled} onPress={() => this.props.onPress()} style={viewStyle}>
-        <Text style={textStyle}>{this.props.buttonStyle.display}</Text>
+        <Text style={textStyle}>{i18n.t('buttons.caption.' + this.props.buttonStyle.name)}</Text>
       </TouchableOpacity>
     )
   }

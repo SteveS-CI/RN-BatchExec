@@ -81,7 +81,7 @@ export default class ActionDetailScreen extends Component {
 
   createButtons(node) {
     var buttons = []
-    if (node.backable) buttons.push(ButtonStyles.Back)
+    if (node.backable) buttons.push(ButtonStyles.Previous)
     switch (node.status) {
       case 'PendingSignature':
         buttons.push(ButtonStyles.Sign)
@@ -107,7 +107,7 @@ export default class ActionDetailScreen extends Component {
 
   onPress = (name) => {
     switch (name) {
-      case 'back':
+      case 'previous':
         this.setState({loading: true})
         const postData = {
           batchID: this.batchData.batchID,

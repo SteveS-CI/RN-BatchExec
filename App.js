@@ -2,9 +2,11 @@ import React from 'react';
 import {StyleSheet, View, Alert } from 'react-native';
 import {ScreenOrientation, Updates, AppLoading, Asset, Font, Icon } from 'expo';
 import AppNavigator from './navigation/AppNavigator';
-
+import i18n from 'i18n-js';
 import Settings from './Store/Settings'
 import api, {methods} from './api/api';
+import * as Translations from './constants/translations'
+import ButtonStyles from './constants/ButtonStyles';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -59,7 +61,13 @@ export default class App extends React.Component {
         'euro-ext': require('./assets/fonts/Eurostile-Extended.otf'),
         'euro-std': require('./assets/fonts/Eurostile-Regular.otf')
       }),
-      Settings.readSettings().then((settings) => {api.defaults.baseURL = settings.apiUrl})
+      Settings.readSettings().then((settings) => {
+        api.defaults.baseURL = settings.apiUrl
+
+        i18n.fallbacks = true;
+        i18n.translations = Translations;
+        i18n.locale = settings.language
+      }),
     ]);
   };
 
