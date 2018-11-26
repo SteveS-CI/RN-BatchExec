@@ -84,7 +84,7 @@ export default class LocationSelectScreen extends Component {
       <View style={{ flex: 1 }}>
         <ScreenHeader
           title={i18n.t('screens.locations.title')}
-          okCaption={i18n.t('screens.locations.okCaption')}
+          okCaption={i18n.t('button.captions.select')}
           onOK={this.selectClicked}
           onCancel={() => { this.props.navigation.navigate('BatchList') }}
           okDisabled={this.state.selectedItemID == 0}

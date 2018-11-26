@@ -46,7 +46,7 @@ export class ActionButton extends PureComponent {
     const textStyle = StyleSheet.flatten([styles.text, {color: optimalForeColor(backgroundColor)}])
     return (
       <TouchableOpacity disabled={this.props.disabled} onPress={() => this.props.onPress()} style={viewStyle}>
-        <Text style={textStyle}>{i18n.t('buttons.caption.' + this.props.buttonStyle.name)}</Text>
+        <Text style={textStyle}>{i18n.t('button.captions.' + this.props.buttonStyle.name)}</Text>
       </TouchableOpacity>
     )
   }

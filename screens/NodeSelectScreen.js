@@ -1,7 +1,7 @@
 import React from "react";
-import { View, ScrollView, Text, Button, RefreshControl } from "react-native";
+import { View } from "react-native";
 import i18n from 'i18n-js'
-import NexaColours, { tableRowEven, tableRowOdd, tableRowSelected } from "../constants/NexaColours";
+import NexaColours from "../constants/NexaColours";
 import ButtonBar from '../components/ButtonBar'
 import RoundedButton from "../components/RoundedButton";
 import TextBar from '../components/TextBar'
@@ -67,7 +67,8 @@ export default class NodeSelectScreen extends React.Component {
           // depending on data shape, navigate to the appropriate screen, passing batchData
           if (batchData.nodes.length > 1) {
             // Multiple nodes; stay on this screen
-            this.setState({ batchData, selectedItem: 0 })
+            this.setState({ batchData, selectedItemID: 0, selectedIndex: -1 })
+            nav.navigate("NodeSelect", { batchData, locationCode: this.locationCode });
           } else {
             // Single nodes
             if (batchData.nodeDepth === 3) {
@@ -92,27 +93,28 @@ export default class NodeSelectScreen extends React.Component {
     const batchData = this.state.batchData
     if (batchData) {
       const depth = this.state.batchData.nodeDepth
-      const name = ['Stage', 'Operation', 'Action'][depth - 1]
+      const name = i18n.t('node.names.' + ['stage', 'operation', 'action'][depth - 1], {count: 1})
       const headers = [
-        { caption: "ID", source: "procID", flex: 1 },
-        { caption: name + " Name", source: "name", flex: 2 },
-        { caption: "Notes", source: "notes", flex: 4 }
+        { caption: i18n.t('nodeSelect.header.id'), source: "procID", flex: 1 },
+        { caption: i18n.t('nodeSelect.header.name', {name}), source: "name", flex: 2 },
+        { caption: i18n.t('nodeSelect.header.notes'), source: "notes", flex: 4 }
       ]
-      const level = ['Stages', 'Operations', 'Actions'][depth - 1]
+      const level = i18n.t('node.names.' + ['stage', 'operation', 'action'][depth - 1], {count: 2})
+      const prompt = i18n.t('screens.nodeSelect.prompt', {name: level})
       return (
-        <View style={{ flex: 1 }}>
+        <View style={{ flex: 1}}>
           <ButtonBar justify="space-between">
             <RoundedButton
               backColor={NexaColours.AlertYellow}
-              title="Cancel"
+              title={i18n.t('button.captions.cancel')}
               onPress={() => {
                 nav.navigate("BatchList");
               }}
             />
-            <TextBar backColor={NexaColours.CyanAccent} style={{ alignSelf: 'center' }}>Select one of the following {level}:</TextBar>
+            <TextBar backColor={NexaColours.CyanAccent} style={{alignSelf: 'center'}}>{prompt}</TextBar>
             <RoundedButton
               backColor={NexaColours.AlertGreen}
-              title="Select"
+              title={i18n.t('button.captions.select')}
               onPress={this.selectClicked}
               disabled={this.state.selectedItemID == 0}
             />

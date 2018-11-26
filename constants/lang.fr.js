@@ -15,8 +15,8 @@ export default fr = {
       developer: "Outils de développement"
     }
   },
-  buttons: {
-    caption: {
+  button: {
+    captions: {
       cancel: "Annuler",
       ok: "D'accord",
       yes: "Oui",
@@ -28,7 +28,9 @@ export default fr = {
       approve: "Approuver",
       details: "Détails",
       start: "Début",
-      continue: "Continuer"
+      continue: "Continuer",
+      save: "Conserver",
+      select: "Choisir"
     }
   },
   screens: {
@@ -73,7 +75,7 @@ export default fr = {
     }
   },
   properties: {
-    batch: {
+    header: {
       id: "ID de lot",
       code: "Code du lot",
       productCode: "Code produit",

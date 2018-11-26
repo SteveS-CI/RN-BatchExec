@@ -106,7 +106,7 @@ export default class BatchSelectScreen extends Component {
             // (all screens are rendered at once)
             this.props.navigation.navigate("BatchDetail", {
               batch: {...data,
-                state: i18n.t("enums.batchStatus." + data.status)
+                state: i18n.t("enums.BatchStatus." + data.status)
               },
               locationCode: this.locationCode
             });
@@ -213,12 +213,12 @@ export default class BatchSelectScreen extends Component {
         <ButtonBar justify="flex-end">
           <RoundedButton
             disabled={this.state.selectedItemID == 0}
-            title={i18n.t("buttons.caption.details")}
+            title={i18n.t("button.captions.details")}
             onPress={this.detailClicked}
           />
           <RoundedButton
             disabled={contDisabled}
-            title={i18n.t("buttons.caption.continue")}
+            title={i18n.t("button.captions.continue")}
             onPress={this.continueClicked}
           />
         </ButtonBar>

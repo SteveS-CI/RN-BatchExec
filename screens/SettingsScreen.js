@@ -90,7 +90,7 @@ export default class SettingsScreen extends React.Component {
           <ScreenHeader
             onCancel={() => this.update(false)}
             onOK={() => this.update(true)}
-            okCaption={i18n.t('screens.settings.okCaption')}
+            okCaption={i18n.t('button.captions.save')}
             title={i18n.t('screens.settings.title')}
           />
           <ScrollView style={{ borderTopWidth: 1 }}>

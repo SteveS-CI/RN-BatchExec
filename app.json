@@ -6,7 +6,7 @@
     "privacy": "public",
     "sdkVersion": "31.0.0",
     "platforms": ["ios", "android"],
-    "version": "0.0.13",
+    "version": "0.0.13 beta",
     "orientation": "default",
     "icon": "./assets/images/nexa-icon.png",
     "splash": {
@@ -23,7 +23,7 @@
       "permissions": []
     },
     "updates": {
-      "enabled": false
+      "enabled": true
     },
     "assetBundlePatterns": [
       "**/*"

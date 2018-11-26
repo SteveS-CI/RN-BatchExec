@@ -15,8 +15,8 @@ export default en = {
       developer: "Developer Tools"
     }
   },
-  buttons: {
-    caption: {
+  button: {
+    captions: {
       cancel: "Cancel",
       ok: "OK",
       yes: "Yes",
@@ -28,7 +28,9 @@ export default en = {
       approve: "Approve",
       details: "Details",
       start: "Start",
-      continue: "Continue"
+      continue: "Continue",
+      save: "Save",
+      select: "Select"
     }
   },
   screens: {
@@ -49,15 +51,14 @@ export default en = {
       api: "API Address",
       theme: "Use dark theme",
       themeDescription: "Show darker backgrounds with light text",
-      language: "Language",
-      okCaption: "Save"
+      language: "Language"
     },
     locations: {
-      title: "Location Selection",
-      okCaption: "Select"
+      title: "Location Selection"
     },
     nodeSelect: {
-      title: "%{name} Selection"
+      title: "%{name} Selection",
+      prompt: "Select one of the following %{name}"
     }
   },
   locations: {
@@ -83,7 +84,7 @@ export default en = {
     }
   },
   properties: {
-    batch: {
+    header: {
       id: "Batch ID",
       code: "Batch Code",
       productCode: "Product Code",
@@ -93,6 +94,12 @@ export default en = {
       status: "Status",
       startErrors: "Start Errors"
     }
+  },
+  components: {
+
+  },
+  equipment: {
+
   },
   enums: {
     BatchStatus: {

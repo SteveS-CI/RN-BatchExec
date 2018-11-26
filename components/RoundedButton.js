@@ -18,8 +18,7 @@ const styles =
     text: {
       fontFamily: 'euro-std',
       fontSize: 16,
-      textAlign: 'center',
-      fontStyle: 'italic'
+      textAlign: 'center'
     }
   }
 

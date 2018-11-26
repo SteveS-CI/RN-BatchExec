@@ -43,6 +43,10 @@ export default class DevScreen extends PureComponent {
     this.nav.navigate("Test2")
   }
 
+  update = () => {
+    this.props.screenProps.update()
+  }
+
   render() {
     return (
       <View style={{flexDirection: 'column', flex: 1}}>
@@ -59,6 +63,7 @@ export default class DevScreen extends PureComponent {
           <RoundedButton style={styles.button} title='Clear Batch Cache' onPress={this.clearCache}/>
           <RoundedButton style={styles.button} title='Show Test Screen' onPress={this.testScreen}/>
           <RoundedButton style={styles.button} title='Show Test Screen 2' onPress={this.testScreen2}/>
+          <RoundedButton style={styles.button} title='Get Updates' onPress={this.update} backColor={NexaColours.AlertRed}/>
         </View>
       </View>
     )

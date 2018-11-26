@@ -21,7 +21,7 @@ export default class ButtonBar extends PureComponent {
   }
 
   render() {
-    const defStyle = {flexDirection: 'row', justifyContent: this.props.justify}
+    const defStyle = {flexDirection: 'row', justifyContent: this.props.justify, alignItems: 'baseline'}
     const style = StyleSheet.flatten([defStyle, this.props.style])
     return (
       <View style={style}>

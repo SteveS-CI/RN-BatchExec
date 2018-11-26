@@ -14,13 +14,13 @@ export default class BatchPropsScreen extends React.Component {
   }
 
   headers = [
-    { display: i18n.t('properties.batch.id'), source: 'batchID' },
-    { display: i18n.t('properties.batch.code'), source: 'code' },
-    { display: i18n.t('properties.batch.productCode'), source: 'productCode' },
-    { display: i18n.t('properties.batch.productName'), source: 'productName' },
-    { display: i18n.t('properties.batch.productionDate'), source: 'productionDate' },
-    { display: i18n.t('properties.batch.quantity'), source: 'quantity' },
-    { display: i18n.t('properties.batch.status'), source: 'state' },
+    { display: i18n.t('properties.header.id'), source: 'batchID' },
+    { display: i18n.t('properties.header.code'), source: 'code' },
+    { display: i18n.t('properties.header.productCode'), source: 'productCode' },
+    { display: i18n.t('properties.header.productName'), source: 'productName' },
+    { display: i18n.t('properties.header.productionDate'), source: 'productionDate' },
+    { display: i18n.t('properties.header.quantity'), source: 'quantity' },
+    { display: i18n.t('properties.header.status'), source: 'state' },
   ]
 
   render() {
@@ -30,7 +30,7 @@ export default class BatchPropsScreen extends React.Component {
     return (
       <View>
         <PropList headers={this.headers} data={bat} />
-        <PropItem caption={i18n.t('properties.batch.startErrors')} value={errors} brighten={true} color={NexaColours.AlertRed}/>
+        <PropItem caption={i18n.t('properties.header.startErrors')} value={errors} brighten={true} color={NexaColours.AlertRed}/>
       </View>
     )
   }

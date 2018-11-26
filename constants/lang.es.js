@@ -15,8 +15,8 @@ export default es = {
       developer: "Herramientas de desarrollo"
     }
   },
-  buttons: {
-    caption: {
+  button: {
+    captions: {
       cancel: "Cancelar",
       ok: "De acuerdo",
       yes: "Sí",
@@ -28,7 +28,9 @@ export default es = {
       approve: "Aprobar",
       details: "Detalles",
       start: "Comienzo",
-      continue: "Continuar"
+      continue: "Continuar",
+      save: "Guardar",
+      select: "Escoger"
     }
   },
   screens: {
@@ -49,12 +51,10 @@ export default es = {
       api: "Dirección API",
       theme: "Usar tema oscuro",
       themeDescription: "Muestra fondos más oscuros con texto claro.",
-      language: "Idioma",
-      okCaption: "Guardar"
+      language: "Idioma"
     },
     locations: {
-      title: "Selección de ubicación",
-      okCaption: "Seleccionar"
+      title: "Selección de ubicación"
     }
   },
   locations: {
@@ -73,7 +73,7 @@ export default es = {
     }
   },
   properties: {
-    batch: {
+    header: {
       id: "ID del lote",
       code: "Código de lote",
       productCode: "Código de producto",

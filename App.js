@@ -26,7 +26,7 @@ export default class App extends React.Component {
   render() {
     const functions = {
       mocked: this.state.mocked, 
-      reload: this.appReload, 
+      update: this.appReload, 
       refresh: this.appRefresh
     }
     if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {

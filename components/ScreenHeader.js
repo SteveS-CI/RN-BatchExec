@@ -54,7 +54,7 @@ export default class ScreenHeader extends Component {
       <View style={{flexDirection: 'row', justifyContent: 'space-between', backgroundColor: NexaColours.Blue }}>
         <RoundedButton
           backColor={NexaColours.AlertYellow}
-          title={i18n.t('buttons.caption.cancel')}
+          title={i18n.t('button.captions.cancel')}
           onPress={this.props.onCancel}
         />
         <Text style={styles.base}>
