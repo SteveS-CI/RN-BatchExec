@@ -52,7 +52,7 @@ export default class SettingsScreen extends React.Component {
     const screenProps = this.props.screenProps
     if (doSave) {
       Settings.saveSettings(this.state.settings).then(() => {
-        screenProps.reload()
+        screenProps.refresh()
       })
     } else {
       this.returnToMain()
@@ -80,7 +80,6 @@ export default class SettingsScreen extends React.Component {
     let settings = this.state.settings
     settings.language = value
     this.setState({ settings })
-    i18n.locale = value
   }
 
   render() {
@@ -91,7 +90,7 @@ export default class SettingsScreen extends React.Component {
           <ScreenHeader
             onCancel={() => this.update(false)}
             onOK={() => this.update(true)}
-            okCaption='Save'
+            okCaption={i18n.t('screens.settings.okCaption')}
             title={i18n.t('screens.settings.title')}
           />
           <ScrollView style={{ borderTopWidth: 1 }}>

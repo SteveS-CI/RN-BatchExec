@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import NexaColours from '../constants/NexaColours';
 import PropTypes from 'prop-types'
+import i18n from 'i18n-js'
 import RoundedButton from '../components/RoundedButton'
 
 const styles = StyleSheet.create(
@@ -53,7 +54,7 @@ export default class ScreenHeader extends Component {
       <View style={{flexDirection: 'row', justifyContent: 'space-between', backgroundColor: NexaColours.Blue }}>
         <RoundedButton
           backColor={NexaColours.AlertYellow}
-          title='Cancel'
+          title={i18n.t('buttons.caption.cancel')}
           onPress={this.props.onCancel}
         />
         <Text style={styles.base}>

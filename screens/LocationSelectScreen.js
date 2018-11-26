@@ -1,28 +1,11 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
+import i18n from 'i18n-js'
 import mockedLocations from '../Mocked/locations.json'
 import Settings from '../Store/Settings'
 import ScreenHeader from '../components/ScreenHeader'
 import ScrollList from '../components/ScrollList'
 import {methods} from '../api/api'
-
-const headers = [
-  {
-    caption: "Name",
-    source: "name",
-    flex: 2
-  },
-  {
-    caption: "Code",
-    source: "code",
-    flex: 1
-  },
-  {
-    caption: "Status",
-    source: "status",
-    flex: 3
-  }
-]
 
 export default class LocationSelectScreen extends Component {
   constructor(props) {
@@ -70,24 +53,44 @@ export default class LocationSelectScreen extends Component {
   transform = (data) => {
     const newData = {
       ...data,
-      status: data.availability + ', ' + data.cleanStatus + ', ' + data.condition
+      status: i18n.t('enums.Availability.' + data.availability) + '\n'
+        + i18n.t('enums.CleanStatus.' + data.cleanStatus) + '\n'
+        + i18n.t('enums.Condition.' + data.condition)
     }
     return newData
   }
+
+  headers = [
+    {
+      caption: i18n.t('locations.header.name'),
+      source: "name",
+      flex: 2
+    },
+    {
+      caption: i18n.t('locations.header.code'),
+      source: 'code',
+      flex: 1
+    },
+    {
+      caption: i18n.t('locations.header.status'),
+      source: 'status',
+      flex: 3
+    }
+  ]
 
   render() {
     const locData = this.state.locations
     return (
       <View style={{ flex: 1 }}>
         <ScreenHeader
-          title='Select a Location'
-          okCaption='Select'
+          title={i18n.t('screens.locations.title')}
+          okCaption={i18n.t('screens.locations.okCaption')}
           onOK={this.selectClicked}
           onCancel={() => { this.props.navigation.navigate('BatchList') }}
           okDisabled={this.state.selectedItemID == 0}
         />
         <ScrollList
-          headers={headers}
+          headers={this.headers}
           data={locData}
           selectedIndex={this.state.selectedIndex}
           onPress={this.rowClicked}

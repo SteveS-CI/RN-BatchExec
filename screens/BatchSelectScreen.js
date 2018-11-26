@@ -180,7 +180,7 @@ export default class BatchSelectScreen extends Component {
     const newRow = {
       ...row,
       product: row.productCode + '\n' + row.productName,
-      state: i18n.t("enums.batchStatus." + row.status)
+      state: i18n.t("enums.BatchStatus." + row.status)
     }
     return newRow
   }

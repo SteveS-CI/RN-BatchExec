@@ -1,5 +1,6 @@
 import React from "react";
 import { View, ScrollView, Text, Button, RefreshControl } from "react-native";
+import i18n from 'i18n-js'
 import NexaColours, { tableRowEven, tableRowOdd, tableRowSelected } from "../constants/NexaColours";
 import ButtonBar from '../components/ButtonBar'
 import RoundedButton from "../components/RoundedButton";
@@ -18,10 +19,21 @@ export default class NodeSelectScreen extends React.Component {
     };
   }
 
-  static navigationOptions = {
-    title: "Node Selection",
-    headerLeft: null
+  static navigationOptions = ({navigation}) => {
+    const batchData = navigation.getParam("batchData")
+    const depth = batchData.nodeDepth
+    const name = NodeSelectScreen.nodeName(depth, false)
+    return {
+      title: i18n.t('screens.nodeSelect.title', {name}),
+      headerLeft: null
+    }
   };
+
+  static nodeName(depth, plural) {
+    const count = plural ? 2 : 1
+    const nodeName = i18n.t('node.names.' + ['','stage','operation','action'][depth], {count})
+    return nodeName
+  }
 
   componentDidMount() {
     const batchData = this.props.navigation.getParam("batchData")
