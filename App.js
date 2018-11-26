@@ -6,7 +6,7 @@ import i18n from 'i18n-js';
 import Settings from './Store/Settings'
 import api, {methods} from './api/api';
 import * as Translations from './constants/translations'
-import ButtonStyles from './constants/ButtonStyles';
+import { AsyncStorage } from 'react-native'
 
 export default class App extends React.Component {
   constructor(props) {
@@ -61,15 +61,30 @@ export default class App extends React.Component {
         'euro-ext': require('./assets/fonts/Eurostile-Extended.otf'),
         'euro-std': require('./assets/fonts/Eurostile-Regular.otf')
       }),
-      Settings.readSettings().then((settings) => {
+      AsyncStorage.getItem('settings').then((result) => {
+        const settings = JSON.parse(result)
         api.defaults.baseURL = settings.apiUrl
 
         i18n.fallbacks = true;
         i18n.translations = Translations;
         i18n.locale = settings.language
-      }),
-    ]);
-  };
+
+      }).catch((error) => {
+        // could not read settings, create defaults
+        const defaults = {
+          apiUrl: 'http://server:8080/api',
+          useDarkTheme: false,
+          language: 'en'
+        }
+        api.defaults.baseURL = defaults.apiUrl
+        i18n.fallbacks = true;
+        i18n.translations = Translations;
+        i18n.locale = defaults.language
+        
+        Settings.saveSettings(defaults)
+      })
+    ])
+  }
 
   _handleLoadingError = error => {
     // In this case, you might want to report the error to your error
@@ -90,6 +105,6 @@ export default class App extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFF'
+    backgroundColor: '#FAA'
   },
 });

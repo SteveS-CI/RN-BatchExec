@@ -1,6 +1,5 @@
 import React, {PureComponent} from 'react'
 import {View, Button, StyleSheet} from 'react-native'
-import Expo from 'expo'
 import Settings from '../Store/Settings'
 import NexaColours from '../constants/NexaColours'
 import ButtonBar from '../components/ButtonBar'
@@ -47,6 +46,11 @@ export default class DevScreen extends PureComponent {
     this.props.screenProps.update()
   }
 
+  destroy = () => {
+    Settings.deleteSettings()
+    this.props.screenProps.refresh()
+  }
+
   render() {
     return (
       <View style={{flexDirection: 'column', flex: 1}}>
@@ -63,7 +67,8 @@ export default class DevScreen extends PureComponent {
           <RoundedButton style={styles.button} title='Clear Batch Cache' onPress={this.clearCache}/>
           <RoundedButton style={styles.button} title='Show Test Screen' onPress={this.testScreen}/>
           <RoundedButton style={styles.button} title='Show Test Screen 2' onPress={this.testScreen2}/>
-          <RoundedButton style={styles.button} title='Get Updates' onPress={this.update} backColor={NexaColours.AlertRed}/>
+          <RoundedButton style={styles.button} title='Get Updates' onPress={this.update} backColor={NexaColours.AlertYellow}/>
+          <RoundedButton style={styles.button} title='Destroy Settings !!!!' onPress={this.destroy} backColor={NexaColours.AlertRed}/>
         </View>
       </View>
     )

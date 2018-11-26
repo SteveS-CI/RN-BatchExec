@@ -64,7 +64,6 @@ export default class BatchSelectScreen extends Component {
         }
       });
     }
-    console.log(i18n.locale)
   }
 
   fetchBatchList(locationCode) {
