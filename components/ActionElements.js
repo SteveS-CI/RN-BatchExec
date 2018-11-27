@@ -1,9 +1,10 @@
-import React, {PureComponent} from 'react'
-import {StyleSheet, View, Text, TextInput, Picker} from 'react-native'
+import React, { PureComponent } from 'react'
+import { StyleSheet, View, Text, TextInput, Picker } from 'react-native'
 import PropTypes from 'prop-types'
+import * as DataProps from '../constants/DataProps'
 import TextBar from './TextBar'
 import NexaColours from '../constants/NexaColours'
-import {optimalForeColor} from '../Utils/utils'
+import { optimalForeColor } from '../Utils/utils'
 
 const inputBorderWidth = StyleSheet.hairlineWidth
 const inputBorderRadius = 10
@@ -136,32 +137,36 @@ export class ActionTitle extends PureComponent {
 export class ActionPrompt extends PureComponent {
 
   static propTypes = {
-    prompt: PropTypes.string.isRequired,
+    prompt: PropTypes.string,
     notes: PropTypes.string
   }
 
   render() {
-    const promptColor = optimalForeColor(NexaColours.Cyan)
-    const noteColor = optimalForeColor(NexaColours.CyanAccent)
-    const promptStyle = StyleSheet.flatten([styles.prompt, {color: promptColor}])
-    const noteStyle = StyleSheet.flatten([styles.notes, {color: noteColor}])
-    return (
-      <View style={styles.promptContainer}>
-        <Text style={promptStyle}>
-          {this.props.prompt}
-        </Text>
-        {this.props.notes && 
-          <Text style={noteStyle}>{this.props.notes}</Text>
-        }
-      </View>
-    )
+    const hasPrompt = this.props.prompt ? true : false
+    const hasNote = this.props.notes ? true : false
+    if (hasPrompt) {
+      const promptColor = optimalForeColor(NexaColours.Cyan)
+      const noteColor = optimalForeColor(NexaColours.CyanAccent)
+      const promptStyle = StyleSheet.flatten([styles.prompt, { color: promptColor }])
+      const noteStyle = StyleSheet.flatten([styles.notes, { color: noteColor }])
+      return (
+        <View style={styles.promptContainer}>
+          <Text style={promptStyle}>
+            {this.props.prompt}
+          </Text>
+          {hasNote && <Text style={noteStyle}>{this.props.notes}</Text>}
+        </View>
+      )
+    } else {
+      return null
+    }
   }
 }
 
 export class GenericEntry extends PureComponent {
   constructor(props) {
     super(props)
-    this.state = {editing: false}
+    this.state = { editing: false }
   }
 
   static defaultProps = {
@@ -170,7 +175,7 @@ export class GenericEntry extends PureComponent {
   }
 
   static propTypes = {
-    entry: PropTypes.any.isRequired,
+    entry: DataProps.EntryProps.isRequired,
     value: PropTypes.any,
     onChange: PropTypes.func,
     enabled: PropTypes.bool,
@@ -184,36 +189,36 @@ export class GenericEntry extends PureComponent {
   render() {
     const editing = this.state.editing
     const entry = this.props.entry
-    const label = entry ? entry.label : null
-    const suffix = entry ? entry.suffix : null
-    const keyboardType = (entry.entryType==='Integer'||entry.entryType==='Decimal') ? 'numeric' : 'default'
+    const hasLabel = entry.label ? true : false
+    const hasSuffix = entry.suffix ? true : false
+    const keyboardType = (entry.entryType === 'Integer' || entry.entryType === 'Decimal') ? 'numeric' : 'default'
     const boxColor = editing ? NexaColours.GreyUltraLight : NexaColours.GreyLight
-    const boxLeft = !suffix ? {
+    const boxLeft = !hasSuffix ? {
       borderTopRightRadius: inputBorderRadius,
       borderBottomRightRadius: inputBorderRadius,
       borderRightWidth: inputBorderWidth
     } : null
-    const boxRight = !label ? {
+    const boxRight = !hasLabel ? {
       borderTopLeftRadius: inputBorderRadius,
       borderBottomLeftRadius: inputBorderRadius,
       borderLeftWidth: inputBorderWidth
     } : null
-    const boxStyle = StyleSheet.flatten([styles.inputBox, {backgroundColor: boxColor}, boxLeft, boxRight])
+    const boxStyle = StyleSheet.flatten([styles.inputBox, { backgroundColor: boxColor }, boxLeft, boxRight])
     return (
       <View style={styles.inputContainer}>
-        {label && <Text style={styles.inputLabel}>{label}</Text>}
+        {hasLabel && <Text style={styles.inputLabel}>{entry.label}</Text>}
         <TextInput style={boxStyle}
           value={this.props.value}
           onChangeText={this.onChangeText}
           blurOnSubmit={true}
-          onFocus={() => this.setState({editing: true})}
-          onBlur={() => this.setState({editing: false})}
+          onFocus={() => this.setState({ editing: true })}
+          onBlur={() => this.setState({ editing: false })}
           underlineColorAndroid='transparent'
           editable={this.props.enabled}
           autoFocus={this.props.autoFocus}
           keyboardType={keyboardType}
         />
-        {suffix && <Text style={styles.inputSuffix}>{suffix}</Text>}
+        {hasSuffix && <Text style={styles.inputSuffix}>{entry.suffix}</Text>}
       </View>
     )
   }
@@ -226,7 +231,7 @@ export class DistinctEntry extends PureComponent {
   }
 
   static propTypes = {
-    entry: PropTypes.any.isRequired,
+    entry: DataProps.EntryProps.isRequired,
     value: PropTypes.any,
     onChange: PropTypes.func,
     enabled: PropTypes.bool
@@ -242,26 +247,26 @@ export class DistinctEntry extends PureComponent {
 
   render() {
     const entry = this.props.entry
-    const label = entry ? entry.label : null
-    const suffix = entry ? entry.suffix : null
+    const hasLabel = entry.label ? true : false
+    const hasSuffix = entry.suffix ? true : false
     const validation = entry.validation
     const choices = validation.choices
     const items = choices.map((item, idx) => {
       return (
-        <Picker.Item key={idx} label={item} value={item}/>
+        <Picker.Item key={idx} label={item} value={item} />
       )
     })
     return (
       <View style={styles.pickerContainer}>
-        {label && <Text style={styles.pickerLabel}>{label}</Text>}
-        <Picker style={{minWidth: 200}}
+        {hasLabel && <Text style={styles.pickerLabel}>{entry.label}</Text>}
+        <Picker style={{ minWidth: 200 }}
           selectedValue={this.props.value}
           onValueChange={this.onValueChange}
-          enabled = {this.props.enabled}
+          enabled={this.props.enabled}
           mode='dropdown'>
           {items}
         </Picker>
-        {suffix && <Text style={styles.pickerSuffix}>Suffix</Text>}
+        {hasSuffix && <Text style={styles.pickerSuffix}>{entry.suffix}</Text>}
       </View>
     )
   }
@@ -270,7 +275,7 @@ export class DistinctEntry extends PureComponent {
 export class ActionEntry extends PureComponent {
   constructor(props) {
     super(props)
-    this.state = {editing: false}
+    this.state = { editing: false }
   }
 
   static defaultProps = {
@@ -279,7 +284,7 @@ export class ActionEntry extends PureComponent {
   }
 
   static propTypes = {
-    entry: PropTypes.any.isRequired,
+    entry: DataProps.EntryProps,
     value: PropTypes.any,
     onChange: PropTypes.func,
     enabled: PropTypes.bool,
@@ -287,15 +292,40 @@ export class ActionEntry extends PureComponent {
   }
 
   render() {
-    const entryType = this.props.entry.entryType
-    if (entryType==='Distinct') {
+    const hasEntry = this.props.entry ? true : false
+    if (hasEntry) {
+      const entryType = this.props.entry.entryType
+      if (entryType === 'Distinct') {
+        return (
+          <DistinctEntry {...this.props} />
+        )
+      } else {
+        return (
+          <GenericEntry {...this.props} />
+        )
+      }
+    } else {
+      return null
+    }
+  }
+}
+
+export class ActionEquipment extends PureComponent {
+
+  static propTypes = {
+    equipment: DataProps.EquipmentProps
+  }
+
+  render() {
+    const hasEquipment = this.props.equipment ? true : false
+    if (hasEquipment) {
       return (
-        <DistinctEntry {...this.props}/>
+        <View>
+          <Text>EQUIPMENT</Text>
+        </View>
       )
     } else {
-      return (
-        <GenericEntry {...this.props}/>
-      )
+      return null
     }
   }
 }

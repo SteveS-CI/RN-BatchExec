@@ -1,9 +1,16 @@
 import React, { Component } from 'react';
-import { View, Text, Button, Alert } from 'react-native'
+import { View, Alert } from 'react-native'
 import ActionButtons from '../components/ActionButtons'
 import ButtonStyles from '../constants/ButtonStyles'
-import NexaColours from '../constants/NexaColours'
-import { ActionBreadcrumb, ActionTitle, ActionPrompt, ActionEntry } from '../components/ActionElements'
+
+import {
+  ActionBreadcrumb,
+  ActionTitle,
+  ActionPrompt,
+  ActionEntry,
+  ActionEquipment
+} from '../components/ActionElements'
+
 import ActionImage from '../components/ActionImage'
 import FileContent from '../components/FileContent'
 import { methods } from '../api/api'
@@ -228,8 +235,9 @@ export default class ActionDetailScreen extends Component {
         <View style={{flex: 1}}>
           <ActionTitle text={this.state.node.name} />
           <ActionButtons buttons={buttons} onPress={this.onPress} />
-          {node.prompt && <ActionPrompt prompt={node.prompt} notes={node.notes} />}
-          {entry && <ActionEntry value={this.state.value} entry={entry} onChange={this.entryValueChange} enabled={enabled}/>}
+          <ActionPrompt prompt={node.prompt} notes={node.notes} />
+          <ActionEquipment equipment={node.equipment}/>
+          <ActionEntry value={this.state.value} entry={entry} onChange={this.entryValueChange} enabled={enabled}/>
           {this.state.error && <ErrorBar text={this.state.error} onPress={() => this.setState({error: null})}/>}
           {node.picture && <ActionImage fileName={node.picture} />}
           {node.fileName && <FileContent fileName={node.fileName}/>}

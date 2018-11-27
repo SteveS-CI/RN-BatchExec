@@ -8,6 +8,8 @@ import api, {methods} from './api/api';
 import * as Translations from './constants/translations'
 import { AsyncStorage } from 'react-native'
 
+import {setTheme} from './constants/Styles'
+
 export default class App extends React.Component {
   constructor(props) {
     super(props)
@@ -69,10 +71,12 @@ export default class App extends React.Component {
         i18n.translations = Translations;
         i18n.locale = settings.language
 
+        setTheme(settings.useDarkTheme ? 'dark' : 'light')
+  
       }).catch((error) => {
         // could not read settings, create defaults
         const defaults = {
-          apiUrl: 'http://server:8080/api',
+          apiUrl: 'http://192.168.1.182:8080/api',
           useDarkTheme: false,
           language: 'en'
         }
@@ -80,6 +84,8 @@ export default class App extends React.Component {
         i18n.fallbacks = true;
         i18n.translations = Translations;
         i18n.locale = defaults.language
+
+        setTheme(defaults.useDarkTheme ? 'dark' : 'light')
         
         Settings.saveSettings(defaults)
       })

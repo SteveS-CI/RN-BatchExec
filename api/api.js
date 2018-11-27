@@ -7,13 +7,13 @@ const api = axios.create();
 export default api;
 
 function getData(request) {
-  console.log('TX: ', request)
+  //console.log('TX: ', request)
   return new Promise((resolve, reject) => {
     api
       .request(request)
       .then(response => {
         if (response.headers["content-type"].includes("application/json")) {
-          console.log('RX: ', response.data)
+          //console.log('RX: ', response.data)
           resolve(response.data);
         } else {
           reject(null);

@@ -30,6 +30,7 @@ const NexaColours = {
   // The three grey tones for nexa are to be used for the background of the app and in tables.
   // Text should be in either white or the darkest grey, based on which will be more readable.
   // Where possible, alternating light and ultra-light grey colours should be used to indicate table row separation
+  GreyDarkest: '#222222',
   GreyDark: '#444444',
   Grey: '#82939C',
   GreyAccent: '#A2ACB1',

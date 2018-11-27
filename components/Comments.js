@@ -1,9 +1,10 @@
 import React, {Component} from 'react'
 import {StyleSheet, View, Modal, Text, TextInput, Switch, Picker} from 'react-native'
 import PropTypes from 'prop-types'
-import ActionButtons, {ButtonStyles} from './ActionButtons';
+import ActionButtons from './ActionButtons'
+import ButtonStyles from '../constants/ButtonStyles'
 import TextEntry from '../components/TextEntry'
-import NexaColours from '../constants/NexaColours';
+import NexaColours from '../constants/NexaColours'
 
 const styles = StyleSheet.create(
   {

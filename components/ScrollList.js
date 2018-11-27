@@ -4,32 +4,34 @@ import PropTypes from 'prop-types'
 import NexaColours from '../constants/NexaColours'
 import TextBar from '../components/TextBar'
 import {ListHeaderProps} from '../constants/DataProps'
+import Styles from '../constants/Styles'
 
+/* 
 const styles = StyleSheet.create({
-  scrollContainer: {
+  listContainer: {
     flex: 1,
     flexDirection: 'column'
   },
-  columnOuter: {
+  columnContainer: {
     flexDirection: 'row',
     backgroundColor: NexaColours.Grey,
     borderColor: NexaColours.GreyDark,
     borderBottomWidth: StyleSheet.hairlineWidth
   },
-  columns: {
+  listColumn: {
     color: 'white',
     padding: 8,
     fontSize: 16,
     borderColor: NexaColours.GreyDark,
     borderRightWidth: StyleSheet.hairlineWidth
   },
-  rowOuter: {
+  rowContainer: {
     flexDirection: 'row',
     borderColor: NexaColours.GreyDark,
     borderBottomWidth: StyleSheet.hairlineWidth,
     marginBottom: StyleSheet.hairlineWidth
   },
-  rows: {
+  listRows: {
     color: NexaColours.GreyDark,
     padding: 8,
     paddingVertical: 12,
@@ -38,11 +40,12 @@ const styles = StyleSheet.create({
     borderRightWidth: 1
   }
 })
+ */
 
-export class ListHeader extends Component {
+ export class ListHeader extends Component {
 
   static propTypes = {
-    headers: PropTypes.arrayOf(PropTypes.shape(ListHeaderProps)).isRequired,
+    headers: PropTypes.arrayOf(ListHeaderProps).isRequired,
   }
 
   render() {
@@ -50,7 +53,7 @@ export class ListHeader extends Component {
     var cols = headers.map((col, idx) => {
       const flex = col.flex ? col.flex : 1
       const align = col.align ? col.align : "left"
-      const colStyle = StyleSheet.flatten([styles.columns, {flex: flex, textAlign: align, flexWrap: 'wrap'}])
+      const colStyle = StyleSheet.flatten([Styles.scrollList.listColumn, {flex: flex, textAlign: align, flexWrap: 'wrap'}])
       return (
         <Text
           key={idx}
@@ -61,7 +64,7 @@ export class ListHeader extends Component {
       )
     })
     return (
-      <View style={styles.columnOuter}>
+      <View style={Styles.scrollList.columnContainer}>
         {cols}
       </View>
     )
@@ -77,7 +80,7 @@ export class ListRow extends Component {
   }
 
   static propTypes = {
-    headers: PropTypes.arrayOf(PropTypes.shape(ListHeaderProps)).isRequired,
+    headers: PropTypes.arrayOf(ListHeaderProps).isRequired,
     data: PropTypes.object.isRequired,
     brighten: PropTypes.bool,
     onPress: PropTypes.func,
@@ -91,15 +94,18 @@ export class ListRow extends Component {
     const cols = headers.map((col, idx) => {
       const flex = col.flex ? col.flex : 1
       const align = col.align ? col.align : "left"
-      const colStyle = StyleSheet.flatten([styles.rows, {flex: flex, textAlign: align}])
+      const colStyle = StyleSheet.flatten([Styles.scrollList.listRows, {flex: flex, textAlign: align}])
       return (
         <Text key={idx} style={colStyle} >
           {data[col.source]}
         </Text>
       )
     })
-    const rowBackColor = this.props.selected ? NexaColours.CyanAccent : this.props.brighten ? NexaColours.GreyUltraLight : NexaColours.GreyLight
-    const rowStyle = StyleSheet.flatten([styles.rowOuter, {backgroundColor: rowBackColor}])
+    const evenColor = Styles.scrollList.rowBackColorEven
+    const oddColor = Styles.scrollList.rowBackColorOdd
+    const selColor = Styles.scrollList.rowBackColorSelected
+    const rowBackColor = this.props.selected ? selColor : this.props.brighten ? oddColor : evenColor
+    const rowStyle = StyleSheet.flatten([Styles.scrollList.rowContainer, rowBackColor])
     if (this.props.onPress) {
       return (
         <TouchableOpacity style={rowStyle} onPressIn={() => this.props.onPress(this.props.index, data)}>
@@ -127,7 +133,7 @@ export default class ScrollList extends Component {
   }
 
   static propTypes = {
-    headers: PropTypes.arrayOf(PropTypes.shape(ListHeaderProps)).isRequired,
+    headers: PropTypes.arrayOf(ListHeaderProps).isRequired,
     data: PropTypes.arrayOf(PropTypes.object),
     selectedIndex: PropTypes.number,
     onPress: PropTypes.func,
@@ -170,7 +176,7 @@ export default class ScrollList extends Component {
       rows = null
     }
     const margin = this.props.topMargin ? 8 : 0
-    const style = StyleSheet.flatten([styles.scrollContainer, {marginTop: margin}])
+    const style = StyleSheet.flatten([Styles.scrollList.listContainer, {marginTop: margin}])
     const refresh = this.props.onRefresh
       ? <RefreshControl refreshing={this.props.loading} onRefresh={this.props.onRefresh} />
       : null

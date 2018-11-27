@@ -2,7 +2,8 @@ import React from 'react';
 import { View, Text, Button } from 'react-native'
 import { methods } from '../api/api'
 import { ActionTitle, ActionPrompt } from '../components/ActionElements';
-import ActionButtons, { ButtonStyles } from '../components/ActionButtons'
+import ActionButtons from '../components/ActionButtons'
+import ButtonStyles from '../constants/ButtonStyles'
 import Signature from '../components/Signature'
 import Comments from '../components/Comments'
 
@@ -43,7 +44,7 @@ export default class NodeDetailScreen extends React.Component {
 
   createButtons(node) {
     var buttons = []
-    if (node.backable) buttons.push(ButtonStyles.Back)
+    if (node.backable) buttons.push(ButtonStyles.Previous)
     switch (node.status) {
       case 'PendingSignature':
         buttons.push(ButtonStyles.Sign)

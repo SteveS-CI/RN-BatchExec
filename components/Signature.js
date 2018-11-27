@@ -2,7 +2,8 @@ import React, {Component} from 'react'
 import {StyleSheet, View, Modal, Text} from 'react-native'
 import PropTypes from 'prop-types'
 import TextEntry from './TextEntry'
-import ActionButtons, {ButtonStyles, ActionButton} from './ActionButtons';
+import {ActionButton} from './ActionButtons';
+import ButtonStyles from '../constants/ButtonStyles'
 import ButtonBar from '../components/ButtonBar'
 import Comments from './Comments'
 import NexaColours from '../constants/NexaColours';

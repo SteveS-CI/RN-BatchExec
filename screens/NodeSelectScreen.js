@@ -66,16 +66,19 @@ export default class NodeSelectScreen extends React.Component {
           const batchData = data;
           // depending on data shape, navigate to the appropriate screen, passing batchData
           if (batchData.nodes.length > 1) {
+            console.log('Multiple Nodes')
             // Multiple nodes; stay on this screen
             this.setState({ batchData, selectedItemID: 0, selectedIndex: -1 })
             nav.navigate("NodeSelect", { batchData, locationCode: this.locationCode });
           } else {
-            // Single nodes
+            console.log('Single Node')
+            // Single node
             if (batchData.nodeDepth === 3) {
+              console.log('Single Action Node')
               // Action node
-              console.log(JSON.stringify(batchData))
               nav.navigate("ActionDetail", { batchData, locationCode: this.locationCode });
             } else {
+              console.log('Single Other Node')
               // Operation/Stage/Process - for Confirmation/Signature/Approval
               nav.navigate("NodeDetail", { batchData, locationCode: this.locationCode });
             }

@@ -1,8 +1,9 @@
 import React from 'react';
-import {View } from 'react-native';
+import {View, Text, StyleSheet } from 'react-native';
 import ButtonStyles from '../constants/ButtonStyles'
 import ActionButtons from '../components/ActionButtons'
 import ScrollList from '../components/ScrollList'
+import Styles from '../constants/Styles'
 
 const ListHeaders = [
   {
@@ -43,7 +44,7 @@ const ListData = [
   }
 ]
 
-export default class TestScreen extends React.Component {
+export default class TestScreen2 extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -66,6 +67,8 @@ export default class TestScreen extends React.Component {
 
   render() {
     const buttons = [ButtonStyles.Previous, ButtonStyles.No, ButtonStyles.Yes]
+    const oddRow = StyleSheet.flatten([Styles.scrollList.listRows, Styles.scrollList.rowBackColorOdd])    
+    const evenRow = StyleSheet.flatten([Styles.scrollList.listRows, Styles.scrollList.rowBackColorEven])    
     return (
       <View style={{flexDirection: 'column', flex: 1}}>
         <ActionButtons onPress={this.onPress} buttons={buttons}/>
@@ -77,6 +80,8 @@ export default class TestScreen extends React.Component {
             loading={this.state.scrollLoading}
             onRefresh={this.onScrollRefresh}
           />
+        <Text style={oddRow}>Hello World!</Text>
+        <Text style={evenRow}>Hello World!</Text>
       </View>
     )
   }

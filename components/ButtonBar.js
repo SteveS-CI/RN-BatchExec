@@ -1,6 +1,7 @@
 import React, {PureComponent} from 'react'
 import {StyleSheet, View} from 'react-native'
 import PropTypes from 'prop-types'
+import NexaColours from '../constants/NexaColours'
 
 export default class ButtonBar extends PureComponent {
 
