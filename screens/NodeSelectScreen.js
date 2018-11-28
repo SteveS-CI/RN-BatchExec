@@ -69,7 +69,7 @@ export default class NodeSelectScreen extends React.Component {
             console.log('Multiple Nodes')
             // Multiple nodes; stay on this screen
             this.setState({ batchData, selectedItemID: 0, selectedIndex: -1 })
-            nav.navigate("NodeSelect", { batchData, locationCode: this.locationCode });
+            nav.replace("NodeSelect", { batchData, locationCode: this.locationCode });
           } else {
             console.log('Single Node')
             // Single node
@@ -111,7 +111,7 @@ export default class NodeSelectScreen extends React.Component {
               backColor={NexaColours.AlertYellow}
               title={i18n.t('button.captions.cancel')}
               onPress={() => {
-                nav.navigate("BatchList");
+                nav.replace("BatchList");
               }}
             />
             <TextBar backColor={NexaColours.CyanAccent} style={{alignSelf: 'center'}}>{prompt}</TextBar>

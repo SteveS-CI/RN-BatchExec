@@ -23,6 +23,7 @@ import LoginScreen from '../screens/LoginScreen';
 import LocationSelectScreen from '../screens/LocationSelectScreen';
 import TestScreen from '../screens/TestScreen'
 import TestScreen2 from '../screens/TestScreen2'
+import TestScreen3 from '../screens/TestScreen3'
 import AboutScreen from '../screens/AboutScreen'
 import DevScreen from '../screens/DevScreen'
 import DropdownMenu from '../components/DropdownMenu';
@@ -107,6 +108,7 @@ const DropdownNav = createSwitchNavigator(
     Login: LoginNav,
     Test: TestScreen,
     Test2: TestScreen2,
+    Test3: TestScreen3,
     About: AboutScreen,
     Dev: DevScreen
   }

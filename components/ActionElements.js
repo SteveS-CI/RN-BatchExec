@@ -5,6 +5,7 @@ import * as DataProps from '../constants/DataProps'
 import TextBar from './TextBar'
 import NexaColours from '../constants/NexaColours'
 import { optimalForeColor } from '../Utils/utils'
+import { ListRow } from './ScrollList';
 
 const inputBorderWidth = StyleSheet.hairlineWidth
 const inputBorderRadius = 10
@@ -310,6 +311,35 @@ export class ActionEntry extends PureComponent {
   }
 }
 
+
+const equipStyles = StyleSheet.create(
+  {
+    container: {
+      flexDirection: 'column',
+      marginTop: -12
+    },
+    overlay: {
+      position: 'relative', zIndex: 1,
+      top: 18, left: 16,
+      alignSelf: 'flex-start',
+    },
+    titleText: {
+      paddingHorizontal: 8, paddingVertical: 3,
+      fontSize: 16,
+      borderRadius: 8, borderColor: NexaColours.GreyDark, borderWidth: StyleSheet.hairlineWidth * 2
+    },
+    properties: {
+      flexDirection: 'column',
+      margin: 8,
+      padding: 8, paddingTop: 12,
+      borderWidth: StyleSheet.hairlineWidth * 2,
+      borderRadius: 12, borderTopLeftRadius: 0,
+      borderColor: NexaColours.GreyDarkest,
+      alignSelf: 'flex-start'
+    }
+  }
+)
+
 export class ActionEquipment extends PureComponent {
 
   static propTypes = {
@@ -319,9 +349,49 @@ export class ActionEquipment extends PureComponent {
   render() {
     const hasEquipment = this.props.equipment ? true : false
     if (hasEquipment) {
+      const equip = this.props.equipment
+      const titleStyle = StyleSheet.flatten([equipStyles.titleText, {backgroundColor: NexaColours.Yellow, color: 'black'}])
+      const innerStyle = StyleSheet.flatten([equipStyles.properties, {backgroundColor: NexaColours.YellowAccent}])
       return (
-        <View>
-          <Text>EQUIPMENT</Text>
+        <View style={equipStyles.container}>
+          <View style={equipStyles.overlay}>
+            <Text style={titleStyle}>Equipment</Text>
+          </View>
+          <View style={innerStyle}>
+            <Text>Category: {equip.category}</Text>
+            <Text>Model: {equip.model}</Text>
+            <Text>Serial: {equip.serial}</Text>
+          </View>
+        </View>
+      )
+    } else {
+      return null
+    }
+  }
+}
+
+export class ActionIngredient extends PureComponent {
+
+  static propTypes = {
+    ingredient: DataProps.IngredientProps
+  }
+
+  render() {
+    const hasIngredient = this.props.ingredient ? true : false
+    if (hasIngredient) {
+      const ingred = this.props.ingredient
+      const titleStyle = StyleSheet.flatten([equipStyles.titleText, {backgroundColor: NexaColours.Green, color: 'white'}])
+      const innerStyle = StyleSheet.flatten([equipStyles.properties, {backgroundColor: NexaColours.GreenAccent}])
+      return (
+        <View style={equipStyles.container}>
+          <View style={equipStyles.overlay}>
+            <Text style={titleStyle}>Component</Text>
+          </View>
+          <View style={innerStyle}>
+            <Text>Code: {ingred.materialCode}</Text>
+            <Text>Name: {ingred.materialName}</Text>
+            <Text>Quantity: {ingred.quantity}</Text>
+          </View>
         </View>
       )
     } else {

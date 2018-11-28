@@ -4,6 +4,7 @@ import ButtonStyles from '../constants/ButtonStyles'
 import ActionButtons from '../components/ActionButtons'
 import ScrollList from '../components/ScrollList'
 import Styles from '../constants/Styles'
+import { ActionEquipment, ActionIngredient } from '../components/ActionElements';
 
 const ListHeaders = [
   {
@@ -70,7 +71,7 @@ export default class TestScreen2 extends React.Component {
     const oddRow = StyleSheet.flatten([Styles.scrollList.listRows, Styles.scrollList.rowBackColorOdd])    
     const evenRow = StyleSheet.flatten([Styles.scrollList.listRows, Styles.scrollList.rowBackColorEven])    
     return (
-      <View style={{flexDirection: 'column', flex: 1}}>
+      <View style={{flexDirection: 'column', flex: 1, justifyContent: 'space-between'}}>
         <ActionButtons onPress={this.onPress} buttons={buttons}/>
           <ScrollList
             headers={ListHeaders}
@@ -80,6 +81,11 @@ export default class TestScreen2 extends React.Component {
             loading={this.state.scrollLoading}
             onRefresh={this.onScrollRefresh}
           />
+        <Text style={oddRow}>Hello World!</Text>
+        <View style={{flexDirection: 'row'}}>
+          <ActionEquipment equipment={{category: 'Granulator', model: 'Model One', serial: 'XYZ1234'}}/>
+          <ActionIngredient ingredient={{materialCode: 'MC-45124', materialName: 'Lactose (Milled)', quantity: '123.45 kg'}}/>
+        </View>
         <Text style={oddRow}>Hello World!</Text>
         <Text style={evenRow}>Hello World!</Text>
       </View>

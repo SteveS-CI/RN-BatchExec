@@ -25,6 +25,13 @@ const NexaColours = {
   Cyan: '#00ABE5',
   CyanAccent: '#82CFEF',
   Orange: '#E35C12',
+  OrangeAccent: '#F7BFA1',
+  Green: '#7AB41D',
+  GreenAccent: '#D5F1A7',
+  Yellow: '#F9BA00',
+  YellowAccent: '#FFE699',
+  Red: '#E43433',
+  RedAccent: '#F3A5A5',
 
   // Grey Tones
   // The three grey tones for nexa are to be used for the background of the app and in tables.

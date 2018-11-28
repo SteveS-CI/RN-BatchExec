@@ -6,7 +6,6 @@ var styles = {}
 export function setTheme(name) {
   const theme = { light, dark }[name]
   Object.keys(theme).forEach((key) => {
-    console.log(key, theme[key])
     styles[key] = StyleSheet.create(theme[key])
   })
 }

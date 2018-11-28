@@ -15,13 +15,11 @@ const styles =
       borderRadius: 12,
       elevation: 8,
       minWidth: 80,
-      borderWidth: 3,
+      borderWidth: StyleSheet.hairlineWidth * 2,
     },
     text: {
-      fontFamily: 'euro-std',
       fontSize: 16,
-      textAlign: 'center',
-      fontStyle: 'italic'
+      textAlign: 'center'
     }
   }
 
@@ -40,10 +38,11 @@ export class ActionButton extends PureComponent {
   }
 
   render() {
-    const backgroundColor = this.props.disabled ? NexaColours.GreyAccent : this.props.buttonStyle.color
-    const borderColor = this.props.disabled ? NexaColours.GreyDark : 'white'
-    const viewStyle = StyleSheet.flatten([styles.container, {backgroundColor, borderColor}, this.props.style])
-    const textStyle = StyleSheet.flatten([styles.text, {color: optimalForeColor(backgroundColor)}])
+    const backgroundColor = this.props.disabled ? NexaColours.Grey : this.props.buttonStyle.color
+    const foreColor = this.props.disabled ? NexaColours.GreyDark : optimalForeColor(backgroundColor)
+    const borderColor = this.props.disabled ? NexaColours.GreyDark : foreColor
+    const viewStyle = StyleSheet.flatten([styles.container, {backgroundColor, borderColor, borderColor}, this.props.style])
+    const textStyle = StyleSheet.flatten([styles.text, {color: foreColor}])
     return (
       <TouchableOpacity disabled={this.props.disabled} onPress={() => this.props.onPress()} style={viewStyle}>
         <Text style={textStyle}>{i18n.t('button.captions.' + this.props.buttonStyle.name)}</Text>

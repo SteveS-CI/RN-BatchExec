@@ -4,9 +4,8 @@ import PropTypes from 'prop-types'
 import NexaColours from '../constants/NexaColours'
 import TextBar from '../components/TextBar'
 import {ListHeaderProps} from '../constants/DataProps'
-import Styles from '../constants/Styles'
+//import Styles from '../constants/Styles'
 
-/* 
 const styles = StyleSheet.create({
   listContainer: {
     flex: 1,
@@ -37,12 +36,14 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     fontSize: 14,
     borderColor: NexaColours.GreyDark,
-    borderRightWidth: 1
-  }
+    borderRightWidth: StyleSheet.hairlineWidth
+  },
+  rowBackColorEven: {backgroundColor: NexaColours.GreyLight},
+  rowBackColorOdd: {backgroundColor: NexaColours.GreyUltraLight},
+  rowBackColorSelected: {backgroundColor: NexaColours.CyanAccent}
 })
- */
 
- export class ListHeader extends Component {
+export class ListHeader extends Component {
 
   static propTypes = {
     headers: PropTypes.arrayOf(ListHeaderProps).isRequired,
@@ -53,7 +54,7 @@ const styles = StyleSheet.create({
     var cols = headers.map((col, idx) => {
       const flex = col.flex ? col.flex : 1
       const align = col.align ? col.align : "left"
-      const colStyle = StyleSheet.flatten([Styles.scrollList.listColumn, {flex: flex, textAlign: align, flexWrap: 'wrap'}])
+      const colStyle = StyleSheet.flatten([styles.listColumn, {flex: flex, textAlign: align, flexWrap: 'wrap'}])
       return (
         <Text
           key={idx}
@@ -64,7 +65,7 @@ const styles = StyleSheet.create({
       )
     })
     return (
-      <View style={Styles.scrollList.columnContainer}>
+      <View style={styles.columnContainer}>
         {cols}
       </View>
     )
@@ -94,18 +95,18 @@ export class ListRow extends Component {
     const cols = headers.map((col, idx) => {
       const flex = col.flex ? col.flex : 1
       const align = col.align ? col.align : "left"
-      const colStyle = StyleSheet.flatten([Styles.scrollList.listRows, {flex: flex, textAlign: align}])
+      const colStyle = StyleSheet.flatten([styles.listRows, {flex: flex, textAlign: align}])
       return (
         <Text key={idx} style={colStyle} >
           {data[col.source]}
         </Text>
       )
     })
-    const evenColor = Styles.scrollList.rowBackColorEven
-    const oddColor = Styles.scrollList.rowBackColorOdd
-    const selColor = Styles.scrollList.rowBackColorSelected
+    const evenColor = styles.rowBackColorEven
+    const oddColor = styles.rowBackColorOdd
+    const selColor = styles.rowBackColorSelected
     const rowBackColor = this.props.selected ? selColor : this.props.brighten ? oddColor : evenColor
-    const rowStyle = StyleSheet.flatten([Styles.scrollList.rowContainer, rowBackColor])
+    const rowStyle = StyleSheet.flatten([styles.rowContainer, rowBackColor])
     if (this.props.onPress) {
       return (
         <TouchableOpacity style={rowStyle} onPressIn={() => this.props.onPress(this.props.index, data)}>
@@ -176,7 +177,7 @@ export default class ScrollList extends Component {
       rows = null
     }
     const margin = this.props.topMargin ? 8 : 0
-    const style = StyleSheet.flatten([Styles.scrollList.listContainer, {marginTop: margin}])
+    const style = StyleSheet.flatten([styles.listContainer, {marginTop: margin}])
     const refresh = this.props.onRefresh
       ? <RefreshControl refreshing={this.props.loading} onRefresh={this.props.onRefresh} />
       : null

@@ -1,10 +1,10 @@
-import React, {PureComponent} from 'react'
+import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
-import {View, Text, StyleSheet} from 'react-native'
+import { View, Text, StyleSheet } from 'react-native'
 import LoadingOverlay from './LoadingOverlay'
 
-import api, {getTextFile} from '../api/api'
-import {optimalForeColor} from '../Utils/utils'
+import { getTextFile } from '../api/api'
+import { optimalForeColor } from '../Utils/utils'
 import NexaColours from '../constants/NexaColours';
 
 const styles = StyleSheet.create(
@@ -31,7 +31,7 @@ const styles = StyleSheet.create(
 export default class FileContent extends PureComponent {
   constructor(props) {
     super(props)
-    this.state = {text: "", loading: false}
+    this.state = { text: null, loading: false }
   }
 
   static defaultProps = {
@@ -39,28 +39,35 @@ export default class FileContent extends PureComponent {
   }
 
   static propTypes = {
-    fileName: PropTypes.string.isRequired,
+    fileName: PropTypes.string,
     backColor: PropTypes.string
   }
 
   componentDidMount() {
-    this.setState({loading: true})
-    getTextFile(this.props.fileName).then((response) => {
-      this.setState({loading: false, text: response.data})
-    }).catch((error) => {
-      this.setState({loading: false, text: error.message})
-    })
+    if (this.props.fileName) {
+      this.setState({ loading: true })
+      getTextFile(this.props.fileName).then((response) => {
+        this.setState({ loading: false, text: response.data })
+      }).catch((error) => {
+        this.setState({ loading: false, text: error.message })
+      })
+    }
   }
 
   render() {
-    const foreColor = optimalForeColor(this.props.backColor)
-    const barStyle = StyleSheet.flatten([styles.bar, {backgroundColor: this.props.backColor, color: foreColor}])
-    return (
-      <View style={{flexDirection: 'column'}}>
-        <Text style={barStyle}>{this.props.fileName}</Text>
-        <Text style={styles.content}>{this.state.text}</Text>
-        <LoadingOverlay loading={this.state.loading}/>
-      </View>
-    )
+    const hasFile = this.props.fileName ? true : false
+    if (hasFile) {
+      const foreColor = optimalForeColor(this.props.backColor)
+      const barStyle = StyleSheet.flatten([styles.bar, { backgroundColor: this.props.backColor, color: foreColor }])
+      return (
+        <View style={{ flexDirection: 'column' }}>
+          <Text style={barStyle}>{this.props.fileName}</Text>
+          <Text style={styles.content}>{this.state.text}</Text>
+          <LoadingOverlay loading={this.state.loading} />
+        </View>
+      )
+    } else {
+      return null
+    }
   }
 }

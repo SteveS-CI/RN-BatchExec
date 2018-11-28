@@ -142,7 +142,7 @@ export default class BatchSelectScreen extends Component {
             // depending on data shape, navigate to the appropriate screen, passing batchData
             if (batchData.nodes.length > 1) {
               // Multiple nodes
-              nav.navigate("NodeSelect", {
+              nav.replace("NodeSelect", {
                 batchData,
                 locationCode: this.locationCode
               });

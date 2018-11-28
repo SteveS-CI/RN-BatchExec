@@ -1,5 +1,15 @@
 import PropTypes from 'prop-types'
 
+export const IngredientProps = PropTypes.shape({
+  id: PropTypes.number,
+  lineNumber: PropTypes.number,
+  materialCode: PropTypes.string.isRequired,
+  materialName: PropTypes.string.isRequired,
+  componentType: PropTypes.string,
+  quantity: PropTypes.string.isRequired,
+  status: PropTypes.string
+})
+
 export const EquipmentProps = PropTypes.shape({
   category: PropTypes.string.isRequired,
   model: PropTypes.string,

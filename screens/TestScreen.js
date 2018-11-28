@@ -132,6 +132,7 @@ export default class TestScreen extends React.Component {
           <TextBar backColor={NexaColours.CyanAccent}>Cyan Accent</TextBar>
           <TextBar backColor={NexaColours.Blue}>Blue</TextBar>
           <TextBar backColor={NexaColours.BlueAccent}>Blue Accent</TextBar>
+          <TextBar backColor={NexaColours.GreyDarkest}>Darkest Grey (not a true Nexa colour)</TextBar>
           <TextBar backColor={NexaColours.GreyDark}>Dark Grey</TextBar>
           <TextBar backColor={NexaColours.Grey}>Grey</TextBar>
           <TextBar backColor={NexaColours.GreyAccent}>Grey Accent</TextBar>

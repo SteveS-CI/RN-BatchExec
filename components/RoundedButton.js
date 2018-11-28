@@ -1,26 +1,25 @@
-import React, {PureComponent}  from 'react'
+import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { Button, TouchableOpacity, Text, StyleSheet } from 'react-native'
 import NexaColours from '../constants/NexaColours'
-import {optimalForeColor, shadeBlendConvert} from '../Utils/utils'
+import { optimalForeColor, shadeBlendConvert } from '../Utils/utils'
 
-const styles = 
-  {
-    container: {
-      margin: 8,
-      padding: 8,
-      alignSelf: 'flex-start',
-      borderRadius: 12,
-      elevation: 8,
-      minWidth: 80,
-      borderWidth: 3,
-    },
-    text: {
-      fontFamily: 'euro-std',
-      fontSize: 16,
-      textAlign: 'center'
-    }
+const styles =
+{
+  container: {
+    margin: 8,
+    padding: 8,
+    alignSelf: 'flex-start',
+    borderRadius: 12,
+    elevation: 8,
+    minWidth: 80,
+    borderWidth: StyleSheet.hairlineWidth * 2
+  },
+  text: {
+    fontSize: 16,
+    textAlign: 'center'
   }
+}
 
 export default class RoundedButton extends PureComponent {
 
@@ -38,10 +37,11 @@ export default class RoundedButton extends PureComponent {
   }
 
   render() {
-    const backgroundColor = this.props.disabled ? NexaColours.GreyAccent : this.props.backColor
-    const borderColor = this.props.disabled ? NexaColours.GreyDark : 'white'
-    const viewStyle = {...styles.container, backgroundColor, borderColor}
-    const textStyle = {...styles.text, color: optimalForeColor(backgroundColor)}
+    const backgroundColor = this.props.disabled ? NexaColours.Grey : this.props.backColor
+    const foreColor = this.props.disabled ? NexaColours.GreyDark : optimalForeColor(backgroundColor)
+    const borderColor = this.props.disabled ? NexaColours.GreyDark : foreColor
+    const viewStyle = StyleSheet.flatten([styles.container, { backgroundColor }, { borderColor }])
+    const textStyle = StyleSheet.flatten([styles.text, { color: foreColor }])
     return (
       <TouchableOpacity disabled={this.props.disabled} onPress={() => this.props.onPress()} style={viewStyle}>
         <Text style={textStyle}>{this.props.title}</Text>

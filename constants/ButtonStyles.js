@@ -11,7 +11,7 @@ export const ButtonStyleProps = PropTypes.shape(
 export default ButtonStyles = {
   Cancel: {
     name: "cancel",
-    color: NexaColours.Grey
+    color: NexaColours.GreyLight
   },
   OK: {
     name: "ok",

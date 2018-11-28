@@ -74,7 +74,7 @@ export default class ActionDetailScreen extends Component {
         if (this.batchData.nodes[0].actionType==='Evaluation') {
           this.completeAction('Y')
         } else {
-          this.setState({node: batchData.nodes[0], loading: false})
+          this.setState({node: batchData.nodes[0], loading: false, value: null})
         }
       } else {
         // Operation/Stage/Process - for Confirmation/Signature/Approval
@@ -238,9 +238,10 @@ export default class ActionDetailScreen extends Component {
           <ActionPrompt prompt={node.prompt} notes={node.notes} />
           <ActionEquipment equipment={node.equipment}/>
           <ActionEntry value={this.state.value} entry={entry} onChange={this.entryValueChange} enabled={enabled}/>
-          {this.state.error && <ErrorBar text={this.state.error} onPress={() => this.setState({error: null})}/>}
-          {node.picture && <ActionImage fileName={node.picture} />}
-          {node.fileName && <FileContent fileName={node.fileName}/>}
+          <ActionImage fileName={node.picture} />
+          <FileContent fileName={node.fileName}/>
+          <ErrorBar text={this.state.error} onPress={() => this.setState({error: null})}/>
+          {/* These are all modal */}
           <Comments visible={this.state.commenting} onComment={this.onComment} />
           <Signature visible={this.state.signing} onSign={this.signed} isApproval={false}/>
           <Signature visible={this.state.approving} onSign={this.approved} isApproval={true}/>

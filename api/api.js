@@ -1,6 +1,7 @@
 import React from 'react'
 import axios from "axios";
 import endpoints from "./endpoints";
+import i18n from 'i18n-js'
 
 const api = axios.create();
 
@@ -26,7 +27,8 @@ function getData(request) {
 }
 
 export function getTextFile(name) {
-  const request = { ...endpoints.getTextFile, params: { name, language: 'en' } };
+  const locale = i18n.locale
+  const request = { ...endpoints.getTextFile, params: { name, language: locale } };
   return new Promise((resolve, reject) => {
     api
       .request(request)
