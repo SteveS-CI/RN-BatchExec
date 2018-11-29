@@ -1,5 +1,10 @@
 import PropTypes from 'prop-types'
 
+export const HeaderProps = PropTypes.shape({
+  caption: PropTypes.string.isRequired,
+  source: PropTypes.string.isRequired
+})
+
 export const IngredientProps = PropTypes.shape({
   id: PropTypes.number,
   lineNumber: PropTypes.number,

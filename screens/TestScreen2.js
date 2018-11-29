@@ -4,7 +4,8 @@ import ButtonStyles from '../constants/ButtonStyles'
 import ActionButtons from '../components/ActionButtons'
 import ScrollList from '../components/ScrollList'
 import Styles from '../constants/Styles'
-import { ActionEquipment, ActionIngredient } from '../components/ActionElements';
+import { ActionEquipment, ActionIngredient, ActionEntry } from '../components/ActionElements'
+import SmallPropWindow from '../components/SmallPropWindow'
 
 const ListHeaders = [
   {
@@ -71,7 +72,7 @@ export default class TestScreen2 extends React.Component {
     const oddRow = StyleSheet.flatten([Styles.scrollList.listRows, Styles.scrollList.rowBackColorOdd])    
     const evenRow = StyleSheet.flatten([Styles.scrollList.listRows, Styles.scrollList.rowBackColorEven])    
     return (
-      <View style={{flexDirection: 'column', flex: 1, justifyContent: 'space-between'}}>
+      <View style={{flexDirection: 'column', flex: 1, justifyContent: 'flex-start'}}>
         <ActionButtons onPress={this.onPress} buttons={buttons}/>
           <ScrollList
             headers={ListHeaders}
@@ -81,10 +82,43 @@ export default class TestScreen2 extends React.Component {
             loading={this.state.scrollLoading}
             onRefresh={this.onScrollRefresh}
           />
+        <View>
+          <ActionEntry entry={{label: 'ID', entryType: 'Integer', entryTypeEnum: 1}} useCamera={true} />
+        </View>
         <Text style={oddRow}>Hello World!</Text>
         <View style={{flexDirection: 'row'}}>
-          <ActionEquipment equipment={{category: 'Granulator', model: 'Model One', serial: 'XYZ1234'}}/>
-          <ActionIngredient ingredient={{materialCode: 'MC-45124', materialName: 'Lactose (Milled)', quantity: '123.45 kg'}}/>
+          <SmallPropWindow
+            title='Equipment'
+            headers={
+              [
+                {
+                  caption: 'Category',
+                  source: 'category'
+                },
+                {
+                  caption: 'Model',
+                  source: 'model'
+                },
+                {
+                  caption: 'Serial No.',
+                  source: 'serial'
+                }
+              ]
+            }
+            data={
+              {
+                category: 'Granulation',
+                model: 'Model One',
+                serial: 'XYZ1234'
+              }
+            }
+            baseBackColor='Orange'
+          />
+          <SmallPropWindow
+            title="Component"
+            headers={[{caption: 'Code', source: 'materialCode'},{caption: 'Name', source: 'materialName'},{caption: 'Quantity', source: 'quantity'}]}
+            data={{materialCode: 'MC-45124', materialName: 'Lactose (Milled)', quantity: '123.45 kg'}}
+          />
         </View>
         <Text style={oddRow}>Hello World!</Text>
         <Text style={evenRow}>Hello World!</Text>

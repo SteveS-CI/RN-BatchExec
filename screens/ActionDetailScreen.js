@@ -18,6 +18,7 @@ import LoadingOverlay from '../components/LoadingOverlay';
 import Signature from '../components/Signature'
 import Comments from '../components/Comments'
 import ErrorBar from '../components/ErrorBar'
+import SmallPropWindow from '../components/SmallPropWindow';
 
 export default class ActionDetailScreen extends Component {
   constructor(props) {
@@ -212,7 +213,7 @@ export default class ActionDetailScreen extends Component {
     })
   }
 
-  entryValueChange = (value) => {
+  entryValueChange = (value, exit) => {
     this.setState({value, error: null})
   }
 
@@ -225,6 +226,12 @@ export default class ActionDetailScreen extends Component {
     this.setState({commenting: false})
   }
 
+  equipmentHeaders = [
+    {caption: 'Category', source: 'category'},
+    {caption: 'Model', source: 'model'},
+    {caption: 'Serial No', source: 'serial'}
+  ]
+
   render() {
     const node = this.state.node
     if (node) {
@@ -236,7 +243,7 @@ export default class ActionDetailScreen extends Component {
           <ActionTitle text={this.state.node.name} />
           <ActionButtons buttons={buttons} onPress={this.onPress} />
           <ActionPrompt prompt={node.prompt} notes={node.notes} />
-          <ActionEquipment equipment={node.equipment}/>
+          <SmallPropWindow title='Equipment' headers={this.equipmentHeaders} data={node.equipment}/>
           <ActionEntry value={this.state.value} entry={entry} onChange={this.entryValueChange} enabled={enabled}/>
           <ActionImage fileName={node.picture} />
           <FileContent fileName={node.fileName}/>

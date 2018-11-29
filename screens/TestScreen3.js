@@ -1,50 +1,46 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { BarCodeScanner, Permissions } from 'expo';
-import RoundedButton from '../components/RoundedButton';
-import NexaColours from '../constants/NexaColours';
+import {View, Text, StyleSheet } from 'react-native';
+import ButtonStyles from '../constants/ButtonStyles'
+import ActionButtons from '../components/ActionButtons'
+import ScrollList from '../components/ScrollList'
+import Styles from '../constants/Styles'
+import { ActionEquipment, ActionIngredient, ActionEntry } from '../components/ActionElements'
+import SmallPropWindow from '../components/SmallPropWindow'
 
-export default class BarcodeScannerExample extends React.Component {
-  state = {
-    hasCameraPermission: null,
-    showCam: false
+export default class TestScreen3 extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      entryValue: null
+    }
   }
 
-  async componentDidMount() {
-    const { status } = await Permissions.askAsync(Permissions.CAMERA);
-    this.setState({ hasCameraPermission: status === 'granted' });
-    }
+  static navigationOptions = {
+    title: 'Test Screen 3'
+  }
 
-  onCancel = () => {
-    this.props.navigation.replace('Main')
+  onPress = (name) => {
+    if (name === 'cancel') this.props.navigation.navigate('BatchList')
+  }
+
+  onChange = (value, exit) => {
+    console.log(value, exit)
+    this.setState({entryValue: value})
   }
 
   render() {
-    const { hasCameraPermission } = this.state;
-
-    if (hasCameraPermission === null) {
-      return <Text>Requesting for camera permission</Text>;
-    }
-    if (hasCameraPermission === false) {
-      return <Text>No access to camera</Text>;
-    }
+    const buttons = [ButtonStyles.Previous, ButtonStyles.No, ButtonStyles.Yes]
     return (
-      <View style={{ flex: 1 }}>
-        <RoundedButton title='Cancel' onPress={this.onCancel} backColor={NexaColours.GreyUltraLight}/>
-        <RoundedButton title='Read Barcode' onPress={() => this.setState({showCam: true})}/>
-        {this.state.showCam && <BarCodeScanner
-          onBarCodeScanned={this.handleBarCodeScanned}
-          style={StyleSheet.absoluteFill}
-        />}
-        <Text>Type: {this.type}</Text>
-        <Text>Value: {this.value}</Text>
+      <View style={{flexDirection: 'column'}}>
+        <ActionButtons onPress={this.onPress} buttons={buttons}/>
+        <View>
+          <ActionEntry
+            entry={{label: 'ID', entryType: 'Integer', entryTypeEnum: 1}}
+            value={this.state.entryValue}
+            useCamera={true} 
+            onChange={this.onChange}/>
+        </View>
       </View>
-    );
-  }
-
-  handleBarCodeScanned = ({ type, data }) => {
-    this.type = type
-    this.value = data
-    this.setState({showCam: false})
+    )
   }
 }

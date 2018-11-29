@@ -3,11 +3,13 @@ import { StyleSheet, View, Text, TextInput, Picker } from 'react-native'
 import PropTypes from 'prop-types'
 import * as DataProps from '../constants/DataProps'
 import TextBar from './TextBar'
+import ErrorBar from './ErrorBar'
 import NexaColours from '../constants/NexaColours'
 import { optimalForeColor } from '../Utils/utils'
-import { ListRow } from './ScrollList';
+import RoundedButton from './RoundedButton';
+import BarcodeReader from './BarcodeReader';
 
-const inputBorderWidth = StyleSheet.hairlineWidth
+const inputBorderWidth = StyleSheet.hairlineWidth * 2
 const inputBorderRadius = 10
 
 const styles = StyleSheet.create(
@@ -167,12 +169,17 @@ export class ActionPrompt extends PureComponent {
 export class GenericEntry extends PureComponent {
   constructor(props) {
     super(props)
-    this.state = { editing: false }
+    this.state = {
+      editing: false,
+      showCam: false
+    }
   }
 
   static defaultProps = {
     enabled: true,
-    autoFocus: false
+    autoFocus: false,
+    useCamera: false,
+    onChange: () => {}
   }
 
   static propTypes = {
@@ -181,13 +188,20 @@ export class GenericEntry extends PureComponent {
     onChange: PropTypes.func,
     enabled: PropTypes.bool,
     autoFocus: PropTypes.bool,
+    useCamera: PropTypes.bool
   }
 
   onChangeText = (value) => {
-    if (this.props.onChange) this.props.onChange(value)
+    this.props.onChange(value, false)
+  }
+
+  scanned = (type, data) => {
+    this.props.onChange(data, true)
+    this.setState({showCam: false})
   }
 
   render() {
+    const showCam = this.state.showCam
     const editing = this.state.editing
     const entry = this.props.entry
     const hasLabel = entry.label ? true : false
@@ -220,6 +234,8 @@ export class GenericEntry extends PureComponent {
           keyboardType={keyboardType}
         />
         {hasSuffix && <Text style={styles.inputSuffix}>{entry.suffix}</Text>}
+        {this.props.useCamera && <RoundedButton title='Camera' onPress={() => this.setState({showCam: true})} />}
+        <BarcodeReader visible={showCam} onScanned={this.scanned}/>
       </View>
     )
   }
@@ -289,7 +305,8 @@ export class ActionEntry extends PureComponent {
     value: PropTypes.any,
     onChange: PropTypes.func,
     enabled: PropTypes.bool,
-    autoFocus: PropTypes.bool
+    autoFocus: PropTypes.bool,
+    useCamera: PropTypes.bool
   }
 
   render() {
@@ -305,95 +322,6 @@ export class ActionEntry extends PureComponent {
           <GenericEntry {...this.props} />
         )
       }
-    } else {
-      return null
-    }
-  }
-}
-
-
-const equipStyles = StyleSheet.create(
-  {
-    container: {
-      flexDirection: 'column',
-      marginTop: -12
-    },
-    overlay: {
-      position: 'relative', zIndex: 1,
-      top: 18, left: 16,
-      alignSelf: 'flex-start',
-    },
-    titleText: {
-      paddingHorizontal: 8, paddingVertical: 3,
-      fontSize: 16,
-      borderRadius: 8, borderColor: NexaColours.GreyDark, borderWidth: StyleSheet.hairlineWidth * 2
-    },
-    properties: {
-      flexDirection: 'column',
-      margin: 8,
-      padding: 8, paddingTop: 12,
-      borderWidth: StyleSheet.hairlineWidth * 2,
-      borderRadius: 12, borderTopLeftRadius: 0,
-      borderColor: NexaColours.GreyDarkest,
-      alignSelf: 'flex-start'
-    }
-  }
-)
-
-export class ActionEquipment extends PureComponent {
-
-  static propTypes = {
-    equipment: DataProps.EquipmentProps
-  }
-
-  render() {
-    const hasEquipment = this.props.equipment ? true : false
-    if (hasEquipment) {
-      const equip = this.props.equipment
-      const titleStyle = StyleSheet.flatten([equipStyles.titleText, {backgroundColor: NexaColours.Yellow, color: 'black'}])
-      const innerStyle = StyleSheet.flatten([equipStyles.properties, {backgroundColor: NexaColours.YellowAccent}])
-      return (
-        <View style={equipStyles.container}>
-          <View style={equipStyles.overlay}>
-            <Text style={titleStyle}>Equipment</Text>
-          </View>
-          <View style={innerStyle}>
-            <Text>Category: {equip.category}</Text>
-            <Text>Model: {equip.model}</Text>
-            <Text>Serial: {equip.serial}</Text>
-          </View>
-        </View>
-      )
-    } else {
-      return null
-    }
-  }
-}
-
-export class ActionIngredient extends PureComponent {
-
-  static propTypes = {
-    ingredient: DataProps.IngredientProps
-  }
-
-  render() {
-    const hasIngredient = this.props.ingredient ? true : false
-    if (hasIngredient) {
-      const ingred = this.props.ingredient
-      const titleStyle = StyleSheet.flatten([equipStyles.titleText, {backgroundColor: NexaColours.Green, color: 'white'}])
-      const innerStyle = StyleSheet.flatten([equipStyles.properties, {backgroundColor: NexaColours.GreenAccent}])
-      return (
-        <View style={equipStyles.container}>
-          <View style={equipStyles.overlay}>
-            <Text style={titleStyle}>Component</Text>
-          </View>
-          <View style={innerStyle}>
-            <Text>Code: {ingred.materialCode}</Text>
-            <Text>Name: {ingred.materialName}</Text>
-            <Text>Quantity: {ingred.quantity}</Text>
-          </View>
-        </View>
-      )
     } else {
       return null
     }
