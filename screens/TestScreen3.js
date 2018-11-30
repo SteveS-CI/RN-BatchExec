@@ -6,6 +6,8 @@ import ScrollList from '../components/ScrollList'
 import Styles from '../constants/Styles'
 import { ActionEquipment, ActionIngredient, ActionEntry } from '../components/ActionElements'
 import SmallPropWindow from '../components/SmallPropWindow'
+import IconButton from '../components/IconButton';
+import NexaColours from '../constants/NexaColours';
 
 export default class TestScreen3 extends React.Component {
   constructor(props) {

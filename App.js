@@ -10,6 +10,8 @@ import { AsyncStorage } from 'react-native'
 
 import {setTheme} from './constants/Styles'
 
+const defaultTimeout = 2000
+
 export default class App extends React.Component {
   constructor(props) {
     super(props)
@@ -61,11 +63,13 @@ export default class App extends React.Component {
         'euro-demi': require('./assets/fonts/Eurostile-Demi.otf'),
         'euro-ext-bold': require('./assets/fonts/Eurostile-Extended-Bold.otf'),
         'euro-ext': require('./assets/fonts/Eurostile-Extended.otf'),
-        'euro-std': require('./assets/fonts/Eurostile-Regular.otf')
+        'euro-std': require('./assets/fonts/Eurostile-Regular.otf'),
+        'fa_solid_900': require('./assets/fonts/fa-solid-900.ttf')
       }),
       AsyncStorage.getItem('settings').then((result) => {
         const settings = JSON.parse(result)
         api.defaults.baseURL = settings.apiUrl
+        api.defaults.timeout = defaultTimeout
 
         i18n.fallbacks = true;
         i18n.translations = Translations;

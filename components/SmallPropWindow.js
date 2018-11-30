@@ -1,12 +1,9 @@
 import React, { PureComponent } from 'react'
-import { StyleSheet, View, Text, TextInput, Picker } from 'react-native'
+import { StyleSheet, View, Text } from 'react-native'
 import PropTypes from 'prop-types'
 import * as DataProps from '../constants/DataProps'
-import TextBar from './TextBar'
 import NexaColours from '../constants/NexaColours'
 import { optimalForeColor } from '../Utils/utils'
-
-import MeasureText from 'react-native-measure-text'
 
 const styles = StyleSheet.create(
   {

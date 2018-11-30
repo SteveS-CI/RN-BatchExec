@@ -4,6 +4,7 @@ import NexaColours from '../constants/NexaColours';
 import PropTypes from 'prop-types'
 import i18n from 'i18n-js'
 import RoundedButton from '../components/RoundedButton'
+import IconButton from '../components/IconButton'
 
 const styles = StyleSheet.create(
   {
@@ -39,7 +40,7 @@ export default class ScreenHeader extends Component {
     okDisabled: PropTypes.bool
   }
 
-  nullFunction = () => {}
+  nullFunction = () => { }
 
   render() {
     const right = this.props.okCaption
@@ -48,12 +49,12 @@ export default class ScreenHeader extends Component {
         title={this.props.okCaption}
         onPress={this.props.onOK}
         disabled={this.props.okDisabled}
-        />
-      : <Text style={{width: 80}} />
+      />
+      : <Text style={{ width: 80 }} />
     return (
-      <View style={{flexDirection: 'row', justifyContent: 'space-between', backgroundColor: NexaColours.Blue }}>
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between', backgroundColor: NexaColours.Blue }}>
         <RoundedButton
-          backColor={NexaColours.AlertYellow}
+          backColor={NexaColours.GreyUltraLight}
           title={i18n.t('button.captions.cancel')}
           onPress={this.props.onCancel}
         />

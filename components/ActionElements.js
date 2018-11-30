@@ -6,7 +6,7 @@ import TextBar from './TextBar'
 import ErrorBar from './ErrorBar'
 import NexaColours from '../constants/NexaColours'
 import { optimalForeColor } from '../Utils/utils'
-import RoundedButton from './RoundedButton';
+import IconButton from './IconButton';
 import BarcodeReader from './BarcodeReader';
 
 const inputBorderWidth = StyleSheet.hairlineWidth * 2
@@ -192,12 +192,12 @@ export class GenericEntry extends PureComponent {
   }
 
   onChangeText = (value) => {
-    this.props.onChange(value, false)
+    this.props.onChange(value)
   }
 
   scanned = (type, data) => {
-    this.props.onChange(data, true)
     this.setState({showCam: false})
+    this.props.onChange(data)
   }
 
   render() {
@@ -234,7 +234,7 @@ export class GenericEntry extends PureComponent {
           keyboardType={keyboardType}
         />
         {hasSuffix && <Text style={styles.inputSuffix}>{entry.suffix}</Text>}
-        {this.props.useCamera && <RoundedButton title='Camera' onPress={() => this.setState({showCam: true})} />}
+        {this.props.useCamera && <IconButton iconName='camera' onPress={() => this.setState({showCam: true})} />}
         <BarcodeReader visible={showCam} onScanned={this.scanned}/>
       </View>
     )
@@ -276,7 +276,7 @@ export class DistinctEntry extends PureComponent {
     return (
       <View style={styles.pickerContainer}>
         {hasLabel && <Text style={styles.pickerLabel}>{entry.label}</Text>}
-        <Picker style={{ minWidth: 200 }}
+        <Picker style={{ minWidth: 250 }}
           selectedValue={this.props.value}
           onValueChange={this.onValueChange}
           enabled={this.props.enabled}

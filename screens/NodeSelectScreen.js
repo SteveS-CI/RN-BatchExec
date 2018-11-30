@@ -108,13 +108,12 @@ export default class NodeSelectScreen extends React.Component {
         <View style={{ flex: 1}}>
           <ButtonBar justify="space-between">
             <RoundedButton
-              backColor={NexaColours.AlertYellow}
+              backColor={NexaColours.GreyUltraLight}
               title={i18n.t('button.captions.cancel')}
               onPress={() => {
                 nav.replace("BatchList");
               }}
             />
-            <TextBar backColor={NexaColours.CyanAccent} style={{alignSelf: 'center'}}>{prompt}</TextBar>
             <RoundedButton
               backColor={NexaColours.AlertGreen}
               title={i18n.t('button.captions.select')}
@@ -122,6 +121,7 @@ export default class NodeSelectScreen extends React.Component {
               disabled={this.state.selectedItemID == 0}
             />
           </ButtonBar>
+          <TextBar backColor={NexaColours.CyanAccent}>{prompt}</TextBar>
           <ScrollList
             headers={headers}
             data={batchData.nodes}

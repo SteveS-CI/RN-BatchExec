@@ -102,7 +102,7 @@ export default {
    * Request Type: GET
    * @param batchID the id of the current batch
    * @param procID the id of the current proc (0 for first)
-   * @param locationCode site location e.g. Granulation Suite
+   * @param locationCode site location e.g. Granulation Suite = GRAN1
    */
   nextProc: {
     method: 'post',

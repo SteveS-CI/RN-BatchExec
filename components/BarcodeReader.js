@@ -1,13 +1,9 @@
-import React, {PureComponent} from 'react'
-import {Modal, StyleSheet, Text, View } from 'react-native'
+import React, { PureComponent } from 'react'
+import { Modal, StyleSheet, Text, View } from 'react-native'
 import { BarCodeScanner, Permissions } from 'expo'
 import PropTypes from 'prop-types'
-import RoundedButton from '../components/RoundedButton'
-import NexaColours from '../constants/NexaColours'
-
-const styles = StyleSheet.create({
-  barcode: StyleSheet.absoluteFill
-})
+import RoundedButton from './RoundedButton';
+import NexaColours from '../constants/NexaColours';
 
 export default class BarcodeReader extends PureComponent {
   constructor(props) {
@@ -25,7 +21,7 @@ export default class BarcodeReader extends PureComponent {
   }
 
   async componentDidMount() {
-    const {status} = await Permissions.askAsync(Permissions.CAMERA)
+    const { status } = await Permissions.askAsync(Permissions.CAMERA)
     this.setState({ hasPerm: (status === 'granted') })
   }
 
@@ -33,17 +29,22 @@ export default class BarcodeReader extends PureComponent {
     this.props.onScanned(value.type, value.data)
   }
 
+  cancelled = () => {
+    this.props.onScanned(0, 'cancelled')
+  }
+
   render() {
     const visible = this.props.visible
     if (visible) {
       const hasPerm = this.state.hasPerm
-      if (hasPerm === null) { 
+      if (hasPerm === null) {
         return <Text>Obtaining Camera Permission</Text>
       }
       if (hasPerm) {
         return (
-          <Modal onRequestClose={() => this.barcodeScanned(0, 'cancelled')}>
-            <BarCodeScanner style={StyleSheet.absoluteFill} onBarCodeScanned={this.barcodeScanned}/>
+          <Modal onRequestClose={this.cancelled}>
+            <BarCodeScanner style={StyleSheet.absoluteFill} onBarCodeScanned={this.barcodeScanned} />
+            <RoundedButton title='Cancel' backColor={NexaColours.GreyUltraLight} onPress={this.cancelled}/>
           </Modal>
         )
       } else {
