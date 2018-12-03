@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ScrollView, View, Alert } from 'react-native'
+import { ScrollView, View, Alert, KeyboardAvoidingView } from 'react-native'
 import ActionButtons from '../components/ActionButtons'
 import ButtonStyles from '../constants/ButtonStyles'
 
@@ -240,21 +240,23 @@ export default class ActionDetailScreen extends Component {
       const entry = node.inputs ? node.inputs[0] : null
       const enabled = (node.status === "NotStarted")
       return (
-        <ScrollView style={{ flex: 1 }}>
+        <KeyboardAvoidingView style={{ flex: 1 }} enabled behavior='position'>
           <ActionTitle text={this.state.node.name} />
           <ActionButtons buttons={buttons} onPress={this.onPress} />
-          <ActionPrompt prompt={node.prompt} notes={node.notes} />
-          <HardwareDisplay node={node} />
-          <ActionEntry value={this.state.value} entry={entry} onChange={this.entryValueChange} enabled={enabled} useCamera={allowCam} />
-          <ActionImage fileName={node.picture} />
-          <FileContent fileName={node.fileName} />
-          <ErrorBar text={this.state.error} onPress={() => this.setState({ error: null })} />
-          {/* These are all modal */}
-          <Comments visible={this.state.commenting} onComment={this.onComment} />
-          <Signature visible={this.state.signing} onSign={this.signed} isApproval={false} />
-          <Signature visible={this.state.approving} onSign={this.approved} isApproval={true} />
-          <LoadingOverlay loading={this.state.loading} />
-        </ScrollView>
+          <ScrollView>
+            <ActionPrompt prompt={node.prompt} notes={node.notes} />
+            <HardwareDisplay node={node} />
+            <ActionEntry value={this.state.value} entry={entry} onChange={this.entryValueChange} enabled={enabled} useCamera={allowCam} />
+            <ActionImage fileName={node.picture} />
+            <FileContent fileName={node.fileName} />
+            <ErrorBar text={this.state.error} onPress={() => this.setState({ error: null })} />
+            {/* These are all modal */}
+            <Comments visible={this.state.commenting} onComment={this.onComment} />
+            <Signature visible={this.state.signing} onSign={this.signed} isApproval={false} />
+            <Signature visible={this.state.approving} onSign={this.approved} isApproval={true} />
+            <LoadingOverlay loading={this.state.loading} />
+          </ScrollView>
+        </KeyboardAvoidingView>
       )
     } else {
       return (null)

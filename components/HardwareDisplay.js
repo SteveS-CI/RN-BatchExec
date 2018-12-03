@@ -17,6 +17,7 @@ export default class HardwareDisplay extends PureComponent {
   ]
 
   componentHeaders = [
+    { caption: 'Line', source: 'lineNumber' },
     { caption: 'Code', source: 'materialCode' },
     { caption: 'Name', source: 'materialName' },
     { caption: 'Quantity', source: 'quantity' }

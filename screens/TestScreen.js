@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, View } from 'react-native';
+import { ScrollView, View, KeyboardAvoidingView } from 'react-native';
 import RoundedButton from '../components/RoundedButton'
 import ActionButtons from '../components/ActionButtons'
 import ButtonStyles from '../constants/ButtonStyles'
@@ -95,36 +95,39 @@ export default class TestScreen extends React.Component {
       <View style={{flexDirection: 'column', flex: 1}}>
         <ActionTitle text='The Action Name'/>
         <ActionButtons onPress={this.onPress} buttons={buttons}/>
+        <KeyboardAvoidingView behavior='position' enabled>
         <ScrollView style={{flexDirection: 'column'}}>
           <ActionPrompt prompt='This is the text of an action prompt' notes='This is the text for optional action notes'/>
           <RoundedButton title='Sign Test' onPress={() => this.setState({signing: true})}/>
           <RoundedButton title='Approval Test' onPress={() => this.setState({approving: true})}/>
           <RoundedButton title='Comment Test' onPress={() => this.setState({commenting: true})}/>
-          <ActionEntry
-            value={this.state.value}
-            entry={{}}
-            onChange={(value) => this.setState({value})}
-          />
-          <ActionEntry
-            value={this.state.value}
-            entry={{label: 'Label', entryType: 'Decimal'}}
-            onChange={(value) => this.setState({value})}
-            autoFocus={true}
-          />
-          <ActionEntry
-            value={this.state.value}
-            entry={{suffix: 'Suffix'}}
-            onChange={(value) => this.setState({value})}
-          />
-          <ActionEntry
-            value={this.state.value}
-            entry={stringEntry}
-            onChange={(value) => this.setState({value})}
-          />
-          <ActionEntry value={this.state.distinctValue} entry={distinctEntry1} onChange={(distinctValue) => this.setState({distinctValue})} enabled={true}/>
-          <ActionEntry value={this.state.distinctValue} entry={distinctEntry2} onChange={(distinctValue) => this.setState({distinctValue})} enabled={true}/>
-          <ActionEntry value={this.state.distinctValue} entry={distinctEntry3} onChange={(distinctValue) => this.setState({distinctValue})} enabled={true}/>
-          <ActionEntry value={this.state.distinctValue} entry={distinctEntry4} onChange={(distinctValue) => this.setState({distinctValue})} enabled={true}/>
+          <View>
+            <ActionEntry
+              value={this.state.value}
+              entry={{}}
+              onChange={(value) => this.setState({value})}
+            />
+            <ActionEntry
+              value={this.state.value}
+              entry={{label: 'Label', entryType: 'Decimal'}}
+              onChange={(value) => this.setState({value})}
+              autoFocus={true}
+            />
+            <ActionEntry
+              value={this.state.value}
+              entry={{suffix: 'Suffix'}}
+              onChange={(value) => this.setState({value})}
+            />
+            <ActionEntry
+              value={this.state.value}
+              entry={stringEntry}
+              onChange={(value) => this.setState({value})}
+            />
+            <ActionEntry value={this.state.distinctValue} entry={distinctEntry1} onChange={(distinctValue) => this.setState({distinctValue})} enabled={true}/>
+            <ActionEntry value={this.state.distinctValue} entry={distinctEntry2} onChange={(distinctValue) => this.setState({distinctValue})} enabled={true}/>
+            <ActionEntry value={this.state.distinctValue} entry={distinctEntry3} onChange={(distinctValue) => this.setState({distinctValue})} enabled={true}/>
+            <ActionEntry value={this.state.distinctValue} entry={distinctEntry4} onChange={(distinctValue) => this.setState({distinctValue})} enabled={true}/>
+          </View>
           <ActionImage fileName='setup.jpg' />
           <ActionImage fileName='db_Russell_Sieve1.jpg' />
           <FileContent fileName='General05.txt' backColor={NexaColours.BlueAccent} />
@@ -146,6 +149,7 @@ export default class TestScreen extends React.Component {
           <Signature visible={this.state.approving} onSign={this.onSign} isApproval={true} title='This Action requires approval'/>
           <Comments visible={this.state.commenting} onComment={this.onComment} />
         </ScrollView>
+        </KeyboardAvoidingView>
       </View>
     )
   }

@@ -46,6 +46,10 @@ export default class DevScreen extends PureComponent {
     this.nav.navigate("Test3")
   }
 
+  testScreen4 = () => {
+    this.nav.navigate("Test4")
+  }
+
   update = () => {
     this.props.screenProps.update()
   }
@@ -72,6 +76,7 @@ export default class DevScreen extends PureComponent {
           <RoundedButton style={styles.button} title='Show Test Screen' onPress={this.testScreen}/>
           <RoundedButton style={styles.button} title='Show Test Screen 2' onPress={this.testScreen2}/>
           <RoundedButton style={styles.button} title='Barcode Reader Test' onPress={this.testScreen3} backColor={NexaColours.AlertCyan}/>
+          <RoundedButton style={styles.button} title='WebView Test' onPress={this.testScreen4} backColor={NexaColours.AlertYellow}/>
           <RoundedButton style={styles.button} title='Get Updates' onPress={this.update} backColor={NexaColours.AlertYellow}/>
           <RoundedButton style={styles.button} title='Destroy Settings !!!!' onPress={this.destroy} backColor={NexaColours.AlertRed}/>
         </View>

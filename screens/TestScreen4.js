@@ -1,5 +1,6 @@
 import React from 'react';
-import {View, Text, StyleSheet } from 'react-native';
+import {View, Text, StyleSheet, WebView } from 'react-native';
+import Layout from '../constants/Layout'
 import ButtonStyles from '../constants/ButtonStyles'
 import ActionButtons from '../components/ActionButtons'
 import ScrollList from '../components/ScrollList'
@@ -8,9 +9,8 @@ import { ActionEquipment, ActionIngredient, ActionEntry } from '../components/Ac
 import SmallPropWindow from '../components/SmallPropWindow'
 import IconButton from '../components/IconButton';
 import NexaColours from '../constants/NexaColours';
-import { WebView } from 'react-native'
 
-export default class TestScreen3 extends React.Component {
+export default class TestScreen4 extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -19,31 +19,30 @@ export default class TestScreen3 extends React.Component {
   }
 
   static navigationOptions = {
-    title: 'Test Screen 3'
+    title: 'Test Screen 4'
   }
 
   onPress = (name) => {
     if (name === 'cancel') this.props.navigation.navigate('BatchList')
   }
 
-  onChange = (value, exit) => {
-    console.log(value, exit)
-    this.setState({entryValue: value})
-  }
-
   render() {
     const buttons = [ButtonStyles.Previous, ButtonStyles.No, ButtonStyles.Yes]
     return (
-      <View style={{flexDirection: 'column'}}>
+      <View style={{flexDirection: 'column', flex: 1}}>
         <ActionButtons onPress={this.onPress} buttons={buttons}/>
-        <View>
-          <ActionEntry
-            entry={{label: 'ID', entryType: 'Integer', entryTypeEnum: 1}}
-            value={this.state.entryValue}
-            useCamera={true} 
-            onChange={this.onChange}/>
-        </View>
-      </View>
-    )
+        <WebView
+          style={{ width: Layout.window.width * 0.9, marginLeft: 20 }}
+          source={{
+          html: `
+          <h3 style='color: red'>Use a WebView to display html files</h3>
+          <p style='color: blue'>
+            The <i style='color: green'>quick</i> brown <small style='color: magenta'>fox</small> jumps <em>over</em> the lazy dog.
+          </p>
+        `,
+        }}
+      />
+   </View>
+  )
   }
 }
