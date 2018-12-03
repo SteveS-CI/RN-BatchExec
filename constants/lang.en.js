@@ -30,7 +30,8 @@ export default en = {
       start: "Start",
       continue: "Continue",
       save: "Save",
-      select: "Select"
+      select: "Select",
+      components: "Components"
     }
   },
   screens: {

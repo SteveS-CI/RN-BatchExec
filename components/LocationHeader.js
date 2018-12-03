@@ -37,7 +37,7 @@ export default class LocationHeader extends Component {
     return (
     this.state.location
     ? <TouchableOpacity style={styles.container} onPress={this.navigate}>
-        <Text style={{color: 'black', fontSize: 16}}>{this.state.location.name}</Text>
+        <Text style={{color: 'black'}}>{this.state.location.name}</Text>
       </TouchableOpacity>
     : null
     )

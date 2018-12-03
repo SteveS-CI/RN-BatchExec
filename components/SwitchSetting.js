@@ -8,7 +8,7 @@ export default class SwitchSetting extends PureComponent {
     return (
       <View style={{flexDirection: 'row', justifyContent: 'space-between', borderWidth: StyleSheet.hairlineWidth, padding: 8}}>
         <View style={{flexDirection: 'column'}}>
-          <Text style={{fontSize: 16}}>{this.props.title}</Text>
+          <Text>{this.props.title}</Text>
           <Text style={{color: NexaColours.Grey}}>{this.props.subTitle}</Text>
         </View>
         <Switch value={this.props.value} onValueChange={this.props.onValueChange}></Switch>

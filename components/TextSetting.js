@@ -26,14 +26,14 @@ export default class TextSetting extends PureComponent {
 
   render() {
     const editing = this.state.editing
-    const baseStyle = {paddingHorizontal: 5, fontSize: 16}
+    const baseStyle = {paddingHorizontal: 5}
     const textStyle = this.state.editing 
       ? {...baseStyle, borderRadius: 5, borderWidth: StyleSheet.hairlineWidth}
       : {...baseStyle, color: NexaColours.Grey}
     return (
       <TouchableWithoutFeedback onPress={() => {this.setState({editing: !editing})}}>
         <View style={{flexDirection: 'column', padding: 8}}>
-          <Text style={{fontSize: 16}}>{this.props.title}</Text>
+          <Text>{this.props.title}</Text>
           <TextInput
                 textContentType='URL'
                 value={this.state.value}

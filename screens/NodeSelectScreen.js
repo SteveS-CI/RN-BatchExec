@@ -66,19 +66,15 @@ export default class NodeSelectScreen extends React.Component {
           const batchData = data;
           // depending on data shape, navigate to the appropriate screen, passing batchData
           if (batchData.nodes.length > 1) {
-            console.log('Multiple Nodes')
             // Multiple nodes; stay on this screen
             this.setState({ batchData, selectedItemID: 0, selectedIndex: -1 })
             nav.replace("NodeSelect", { batchData, locationCode: this.locationCode });
           } else {
-            console.log('Single Node')
             // Single node
             if (batchData.nodeDepth === 3) {
-              console.log('Single Action Node')
               // Action node
               nav.navigate("ActionDetail", { batchData, locationCode: this.locationCode });
             } else {
-              console.log('Single Other Node')
               // Operation/Stage/Process - for Confirmation/Signature/Approval
               nav.navigate("NodeDetail", { batchData, locationCode: this.locationCode });
             }
@@ -121,7 +117,7 @@ export default class NodeSelectScreen extends React.Component {
               disabled={this.state.selectedItemID == 0}
             />
           </ButtonBar>
-          <TextBar backColor={NexaColours.CyanAccent}>{prompt}</TextBar>
+          <TextBar backColor={NexaColours.Cyan}>{prompt}</TextBar>
           <ScrollList
             headers={headers}
             data={batchData.nodes}

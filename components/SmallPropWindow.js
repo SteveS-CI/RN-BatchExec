@@ -18,7 +18,7 @@ const styles = StyleSheet.create(
     },
     titleText: {
       paddingHorizontal: 8, paddingVertical: 3,
-      fontSize: 16, fontWeight: 'bold',
+      fontWeight: 'bold',
       borderRadius: 8, borderColor: NexaColours.GreyDark, borderWidth: StyleSheet.hairlineWidth * 2
     },
     inner: {

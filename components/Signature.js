@@ -11,7 +11,7 @@ import NexaColours from '../constants/NexaColours';
 const styles = StyleSheet.create(
   {
     title: {
-      fontSize: 18
+//      fontSize: 18
     },
     inner: {
       position: 'absolute',

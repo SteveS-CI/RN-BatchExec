@@ -7,7 +7,7 @@ import { optimalForeColor } from '../Utils/utils'
 const styles = StyleSheet.create(
   {
     base: {
-      fontSize: 18,
+//      fontSize: 18,
       padding: 8,
       marginHorizontal: 8,
       marginVertical: 8,

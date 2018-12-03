@@ -14,7 +14,7 @@ const styles = StyleSheet.create(
       marginHorizontal: 5, marginTop: 5,
       paddingHorizontal: 12, paddingVertical: 8,
       borderTopLeftRadius: 12, borderTopRightRadius: 12,
-      fontSize: 18
+//      fontSize: 18
     },
     content: {
       borderStyle: 'solid', borderWidth: 2, borderColor: NexaColours.BlueAccent,
@@ -23,7 +23,7 @@ const styles = StyleSheet.create(
       paddingHorizontal: 12, paddingTop: 5,
       borderBottomLeftRadius: 12, borderBottomRightRadius: 12,
       backgroundColor: NexaColours.GreyUltraLight,
-      fontSize: 16
+//      fontSize: 16
     }
   }
 )
@@ -46,11 +46,21 @@ export default class FileContent extends PureComponent {
   componentDidMount() {
     if (this.props.fileName) {
       this.setState({ loading: true })
-      getTextFile(this.props.fileName).then((response) => {
-        this.setState({ loading: false, text: response.data })
-      }).catch((error) => {
-        this.setState({ loading: false, text: error.message })
-      })
+      this.getFileData(this.props.fileName)
+    }
+  }
+
+  getFileData = (fileName) => {
+    getTextFile(fileName).then((response) => {
+      this.setState({ loading: false, text: response.data })
+    }).catch((error) => {
+      this.setState({ loading: false, text: error.message })
+    })
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.fileName !== prevProps.fileName) {
+      this.getFileData(this.props.fileName);
     }
   }
 

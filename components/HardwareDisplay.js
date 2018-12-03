@@ -13,7 +13,7 @@ export default class HardwareDisplay extends PureComponent {
   equipmentHeaders = [
     { caption: 'Category', source: 'category' },
     { caption: 'Model', source: 'model' },
-    { caption: 'Serial No', source: 'serial' }
+    { caption: 'Serial No', source: 'serialNumber' }
   ]
 
   componentHeaders = [

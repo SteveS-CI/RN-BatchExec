@@ -95,7 +95,7 @@ export default class TestScreen extends React.Component {
       <View style={{flexDirection: 'column', flex: 1}}>
         <ActionTitle text='The Action Name'/>
         <ActionButtons onPress={this.onPress} buttons={buttons}/>
-        <KeyboardAvoidingView behavior='position' enabled>
+        <KeyboardAvoidingView behavior='position' enabled style={{flex: 1}}>
         <ScrollView style={{flexDirection: 'column'}}>
           <ActionPrompt prompt='This is the text of an action prompt' notes='This is the text for optional action notes'/>
           <RoundedButton title='Sign Test' onPress={() => this.setState({signing: true})}/>

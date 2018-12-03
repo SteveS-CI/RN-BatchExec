@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
   listColumn: {
     color: 'white',
     padding: 8,
-    fontSize: 16,
+//    fontSize: 16,
     borderColor: NexaColours.GreyDark,
     borderRightWidth: StyleSheet.hairlineWidth
   },
@@ -34,13 +34,13 @@ const styles = StyleSheet.create({
     color: NexaColours.GreyDark,
     padding: 8,
     paddingVertical: 12,
-    fontSize: 14,
+//    fontSize: 14,
     borderColor: NexaColours.GreyDark,
     borderRightWidth: StyleSheet.hairlineWidth
   },
   rowBackColorEven: {backgroundColor: NexaColours.GreyLight},
   rowBackColorOdd: {backgroundColor: NexaColours.GreyUltraLight},
-  rowBackColorSelected: {backgroundColor: NexaColours.CyanAccent}
+  rowBackColorSelected: {backgroundColor: NexaColours.YellowAccent}
 })
 
 export class ListHeader extends Component {

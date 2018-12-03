@@ -10,8 +10,7 @@ const styles = StyleSheet.create(
   {
     base: {
       color: NexaColours.GreyUltraLight,
-      fontFamily: 'euro-bold',
-      fontSize: 20,
+//      fontSize: 20,
       padding: 8,
       marginTop: 8,
       marginBottom: 0,

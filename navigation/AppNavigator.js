@@ -38,7 +38,7 @@ const screenHeaderStyling = {
   headerTitleStyle: { 
     fontFamily: 'euro-demi', 
     fontWeight: 'normal',
-    fontSize: 22,
+    fontSize: 20,
     textAlign: 'center'
   },
 }
@@ -139,7 +139,7 @@ export default AppNavigator = createStackNavigator(
       title: i18n.t('screens.main.title'),
       headerTintColor: NexaColours.Blue,
       headerStyle: { backgroundColor: NexaColours.GreyLight },
-      headerTitleStyle: { fontFamily: 'euro-demi', fontWeight: 'normal', fontSize: 22 },
+      headerTitleStyle: { fontFamily: 'euro-demi', fontWeight: 'normal', fontSize: 20 },
       headerLeft: <DropdownMenu data={dropDownItems} navigation={navigation} />,
       headerRight: <LocationHeader navigation={navigation}/>
     })

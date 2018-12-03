@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     paddingRight: 8,
     flex: 2,
-    fontSize: 16,
+//    fontSize: 16,
     color: NexaColours.Blue,
     textAlignVertical: 'center',
     borderRightWidth: StyleSheet.hairlineWidth,

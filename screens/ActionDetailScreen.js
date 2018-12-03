@@ -20,6 +20,7 @@ import Comments from '../components/Comments'
 import ErrorBar from '../components/ErrorBar'
 import SmallPropWindow from '../components/SmallPropWindow';
 import HardwareDisplay from '../components/HardwareDisplay';
+import WeighInfo from '../components/WeighInfo'
 
 export default class ActionDetailScreen extends Component {
   constructor(props) {
@@ -69,11 +70,12 @@ export default class ActionDetailScreen extends Component {
     } else {
       // Single nodes
       if (batchData.nodeDepth === 3) {
+        const node = batchData.nodes[0]
         // Action node - just change state
         this.batchData = batchData
-        this.procID = batchData.nodes[0].procID
-        // If non-interactive then execute 
-        if (this.batchData.nodes[0].actionType === 'Evaluation') {
+        this.procID = node.procID
+        // If non-interactive then execute (should have simple property set by server!!!)
+        if (node.actionType === 'Evaluation' || node.actionType === 'WeighCreate' || node.actionType === 'ExecuteCommand') {
           this.completeAction('Y')
         } else {
           this.setState({ node: batchData.nodes[0], loading: false, value: null })
@@ -245,6 +247,7 @@ export default class ActionDetailScreen extends Component {
           <ActionButtons buttons={buttons} onPress={this.onPress} />
           <ScrollView>
             <ActionPrompt prompt={node.prompt} notes={node.notes} />
+            <WeighInfo weighData={node.weighing} />
             <HardwareDisplay node={node} />
             <ActionEntry value={this.state.value} entry={entry} onChange={this.entryValueChange} enabled={enabled} useCamera={allowCam} />
             <ActionImage fileName={node.picture} />

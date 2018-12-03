@@ -14,11 +14,12 @@ const styles =
       alignSelf: 'flex-start',
       borderRadius: 12,
       elevation: 8,
-      minWidth: 80,
+      minWidth: 60,
       borderWidth: StyleSheet.hairlineWidth * 2,
+      backgroundColor: NexaColours.GreyUltraLight
     },
     text: {
-      fontSize: 16,
+//      fontSize: 16,
       textAlign: 'center'
     }
   }

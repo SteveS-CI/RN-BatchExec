@@ -7,12 +7,23 @@ export const HeaderProps = PropTypes.shape({
 
 export const IngredientProps = PropTypes.shape({
   id: PropTypes.number,
-  lineNumber: PropTypes.number,
+  lineNumber: PropTypes.number.isRequired,
   materialCode: PropTypes.string.isRequired,
   materialName: PropTypes.string.isRequired,
   componentType: PropTypes.string,
   quantity: PropTypes.string.isRequired,
   status: PropTypes.string
+})
+
+export const WeighingProps = PropTypes.shape({
+  id: PropTypes.number,
+  weighingNumber: PropTypes.number.isRequired,
+  weighingType: PropTypes.string,
+  netWeight: PropTypes.string.isRequired,
+  dispensedDate: PropTypes.string,
+  used: PropTypes.bool,
+  scanned: PropTypes.bool.isRequired,
+  component: IngredientProps.isRequired
 })
 
 export const EquipmentProps = PropTypes.shape({

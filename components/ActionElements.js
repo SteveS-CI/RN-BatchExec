@@ -20,7 +20,7 @@ const styles = StyleSheet.create(
       padding: 5,
       backgroundColor: NexaColours.BlueAccent,
       borderRadius: 5,
-      fontSize: 16
+//      fontSize: 16
     },
     title: {
       borderRadius: 0,
@@ -28,9 +28,10 @@ const styles = StyleSheet.create(
       marginBottom: 0,
       borderTopColor: 'white',
       borderBottomColor: 'black',
-      borderTopWidth: StyleSheet.hairlineWidth,
-      borderBottomWidth: StyleSheet.hairlineWidth,
-      fontSize: 20
+      borderTopWidth: inputBorderWidth,
+      borderBottomWidth: inputBorderWidth,
+//      fontSize: 20,
+      zIndex: 1
     },
     promptContainer: {
       marginHorizontal: 8,
@@ -42,18 +43,18 @@ const styles = StyleSheet.create(
     prompt: {
       marginBottom: 5,
       alignSelf: 'center',
-      fontSize: 18
+//      fontSize: 18
     },
     notes: {
       padding: 5,
       borderRadius: 10,
       textAlign: 'center',
       backgroundColor: NexaColours.CyanAccent,
-      fontSize: 16
+//      fontSize: 16
     },
     inputContainer: {
       flexDirection: 'row',
-      marginHorizontal: 8, marginTop: 8,
+      marginHorizontal: 8, marginTop: 8, padding: 0,
       alignSelf: 'flex-start'
     },
     inputLabel: {
@@ -82,14 +83,14 @@ const styles = StyleSheet.create(
     pickerContainer: {
       flexDirection: 'row',
       alignSelf: 'flex-start',
-      marginHorizontal: 8, marginTop: 8,
+      marginHorizontal: 8, marginTop: 8, padding: 0,
       borderColor: NexaColours.GreyDark, borderWidth: inputBorderWidth,
       borderRadius: inputBorderRadius,
       backgroundColor: NexaColours.GreyLight
     },
     pickerLabel: {
       backgroundColor: NexaColours.GreyAccent,
-      paddingHorizontal: 8,
+      paddingHorizontal: 8, paddingVertical: 0,
       textAlignVertical: 'center',
       borderColor: NexaColours.GreyDark, borderWidth: inputBorderWidth,
       borderTopLeftRadius: inputBorderRadius,
@@ -97,7 +98,7 @@ const styles = StyleSheet.create(
     },
     pickerSuffix: {
       backgroundColor: NexaColours.GreyAccent,
-      paddingHorizontal: 8,
+      paddingHorizontal: 8, paddingVertical: 0,
       textAlignVertical: 'center',
       borderColor: NexaColours.GreyDark, borderWidth: inputBorderWidth,
       borderTopRightRadius: inputBorderRadius,
@@ -197,6 +198,9 @@ export class GenericEntry extends PureComponent {
 
   scanned = (type, data) => {
     this.setState({showCam: false})
+    if (type===0) {
+
+    }
     this.props.onChange(data)
   }
 

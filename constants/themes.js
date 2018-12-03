@@ -16,7 +16,7 @@ export const light = {
     listColumn: {
       color: 'white',
       padding: 8,
-      fontSize: 16,
+//      fontSize: 16,
       borderColor: NexaColours.GreyDark,
       borderRightWidth: StyleSheet.hairlineWidth
     },
@@ -30,7 +30,7 @@ export const light = {
       color: NexaColours.GreyDark,
       padding: 8,
       paddingVertical: 12,
-      fontSize: 14,
+//      fontSize: 14,
       borderColor: NexaColours.GreyDark,
       borderRightWidth: 1
     },
@@ -61,7 +61,7 @@ export const dark = {
     listColumn: {
       color: 'white',
       padding: 8,
-      fontSize: 16,
+//      fontSize: 16,
       borderColor: NexaColours.GreyDark,
       borderRightWidth: StyleSheet.hairlineWidth
     },
@@ -75,7 +75,7 @@ export const dark = {
       color: 'white',
       padding: 8,
       paddingVertical: 12,
-      fontSize: 14,
+//      fontSize: 14,
       borderColor: NexaColours.GreyDark,
       borderRightWidth: 1
     },
