@@ -1,26 +1,24 @@
 import React, { Component } from 'react';
 import { ScrollView, View, Alert, KeyboardAvoidingView } from 'react-native'
+
 import ActionButtons from '../components/ActionButtons'
 import ButtonStyles from '../constants/ButtonStyles'
 
-import {
-  ActionBreadcrumb,
-  ActionTitle,
-  ActionPrompt,
-  ActionEntry,
-  ActionEquipment
-} from '../components/ActionElements'
-
+import ActionBreadcrumb from '../components/ActionBreadcrumb'
+import ActionTitle from '../components/ActionTitle'
+import ActionPrompt from '../components/ActionPrompt'
+import ActionEntry from '../components/ActionEntry'
 import ActionImage from '../components/ActionImage'
 import FileContent from '../components/FileContent'
+
 import { methods } from '../api/api'
 import LoadingOverlay from '../components/LoadingOverlay';
 import Signature from '../components/Signature'
 import Comments from '../components/Comments'
 import ErrorBar from '../components/ErrorBar'
-import SmallPropWindow from '../components/SmallPropWindow';
 import HardwareDisplay from '../components/HardwareDisplay';
 import WeighInfo from '../components/WeighInfo'
+import {NavResult, CheckNav} from '../Utils/utils'
 
 export default class ActionDetailScreen extends Component {
   constructor(props) {
@@ -38,13 +36,15 @@ export default class ActionDetailScreen extends Component {
   };
 
   componentDidMount() {
+    console.log('ActionDetailScreen:CDM')
     const batchData = this.props.navigation.getParam("batchData")
     this.batchData = batchData
     const node = batchData.nodes[0]
     this.procID = node.procID
     const locationCode = this.props.navigation.getParam("locationCode")
     this.locationCode = locationCode
-    if (node.actionType === 'Evaluation') {
+    const at = node.actionType
+    if (at === 'Evaluation' || at === 'WeighCreate' || at === 'ExecuteCommand') {
       this.completeAction('Y')
     } else {
       this.setState({ node })
@@ -53,40 +53,32 @@ export default class ActionDetailScreen extends Component {
 
   chooseNav(batchData) {
     const nav = this.props.navigation
-    // depending on data shape, navigate to the appropriate screen, passing batchData
-    if (!batchData.nodes) {
-      const msg = (batchData.status === 'PendingApproval' || batchData.status === 'Complete')
-        ? 'Batch is complete. Choose another Batch.'
-        : 'No more can be done in the current location. Select another Batch, or move to another location.'
-      Alert.alert('Done', msg)
-      //Use replace to force BatchList reload
-      nav.replace('BatchList', { refresh: true })
-    } else if (batchData.nodes.length > 1) {
-      // Multiple nodes
-      nav.replace("NodeSelect", {
-        batchData,
-        locationCode: this.locationCode
-      });
-    } else {
-      // Single nodes
-      if (batchData.nodeDepth === 3) {
-        const node = batchData.nodes[0]
-        // Action node - just change state
+    const result = CheckNav(batchData, nav, this.locationCode)
+    this.setState({ loading: false, value: null })
+    switch (result) {
+      case NavResult.BATCH_COMPLETE:
+        Alert.alert('Batch Complete', 'Batch is complete, select another batch')
+        nav.replace('BatchList', { refresh: true })
+        break
+      case NavResult.STAGE_COMPLETE:
+        Alert.alert('Stage Complete', 'Stage is complete, select another batch\nor move to another location.')
+        nav.replace('BatchList', { refresh: true })
+        break
+      case NavResult.ACTION:
+        //nav.replace('ActionDetail', { batchData, locationCode: this.locationCode })
+        break
+      case NavResult.CHOICE:
+        nav.replace("NodeSelect", { batchData, locationCode: this.locationCode })
+        break
+      case NavResult.CONFIRM:
+        nav.replace("NodeDetail", { batchData, locationCode: this.locationCode })
+        break
+      case NavResult.EXECUTE:
         this.batchData = batchData
-        this.procID = node.procID
-        // If non-interactive then execute (should have simple property set by server!!!)
-        if (node.actionType === 'Evaluation' || node.actionType === 'WeighCreate' || node.actionType === 'ExecuteCommand') {
-          this.completeAction('Y')
-        } else {
-          this.setState({ node: batchData.nodes[0], loading: false, value: null })
-        }
-      } else {
-        // Operation/Stage/Process - for Confirmation/Signature/Approval
-        nav.navigate("NodeDetail", {
-          batchData,
-          locationCode: this.locationCode
-        });
-      }
+        this.procID = batchData.nodes[0].procID
+        this.completeAction('Y')
+        break
+      default:
     }
   }
 
@@ -211,8 +203,8 @@ export default class ActionDetailScreen extends Component {
     methods.completeAction(postData).then(data => {
       this.chooseNav(data)
     }).catch(error => {
-      console.log(JSON.stringify(error))
-      this.setState({ loading: false, error: error.response.data.Message })
+      const msg = JSON.stringify(error)
+      this.setState({ loading: false, error: msg})
     })
   }
 
@@ -242,24 +234,28 @@ export default class ActionDetailScreen extends Component {
       const entry = node.inputs ? node.inputs[0] : null
       const enabled = (node.status === "NotStarted")
       return (
-        <KeyboardAvoidingView style={{ flex: 1 }} enabled behavior='position'>
+        <View style={{ flex: 1 }}>
           <ActionTitle text={this.state.node.name} />
           <ActionButtons buttons={buttons} onPress={this.onPress} />
-          <ScrollView>
-            <ActionPrompt prompt={node.prompt} notes={node.notes} />
-            <WeighInfo weighData={node.weighing} />
-            <HardwareDisplay node={node} />
-            <ActionEntry value={this.state.value} entry={entry} onChange={this.entryValueChange} enabled={enabled} useCamera={allowCam} />
-            <ActionImage fileName={node.picture} />
-            <FileContent fileName={node.fileName} />
-            <ErrorBar text={this.state.error} onPress={() => this.setState({ error: null })} />
-            {/* These are all modal */}
-            <Comments visible={this.state.commenting} onComment={this.onComment} />
-            <Signature visible={this.state.signing} onSign={this.signed} isApproval={false} />
-            <Signature visible={this.state.approving} onSign={this.approved} isApproval={true} />
-            <LoadingOverlay loading={this.state.loading} />
+          <ScrollView style={{flex: 1}}>
+            <KeyboardAvoidingView keyboardVerticalOffset={300} behavior='position' enabled={true}>
+              <ActionPrompt prompt={node.prompt} notes={node.notes} />
+              <WeighInfo weighData={node.weighing} />
+              <ScrollView horizontal={true}>
+                <HardwareDisplay node={node} />
+              </ScrollView>
+              <ActionImage fileName={node.picture} />
+              <ActionEntry value={this.state.value} entry={entry} onChange={this.entryValueChange} enabled={enabled} useCamera={allowCam} />
+              <FileContent fileName={node.fileName} />
+              <ErrorBar text={this.state.error} onPress={() => this.setState({ error: null })} />
+              {/* These are all modal */}
+              <Comments visible={this.state.commenting} onComment={this.onComment} />
+              <Signature visible={this.state.signing} onSign={this.signed} isApproval={false} />
+              <Signature visible={this.state.approving} onSign={this.approved} isApproval={true} />
+              <LoadingOverlay loading={this.state.loading} />
+            </KeyboardAvoidingView>
           </ScrollView>
-        </KeyboardAvoidingView>
+        </View>
       )
     } else {
       return (null)

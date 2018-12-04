@@ -4,7 +4,7 @@ import ButtonStyles from '../constants/ButtonStyles'
 import ActionButtons from '../components/ActionButtons'
 import ScrollList from '../components/ScrollList'
 import Styles from '../constants/Styles'
-import { ActionEquipment, ActionIngredient, ActionEntry } from '../components/ActionElements'
+import ActionEntry from '../components/ActionEntry'
 import SmallPropWindow from '../components/SmallPropWindow'
 
 const ListHeaders = [

@@ -10,11 +10,13 @@ const styles = StyleSheet.create(
     container: {
       flexDirection: 'column',
       marginTop: -12,
+      zIndex: 0
     },
     overlay: {
-      position: 'relative', zIndex: 1,
-      top: 20, left: 16,
+      position: 'relative',
+      top: 18, left: 16,
       alignSelf: 'flex-start',
+      zIndex: 1
     },
     titleText: {
       paddingHorizontal: 8, paddingVertical: 3,

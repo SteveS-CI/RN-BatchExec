@@ -79,7 +79,6 @@ export default class Signature extends Component {
   }
 
   onSubmit = () => {
-    console.log('submit')
     this.pass.focus()
   }
 

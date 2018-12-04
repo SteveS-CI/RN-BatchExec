@@ -38,9 +38,9 @@ const screenHeaderStyling = {
   headerTitleStyle: { 
     fontFamily: 'euro-demi', 
     fontWeight: 'normal',
-    fontSize: 20,
-    textAlign: 'center'
-  },
+    fontSize: 18,
+    textAlign: 'center',
+  }
 }
 
 const BatchNav = createMaterialTopTabNavigator(
@@ -87,14 +87,12 @@ const MainNav = createStackNavigator(
       {
         const route = navigation.state.routeName
         if (route === 'BatchDetail') {
-          const batch = navigation.getParam('batch')
-          const location = navigation.getParam('location')
           return {
             ...screenHeaderStyling,
             title: i18n.t('screens.batchDetail.title')
           }
         } else {
-          return screenHeaderStyling
+          return {...screenHeaderStyling, headerLeft: null}
         }
       }
     }
@@ -131,17 +129,19 @@ const dropDownItems = {
 
 export default AppNavigator = createStackNavigator(
   {
-    Main: DropdownNav
+    Main: DropdownNav,
   },
   {
     headerMode: "float",
-    navigationOptions: ({ navigation, props }) => ({
-      title: i18n.t('screens.main.title'),
-      headerTintColor: NexaColours.Blue,
-      headerStyle: { backgroundColor: NexaColours.GreyLight },
-      headerTitleStyle: { fontFamily: 'euro-demi', fontWeight: 'normal', fontSize: 20 },
-      headerLeft: <DropdownMenu data={dropDownItems} navigation={navigation} />,
-      headerRight: <LocationHeader navigation={navigation}/>
-    })
+    navigationOptions: ({ navigation, props }) => {
+      return {
+        title: i18n.t('screens.main.title'),
+        headerTintColor: NexaColours.Blue,
+        headerStyle: { backgroundColor: NexaColours.GreyLight },
+        headerTitleStyle: { fontFamily: 'euro-demi', fontWeight: 'normal', fontSize: 18 },
+        headerLeft: <DropdownMenu data={dropDownItems} navigation={navigation} />,
+        headerRight: <LocationHeader navigation={navigation}/>
+      }
+    }
   }
 )

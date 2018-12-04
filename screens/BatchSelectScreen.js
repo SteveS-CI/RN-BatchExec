@@ -10,6 +10,7 @@ import NexaColours from "../constants/NexaColours";
 import Settings from "../Store/Settings";
 import {methods} from '../api/api'
 import mockBatch from "../Mocked/batch.json";
+import {CheckNav, NavResult} from '../Utils/utils'
 
 export default class BatchSelectScreen extends Component {
   constructor(props) {
@@ -118,6 +119,37 @@ export default class BatchSelectScreen extends Component {
     }
   };
 
+  chooseNav(batchData) {
+    const result = CheckNav(batchData)
+    const nav = this.props.navigation
+    this.setState({ loading: false, value: null })
+    switch (result) {
+      case NavResult.BATCH_COMPLETE:
+        Alert.alert('Batch Complete', 'Batch is complete, select another batch')
+        nav.replace('BatchList', { refresh: true })
+        break
+      case NavResult.STAGE_COMPLETE:
+        Alert.alert('Stage Complete', 'Stage is complete, select another batch\nor move to another location.')
+        nav.replace('BatchList', { refresh: true })
+        break
+      case NavResult.ACTION:
+        nav.replace('ActionDetail', { batchData, locationCode: this.locationCode })
+        break
+      case NavResult.CHOICE:
+        nav.replace("NodeSelect", { batchData, locationCode: this.locationCode })
+        break
+      case NavResult.CONFIRM:
+        nav.navigate("NodeDetail", { batchData, locationCode: this.locationCode })
+        break
+      case NavResult.EXECUTE:
+        this.batchData = batchData
+        this.procID = batchData.nodes[0].procID
+        this.completeAction('Y')
+        break
+      default:
+    }
+  }
+
   continueClicked = () => {
     if (this.batch) {
       const nav = this.props.navigation;
@@ -129,39 +161,42 @@ export default class BatchSelectScreen extends Component {
         });
       } else {
         // set loading prior to request
-        this.setState({ loading: true });
+        this.setState({ loading: true })
         const postData = {
           batchID: this.batch.batchID,
           procID: 0,
           location: this.locationCode
         }
         methods.nextProc(postData)
-          .then(data => {
-            this.setState({loading: false});
-            const batchData = data
-            // depending on data shape, navigate to the appropriate screen, passing batchData
-            if (batchData.nodes.length > 1) {
-              // Multiple nodes
-              nav.replace("NodeSelect", {
-                batchData,
-                locationCode: this.locationCode
-              });
-            } else {
-              // Single nodes
-              if (batchData.nodeDepth === 3) {
-                // Action node
-                nav.navigate("ActionDetail", {
-                  batchData,
-                  locationCode: this.locationCode
-                });
-              } else {
-                // Operation/Stage/Process - for Confirmation/Signature/Approval
-                nav.navigate("NodeDetail", {
-                  batchData,
-                  locationCode: this.locationCode
-                });
-              }
-            }
+          .then(batchData => {
+            this.chooseNav(batchData)
+
+
+            // const batchData = data
+            // // depending on data shape, navigate to the appropriate screen, passing batchData
+            // if (batchData.nodes.length > 1) {
+            //   // Multiple nodes
+            //   nav.replace("NodeSelect", {
+            //     batchData,
+            //     locationCode: this.locationCode
+            //   });
+            // } else {
+            //   // Single nodes
+            //   if (batchData.nodeDepth === 3) {
+            //     // Action node
+            //     nav.navigate("ActionDetail", {
+            //       batchData,
+            //       locationCode: this.locationCode
+            //     });
+            //   } else {
+            //     // Operation/Stage/Process - for Confirmation/Signature/Approval
+            //     nav.navigate("NodeDetail", {
+            //       batchData,
+            //       locationCode: this.locationCode
+            //     });
+            //   }
+            // }
+
           })
           .catch(error => {
             this.setState({ loading: false });

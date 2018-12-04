@@ -7,7 +7,9 @@ import NexaColours from '../constants/NexaColours'
 import FileContent from '../components/FileContent'
 import ActionImage from '../components/ActionImage'
 import TextBar from '../components/TextBar'
-import { ActionTitle, ActionPrompt, ActionEntry } from '../components/ActionElements'
+import ActionTitle from '../components/ActionTitle'
+import ActionPrompt from '../components/ActionPrompt'
+import ActionEntry from '../components/ActionEntry'
 import Signature from '../components/Signature'
 import Comments from '../components/Comments'
 
@@ -80,12 +82,10 @@ export default class TestScreen extends React.Component {
   }
 
   onSign = (sign, token, comment) => {
-    console.log(sign, token, JSON.stringify(comment))
     this.setState({signing: false, approving: false})
   }
 
   onComment = (valid, comments) => {
-    console.log('Comments: ', valid, JSON.stringify(comments))
     this.setState({commenting: false})
   }
 

@@ -1,7 +1,8 @@
 import React from 'react';
 import { View, Text, Button } from 'react-native'
 import { methods } from '../api/api'
-import { ActionTitle, ActionPrompt } from '../components/ActionElements';
+import ActionPrompt from '../components/ActionPrompt';
+import ActionTitle from '../components/ActionTitle';
 import ActionButtons from '../components/ActionButtons'
 import ButtonStyles from '../constants/ButtonStyles'
 import Signature from '../components/Signature'

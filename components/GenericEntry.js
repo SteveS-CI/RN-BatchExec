@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react'
-import { StyleSheet, View, Text, TextInput, Picker } from 'react-native'
+import { StyleSheet, View, Text, TextInput, Picker, KeyboardAvoidingView } from 'react-native'
 import PropTypes from 'prop-types'
 import * as DataProps from '../constants/DataProps'
 import TextBar from './TextBar'
@@ -14,44 +14,6 @@ const inputBorderRadius = 10
 
 const styles = StyleSheet.create(
   {
-    breadcrumb: {
-      marginRight: 8,
-      color: 'white',
-      padding: 5,
-      backgroundColor: NexaColours.BlueAccent,
-      borderRadius: 5,
-//      fontSize: 16
-    },
-    title: {
-      borderRadius: 0,
-      marginHorizontal: 0,
-      marginBottom: 0,
-      borderTopColor: 'white',
-      borderBottomColor: 'black',
-      borderTopWidth: inputBorderWidth,
-      borderBottomWidth: inputBorderWidth,
-//      fontSize: 20,
-      zIndex: 1
-    },
-    promptContainer: {
-      marginHorizontal: 8,
-      padding: 8,
-      borderRadius: 10,
-      backgroundColor: NexaColours.Cyan,
-      marginBottom: 8
-    },
-    prompt: {
-      marginBottom: 5,
-      alignSelf: 'center',
-//      fontSize: 18
-    },
-    notes: {
-      padding: 5,
-      borderRadius: 10,
-      textAlign: 'center',
-      backgroundColor: NexaColours.CyanAccent,
-//      fontSize: 16
-    },
     inputContainer: {
       flexDirection: 'row',
       marginHorizontal: 8, marginTop: 8, padding: 0,
@@ -79,95 +41,11 @@ const styles = StyleSheet.create(
       borderTopWidth: inputBorderWidth,
       paddingHorizontal: 8, paddingVertical: 5,
       minWidth: 200
-    },
-    pickerContainer: {
-      flexDirection: 'row',
-      alignSelf: 'flex-start',
-      marginHorizontal: 8, marginTop: 8, padding: 0,
-      borderColor: NexaColours.GreyDark, borderWidth: inputBorderWidth,
-      borderRadius: inputBorderRadius,
-      backgroundColor: NexaColours.GreyLight
-    },
-    pickerLabel: {
-      backgroundColor: NexaColours.GreyAccent,
-      paddingHorizontal: 8, paddingVertical: 0,
-      textAlignVertical: 'center',
-      borderColor: NexaColours.GreyDark, borderWidth: inputBorderWidth,
-      borderTopLeftRadius: inputBorderRadius,
-      borderBottomLeftRadius: inputBorderRadius
-    },
-    pickerSuffix: {
-      backgroundColor: NexaColours.GreyAccent,
-      paddingHorizontal: 8, paddingVertical: 0,
-      textAlignVertical: 'center',
-      borderColor: NexaColours.GreyDark, borderWidth: inputBorderWidth,
-      borderTopRightRadius: inputBorderRadius,
-      borderBottomRightRadius: inputBorderRadius
     }
   }
 )
 
-export class ActionBreadcrumb extends PureComponent {
-
-  static propTypes = {
-    text: PropTypes.string.isRequired
-  }
-
-  render() {
-    return (
-      <Text style={styles.breadcrumb}>{this.props.text}</Text>
-    )
-  }
-}
-
-export class ActionTitle extends PureComponent {
-
-  static defaultProps = {
-    backColor: NexaColours.BlueAccent
-  }
-
-  static propTypes = {
-    backColor: PropTypes.string,
-    text: PropTypes.string.isRequired
-  }
-
-  render() {
-    return (
-      <TextBar backColor={this.props.backColor} style={styles.title}>{this.props.text}</TextBar>
-    )
-  }
-}
-
-export class ActionPrompt extends PureComponent {
-
-  static propTypes = {
-    prompt: PropTypes.string,
-    notes: PropTypes.string
-  }
-
-  render() {
-    const hasPrompt = this.props.prompt ? true : false
-    const hasNote = this.props.notes ? true : false
-    if (hasPrompt) {
-      const promptColor = optimalForeColor(NexaColours.Cyan)
-      const noteColor = optimalForeColor(NexaColours.CyanAccent)
-      const promptStyle = StyleSheet.flatten([styles.prompt, { color: promptColor }])
-      const noteStyle = StyleSheet.flatten([styles.notes, { color: noteColor }])
-      return (
-        <View style={styles.promptContainer}>
-          <Text style={promptStyle}>
-            {this.props.prompt}
-          </Text>
-          {hasNote && <Text style={noteStyle}>{this.props.notes}</Text>}
-        </View>
-      )
-    } else {
-      return null
-    }
-  }
-}
-
-export class GenericEntry extends PureComponent {
+export default class GenericEntry extends PureComponent {
   constructor(props) {
     super(props)
     this.state = {
@@ -199,9 +77,10 @@ export class GenericEntry extends PureComponent {
   scanned = (type, data) => {
     this.setState({showCam: false})
     if (type===0) {
-
+      this.props.onChange('', false)
+    } else {
+      this.props.onChange(data, true)
     }
-    this.props.onChange(data)
   }
 
   render() {

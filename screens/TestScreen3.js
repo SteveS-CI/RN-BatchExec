@@ -1,14 +1,8 @@
 import React from 'react';
-import {View, Text, StyleSheet } from 'react-native';
+import {View } from 'react-native';
 import ButtonStyles from '../constants/ButtonStyles'
 import ActionButtons from '../components/ActionButtons'
-import ScrollList from '../components/ScrollList'
-import Styles from '../constants/Styles'
-import { ActionEquipment, ActionIngredient, ActionEntry } from '../components/ActionElements'
-import SmallPropWindow from '../components/SmallPropWindow'
-import IconButton from '../components/IconButton';
-import NexaColours from '../constants/NexaColours';
-import { WebView } from 'react-native'
+import ActionEntry from '../components/ActionEntry'
 
 export default class TestScreen3 extends React.Component {
   constructor(props) {
@@ -27,7 +21,6 @@ export default class TestScreen3 extends React.Component {
   }
 
   onChange = (value, exit) => {
-    console.log(value, exit)
     this.setState({entryValue: value})
   }
 

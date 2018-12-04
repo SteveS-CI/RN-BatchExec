@@ -1,14 +1,8 @@
 import React from 'react';
-import {View, Text, StyleSheet, WebView } from 'react-native';
+import {View, WebView } from 'react-native';
 import Layout from '../constants/Layout'
 import ButtonStyles from '../constants/ButtonStyles'
 import ActionButtons from '../components/ActionButtons'
-import ScrollList from '../components/ScrollList'
-import Styles from '../constants/Styles'
-import { ActionEquipment, ActionIngredient, ActionEntry } from '../components/ActionElements'
-import SmallPropWindow from '../components/SmallPropWindow'
-import IconButton from '../components/IconButton';
-import NexaColours from '../constants/NexaColours';
 
 export default class TestScreen4 extends React.Component {
   constructor(props) {

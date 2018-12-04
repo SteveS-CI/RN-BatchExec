@@ -1,10 +1,22 @@
 import React, { PureComponent } from 'react'
-import {View } from 'react-native'
+import {StyleSheet, View } from 'react-native'
 import PropTypes from 'prop-types'
 import SmallPropWindow from './SmallPropWindow'
 import FontAwesome, { Icons } from 'react-native-fontawesome';
+import NexaColours from '../constants/NexaColours';
 
 export default class HardwareDisplay extends PureComponent {
+
+  styles = StyleSheet.create({
+    container: {
+      flexDirection: 'row',
+      marginHorizontal: 8,
+      backgroundColor: 'white',//NexaColours.GreyLight,
+      borderColor: NexaColours.GreyDarkest,
+      borderWidth: StyleSheet.hairlineWidth * 2,
+      borderRadius: 12
+    }
+  })
 
   static propTypes = {
     node: PropTypes.object
@@ -29,11 +41,11 @@ export default class HardwareDisplay extends PureComponent {
     // only two elements needed
     const equip = <SmallPropWindow title={equipCaption} headers={this.equipmentHeaders} data={node.equipment} baseBackColor='Yellow'/>
     const comp = <SmallPropWindow title='Component' headers={this.componentHeaders} data={node.component} baseBackColor='Green'/>
-    const arrow = <FontAwesome style={{fontSize: 32, marginLeft: 48}}>{Icons.chevronDown}</FontAwesome>
+    const arrow = <FontAwesome style={{fontSize: 32, marginHorizontal: 8, marginTop: 36}}>{Icons.chevronRight}</FontAwesome>
     // only Addition and Discharge have both Equipment and Component
     if (type == 'Addition') {
       return (
-        <View style={{flexDirection: 'column'}}>
+        <View style={this.styles.container}>
           {comp}
           {arrow}
           {equip}
@@ -41,7 +53,7 @@ export default class HardwareDisplay extends PureComponent {
       )
     } else if (type == 'Discharge') {
       return (
-        <View style={{flexDirection: 'column'}}>
+        <View style={this.styles.container}>
           {equip}
           {arrow}
           {comp}
@@ -49,7 +61,7 @@ export default class HardwareDisplay extends PureComponent {
       )
     } else {
       return (
-        <View style={{flexDirection: 'column'}}>
+        <View style={this.styles.container}>
           {equip}
           {comp}
         </View>
@@ -61,7 +73,6 @@ export default class HardwareDisplay extends PureComponent {
     const node = this.props.node
     const hasData = (node && (node.equipment || node.component))
     if (hasData) {
-      console.log(node)
       const elements = this.getElements(node)
       return (
         <View>
