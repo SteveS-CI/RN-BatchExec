@@ -1,0 +1,215 @@
+{
+    "batchID": 99999,
+    "stageID": 0,
+    "code": "THIS-ONE",
+    "productCode": "800069",
+    "productName": "J&J Flumax All in One Tablets",
+    "quantity": "876.000 k",
+    "status": "InProcess",
+    "productionDate": "2018-11-09T17:15:19.51",
+    "recipeCode": "800069",
+    "recipeVersion": 0.125,
+    "startErrors": 0,
+    "components": [
+        {
+            "id": 336293,
+            "lineNumber": 1,
+            "materialCode": "36726",
+            "materialName": "Guaifenesin Ph Eur (G.O.I)",
+            "weighings": [],
+            "componentType": "Input",
+            "targetStage": 28980,
+            "sourceStage": 0,
+            "quantity": "87.600 kg",
+            "status": "Dispense"
+        },
+        {
+            "id": 336294,
+            "lineNumber": 2,
+            "materialCode": "58007",
+            "materialName": "Phenylephrine HCI EP",
+            "weighings": [],
+            "componentType": "Input",
+            "targetStage": 28980,
+            "sourceStage": 0,
+            "quantity": "4.380 kg",
+            "status": "Dispense"
+        },
+        {
+            "id": 336295,
+            "lineNumber": 3,
+            "materialCode": "25346",
+            "materialName": "MICC PH200",
+            "weighings": [],
+            "componentType": "Input",
+            "targetStage": 28980,
+            "sourceStage": 0,
+            "quantity": "175.025 kg",
+            "status": "Dispense"
+        },
+        {
+            "id": 336296,
+            "lineNumber": 4,
+            "materialCode": "59855",
+            "materialName": "Paracetamol DC",
+            "weighings": [],
+            "componentType": "Input",
+            "targetStage": 28980,
+            "sourceStage": 0,
+            "quantity": "228.023 kg",
+            "status": "Dispense"
+        },
+        {
+            "id": 336297,
+            "lineNumber": 5,
+            "materialCode": "69058",
+            "materialName": "Stearic Acid WR",
+            "weighings": [],
+            "componentType": "Input",
+            "targetStage": 28980,
+            "sourceStage": 0,
+            "quantity": "5.256 kg",
+            "status": "Dispense"
+        },
+        {
+            "id": 336298,
+            "lineNumber": 7,
+            "materialCode": "BLEND-354",
+            "materialName": "Blended 354",
+            "weighings": [],
+            "componentType": "Intermediate",
+            "targetStage": 28982,
+            "sourceStage": 28980,
+            "quantity": "500.230 kg",
+            "status": "NotStarted"
+        },
+        {
+            "id": 336299,
+            "lineNumber": 8,
+            "materialCode": "95187",
+            "materialName": "Tablet Coating Solution",
+            "weighings": [],
+            "componentType": "Input",
+            "targetStage": 28981,
+            "sourceStage": 0,
+            "quantity": "4.993 kg",
+            "status": "NotStarted"
+        },
+        {
+            "id": 336300,
+            "lineNumber": 9,
+            "materialCode": "COMP-354",
+            "materialName": "Compressed 354",
+            "weighings": [],
+            "componentType": "Intermediate",
+            "targetStage": 28981,
+            "sourceStage": 28982,
+            "quantity": "505.230 kg",
+            "status": "NotStarted"
+        },
+        {
+            "id": 336301,
+            "lineNumber": 10,
+            "materialCode": "800069",
+            "materialName": "J&J Flumax All in One Tablets",
+            "weighings": [],
+            "componentType": "Final",
+            "targetStage": 0,
+            "sourceStage": 28981,
+            "quantity": "505.230 kg",
+            "status": "NotStarted"
+        }
+    ],
+    "equipment": [
+        {
+            "id": 0,
+            "category": "Sieve",
+            "model": "36\" Russell Sieve",
+            "serialNumber": "",
+            "cleanStatus": "NotApplicable",
+            "availability": "Unavailable",
+            "condition": "NotApplicable"
+        },
+        {
+            "id": 0,
+            "category": "Screen",
+            "model": "1000 Micron Screen",
+            "serialNumber": "",
+            "cleanStatus": "NotApplicable",
+            "availability": "Unavailable",
+            "condition": "NotApplicable"
+        },
+        {
+            "id": 0,
+            "category": "Blender",
+            "model": "Mitchel Blender",
+            "serialNumber": "",
+            "cleanStatus": "NotApplicable",
+            "availability": "Unavailable",
+            "condition": "NotApplicable"
+        },
+        {
+            "id": 0,
+            "category": "Blender Cone",
+            "model": "Blender Cone",
+            "serialNumber": "",
+            "cleanStatus": "NotApplicable",
+            "availability": "Unavailable",
+            "condition": "NotApplicable"
+        },
+        {
+            "id": 0,
+            "category": "IBC",
+            "model": "400 Litre IBC",
+            "serialNumber": "",
+            "cleanStatus": "NotApplicable",
+            "availability": "Unavailable",
+            "condition": "NotApplicable"
+        },
+        {
+            "id": 0,
+            "category": "IBC",
+            "model": "1600 Litre IBC",
+            "serialNumber": "",
+            "cleanStatus": "NotApplicable",
+            "availability": "Unavailable",
+            "condition": "NotApplicable"
+        },
+        {
+            "id": 0,
+            "category": "Balance",
+            "model": "Tablet Balance",
+            "serialNumber": "",
+            "cleanStatus": "NotApplicable",
+            "availability": "Unavailable",
+            "condition": "NotApplicable"
+        },
+        {
+            "id": 0,
+            "category": "Hardness Tester",
+            "model": "C53",
+            "serialNumber": "",
+            "cleanStatus": "NotApplicable",
+            "availability": "Unavailable",
+            "condition": "NotApplicable"
+        },
+        {
+            "id": 0,
+            "category": "Micrometer",
+            "model": "M1",
+            "serialNumber": "",
+            "cleanStatus": "NotApplicable",
+            "availability": "Unavailable",
+            "condition": "NotApplicable"
+        },
+        {
+            "id": 0,
+            "category": "Metal Check",
+            "model": "Best 123",
+            "serialNumber": "",
+            "cleanStatus": "NotApplicable",
+            "availability": "Unavailable",
+            "condition": "NotApplicable"
+        }
+    ]
+}

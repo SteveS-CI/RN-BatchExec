@@ -1,0 +1,38 @@
+{
+    "batchID": 99999,
+    "stageID": 123000,
+    "code": "THIS-ONE",
+    "productCode": "800069",
+    "productName": "J&J Flumax All in One Tablets",
+    "quantity": "876.000 k",
+    "status": "InProcess",
+    "productionDate": "2018-11-09T17:15:19.51",
+    "recipeCode": "800069",
+    "recipeVersion": 0.125,
+    "startErrors": 0,
+	"nodeDepth": 3,
+	"nodePath": "Batch/Stage/Operation",
+	"nodes": [
+		{
+			"procID": 12413,
+			"actionType": "IdentifyContainer",
+      "actionTypeEnum": 10,
+			"name": "Identify Container",
+			"prompt": "Scan or enter the Drum serial number",
+			"status": "NotStarted",
+			"statusEnum": 0,
+			"path": "Batch/Stage/Operation/Identify Container",
+			"equipment": {
+				"category": "Drum",
+				"model": "50 L"
+			},
+			"inputs": [
+				{
+					"entryType": "String",
+					"entryTypeEnum": 0,
+					"label": "Serial No"
+				}
+			]
+		}
+	]
+}

@@ -6,6 +6,7 @@ import ButtonStyles from '../constants/ButtonStyles'
 
 import ActionBreadcrumb from '../components/ActionBreadcrumb'
 import ActionTitle from '../components/ActionTitle'
+import ActionSign from '../components/ActionWarning'
 import ActionPrompt from '../components/ActionPrompt'
 import ActionEntry from '../components/ActionEntry'
 import ActionImage from '../components/ActionImage'
@@ -16,9 +17,15 @@ import LoadingOverlay from '../components/LoadingOverlay';
 import Signature from '../components/Signature'
 import Comments from '../components/Comments'
 import ErrorBar from '../components/ErrorBar'
-import HardwareDisplay from '../components/HardwareDisplay';
-import WeighInfo from '../components/WeighInfo'
-import {NavResult, CheckNav} from '../Utils/utils'
+import {NavChoice} from '../Utils/utils'
+import ConsumePropDisplay from '../components/ConsumePropDisplay';
+import DischargePropDisplay from '../components/DischargePropDisplay';
+import AdditionPropDisplay from '../components/AdditionPropDisplay';
+import PrintLabelProps from '../components/PrintLabelProps';
+import WeighInfoProps from '../components/WeighInfoProps';
+import IdentContainerProps from '../components/IdentContainerProps'
+import IdentEquipmentProps from '../components/IdentEquipmentProps'
+import IdentWeighingProps from '../components/IdentWeighingProps'
 
 export default class ActionDetailScreen extends Component {
   constructor(props) {
@@ -48,37 +55,6 @@ export default class ActionDetailScreen extends Component {
       this.completeAction('Y')
     } else {
       this.setState({ node })
-    }
-  }
-
-  chooseNav(batchData) {
-    const nav = this.props.navigation
-    const result = CheckNav(batchData, nav, this.locationCode)
-    this.setState({ loading: false, value: null })
-    switch (result) {
-      case NavResult.BATCH_COMPLETE:
-        Alert.alert('Batch Complete', 'Batch is complete, select another batch')
-        nav.replace('BatchList', { refresh: true })
-        break
-      case NavResult.STAGE_COMPLETE:
-        Alert.alert('Stage Complete', 'Stage is complete, select another batch\nor move to another location.')
-        nav.replace('BatchList', { refresh: true })
-        break
-      case NavResult.ACTION:
-        //nav.replace('ActionDetail', { batchData, locationCode: this.locationCode })
-        break
-      case NavResult.CHOICE:
-        nav.replace("NodeSelect", { batchData, locationCode: this.locationCode })
-        break
-      case NavResult.CONFIRM:
-        nav.replace("NodeDetail", { batchData, locationCode: this.locationCode })
-        break
-      case NavResult.EXECUTE:
-        this.batchData = batchData
-        this.procID = batchData.nodes[0].procID
-        this.completeAction('Y')
-        break
-      default:
     }
   }
 
@@ -118,7 +94,7 @@ export default class ActionDetailScreen extends Component {
           location: this.locationCode,
         }
         methods.revertAction(postData).then(data => {
-          this.chooseNav(data)
+          NavChoice(data, this.props.navigation, this.locationCode)
         }).catch(error => {
           console.log(JSON.stringify(error))
         })
@@ -157,7 +133,7 @@ export default class ActionDetailScreen extends Component {
         deviation: comment
       }
       methods.signAction(postData).then(data => {
-        this.chooseNav(data)
+        NavChoice(data, this.props.navigation, this.locationCode)
       }).catch(error => {
         this.setState({ loading: false })
         Alert.alert('API Error', error.response.data.Message)
@@ -177,7 +153,7 @@ export default class ActionDetailScreen extends Component {
         deviation: comment
       }
       methods.approveAction(postData).then(data => {
-        this.chooseNav(data)
+        NavChoice(data, this.props.navigation, this.locationCode)
       }).catch(error => {
         this.setState({ loading: false })
         Alert.alert('API Error', error.response.data.Message)
@@ -201,9 +177,9 @@ export default class ActionDetailScreen extends Component {
       deviation: this.comment
     }
     methods.completeAction(postData).then(data => {
-      this.chooseNav(data)
+      NavChoice(data, this.props.navigation, this.locationCode)
     }).catch(error => {
-      const msg = JSON.stringify(error)
+      const msg = error.response.data.Message
       this.setState({ loading: false, error: msg})
     })
   }
@@ -236,13 +212,20 @@ export default class ActionDetailScreen extends Component {
       return (
         <View style={{ flex: 1 }}>
           <ActionTitle text={this.state.node.name} />
+          <ActionSign node={node} />
           <ActionButtons buttons={buttons} onPress={this.onPress} />
           <ScrollView style={{flex: 1}}>
             <KeyboardAvoidingView keyboardVerticalOffset={300} behavior='position' enabled={true}>
               <ActionPrompt prompt={node.prompt} notes={node.notes} />
-              <WeighInfo weighData={node.weighing} />
               <ScrollView horizontal={true}>
-                <HardwareDisplay node={node} />
+                <AdditionPropDisplay node={node}/>
+                <DischargePropDisplay node={node}/>
+                <ConsumePropDisplay node={node} />
+                <PrintLabelProps node={node} />
+                <WeighInfoProps node={node} />
+                <IdentWeighingProps node={node} />
+                <IdentContainerProps node={node} />
+                <IdentEquipmentProps node={node} />
               </ScrollView>
               <ActionImage fileName={node.picture} />
               <ActionEntry value={this.state.value} entry={entry} onChange={this.entryValueChange} enabled={enabled} useCamera={allowCam} />

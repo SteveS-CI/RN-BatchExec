@@ -1,0 +1,118 @@
+[
+    {
+        "id": 638,
+        "code": "BLEND1",
+        "name": "Blending One",
+        "condition": "Functional",
+        "cleanStatus": "Clean",
+        "availability": "InUse",
+        "functionCode": "BLEND"
+    },
+    {
+        "id": 643,
+        "code": "BLEND2",
+        "name": "Blending Two",
+        "condition": "Functional",
+        "cleanStatus": "Clean",
+        "availability": "Available",
+        "functionCode": "BLEND"
+    },
+    {
+        "id": 736,
+        "code": "BLEND3",
+        "name": "Blending Three",
+        "condition": "Functional",
+        "cleanStatus": "Clean",
+        "availability": "Available",
+        "functionCode": "BLEND"
+    },
+    {
+        "id": 3572,
+        "code": "COAT1",
+        "name": "Coating",
+        "condition": "Functional",
+        "cleanStatus": "Clean",
+        "availability": "Available",
+        "functionCode": "COAT"
+    },
+    {
+        "id": 633,
+        "code": "COMP1",
+        "name": "Compression One",
+        "condition": "Functional",
+        "cleanStatus": "Clean",
+        "availability": "Available",
+        "functionCode": "COMP"
+    },
+    {
+        "id": 634,
+        "code": "COMP2",
+        "name": "Compression Two",
+        "condition": "Functional",
+        "cleanStatus": "Clean",
+        "availability": "Available",
+        "functionCode": "COMP"
+    },
+    {
+        "id": 738,
+        "code": "COMP3",
+        "name": "Compression Three",
+        "condition": "Functional",
+        "cleanStatus": "Clean",
+        "availability": "Available",
+        "functionCode": "COMP"
+    },
+    {
+        "id": 653,
+        "code": "DRY1",
+        "name": "Drying One",
+        "condition": "Functional",
+        "cleanStatus": "Clean",
+        "availability": "Available",
+        "functionCode": "DRY"
+    },
+    {
+        "id": 735,
+        "code": "DRY2",
+        "name": "Drying Two",
+        "condition": "Functional",
+        "cleanStatus": "Clean",
+        "availability": "Available",
+        "functionCode": "DRY"
+    },
+    {
+        "id": 636,
+        "code": "GRAN1",
+        "name": "Granulation One",
+        "condition": "Functional",
+        "cleanStatus": "Clean",
+        "availability": "Available",
+        "functionCode": "GRAN"
+    },
+    {
+        "id": 637,
+        "code": "GRAN2",
+        "name": "Granulation Two",
+        "condition": "Functional",
+        "cleanStatus": "Clean",
+        "availability": "Available",
+        "functionCode": "GRAN"
+    },
+    {
+        "id": 3571,
+        "code": "NUNIT-UNIT",
+        "name": "NUNIT Unit",
+        "condition": "Functional",
+        "cleanStatus": "Clean",
+        "availability": "Available",
+        "functionCode": "NUNITTEST"
+    },
+    {
+        "id": 732,
+        "code": "UNSPECIFIED",
+        "name": "None",
+        "condition": "Functional",
+        "cleanStatus": "Clean",
+        "availability": "Available"
+    }
+]

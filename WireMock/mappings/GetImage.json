@@ -1,0 +1,13 @@
+{
+  "request": {
+    "urlPathPattern": "/api/File/Image.*",
+    "method": "GET"
+  },
+  "response": {
+    "status": 200,
+	"headers": {
+		"content-type": "application/octet-stream"
+	},
+    "bodyFileName": "chocolate.gif"
+  }
+}

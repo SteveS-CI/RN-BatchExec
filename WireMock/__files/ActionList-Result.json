@@ -1,0 +1,107 @@
+{
+    "batchID": 99999,
+    "stageID": 123000,
+    "code": "THIS-ONE",
+    "productCode": "800069",
+    "productName": "J&J Flumax All in One Tablets",
+    "quantity": "876.000 k",
+    "status": "InProcess",
+    "productionDate": "2018-11-09T17:15:19.51",
+    "recipeCode": "800069",
+    "recipeVersion": 0.125,
+    "startErrors": 0,
+	"nodeDepth": 3,
+	"nodePath": "Batch/Stage/Operation",
+	"nodes": [
+		{
+			"procID": 12400,
+			"name": "Instruction (simple)",
+			"notes": "A simple instruction with just a prompt.",
+			"path": "Batch/Stage/Operation/"
+		},
+		{
+			"procID": 12401,
+			"name": "Instruction (notes)",
+			"notes": "Instruction with additional notes",
+			"path": "Batch/Stage/Operation/"
+		},
+		{
+			"procID": 12402,
+			"name": "Instruction (image)",
+			"notes": "Instruction with an image",
+			"path": "Batch/Stage/Operation/"
+		},
+		{
+			"procID": 12403,
+			"name": "Question",
+			"notes": "A simple question",
+			"path": "Batch/Stage/Operation/"
+		},
+		{
+			"procID": 12404,
+			"name": "File Display",
+			"notes": "A simple text file display",
+			"path": "Batch/Stage/Operation/"
+		},
+		{
+			"procID": 12405,
+			"name": "User Entry",
+			"notes": "Allows user to enter data",
+			"path": "Batch/Stage/Operation/"
+		},
+		{
+			"procID": 12406,
+			"name": "Addition",
+			"notes": "Allows selection of an Addition method",
+			"path": "Batch/Stage/Operation/"
+		},
+		{
+			"procID": 12407,
+			"name": "Discharge",
+			"notes": "Allows selection of a Discharge method",
+			"path": "Batch/Stage/Operation/"
+		},
+		{
+			"procID": 12408,
+			"name": "Weigh Consume",
+			"notes": "Prompt the user to add a pre-weighed bag of material into the specified container/equipment",
+			"path": "Batch/Stage/Operation/"
+		},
+		{
+			"procID": 12409,
+			"name": "Print Label",
+			"notes": "Prompt the user to print a label",
+			"path": "Batch/Stage/Operation/"
+		},
+		{
+			"procID": 12410,
+			"name": "Scan Weighing",
+			"notes": "Prompts the user to scan any pre-weighed bag",
+			"path": "Batch/Stage/Operation/"
+		},
+		{
+			"procID": 12411,
+			"name": "Weigh Info",
+			"notes": "Displays information about the last bag scanned",
+			"path": "Batch/Stage/Operation/"
+		},
+		{
+			"procID": 12412,
+			"name": "Identify Weighing",
+			"notes": "Allows user to identify a weighing for a specific component",
+			"path": "Batch/Stage/Operation/"
+		},
+		{
+			"procID": 12413,
+			"name": "Identify Container",
+			"notes": "Allow entry of container serial number",
+			"path": "Batch/Stage/Operation/"
+		},
+		{
+			"procID": 12414,
+			"name": "Identify Equipment",
+			"notes": "Allow entry of equipment serial number",
+			"path": "Batch/Stage/Operation/"
+		}
+	]
+}

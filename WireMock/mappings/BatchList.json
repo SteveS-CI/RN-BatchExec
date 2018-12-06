@@ -1,0 +1,13 @@
+{
+  "request": {
+    "urlPathPattern": "/api/Batch/BatchList.*",
+    "method": "GET"
+  },
+  "response": {
+    "status": 200,
+	"headers": {
+		"content-type": "application/json"
+	},
+    "bodyFileName": "BatchList-Result.json"
+  }
+}

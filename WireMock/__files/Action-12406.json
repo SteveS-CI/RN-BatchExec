@@ -1,0 +1,52 @@
+{
+    "batchID": 99999,
+    "stageID": 123000,
+    "code": "THIS-ONE",
+    "productCode": "800069",
+    "productName": "J&J Flumax All in One Tablets",
+    "quantity": "876.000 k",
+    "status": "InProcess",
+    "productionDate": "2018-11-09T17:15:19.51",
+    "recipeCode": "800069",
+    "recipeVersion": 0.125,
+    "startErrors": 0,
+	"nodeDepth": 3,
+	"nodePath": "Batch/Stage/Operation",
+	"nodes": [
+		{
+			"procID": 12406,
+			"actionType": "Addition",
+      "actionTypeEnum": 2,
+			"name": "Addition",
+			"prompt": "Select an Addition Method",
+			"status": "NotStarted",
+			"statusEnum": 0,
+			"path": "Batch/Stage/Operation/Addition",
+			"equipment": {
+				"category": "Granulator",
+				"model": "Model One",
+				"serialNumber": "GR-48521-A"
+			},
+			"component": {
+				"lineNumber": 4,
+				"materialCode": "MATCODE",
+				"materialName": "Lactose (milled)",
+				"quantity": "148.88 kg"
+			},
+			"inputs": [
+				{
+					"entryType": "Distinct",
+					"entryTypeEnum": 3,
+					"label": "Addition Method",
+					"validation": {
+						"choices": [
+							"Addition Method One",
+							"Addition Method Two",
+							"Addition Method Three"
+						]
+					}
+				}
+			]
+		}
+	]
+}

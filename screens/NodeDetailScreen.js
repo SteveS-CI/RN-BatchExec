@@ -7,6 +7,7 @@ import ActionButtons from '../components/ActionButtons'
 import ButtonStyles from '../constants/ButtonStyles'
 import Signature from '../components/Signature'
 import Comments from '../components/Comments'
+import {NavChoice} from '../Utils/utils'
 
 const nodeTypes = ['Process','Stage','Operation']
 const nodeStates = ['Confirmation','Signature','Approval']
@@ -19,6 +20,7 @@ export default class NodeDetailScreen extends React.Component {
 
   static navigationOptions = ({navigation}) => {
     const data = navigation.getParam("batchData")
+    console.log(JSON.stringify(data))
     const node = data.nodes[0]
     //0,1,2
     const nodeType = nodeTypes[data.nodeDepth]
@@ -61,44 +63,6 @@ export default class NodeDetailScreen extends React.Component {
     return buttons
   }
 
-  chooseNav(batchData) {
-    const nav = this.props.navigation
-    // depending on data shape, navigate to the appropriate screen, passing batchData
-    if (!batchData.nodes) {
-      const msg = (batchData.status==='PendingApproval'||batchData.status==='Complete')
-        ? 'Batch is complete. Choose another Batch.'
-        : 'No more can be done in the current location. Select another Batch, or move to another location.'
-      Alert.alert('Done', msg)
-      //Use replace to force BatchList reload
-      nav.replace('BatchList', {refresh: true})
-    } else if (batchData.nodes.length > 1) {
-      // Multiple nodes
-      nav.replace("NodeSelect", {
-        batchData,
-        locationCode: this.locationCode
-      });
-    } else {
-      // Single nodes
-      if (batchData.nodeDepth === 3) {
-        // Action node - just change state
-        this.batchData = batchData
-        this.procID = batchData.nodes[0].procID
-        // If non-interactive then execute 
-        if (this.batchData.nodes[0].actionType==='Evaluation') {
-          this.completeAction('Y')
-        } else {
-          this.setState({node: batchData.nodes[0], loading: false})
-        }
-      } else {
-        // Operation/Stage/Process - for Confirmation/Signature/Approval
-        nav.navigate("NodeDetail", {
-          batchData,
-          locationCode: this.locationCode
-        });
-      }
-    }
-  }
-
   onPress = (name) => {
     const data = this.state.batchData
     const node = data.nodes[0]
@@ -112,14 +76,14 @@ export default class NodeDetailScreen extends React.Component {
     switch (name) {
       case "back":
         methods.revertAction(postData).then(data => {
-          this.chooseNav(data)
+          NavChoice(data, this.props.navigation, this.locationCode)
         }).catch(error => {
           console.log(JSON.stringify(error))
         })
         break
       case "confirm":
         methods.confirmAction(postData).then(data => {
-          this.chooseNav(data)
+          NavChoice(data, this.props.navigation, this.locationCode)
         }).catch(error => {
           console.log(JSON.stringify(error))
         })
@@ -151,7 +115,7 @@ export default class NodeDetailScreen extends React.Component {
         deviation: comment
       }
       methods.signAction(postData).then(data => {
-        this.chooseNav(data)
+        NavChoice(data, this.props.navigation, this.locationCode)
       }).catch(error => {
         console.log(JSON.stringify(error))
       })
@@ -171,7 +135,7 @@ export default class NodeDetailScreen extends React.Component {
         deviation: comment
       }
       methods.approveAction(postData).then(data => {
-        this.chooseNav(data)
+        NavChoice(data, this.props.navigation, this.locationCode)
       }).catch(error => {
         console.log(JSON.stringify(error))
       })

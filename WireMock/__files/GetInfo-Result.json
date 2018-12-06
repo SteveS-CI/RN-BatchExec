@@ -1,0 +1,9 @@
+{
+    "name": "Nexa Batch Execution API Interface",
+    "description": "API Functions to support the Batch Execution web client",
+    "version": "1.0.0.0",
+    "textFilePath": "C:\\NEXA-FILES\\TextFiles",
+    "imageFilePath": "C:\\NEXA-FILES\\Images",
+    "server": "Alchemy",
+    "database": "Nexa"
+}

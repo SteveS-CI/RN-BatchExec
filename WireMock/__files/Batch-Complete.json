@@ -1,0 +1,14 @@
+{
+    "batchID": 99999,
+    "code": "THIS-ONE",
+    "productCode": "800069",
+    "productName": "J&J Flumax All in One Tablets",
+    "quantity": "875.001 k",
+    "status": "PendingApproval",
+    "productionDate": "2018-11-09T17:15:19.51",
+    "recipeCode": "800069",
+    "recipeVersion": 0.125,
+    "startErrors": 0,
+	"nodeDepth": 0,
+	"nodePath": "Batch/Stage/Operation"
+}

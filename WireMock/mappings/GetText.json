@@ -1,0 +1,13 @@
+{
+  "request": {
+    "urlPathPattern": "/api/File/Text.*",
+    "method": "GET"
+  },
+  "response": {
+    "status": 200,
+	"headers": {
+		"content-type": "text/plain"
+	},
+    "bodyFileName": "general.txt"
+  }
+}

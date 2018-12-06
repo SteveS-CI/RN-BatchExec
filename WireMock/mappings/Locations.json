@@ -1,0 +1,13 @@
+{
+  "request": {
+    "url": "/api/Batch/Locations",
+    "method": "GET"
+  },
+  "response": {
+    "status": 200,
+	"headers": {
+		"content-type": "application/json"
+	},
+    "bodyFileName": "Locations-Result.json"
+  }
+}

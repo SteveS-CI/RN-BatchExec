@@ -1,0 +1,23 @@
+{
+	"request": {
+		"url": "/api/Batch/NextProc",
+		"method": "POST",
+		"bodyPatterns" : [
+			{
+				"equalToJson" : {"batchID": 66666},
+				"ignoreExtraElements" : true
+			},
+			{
+				"equalToJson" : {"procID": 0},
+				"ignoreExtraElements" : true
+			}
+		]
+	},
+	"response": {
+		"status": 200,
+		"headers": {
+			"content-type": "application/json"
+		},
+		"bodyFileName": "Action-12400.json"
+	}
+}

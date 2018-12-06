@@ -1,0 +1,43 @@
+{
+    "batchID": 99999,
+    "stageID": 123000,
+    "code": "THIS-ONE",
+    "productCode": "800069",
+    "productName": "J&J Flumax All in One Tablets",
+    "quantity": "876.000 k",
+    "status": "InProcess",
+    "productionDate": "2018-11-09T17:15:19.51",
+    "recipeCode": "800069",
+    "recipeVersion": 0.125,
+    "startErrors": 0,
+	"nodeDepth": 3,
+	"nodePath": "Batch/Stage/Operation",
+	"nodes": [
+		{
+			"procID": 12400,
+			"actionType": "IdentifyEquipment",
+			"name": "Identify",
+			"notes": "",
+			"prompt": "Enter the Serial Number",
+			"status": "NotStarted",
+			"statusEnum": 0,
+			"path": "Batch/Stage/Operation/Identify",
+			"equipment": {
+				"id": 11111,
+				"category": "Granulation Machine",
+				"model": "Model One"
+			},
+			"inputs": [
+				{
+					"name": "serial",
+					"index": 0,
+					"label": "Serial No:",
+					"suffix": "none",
+					"entryType": "Integer",
+					"entryTypeEnum": 1,
+					"value": "123"
+				}
+			]
+		}
+	]
+}
