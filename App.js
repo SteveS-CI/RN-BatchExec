@@ -10,7 +10,7 @@ import { AsyncStorage } from 'react-native'
 
 import {setTheme} from './constants/Styles'
 
-const defaultTimeout = 2000
+const defaultTimeout = 5000
 
 export default class App extends React.Component {
   constructor(props) {
