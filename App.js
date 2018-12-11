@@ -10,13 +10,11 @@ import { AsyncStorage } from 'react-native'
 
 import {setTheme} from './constants/Styles'
 
-const defaultTimeout = 5000
-
 export default class App extends React.Component {
   constructor(props) {
     super(props)
     ScreenOrientation.allowAsync(ScreenOrientation.Orientation.ALL)
-    this.state = {isLoadingComplete: false, mocked: false, toggle: false}
+    this.state = {isLoadingComplete: false, toggle: false}
   }
   
   appReload = () => {
@@ -24,12 +22,11 @@ export default class App extends React.Component {
   }
 
   appRefresh = () => {
-    this.setState({isLoadingComplete: false, mocked: false})
+    this.setState({isLoadingComplete: false})
   }
 
   render() {
     const functions = {
-      mocked: this.state.mocked, 
       update: this.appReload, 
       refresh: this.appRefresh
     }
@@ -69,7 +66,6 @@ export default class App extends React.Component {
       AsyncStorage.getItem('settings').then((result) => {
         const settings = JSON.parse(result)
         api.defaults.baseURL = settings.apiUrl
-        api.defaults.timeout = defaultTimeout
 
         i18n.fallbacks = true;
         i18n.translations = Translations;
@@ -85,6 +81,7 @@ export default class App extends React.Component {
           language: 'en'
         }
         api.defaults.baseURL = defaults.apiUrl
+
         i18n.fallbacks = true;
         i18n.translations = Translations;
         i18n.locale = defaults.language
@@ -107,7 +104,7 @@ export default class App extends React.Component {
       this.setState({ isLoadingComplete: true })
     }).catch((error) => {
       Alert.alert('Network Error', error.message + '\nPlease check your settings')
-      this.setState({ isLoadingComplete: true, mocked: true });
+      this.setState({ isLoadingComplete: true });
     })
   };
 }
@@ -115,6 +112,6 @@ export default class App extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FAA'
+    backgroundColor: '#AAF'
   },
 });

@@ -1,16 +1,14 @@
 import React, { Component } from "react";
 import { View } from "react-native"
 import i18n from 'i18n-js';
-import mockedBatchList from "../Mocked/batchlist.json"
 import ButtonBar from "../components/ButtonBar"
 import TextBar from "../components/TextBar"
 import RoundedButton from "../components/RoundedButton"
 import ScrollList from '../components/ScrollList'
 import NexaColours from "../constants/NexaColours";
 import Settings from "../Store/Settings";
-import {methods} from '../api/api'
-import mockBatch from "../Mocked/batch.json";
-import {NavChoice, MeasureTextLength} from '../Utils/utils'
+import { methods } from '../api/api'
+import { NavChoice, MeasureTextLength } from '../Utils/utils'
 
 export default class BatchSelectScreen extends Component {
   constructor(props) {
@@ -22,7 +20,6 @@ export default class BatchSelectScreen extends Component {
       loading: false,
       continueDisabled: false
     };
-    this.mocked = this.props.screenProps.mocked
   }
 
   static navigationOptions = () => {
@@ -55,20 +52,16 @@ export default class BatchSelectScreen extends Component {
   ]
 
   componentDidMount() {
-    if (this.mocked) {
-      this.setState({ batchList: mockedBatchList });
-    } else {
-      Settings.readObject("location").then(location => {
-        if (location) {
-          this.locationCode = location.code;
-          this.fetchBatchList(location.code);
-        }
-      });
-    }
+    Settings.readObject("location").then(location => {
+      if (location) {
+        this.locationCode = location.code;
+        this.fetchBatchList(location.code);
+      }
+    });
   }
 
   fetchBatchList(locationCode) {
-    this.setState({batchList: null, loading: true })
+    this.setState({ batchList: null, loading: true })
     methods.getBatchList(locationCode)
       .then(data => {
         this.setState({ batchList: data, loading: false });
@@ -88,63 +81,48 @@ export default class BatchSelectScreen extends Component {
 
   detailClicked = () => {
     if (this.batch) {
-      if (this.mocked) {
-        this.batch = mockBatch;
-        this.props.navigation.navigate("BatchDetail", {
-          batch: this.batch,
-          locationCode: this.locationCode
-        });
-      } else {
-        // set loading prior to request
-        this.setState({ loading: true });
-        methods.getBatch(this.batch.batchID, this.locationCode)
-          .then(data => {
-            this.setState({ loading: false });
-            this.batch = data;
-            // Navigate to the TabNavigator, not a specific screen (Props/Comps/Equip)
-            // The parameter is passed to all screens of the TabNavigator
-            // (all screens are rendered at once)
-            this.props.navigation.navigate("BatchDetail", {
-              batch: {...data,
-                state: i18n.t("enums.BatchStatus." + data.status)
-              },
-              locationCode: this.locationCode
-            });
-          })
-          .catch(error => {
-            this.setState({ loading: false });
-            console.log(JSON.stringify(error));
+      // set loading prior to request
+      this.setState({ loading: true });
+      methods.getBatch(this.batch.batchID, this.locationCode)
+        .then(data => {
+          this.setState({ loading: false });
+          this.batch = data;
+          // Navigate to the TabNavigator, not a specific screen (Props/Comps/Equip)
+          // The parameter is passed to all screens of the TabNavigator
+          // (all screens are rendered at once)
+          this.props.navigation.navigate("BatchDetail", {
+            batch: {
+              ...data,
+              state: i18n.t("enums.BatchStatus." + data.status)
+            },
+            locationCode: this.locationCode
           });
-      }
+        })
+        .catch(error => {
+          this.setState({ loading: false });
+          console.log(JSON.stringify(error));
+        });
     }
   };
 
   continueClicked = () => {
     if (this.batch) {
       const nav = this.props.navigation;
-      if (this.mocked) {
-        this.batch = mockBatch;
-        nav.navigate("ActionDetail", {
-          batch: this.batch,
-          locationCode: this.locationCode
-        });
-      } else {
-        // set loading prior to request
-        this.setState({ loading: true })
-        const postData = {
-          batchID: this.batch.batchID,
-          procID: 0,
-          location: this.locationCode
-        }
-        methods.nextProc(postData)
-          .then(batchData => {
-            NavChoice(batchData, nav, this.locationCode)
-          })
-          .catch(error => {
-            this.setState({ loading: false });
-            console.log('continueClicked-ERROR: ',JSON.stringify(error));
-          });
+      // set loading prior to request
+      this.setState({ loading: true })
+      const postData = {
+        batchID: this.batch.batchID,
+        procID: 0,
+        location: this.locationCode
       }
+      methods.nextProc(postData)
+        .then(batchData => {
+          NavChoice(batchData, nav, this.locationCode)
+        })
+        .catch(error => {
+          this.setState({ loading: false });
+          console.log('continueClicked-ERROR: ', JSON.stringify(error));
+        });
     }
   };
 
@@ -167,7 +145,7 @@ export default class BatchSelectScreen extends Component {
     let contDisabled = true;
     if (!this.locationCode) {
       batchList = (
-        <TextBar backColor={NexaColours.AlertOrange} style={{marginTop: 12}}>
+        <TextBar backColor={NexaColours.AlertOrange} style={{ marginTop: 12 }}>
           There is no Location set
         </TextBar>
       )

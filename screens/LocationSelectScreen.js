@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
 import i18n from 'i18n-js'
-import mockedLocations from '../Mocked/locations.json'
 import Settings from '../Store/Settings'
 import ScreenHeader from '../components/ScreenHeader'
 import ScrollList from '../components/ScrollList'
-import {methods} from '../api/api'
+import { methods } from '../api/api'
 
 export default class LocationSelectScreen extends Component {
   constructor(props) {
@@ -16,15 +15,10 @@ export default class LocationSelectScreen extends Component {
       selectedItemID: 0,
       loading: false
     }
-    this.mocked = this.props.screenProps.mocked
   }
 
   componentDidMount() {
-    if (this.mocked) {
-      this.setState({ locations: mockedLocations })
-    } else {
-      this.fetch()
-    }
+    this.fetch()
   }
 
   fetch = () => {
