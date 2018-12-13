@@ -1,4 +1,8 @@
 export default es = {
+  formats: {
+    decimal: ',',
+    thousands: '.'
+  },
   languages: {
     english: "Inglés",
     french: "Francés",

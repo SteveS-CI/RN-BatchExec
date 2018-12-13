@@ -24,17 +24,22 @@ export default class ActionEntry extends PureComponent {
     useCamera: PropTypes.bool
   }
 
+  validate(value) {
+    if (this.entry) { return this.entry.validate(value) }
+    else { return true }
+  }
+
   render() {
     const hasEntry = this.props.entry ? true : false
     if (hasEntry) {
       const entryType = this.props.entry.entryType
       if (entryType === 'Distinct') {
         return (
-          <DistinctEntry {...this.props} />
+          <DistinctEntry ref={(ref) => { this.entry = ref }} {...this.props} />
         )
       } else {
         return (
-          <GenericEntry {...this.props} />
+          <GenericEntry ref={(ref) => { this.entry = ref }} {...this.props} />
         )
       }
     } else {

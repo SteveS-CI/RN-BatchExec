@@ -100,7 +100,14 @@ export default class ActionDetailScreen extends Component {
         })
         break
       case 'ok':
-        this.completeAction()
+        if (this.entry) { // There is an entry; validate
+          if (this.entry.validate(this.state.value)) {
+            // Validated OK; complete
+            this.completeAction()
+          }
+        } else { //No entry, complete without validation
+          this.completeAction()
+        }
         break
       case 'yes':
         this.completeAction('Y')
@@ -179,6 +186,7 @@ export default class ActionDetailScreen extends Component {
     methods.completeAction(postData).then(data => {
       NavChoice(data, this.props.navigation, this.locationCode)
     }).catch(error => {
+      console.log(JSON.stringify(error))
       const msg = error.response.data.Message
       this.setState({ loading: false, error: msg})
     })
@@ -228,7 +236,7 @@ export default class ActionDetailScreen extends Component {
                 <IdentEquipmentProps node={node} />
               </ScrollView>
               <ActionImage fileName={node.picture} />
-              <ActionEntry value={this.state.value} entry={entry} onChange={this.entryValueChange} enabled={enabled} useCamera={allowCam} />
+              <ActionEntry ref={(ref) => {this.entry = ref}} value={this.state.value} entry={entry} onChange={this.entryValueChange} enabled={enabled} useCamera={allowCam} />
               <FileContent fileName={node.fileName} />
               <ErrorBar text={this.state.error} onPress={() => this.setState({ error: null })} />
               {/* These are all modal */}

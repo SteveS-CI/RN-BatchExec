@@ -34,7 +34,7 @@ export default class TestScreen5 extends React.Component {
   }
 
   componentDidMount() {
-    this.ws = new Sockette('ws://192.168.1.225:8800', {
+    this.ws = new Sockette('ws://192.168.1.96:8800', {
       timeout: 5e3,
       maxAttempts: 10,
       onopen: e => console.log('Socket Connected!'),

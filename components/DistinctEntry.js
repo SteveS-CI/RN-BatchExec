@@ -57,6 +57,11 @@ export default class DistinctEntry extends PureComponent {
     if (this.props.onChange) this.props.onChange(itemValue)
   }
 
+  validate(value) {
+    // Distinct entries will always validate true
+    return true
+  }
+
   render() {
     const entry = this.props.entry
     const hasLabel = entry.label ? true : false

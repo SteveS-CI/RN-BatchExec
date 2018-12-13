@@ -12,7 +12,7 @@
     "splash": {
       "image": "./assets/images/nexa-logo-be.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#7F7"
     },
     "ios": {
       "bundleIdentifier": "com.ciprecision.batchexec.demo",

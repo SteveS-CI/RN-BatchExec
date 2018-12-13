@@ -9,6 +9,10 @@ import { optimalForeColor } from '../Utils/utils'
 import IconButton from './IconButton';
 import BarcodeReader from './BarcodeReader';
 
+import i18n from 'i18n-js'
+import numeral from 'numeral'
+import parseDecimalNumber from 'parse-decimal-number'
+
 const inputBorderWidth = StyleSheet.hairlineWidth * 2
 const inputBorderRadius = 10
 
@@ -50,7 +54,8 @@ export default class GenericEntry extends PureComponent {
     super(props)
     this.state = {
       editing: false,
-      showCam: false
+      showCam: false,
+      error: null
     }
   }
 
@@ -58,7 +63,7 @@ export default class GenericEntry extends PureComponent {
     enabled: true,
     autoFocus: false,
     useCamera: false,
-    onChange: () => {}
+    onChange: () => { }
   }
 
   static propTypes = {
@@ -70,16 +75,46 @@ export default class GenericEntry extends PureComponent {
     useCamera: PropTypes.bool
   }
 
+  componentDidMount() {
+    const locale = i18n.currentLocale()
+    const options = i18n.translations[locale].formats
+    this.parse = parseDecimalNumber.withOptions(options)
+  }
+
   onChangeText = (value) => {
     this.props.onChange(value)
+    this.setState({ error: null })
   }
 
   scanned = (type, data) => {
-    this.setState({showCam: false})
-    if (type===0) {
+    this.setState({ showCam: false })
+    if (type === 0) {
       this.props.onChange('', false)
     } else {
       this.props.onChange(data, true)
+    }
+  }
+
+  validate(value) {
+    const entry = this.props.entry
+    const validation = entry.validation         
+    if (value) {
+
+      if (entry.entryType === 'Integer' || entry.entryType === 'Decimal') { // Numerics
+        // Convert to 'standard' number
+        const realVal = this.parse(value)
+        if (isNaN(realVal)) {
+          this.setState({ error: 'Not a valid number' })
+          return false
+        } else if (validation) { // Check limits
+          const pass = (validation.lower ? (realVal >= validation.lower) : true) && (validation.upper ? (realVal <= validation.upper) : true)
+          console.log(realVal, validation, pass)
+        } else { return true}
+      }
+      
+    } else {
+      this.setState({ error: 'A value is required' })
+      return false
     }
   }
 
@@ -103,110 +138,26 @@ export default class GenericEntry extends PureComponent {
     } : null
     const boxStyle = StyleSheet.flatten([styles.inputBox, { backgroundColor: boxColor }, boxLeft, boxRight])
     return (
-      <View style={styles.inputContainer}>
-        {hasLabel && <Text style={styles.inputLabel}>{entry.label}</Text>}
-        <TextInput style={boxStyle}
-          value={this.props.value}
-          onChangeText={this.onChangeText}
-          blurOnSubmit={true}
-          onFocus={() => this.setState({ editing: true })}
-          onBlur={() => this.setState({ editing: false })}
-          underlineColorAndroid='transparent'
-          editable={this.props.enabled}
-          autoFocus={this.props.autoFocus}
-          keyboardType={keyboardType}
-        />
-        {hasSuffix && <Text style={styles.inputSuffix}>{entry.suffix}</Text>}
-        {this.props.useCamera && <IconButton iconName='camera' onPress={() => this.setState({showCam: true})} />}
-        <BarcodeReader visible={showCam} onScanned={this.scanned}/>
+      <View style={{ flexDirection: 'column' }}>
+        <View style={styles.inputContainer}>
+          {hasLabel && <Text style={styles.inputLabel}>{entry.label}</Text>}
+          <TextInput style={boxStyle}
+            value={this.props.value}
+            onChangeText={this.onChangeText}
+            blurOnSubmit={true}
+            onFocus={() => this.setState({ editing: true })}
+            onBlur={() => this.setState({ editing: false })}
+            underlineColorAndroid='transparent'
+            editable={this.props.enabled}
+            autoFocus={this.props.autoFocus}
+            keyboardType={keyboardType}
+          />
+          {hasSuffix && <Text style={styles.inputSuffix}>{entry.suffix}</Text>}
+          {this.props.useCamera && <IconButton iconName='camera' onPress={() => this.setState({ showCam: true })} />}
+          <BarcodeReader visible={showCam} onScanned={this.scanned} />
+        </View>
+        <ErrorBar text={this.state.error} onPress={() => this.setState({ error: null })} />
       </View>
     )
-  }
-}
-
-export class DistinctEntry extends PureComponent {
-
-  static defaultProps = {
-    enabled: true
-  }
-
-  static propTypes = {
-    entry: DataProps.EntryProps.isRequired,
-    value: PropTypes.any,
-    onChange: PropTypes.func,
-    enabled: PropTypes.bool
-  }
-
-  componentDidMount() {
-    this.onValueChange(this.props.entry.validation.choices[0])
-  }
-
-  onValueChange = (itemValue, itemIndex) => {
-    if (this.props.onChange) this.props.onChange(itemValue)
-  }
-
-  render() {
-    const entry = this.props.entry
-    const hasLabel = entry.label ? true : false
-    const hasSuffix = entry.suffix ? true : false
-    const validation = entry.validation
-    const choices = validation.choices
-    const items = choices.map((item, idx) => {
-      return (
-        <Picker.Item key={idx} label={item} value={item} />
-      )
-    })
-    return (
-      <View style={styles.pickerContainer}>
-        {hasLabel && <Text style={styles.pickerLabel}>{entry.label}</Text>}
-        <Picker style={{ minWidth: 250 }}
-          selectedValue={this.props.value}
-          onValueChange={this.onValueChange}
-          enabled={this.props.enabled}
-          mode='dropdown'>
-          {items}
-        </Picker>
-        {hasSuffix && <Text style={styles.pickerSuffix}>{entry.suffix}</Text>}
-      </View>
-    )
-  }
-}
-
-export class ActionEntry extends PureComponent {
-  constructor(props) {
-    super(props)
-    this.state = { editing: false }
-  }
-
-  static defaultProps = {
-    enabled: true,
-    autoFocus: false
-  }
-
-  static propTypes = {
-    entry: DataProps.EntryProps,
-    value: PropTypes.any,
-    onChange: PropTypes.func,
-    enabled: PropTypes.bool,
-    autoFocus: PropTypes.bool,
-    useCamera: PropTypes.bool
-  }
-
-  render() {
-    const hasEntry = this.props.entry ? true : false
-    if (hasEntry) {
-      const entryType = this.props.entry.entryType
-      if (entryType === 'Distinct') {
-        return (
-          <DistinctEntry {...this.props} />
-        )
-      } else {
-        return (
-          <GenericEntry {...this.props} />
-        )
-      }
-    } else {
-      return null
-    }
   }
 }
