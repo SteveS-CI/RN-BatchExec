@@ -26,6 +26,7 @@ export default class RoundedButton extends PureComponent {
   static defaultProps = {
     title: 'Title',
     backColor: NexaColours.AlertGreen,
+    onPress: () => {},
     disabled: false
   }
 

@@ -76,12 +76,22 @@ export default class GenericEntry extends PureComponent {
   }
 
   componentDidMount() {
-    const locale = i18n.currentLocale()
-    const options = i18n.translations[locale].formats
-    this.parse = parseDecimalNumber.withOptions(options)
+    this.locale = i18n.currentLocale()
+    this.formats = i18n.translations[this.locale].formats
+    // Shortened parse function
+    this.parse = parseDecimalNumber.withOptions(this.formats)
   }
 
   onChangeText = (value) => {
+    //remove decimal and/or thousand separator
+    const type = this.props.entry.entryType
+    // Decimal: only allow the 'decimal' character
+    if (type === 'Decimal') { value = value.replace(this.formats.thousands, "") }
+    // Integer: remove both the 'decimal' and 'thousand' characters
+    if (type === 'Integer') {
+      value = value.replace(this.formats.decimal, "")
+      value = value.replace(this.formats.thousands, "")
+    }
     this.props.onChange(value)
     this.setState({ error: null })
   }
@@ -97,25 +107,82 @@ export default class GenericEntry extends PureComponent {
 
   validate(value) {
     const entry = this.props.entry
-    const validation = entry.validation         
+    const validation = entry.validation
     if (value) {
+      const type = entry.entryType
 
-      if (entry.entryType === 'Integer' || entry.entryType === 'Decimal') { // Numerics
+      if (type === 'Integer' || type === 'Decimal') { // Numerics
         // Convert to 'standard' number
         const realVal = this.parse(value)
         if (isNaN(realVal)) {
           this.setState({ error: 'Not a valid number' })
           return false
-        } else if (validation) { // Check limits
-          const pass = (validation.lower ? (realVal >= validation.lower) : true) && (validation.upper ? (realVal <= validation.upper) : true)
-          console.log(realVal, validation, pass)
-        } else { return true}
+        }
+        if (type === 'Integer' && (realVal % 1 > 0)) {
+          this.setState({ error: 'Value must be an integer, not a decimal' })
+          return false
+        }
+        return this.checkNumericLimits(realVal, validation)
       }
-      
-    } else {
+
+      if (type === 'String') { return this.checkStringLimits(value, validation) }
+
+      if (type === 'Custom') { return this.checkRegEx(value, validation) }
+
       this.setState({ error: 'A value is required' })
       return false
     }
+  }
+
+  checkStringLimits(value, validation) {
+    if (validation) {
+      if (validation.minLength && (value.length < validation.minLength)) {
+        this.setState({ error: `Length is less than the minimum of ${validation.minLength}` })
+        return false
+      } else if (validation.maxLength && (value.length > validation.maxLength)) {
+        this.setState({ error: `Length is greater than the maximum of ${validation.maxLength}` })
+        return false
+      }
+    }
+    return true
+  }
+
+  checkNumericLimits(value, validation) {
+    if (validation) {
+      if (validation.lower && value < validation.lower) {
+        this.setState({ error: `Value is less than lower limit of ${validation.lower}` })
+        return false
+      } else if (validation.upper && realVal > validation.upper) {
+        this.setState({ error: `Value is greater than the upper limit of ${validation.upper}` })
+        return false
+      } else if (validation.increment && (realVal % validation.increment > 0)) {
+        this.setState({ error: `Value should be in increments of ${validation.increment}` })
+        return false
+      } else {
+        return true
+      }
+    } else {
+      return true
+    }
+  }
+
+  checkRegEx(value, validation) {
+    if (validation) {
+      const exp = validation.regExp
+      if (exp) {
+        const test = new RegExp(`^${exp}$`).test(value)
+        if (!test) {
+          this.setState({ error: `Value does not match the required pattern: ${exp}` })
+          return false
+        }
+      }
+    }
+    return true
+  }
+
+  onBlur = () => {
+    this.setState({ editing: false })
+    this.validate(this.props.value)
   }
 
   render() {
@@ -124,7 +191,7 @@ export default class GenericEntry extends PureComponent {
     const entry = this.props.entry
     const hasLabel = entry.label ? true : false
     const hasSuffix = entry.suffix ? true : false
-    const keyboardType = (entry.entryType === 'Integer' || entry.entryType === 'Decimal') ? 'numeric' : 'default'
+    const keyboardType = (entry.entryType === 'Integer' || entry.entryType === 'Decimal') ? 'number-pad' : 'default'
     const boxColor = editing ? NexaColours.GreyUltraLight : NexaColours.GreyLight
     const boxLeft = !hasSuffix ? {
       borderTopRightRadius: inputBorderRadius,
@@ -146,7 +213,7 @@ export default class GenericEntry extends PureComponent {
             onChangeText={this.onChangeText}
             blurOnSubmit={true}
             onFocus={() => this.setState({ editing: true })}
-            onBlur={() => this.setState({ editing: false })}
+            onBlur={this.onBlur}
             underlineColorAndroid='transparent'
             editable={this.props.enabled}
             autoFocus={this.props.autoFocus}
