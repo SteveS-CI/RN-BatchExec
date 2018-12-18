@@ -1,16 +1,13 @@
 import React, { PureComponent } from 'react'
-import { StyleSheet, View, Text, TextInput, Picker, KeyboardAvoidingView } from 'react-native'
+import { StyleSheet, View, Text, TextInput } from 'react-native'
 import PropTypes from 'prop-types'
 import * as DataProps from '../constants/DataProps'
-import TextBar from './TextBar'
 import ErrorBar from './ErrorBar'
 import NexaColours from '../constants/NexaColours'
-import { optimalForeColor } from '../Utils/utils'
 import IconButton from './IconButton';
 import BarcodeReader from './BarcodeReader';
 
 import i18n from 'i18n-js'
-import numeral from 'numeral'
 import parseDecimalNumber from 'parse-decimal-number'
 
 const inputBorderWidth = StyleSheet.hairlineWidth * 2
@@ -63,7 +60,8 @@ export default class GenericEntry extends PureComponent {
     enabled: true,
     autoFocus: false,
     useCamera: false,
-    onChange: () => { }
+    onChange: () => { },
+    showCam: false
   }
 
   static propTypes = {
@@ -72,28 +70,15 @@ export default class GenericEntry extends PureComponent {
     onChange: PropTypes.func,
     enabled: PropTypes.bool,
     autoFocus: PropTypes.bool,
-    useCamera: PropTypes.bool
+    useCamera: PropTypes.bool,
   }
 
   componentDidMount() {
+    this.suppressNextKey = false
     this.locale = i18n.currentLocale()
     this.formats = i18n.translations[this.locale].formats
     // Shortened parse function
     this.parse = parseDecimalNumber.withOptions(this.formats)
-  }
-
-  onChangeText = (value) => {
-    //remove decimal and/or thousand separator
-    const type = this.props.entry.entryType
-    // Decimal: only allow the 'decimal' character
-    if (type === 'Decimal') { value = value.replace(this.formats.thousands, "") }
-    // Integer: remove both the 'decimal' and 'thousand' characters
-    if (type === 'Integer') {
-      value = value.replace(this.formats.decimal, "")
-      value = value.replace(this.formats.thousands, "")
-    }
-    this.props.onChange(value)
-    this.setState({ error: null })
   }
 
   scanned = (type, data) => {
@@ -152,10 +137,10 @@ export default class GenericEntry extends PureComponent {
       if (validation.lower && value < validation.lower) {
         this.setState({ error: `Value is less than lower limit of ${validation.lower}` })
         return false
-      } else if (validation.upper && realVal > validation.upper) {
+      } else if (validation.upper && value > validation.upper) {
         this.setState({ error: `Value is greater than the upper limit of ${validation.upper}` })
         return false
-      } else if (validation.increment && (realVal % validation.increment > 0)) {
+      } else if (validation.increment && (value % validation.increment > 0)) {
         this.setState({ error: `Value should be in increments of ${validation.increment}` })
         return false
       } else {
@@ -183,6 +168,26 @@ export default class GenericEntry extends PureComponent {
   onBlur = () => {
     this.setState({ editing: false })
     this.validate(this.props.value)
+  }
+
+  onChangeText = (value) => {
+    if (this.suppressNextKey) {
+      this.suppressNextKey=false
+      this.props.onChange(this.props.value)
+    } else {
+      this.props.onChange(value)
+    }
+    this.setState({ error: null })
+  }
+
+  onKeyPress = (e) => {
+    const type = this.props.entry.entryType
+    const key = e.nativeEvent.key
+    if (type === "Decimal") {
+      if (key === this.formats.thousands || key === " ") {this.suppressNextKey = true}
+    } else if (type === 'Integer') {
+      if (key === this.formats.decimal || key === this.formats.thousands || key === " ") {this.suppressNextKey = true}
+    }
   }
 
   render() {
@@ -218,6 +223,7 @@ export default class GenericEntry extends PureComponent {
             editable={this.props.enabled}
             autoFocus={this.props.autoFocus}
             keyboardType={keyboardType}
+            onKeyPress={this.onKeyPress}
           />
           {hasSuffix && <Text style={styles.inputSuffix}>{entry.suffix}</Text>}
           {this.props.useCamera && <IconButton iconName='camera' onPress={() => this.setState({ showCam: true })} />}

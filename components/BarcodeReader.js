@@ -12,12 +12,14 @@ export default class BarcodeReader extends PureComponent {
   }
 
   static defaultProps = {
-    visible: false
+    visible: false,
+    showKbButton: false
   }
 
   static propTypes = {
     visible: PropTypes.bool,
-    onScanned: PropTypes.func.isRequired
+    onScanned: PropTypes.func.isRequired,
+    showKbButton: PropTypes.bool
   }
 
   async componentDidMount() {
@@ -33,6 +35,10 @@ export default class BarcodeReader extends PureComponent {
     this.props.onScanned(0, 'cancelled')
   }
 
+  useKeyboard = () => {
+    this.props.onScanned(-1, 'useKeyboard')
+  }
+
   render() {
     const visible = this.props.visible
     if (visible) {
@@ -45,6 +51,7 @@ export default class BarcodeReader extends PureComponent {
           <Modal onRequestClose={this.cancelled}>
             <BarCodeScanner style={StyleSheet.absoluteFill} onBarCodeScanned={this.barcodeScanned} />
             <RoundedButton title='Cancel' backColor={NexaColours.GreyUltraLight} onPress={this.cancelled}/>
+            {this.props.showKbButton && <RoundedButton title='Use List' onPress={this.useKeyboard}/>}
           </Modal>
         )
       } else {

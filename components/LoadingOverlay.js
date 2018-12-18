@@ -15,7 +15,11 @@ const styles = StyleSheet.create({
   }
 })
 
-class LoadingOverlay extends PureComponent {
+export default class LoadingOverlay extends PureComponent {
+
+  static propTypes = {
+    loading: PropTypes.bool.isRequired
+  }
 
   render() {
     return (
@@ -26,10 +30,4 @@ class LoadingOverlay extends PureComponent {
       : null
     )
   }
-}
-
-export default LoadingOverlay
-
-LoadingOverlay.propTypes = {
-  loading: PropTypes.bool.isRequired
 }

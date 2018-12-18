@@ -39,6 +39,7 @@ export default class LocationSelectScreen extends Component {
       const location = { code: this.item.code, name: this.item.name }
       Settings.saveObject('location', location)
         .then(() => {
+          // this reloads the app
           this.props.screenProps.refresh()
         })
     }

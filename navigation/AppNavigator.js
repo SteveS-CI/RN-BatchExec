@@ -20,7 +20,8 @@ import BatchPropsScreen from '../screens/BatchPropsScreen';
 import BatchCompsScreen from '../screens/BatchCompsScreen';
 import BatchEquipScreen from '../screens/BatchEquipScreen';
 import LoginScreen from '../screens/LoginScreen';
-import LocationSelectScreen from '../screens/LocationSelectScreen';
+import LocationListScreen from '../screens/LocationListScreen';
+import LocationScanScreen from '../screens/LocationScanScreen';
 import TestScreen from '../screens/TestScreen'
 import TestScreen2 from '../screens/TestScreen2'
 import TestScreen3 from '../screens/TestScreen3'
@@ -104,7 +105,7 @@ const MainNav = createStackNavigator(
 const DropdownNav = createSwitchNavigator(
   {
     Main: MainNav,
-    Location: LocationSelectScreen,
+    LocationScan: LocationScanScreen,
     Settings: SettingsScreen,
     Login: LoginNav,
     Test: TestScreen,
@@ -128,12 +129,13 @@ const dropDownItems = {
     'about',
     'developer'
   ],
-  actions: ['Location','Settings','Login','EXIT', 'About', 'Dev']
+  actions: ['LocationList','Settings','Login','EXIT', 'About', 'Dev']
 }
 
 export default AppNavigator = createStackNavigator(
   {
     Main: DropdownNav,
+    LocationList: LocationListScreen,
   },
   {
     headerMode: "float",

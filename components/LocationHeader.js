@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {StyleSheet, View, Text, TouchableOpacity} from 'react-native'
+import {StyleSheet, Text, TouchableOpacity} from 'react-native'
 import PropTypes from 'prop-types'
 import Settings from '../Store/Settings'
 import NexaColours from '../constants/NexaColours'
@@ -26,7 +26,7 @@ export default class LocationHeader extends Component {
   }
 
   navigate = () => {
-    if (this.props.navigation) this.props.navigation.navigate('Location')
+    if (this.props.navigation) this.props.navigation.navigate('LocationScan')
   }
 
   componentDidMount() {

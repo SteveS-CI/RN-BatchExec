@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {
+  NativeModules,
   StyleSheet,
   View
 } from 'react-native';
@@ -20,6 +21,8 @@ export default class TestScreen6 extends Component {
   }
 
   render() {
+    const install = NativeModules.insertText
+    console.log(JSON.stringify(install)) 
     return (
       <View style={styles.container}>
         <RoundedButton title='Cancel' onPress={() => this.props.navigation.navigate('BatchList')} />
