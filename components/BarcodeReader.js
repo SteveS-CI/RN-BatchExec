@@ -25,6 +25,9 @@ export default class BarcodeReader extends PureComponent {
   async componentDidMount() {
     const { status } = await Permissions.askAsync(Permissions.CAMERA)
     this.setState({ hasPerm: (status === 'granted') })
+    if (!this.state.hasPerm) {
+      this.props.onScanned(-1,'No Access')
+    }
   }
 
   barcodeScanned = (value) => {
@@ -36,7 +39,7 @@ export default class BarcodeReader extends PureComponent {
   }
 
   useKeyboard = () => {
-    this.props.onScanned(-1, 'useKeyboard')
+    this.props.onScanned(-1, 'useAlternative')
   }
 
   render() {

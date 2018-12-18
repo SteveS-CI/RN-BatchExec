@@ -20,15 +20,13 @@ export default class NodeDetailScreen extends React.Component {
 
   static navigationOptions = ({navigation}) => {
     const data = navigation.getParam("batchData")
-    console.log(JSON.stringify(data))
     const node = data.nodes[0]
     //0,1,2
     const nodeType = nodeTypes[data.nodeDepth]
     //2,3,4
     const nodeState = nodeStates[node.statusEnum-2]
     return {
-      title: nodeType + " " + nodeState,
-      headerLeft: null
+      title: nodeType + " " + nodeState
     }
   }
   

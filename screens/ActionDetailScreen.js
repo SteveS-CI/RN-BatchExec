@@ -34,16 +34,12 @@ export default class ActionDetailScreen extends Component {
   }
 
   static navigationOptions = ({ navigation }) => {
-    const batchData = navigation.getParam('batchData')
     return {
-      title: 'Execute Action',
-      headerLeft: null,
-      headerRight: <ActionBreadcrumb text={batchData.nodePath} />
+      title: 'Execute Action'
     }
   };
 
   componentDidMount() {
-    console.log('ActionDetailScreen:CDM')
     const batchData = this.props.navigation.getParam("batchData")
     this.batchData = batchData
     const node = batchData.nodes[0]
@@ -219,6 +215,7 @@ export default class ActionDetailScreen extends Component {
       const enabled = (node.status === "NotStarted")
       return (
         <View style={{ flex: 1 }}>
+          <ActionBreadcrumb text={this.batchData.nodePath} />
           <ActionTitle text={this.state.node.name} />
           <ActionSign node={node} />
           <ActionButtons buttons={buttons} onPress={this.onPress} />

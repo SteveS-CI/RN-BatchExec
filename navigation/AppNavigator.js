@@ -76,48 +76,26 @@ const LoginNav = createStackNavigator(
   }
 )
 
-const MainNav = createStackNavigator(
-  {
-    BatchList: BatchSelectScreen,
-    BatchDetail: BatchNav,
-    NodeSelect: NodeSelectScreen,
-    NodeDetail: NodeDetailScreen,
-    ActionDetail: ActionDetailScreen
-  },
-  {
-    headerMode: 'float',
-    navigationOptions: ({ navigation }) => {
-      {
-        const route = navigation.state.routeName
-        if (route === 'BatchDetail') {
-          return {
-            ...screenHeaderStyling,
-            title: i18n.t('screens.batchDetail.title')
-          }
-        } else {
-          return {...screenHeaderStyling, headerLeft: null}
-        }
-      }
-    }
-  }
-)
-
-const DropdownNav = createSwitchNavigator(
-  {
-    Main: MainNav,
-    LocationScan: LocationScanScreen,
-    Settings: SettingsScreen,
-    Login: LoginNav,
-    Test: TestScreen,
-    Test2: TestScreen2,
-    Test3: TestScreen3,
-    Test4: TestScreen4,
-    Test5: TestScreen5,
-    Test6: TestScreen6,
-    About: AboutScreen,
-    Dev: DevScreen
-  }
-)
+// const MainNav = createStackNavigator(
+//   {
+//   },
+//   {
+//     headerMode: 'float',
+//     navigationOptions: ({ navigation }) => {
+//       {
+//         const route = navigation.state.routeName
+//         if (route === 'BatchDetail') {
+//           return {
+//             ...screenHeaderStyling,
+//             title: i18n.t('screens.batchDetail.title')
+//           }
+//         } else {
+//           return {...screenHeaderStyling, headerLeft: null}
+//         }
+//       }
+//     }
+//   }
+// )
 
 // pointers to menus.dropdown.x
 const dropDownItems = {
@@ -134,8 +112,24 @@ const dropDownItems = {
 
 export default AppNavigator = createStackNavigator(
   {
-    Main: DropdownNav,
+    BatchList: BatchSelectScreen,
+    BatchDetail: BatchNav,
+    NodeSelect: NodeSelectScreen,
+    NodeDetail: NodeDetailScreen,
+    ActionDetail: ActionDetailScreen,
+    //Main: MainNav,
     LocationList: LocationListScreen,
+    LocationScan: LocationScanScreen,
+    Settings: SettingsScreen,
+    Login: LoginNav,
+    About: AboutScreen,
+    Dev: DevScreen,
+    Test: TestScreen,
+    Test2: TestScreen2,
+    Test3: TestScreen3,
+    Test4: TestScreen4,
+    Test5: TestScreen5,
+    Test6: TestScreen6
   },
   {
     headerMode: "float",

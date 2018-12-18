@@ -79,6 +79,8 @@ export default class GenericEntry extends PureComponent {
     this.formats = i18n.translations[this.locale].formats
     // Shortened parse function
     this.parse = parseDecimalNumber.withOptions(this.formats)
+    // Set initial value if entry object has it (will need to be redisplayed on signature/approval)
+    if (this.props.entry.value) { this.onChangeText(this.props.entry.value)}
   }
 
   scanned = (type, data) => {
@@ -175,7 +177,7 @@ export default class GenericEntry extends PureComponent {
       this.suppressNextKey=false
       this.props.onChange(this.props.value)
     } else {
-      this.props.onChange(value)
+      this.props.onChange(value.toString())
     }
     this.setState({ error: null })
   }

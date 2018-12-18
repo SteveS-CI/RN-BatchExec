@@ -6,12 +6,9 @@ import NexaColours from '../constants/NexaColours'
 const styles = StyleSheet.create(
   {
     breadcrumb: {
-      marginRight: 8,
       color: 'white',
       padding: 5,
-      backgroundColor: NexaColours.BlueAccent,
-      borderRadius: 5,
-//      fontSize: 16
+      backgroundColor: NexaColours.Blue,
     }
   }
 )

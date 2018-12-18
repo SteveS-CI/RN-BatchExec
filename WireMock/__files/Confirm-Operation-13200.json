@@ -10,22 +10,15 @@
     "recipeCode": "800069",
     "recipeVersion": 0.125,
     "startErrors": 0,
-	"nodeDepth": 1,
+	"nodeDepth": 2,
 	"nodes": [
 		{
-			"procID": 12300,
-			"name": "Stage One",
-			"notes": "This is the first stage"
-		},
-		{
-			"procID": 12301,
-			"name": "Stage Two",
-			"notes": "This is the second stage"
-		},
-		{
-			"procID": 13000,
-			"name": "Stage Three",
-			"notes": "Actions that require Signature and/or Approval"
+			"procID": 13200,
+			"name": "Operation One",
+      "notes": "Different types of Entry actions",
+      "status": "PendingConfirmation",
+      "statusEnum": 2,
+      "path": "Batch/Stage/Operation"
 		}
 	]
 }

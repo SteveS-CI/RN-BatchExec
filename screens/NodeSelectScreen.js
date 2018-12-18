@@ -28,8 +28,7 @@ export default class NodeSelectScreen extends React.Component {
       name = NodeSelectScreen.nodeName(nodeDepth, false)
     }
     return {
-      title: i18n.t('screens.nodeSelect.title', {name}),
-      headerLeft: null
+      title: i18n.t('screens.nodeSelect.title', {name})
     }
   };
 
