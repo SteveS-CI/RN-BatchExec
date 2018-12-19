@@ -2,12 +2,15 @@ import React, {PureComponent} from 'react'
 import {View, Text, StyleSheet} from 'react-native'
 import PropTypes from 'prop-types'
 import NexaColours from '../constants/NexaColours';
+import {FontSizes} from '../constants/Layout'
+
+const HairWidth = StyleSheet.hairlineWidth * 2
 
 const styles = StyleSheet.create({
   item: {
     flexDirection: 'row',
-    marginBottom: StyleSheet.hairlineWidth,
-    borderBottomWidth: StyleSheet.hairlineWidth,
+    marginBottom: HairWidth,
+    borderBottomWidth: HairWidth,
     borderColor: NexaColours.GreyDark
   },
   caption: {
@@ -15,17 +18,18 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     paddingRight: 8,
     flex: 2,
-//    fontSize: 16,
+    fontSize: FontSizes.smaller,
     color: NexaColours.Blue,
     textAlignVertical: 'center',
-    borderRightWidth: StyleSheet.hairlineWidth,
+    borderRightWidth: HairWidth,
     borderColor: NexaColours.GreyDark
   },
   value: {
     paddingVertical: 8,
     paddingLeft: 8,
     flex: 5,
-    textAlignVertical: 'center'
+    textAlignVertical: 'center',
+    fontSize: FontSizes.smaller
   }
 })
 

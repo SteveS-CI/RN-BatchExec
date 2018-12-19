@@ -4,6 +4,9 @@ import PropTypes from 'prop-types'
 import RoundedButton from './RoundedButton'
 import NexaColours from '../constants/NexaColours'
 import ButtonBar from './ButtonBar';
+import {FontSizes} from '../constants/Layout'
+
+const FontSize = FontSizes.standard
 
 export default class TextSetting extends PureComponent {
   constructor(props) {
@@ -26,14 +29,14 @@ export default class TextSetting extends PureComponent {
 
   render() {
     const editing = this.state.editing
-    const baseStyle = {paddingHorizontal: 5}
+    const baseStyle = {paddingHorizontal: 8, fontSize: FontSize}
     const textStyle = this.state.editing 
-      ? {...baseStyle, borderRadius: 5, borderWidth: StyleSheet.hairlineWidth}
+      ? {...baseStyle, borderRadius: 5, borderWidth: StyleSheet.hairlineWidth * 2}
       : {...baseStyle, color: NexaColours.Grey}
     return (
       <TouchableWithoutFeedback onPress={() => {this.setState({editing: !editing})}}>
         <View style={{flexDirection: 'column', padding: 8}}>
-          <Text>{this.props.title}</Text>
+          <Text style={{fontSize: FontSize}}>{this.props.title}</Text>
           <TextInput
                 textContentType='URL'
                 value={this.state.value}

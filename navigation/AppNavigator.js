@@ -32,6 +32,7 @@ import AboutScreen from '../screens/AboutScreen'
 import DevScreen from '../screens/DevScreen'
 import DropdownMenu from '../components/DropdownMenu';
 import LocationHeader from '../components/LocationHeader'
+import { WindowSize, FontSizes } from '../constants/Layout';
 
 const screenHeaderStyling = {
   headerTintColor: NexaColours.GreyLight,
@@ -43,6 +44,22 @@ const screenHeaderStyling = {
     fontWeight: 'normal',
     fontSize: 18,
     textAlign: 'center',
+  }
+}
+
+const mainStyle = {
+  headerTintColor: NexaColours.Blue,
+  headerStyle: {
+    backgroundColor: NexaColours.GreyLight,
+    height: WindowSize() / 20
+  },
+  headerTitleStyle: { 
+    fontFamily: 'euro-demi', 
+    fontWeight: 'normal',
+    fontSize: WindowSize() / 60,
+    textAlign: 'left',
+    marginLeft: WindowSize() / 40,
+    paddingLeft: 0
   }
 }
 
@@ -59,7 +76,7 @@ const BatchNav = createMaterialTopTabNavigator(
       upperCaseLabel: false,
       activeTintColor: '#FFFFFF',
       inactiveTintColor: NexaColours.GreyLight,
-      labelStyle: {fontSize: 16 },
+      labelStyle: {fontSize: FontSizes.standard },
       style: { backgroundColor: NexaColours.BlueAccent }
     }
   }
@@ -117,7 +134,6 @@ export default AppNavigator = createStackNavigator(
     NodeSelect: NodeSelectScreen,
     NodeDetail: NodeDetailScreen,
     ActionDetail: ActionDetailScreen,
-    //Main: MainNav,
     LocationList: LocationListScreen,
     LocationScan: LocationScanScreen,
     Settings: SettingsScreen,
@@ -135,10 +151,8 @@ export default AppNavigator = createStackNavigator(
     headerMode: "float",
     navigationOptions: ({ navigation, props }) => {
       return {
-        title: i18n.t('screens.main.title'),
-        headerTintColor: NexaColours.Blue,
-        headerStyle: { backgroundColor: NexaColours.GreyLight },
-        headerTitleStyle: { fontFamily: 'euro-demi', fontWeight: 'normal', fontSize: 18 },
+        title: i18n.t('screens.batchDetail.title'),
+        ...mainStyle,
         headerLeft: <DropdownMenu data={dropDownItems} navigation={navigation} />,
         headerRight: <LocationHeader navigation={navigation}/>
       }

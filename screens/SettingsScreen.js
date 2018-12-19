@@ -61,7 +61,7 @@ export default class SettingsScreen extends React.Component {
 
   returnToMain() {
     const nav = this.props.navigation
-    nav.navigate('Main')
+    nav.navigate('BatchList')
   }
 
   onThemeChange = (value) => {

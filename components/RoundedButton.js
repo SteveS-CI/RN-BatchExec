@@ -2,7 +2,8 @@ import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { Button, TouchableOpacity, Text, StyleSheet } from 'react-native'
 import NexaColours from '../constants/NexaColours'
-import { optimalForeColor, shadeBlendConvert } from '../Utils/utils'
+import { optimalForeColor } from '../Utils/utils'
+import {FontSizes} from '../constants/Layout'
 
 const styles =
 {
@@ -12,11 +13,11 @@ const styles =
     alignSelf: 'flex-start',
     borderRadius: 12,
     elevation: 8,
-    minWidth: 80,
+    minWidth: '10%',
     borderWidth: StyleSheet.hairlineWidth * 2
   },
   text: {
-//    fontSize: 16,
+    fontSize: FontSizes.standard,
     textAlign: 'center'
   }
 }

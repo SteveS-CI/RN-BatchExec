@@ -3,6 +3,7 @@ import {StyleSheet, Text, TouchableOpacity} from 'react-native'
 import PropTypes from 'prop-types'
 import Settings from '../Store/Settings'
 import NexaColours from '../constants/NexaColours'
+import {FontSizes} from '../constants/Layout'
 
 const styles = StyleSheet.create(
   {
@@ -11,6 +12,10 @@ const styles = StyleSheet.create(
       padding: 5,
       backgroundColor: NexaColours.GreyUltraLight,
       borderRadius: 5,
+    },
+    text: {
+      color: 'black',
+      fontSize: FontSizes.smaller
     }
   }
 ) 
@@ -37,7 +42,7 @@ export default class LocationHeader extends Component {
     return (
     this.state.location
     ? <TouchableOpacity style={styles.container} onPress={this.navigate}>
-        <Text style={{color: 'black'}}>{this.state.location.name}</Text>
+        <Text style={styles.text}>{this.state.location.name}</Text>
       </TouchableOpacity>
     : null
     )

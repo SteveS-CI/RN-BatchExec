@@ -5,6 +5,9 @@ import i18n from 'i18n-js'
 import Settings from '../Store/Settings'
 import NexaIcon from '../assets/images/nexa-icon.png'
 import {BackHandler} from 'react-native'
+import {FontSizes} from '../constants/Layout'
+
+const ImageSize = FontSizes.menuIconSize
 
 export default class DropdownMenu extends Component {
   constructor(props) {
@@ -56,7 +59,7 @@ export default class DropdownMenu extends Component {
             }}
           />
           <TouchableOpacity onPress={() => this.onMenuPressed(this.items)}>
-            <Image source={NexaIcon} style={{height: 40, width: 40, marginLeft: 8}}/>
+            <Image source={NexaIcon} style={{height: ImageSize, width: ImageSize, marginLeft: 8}}/>
           </TouchableOpacity>
         </View>
       </View>

@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react'
-import {View, Button, StyleSheet} from 'react-native'
+import {View, ScrollView, Button, StyleSheet} from 'react-native'
 import Settings from '../Store/Settings'
 import NexaColours from '../constants/NexaColours'
 import ButtonBar from '../components/ButtonBar'
@@ -77,7 +77,7 @@ export default class DevScreen extends PureComponent {
             onPress={() => {this.nav.navigate('BatchList')}}
           />
         </ButtonBar>
-        <View style={{flexDirection: 'column'}}>
+        <ScrollView style={{flexDirection: 'column'}}>
           <RoundedButton style={styles.button} title='Clear Location' onPress={() => {Settings.removeItem('location').then(() => Expo.Updates.reload())}}/>
           <RoundedButton style={styles.button} title='Reset Location & Equipment States' onPress={this.resetHardware}/>
           <RoundedButton style={styles.button} title='Clear Batch Cache' onPress={this.clearCache}/>
@@ -89,7 +89,7 @@ export default class DevScreen extends PureComponent {
           <RoundedButton style={styles.button} title='Custom Keyboard' onPress={this.testScreen6} />
           <RoundedButton style={styles.button} title='Get Updates' onPress={this.update} backColor={NexaColours.AlertYellow}/>
           <RoundedButton style={styles.button} title='Destroy Settings !!!!' onPress={this.destroy} backColor={NexaColours.AlertRed}/>
-        </View>
+        </ScrollView>
       </View>
     )
   }

@@ -8,3 +8,19 @@ export default {
   isSmallDevice: Dimensions.get('window').width < 375,
   tabBarHeight: 65,
 };
+
+export const WindowSize = () => {
+  const size = Dimensions.get("screen")
+  const smaller = Math.min(size.height, size.width) * size.scale
+  return smaller
+}
+
+const ScreenSize = WindowSize()
+
+export const FontSizes = {
+  menuIconSize: ScreenSize / 28,
+  listHeader: ScreenSize / 72,
+  listRow: ScreenSize / 84,
+  standard: ScreenSize / 64,
+  smaller: ScreenSize / 72
+}

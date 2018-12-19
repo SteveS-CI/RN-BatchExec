@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import NexaColours from '../constants/NexaColours'
 import TextBar from '../components/TextBar'
 import {ListHeaderProps} from '../constants/DataProps'
-//import Styles from '../constants/Styles'
+import {FontSizes} from '../constants/Layout'
 
 const styles = StyleSheet.create({
   listContainer: {
@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
   listColumn: {
     color: 'white',
     padding: 8,
-//    fontSize: 16,
+    fontWeight: 'bold',
     borderColor: NexaColours.GreyDark,
     borderRightWidth: StyleSheet.hairlineWidth
   },
@@ -33,8 +33,6 @@ const styles = StyleSheet.create({
   listRows: {
     color: NexaColours.GreyDark,
     padding: 8,
-    paddingVertical: 12,
-//    fontSize: 14,
     borderColor: NexaColours.GreyDark,
     borderRightWidth: StyleSheet.hairlineWidth
   },
@@ -43,18 +41,23 @@ const styles = StyleSheet.create({
   rowBackColorSelected: {backgroundColor: NexaColours.YellowAccent}
 })
 
+const HeaderFontSize = FontSizes.listHeader
+const RowFontSize = FontSizes.listRow
+
 export class ListHeader extends Component {
 
   static propTypes = {
     headers: PropTypes.arrayOf(ListHeaderProps).isRequired,
+    fontSize: PropTypes.number
   }
 
   render() {
+    const fontSizeStyle = {fontSize: this.props.fontSize}
     const headers = this.props.headers
     var cols = headers.map((col, idx) => {
       const flex = col.flex ? col.flex : 1
       const align = col.align ? col.align : "left"
-      const colStyle = StyleSheet.flatten([styles.listColumn, {flex: flex, textAlign: align, flexWrap: 'wrap'}])
+      const colStyle = StyleSheet.flatten([styles.listColumn, {flex: flex, textAlign: align, flexWrap: 'wrap'}, fontSizeStyle])
       return (
         <Text
           key={idx}
@@ -86,18 +89,20 @@ export class ListRow extends Component {
     brighten: PropTypes.bool,
     onPress: PropTypes.func,
     selected: PropTypes.bool,
-    index: PropTypes.number
+    index: PropTypes.number,
+    fontSize: PropTypes.number
   }
 
   render() {
+    const fontSizeStyle = {fontSize: this.props.fontSize}
     const headers = this.props.headers
     const data = this.props.data
     const cols = headers.map((col, idx) => {
       const flex = col.flex ? col.flex : 1
       const align = col.align ? col.align : "left"
-      const colStyle = StyleSheet.flatten([styles.listRows, {flex: flex, textAlign: align}])
+      const colStyle = StyleSheet.flatten([styles.listRows, {flex: flex, textAlign: align}, fontSizeStyle])
       return (
-        <Text key={idx} style={colStyle} >
+        <Text key={idx} style={colStyle}>
           {data[col.source]}
         </Text>
       )
@@ -163,6 +168,7 @@ export default class ScrollList extends Component {
               brighten={brighten}
               onPress={this.props.onPress}
               selected={selected}
+              fontSize={RowFontSize}
             />
           )
         }
@@ -183,7 +189,7 @@ export default class ScrollList extends Component {
       : null
     return (
       <View style={style}>
-        <ListHeader headers={this.props.headers} />
+        <ListHeader headers={this.props.headers} fontSize={HeaderFontSize}/>
         <ScrollView
           refreshControl={refresh}>
           {rows}

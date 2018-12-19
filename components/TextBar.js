@@ -3,17 +3,17 @@ import {StyleSheet, Text } from 'react-native';
 import PropTypes from 'prop-types'
 import NexaColours from '../constants/NexaColours'
 import {optimalForeColor} from '../Utils/utils'
+import {FontSizes} from '../constants/Layout'
 
 const styles = StyleSheet.create(
   {
     base: {
-//      fontSize: 16,
+      fontSize: FontSizes.standard,
       padding: 8,
       marginHorizontal: 8,
       marginBottom: 8,
       borderRadius: 5,
-      textAlign: 'center',
-      //alignSelf: 'center'
+      textAlign: 'center'
     }
   }
 )

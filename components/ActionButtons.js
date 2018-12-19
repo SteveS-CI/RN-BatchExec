@@ -19,7 +19,7 @@ const styles =
       backgroundColor: NexaColours.GreyUltraLight
     },
     text: {
-//      fontSize: 16,
+      //fontSize: 30,
       textAlign: 'center'
     }
   }
@@ -46,7 +46,10 @@ export class ActionButton extends PureComponent {
     const textStyle = StyleSheet.flatten([styles.text, {color: foreColor}])
     return (
       <TouchableOpacity disabled={this.props.disabled} onPress={() => this.props.onPress()} style={viewStyle}>
-        <Text style={textStyle}>{i18n.t('button.captions.' + this.props.buttonStyle.name)}</Text>
+        <Text
+          style={textStyle}>
+            {i18n.t('button.captions.' + this.props.buttonStyle.name)}
+        </Text>
       </TouchableOpacity>
     )
   }

@@ -5,12 +5,13 @@ import PropTypes from 'prop-types'
 import i18n from 'i18n-js'
 import RoundedButton from '../components/RoundedButton'
 import IconButton from '../components/IconButton'
+import {FontSizes} from '../constants/Layout'
 
 const styles = StyleSheet.create(
   {
     base: {
       color: NexaColours.GreyUltraLight,
-//      fontSize: 20,
+      fontSize: FontSizes.standard,
       padding: 8,
       marginTop: 8,
       marginBottom: 0,
