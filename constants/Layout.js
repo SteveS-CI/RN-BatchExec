@@ -1,11 +1,11 @@
 import { Dimensions } from 'react-native';
 
 export default {
-  window: {
-    width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height,
+  screen: {
+    width: Dimensions.get('screen').width,
+    height: Dimensions.get('screen').height,
   },
-  isSmallDevice: Dimensions.get('window').width < 375,
+  isSmallDevice: Dimensions.get('screen').width < 375,
   tabBarHeight: 65,
 };
 
@@ -22,5 +22,7 @@ export const FontSizes = {
   listHeader: ScreenSize / 72,
   listRow: ScreenSize / 84,
   standard: ScreenSize / 64,
-  smaller: ScreenSize / 72
+  smaller: ScreenSize / 72,
+  iconButton: ScreenSize / 48,
+  buttons: ScreenSize / 72
 }

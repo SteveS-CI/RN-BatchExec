@@ -6,6 +6,7 @@ import LoadingOverlay from './LoadingOverlay'
 import { getTextFile } from '../api/api'
 import { optimalForeColor } from '../Utils/utils'
 import NexaColours from '../constants/NexaColours';
+import {FontSizes} from '../constants/Layout'
 
 const styles = StyleSheet.create(
   {
@@ -14,7 +15,7 @@ const styles = StyleSheet.create(
       marginHorizontal: 5, marginTop: 5,
       paddingHorizontal: 12, paddingVertical: 8,
       borderTopLeftRadius: 12, borderTopRightRadius: 12,
-//      fontSize: 18
+      fontSize: FontSizes.standard
     },
     content: {
       borderStyle: 'solid', borderWidth: 2, borderColor: NexaColours.BlueAccent,
@@ -23,7 +24,7 @@ const styles = StyleSheet.create(
       paddingHorizontal: 12, paddingTop: 5,
       borderBottomLeftRadius: 12, borderBottomRightRadius: 12,
       backgroundColor: NexaColours.GreyUltraLight,
-//      fontSize: 16
+      fontSize: FontSizes.smaller
     }
   }
 )

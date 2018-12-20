@@ -16,6 +16,12 @@ export default class SettingsScreen extends React.Component {
     this.state = { settings: null }
   }
 
+  static navigationOptions = () => {
+    return {
+      title: i18n.t('screens.settings.title')
+    }
+  }
+
   languages = [
     {
       label: i18n.t("languages.english"),
@@ -91,7 +97,7 @@ export default class SettingsScreen extends React.Component {
             onCancel={() => this.update(false)}
             onOK={() => this.update(true)}
             okCaption={i18n.t('button.captions.save')}
-            title={i18n.t('screens.settings.title')}
+            //title={i18n.t('screens.settings.title')}
           />
           <ScrollView style={{ borderTopWidth: 1 }}>
             <TextSetting

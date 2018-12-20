@@ -2,13 +2,15 @@ import React, { PureComponent } from 'react'
 import { StyleSheet, Text } from 'react-native'
 import PropTypes from 'prop-types'
 import NexaColours from '../constants/NexaColours'
+import {FontSizes} from '../constants/Layout'
 
 const styles = StyleSheet.create(
   {
     breadcrumb: {
       color: 'white',
       padding: 5,
-      backgroundColor: NexaColours.Blue,
+      backgroundColor: NexaColours.Grey,
+      fontSize: FontSizes.smaller
     }
   }
 )

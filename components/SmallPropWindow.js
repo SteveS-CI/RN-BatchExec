@@ -4,6 +4,9 @@ import PropTypes from 'prop-types'
 import * as DataProps from '../constants/DataProps'
 import NexaColours from '../constants/NexaColours'
 import { optimalForeColor } from '../Utils/utils'
+import Layout, {FontSizes} from '../constants/Layout'
+
+const CharMultiplier = Layout.screen.width / 48
 
 const styles = StyleSheet.create(
   {
@@ -21,7 +24,8 @@ const styles = StyleSheet.create(
     titleText: {
       paddingHorizontal: 8, paddingVertical: 3,
       fontWeight: 'bold',
-      borderRadius: 8, borderColor: NexaColours.GreyDark, borderWidth: StyleSheet.hairlineWidth * 2
+      borderRadius: 8, borderColor: NexaColours.GreyDark, borderWidth: StyleSheet.hairlineWidth * 2,
+      fontSize: FontSizes.standard
     },
     inner: {
       flexDirection: 'column',
@@ -55,7 +59,7 @@ export default class SmallPropWindow extends PureComponent {
     for (var x = 0; x < headers.length; x++) {
       w = Math.max(w, headers[x].caption.length)
     }
-    return w * 9
+    return w * CharMultiplier
   }
 
   valueWidth(headers, data) {
@@ -65,7 +69,7 @@ export default class SmallPropWindow extends PureComponent {
       const src = data[headers[x].source]
       if (src) { w = Math.max(w, data[headers[x].source].length) }
     }
-    return w * 9
+    return w * CharMultiplier
   }
 
   makeRows = (foreColor) => {
@@ -73,8 +77,8 @@ export default class SmallPropWindow extends PureComponent {
     const data = this.props.data
     const capWidth = this.captionWidth(headers)
     const valWidth = this.valueWidth(headers, data)
-    const textLeftStyle = { width: capWidth, textAlign: 'right', paddingRight: 5, fontWeight: 'bold', color: foreColor }
-    const textRightStyle = { width: valWidth, textAlign: 'left', color: foreColor }
+    const textLeftStyle = { width: capWidth, textAlign: 'right', paddingRight: 5, fontWeight: 'bold', color: foreColor, fontSize: FontSizes.smaller }
+    const textRightStyle = { width: valWidth, textAlign: 'left', color: foreColor, fontSize: FontSizes.smaller }
     const rowData = headers.map((header, index) => {
       return (
         <View key={index} style={{ flexDirection: 'row' }}>

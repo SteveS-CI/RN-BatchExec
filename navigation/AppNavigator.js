@@ -48,9 +48,9 @@ const screenHeaderStyling = {
 }
 
 const mainStyle = {
-  headerTintColor: NexaColours.Blue,
+  headerTintColor: NexaColours.GreyUltraLight,
   headerStyle: {
-    backgroundColor: NexaColours.GreyLight,
+    backgroundColor: NexaColours.Blue,
     height: WindowSize() / 20
   },
   headerTitleStyle: { 
@@ -92,27 +92,6 @@ const LoginNav = createStackNavigator(
     }
   }
 )
-
-// const MainNav = createStackNavigator(
-//   {
-//   },
-//   {
-//     headerMode: 'float',
-//     navigationOptions: ({ navigation }) => {
-//       {
-//         const route = navigation.state.routeName
-//         if (route === 'BatchDetail') {
-//           return {
-//             ...screenHeaderStyling,
-//             title: i18n.t('screens.batchDetail.title')
-//           }
-//         } else {
-//           return {...screenHeaderStyling, headerLeft: null}
-//         }
-//       }
-//     }
-//   }
-// )
 
 // pointers to menus.dropdown.x
 const dropDownItems = {

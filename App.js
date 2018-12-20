@@ -50,7 +50,7 @@ export default class App extends React.Component {
   _loadResourcesAsync = async () => {
     return Promise.all([
       Asset.loadAsync([
-        require('./assets/images/nexa-icon.png'),
+        require('./assets/images/nexa-icon-r.png'),
         require('./assets/images/nexa-logo-be.png'),
       ]),
       Font.loadAsync({

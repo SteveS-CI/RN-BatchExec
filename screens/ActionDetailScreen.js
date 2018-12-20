@@ -33,11 +33,11 @@ export default class ActionDetailScreen extends Component {
     this.state = { node: null, loading: false, value: null, signing: false, approving: false, error: null }
   }
 
-  static navigationOptions = ({ navigation }) => {
+  static navigationOptions = () => {
     return {
       title: 'Execute Action'
     }
-  };
+  }
 
   componentDidMount() {
     const batchData = this.props.navigation.getParam("batchData")

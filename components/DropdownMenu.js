@@ -3,7 +3,7 @@ import { View, TouchableOpacity, Image, StyleSheet, findNodeHandle, NativeModule
 //import {NativeModules} from 'expo';
 import i18n from 'i18n-js'
 import Settings from '../Store/Settings'
-import NexaIcon from '../assets/images/nexa-icon.png'
+import NexaIcon from '../assets/images/nexa-icon-r.png'
 import {BackHandler} from 'react-native'
 import {FontSizes} from '../constants/Layout'
 

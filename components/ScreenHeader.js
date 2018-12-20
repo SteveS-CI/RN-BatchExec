@@ -10,7 +10,7 @@ import {FontSizes} from '../constants/Layout'
 const styles = StyleSheet.create(
   {
     base: {
-      color: NexaColours.GreyUltraLight,
+      color: NexaColours.Blue,
       fontSize: FontSizes.standard,
       padding: 8,
       marginTop: 8,
@@ -26,6 +26,7 @@ export default class ScreenHeader extends Component {
   }
 
   static defaultProps = {
+    title: null,
     showOK: true,
     onOK: this.nullFunction,
     onCancel: this.nullFunction,
@@ -33,7 +34,7 @@ export default class ScreenHeader extends Component {
   }
 
   static propTypes = {
-    title: PropTypes.string.isRequired,
+    title: PropTypes.string,
     okCaption: PropTypes.string,
     onOK: PropTypes.func,
     onCancel: PropTypes.func.isRequired,
@@ -52,7 +53,7 @@ export default class ScreenHeader extends Component {
       />
       : <Text style={{ width: 80 }} />
     return (
-      <View style={{ flexDirection: 'row', justifyContent: 'space-between', backgroundColor: NexaColours.Blue }}>
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between', backgroundColor: NexaColours.GreyLight }}>
         <RoundedButton
           backColor={NexaColours.GreyUltraLight}
           title={i18n.t('button.captions.cancel')}

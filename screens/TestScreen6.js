@@ -25,7 +25,7 @@ export default class TestScreen6 extends Component {
     console.log(JSON.stringify(install)) 
     return (
       <View style={styles.container}>
-        <RoundedButton title='Cancel' onPress={() => this.props.navigation.navigate('BatchList')} />
+        <RoundedButton title='Cancel' onPress={() => this.props.navigation.navigate('Dev')} />
         <MyCustomKeyboard
         />
       </View>

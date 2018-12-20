@@ -6,13 +6,13 @@
     "privacy": "public",
     "sdkVersion": "31.0.0",
     "platforms": ["ios", "android"],
-    "version": "0.0.34 beta",
+    "version": "0.0.35 beta",
     "orientation": "default",
     "icon": "./assets/images/nexa-icon.png",
     "splash": {
       "image": "./assets/images/nexa-logo-be.png",
       "resizeMode": "contain",
-      "backgroundColor": "#7F7"
+      "backgroundColor": "#FFF"
     },
     "ios": {
       "bundleIdentifier": "com.ciprecision.batchexec.demo",

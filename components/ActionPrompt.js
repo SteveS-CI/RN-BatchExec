@@ -3,6 +3,7 @@ import { StyleSheet, View, Text } from 'react-native'
 import PropTypes from 'prop-types'
 import NexaColours from '../constants/NexaColours'
 import { optimalForeColor } from '../Utils/utils'
+import {FontSizes} from '../constants/Layout'
 
 const styles = StyleSheet.create(
   {
@@ -16,15 +17,14 @@ const styles = StyleSheet.create(
     prompt: {
       marginBottom: 5,
       alignSelf: 'center',
-      fontWeight: 'bold'
-//      fontSize: 18
+      fontSize: FontSizes.standard
     },
     notes: {
       padding: 5,
       borderRadius: 10,
       textAlign: 'center',
       backgroundColor: NexaColours.CyanAccent,
-//      fontSize: 16
+      fontSize: FontSizes.smaller
     }
   }
 )

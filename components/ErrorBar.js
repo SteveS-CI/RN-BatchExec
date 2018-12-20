@@ -3,11 +3,12 @@ import { StyleSheet, TouchableWithoutFeedback, Text } from 'react-native';
 import PropTypes from 'prop-types'
 import NexaColours from '../constants/NexaColours'
 import { optimalForeColor } from '../Utils/utils'
+import {FontSizes} from '../constants/Layout'
 
 const styles = StyleSheet.create(
   {
     base: {
-//      fontSize: 18,
+      fontSize: FontSizes.standard,
       padding: 8,
       marginHorizontal: 8,
       marginVertical: 8,

@@ -51,6 +51,9 @@ const NexaColours = {
   AlertOrange: '#E35C12', // ??
   AlertRed: '#E43433', // Unable to go ahead
   AlertCyan: '#00ABE5', // Complete
+
+  Black: '#000000',
+  White: '#FFFFFF'
 }
 
 export default NexaColours

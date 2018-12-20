@@ -3,6 +3,7 @@ import { StyleSheet, View, Text, Picker } from 'react-native'
 import PropTypes from 'prop-types'
 import * as DataProps from '../constants/DataProps'
 import NexaColours from '../constants/NexaColours'
+import { FontSizes } from '../constants/Layout'
 
 const inputBorderWidth = StyleSheet.hairlineWidth * 2
 const inputBorderRadius = 10
@@ -23,7 +24,8 @@ const styles = StyleSheet.create(
       textAlignVertical: 'center',
       borderColor: NexaColours.GreyDark, borderWidth: inputBorderWidth,
       borderTopLeftRadius: inputBorderRadius,
-      borderBottomLeftRadius: inputBorderRadius
+      borderBottomLeftRadius: inputBorderRadius,
+      fontSize: FontSizes.standard
     },
     pickerSuffix: {
       backgroundColor: NexaColours.GreyAccent,
@@ -31,7 +33,8 @@ const styles = StyleSheet.create(
       textAlignVertical: 'center',
       borderColor: NexaColours.GreyDark, borderWidth: inputBorderWidth,
       borderTopRightRadius: inputBorderRadius,
-      borderBottomRightRadius: inputBorderRadius
+      borderBottomRightRadius: inputBorderRadius,
+      fontSize: FontSizes.standard
     }
   }
 )
@@ -70,13 +73,13 @@ export default class DistinctEntry extends PureComponent {
     const choices = validation.choices
     const items = choices.map((item, idx) => {
       return (
-        <Picker.Item key={idx} label={item} value={item} />
+        <Picker.Item key={idx} label={item} value={item} textStyle={{fontSize: 20 }} />
       )
     })
     return (
       <View style={styles.pickerContainer}>
         {hasLabel && <Text style={styles.pickerLabel}>{entry.label}</Text>}
-        <Picker style={{ minWidth: 230 }}
+        <Picker style={{ minWidth: '30%'}} textStyle={{ fontSize: 20}}
           selectedValue={this.props.value}
           onValueChange={this.onValueChange}
           enabled={this.props.enabled}

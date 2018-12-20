@@ -9,8 +9,10 @@ import {Constants} from 'expo'
 
 export default class AboutScreen extends PureComponent {
 
-  static navigationOptions = {
-    title: 'About'
+  static navigationOptions = () => {
+    return {
+      title: 'About'
+    }
   }
 
   render() {
@@ -28,7 +30,6 @@ export default class AboutScreen extends PureComponent {
     return (
       <View style={{flexDirection: 'column', flex: 1}}>
         <ScreenHeader
-          title='About'
           onCancel={() => nav.navigate('BatchList')}
         />
         <PropList headers={headers} data={Constants.manifest} />

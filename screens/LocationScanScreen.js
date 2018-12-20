@@ -30,7 +30,7 @@ export default class LocationScanScreen extends PureComponent {
         break
       case 0: // Cancelled
         this.setState({ showCam: false })
-        this.props.navigation.replace('Main')
+        this.props.navigation.replace('BatchList')
         break
       default: // Read OK, validate
         this.setState({ value, showCam: false })

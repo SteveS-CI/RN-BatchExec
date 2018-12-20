@@ -17,7 +17,7 @@ const styles =
     borderWidth: StyleSheet.hairlineWidth * 2
   },
   text: {
-    fontSize: FontSizes.standard,
+    fontSize: FontSizes.buttons,
     textAlign: 'center'
   }
 }

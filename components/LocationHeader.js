@@ -10,11 +10,11 @@ const styles = StyleSheet.create(
     container: {
       marginRight: 8,
       padding: 5,
-      backgroundColor: NexaColours.GreyUltraLight,
+      backgroundColor: NexaColours.Cyan,
       borderRadius: 5,
     },
     text: {
-      color: 'black',
+      color: 'white',
       fontSize: FontSizes.smaller
     }
   }

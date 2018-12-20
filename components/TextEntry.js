@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 import TextBar from './TextBar'
 import NexaColours from '../constants/NexaColours'
 import {optimalForeColor} from '../Utils/utils'
+import {FontSizes} from '../constants/Layout'
 
 const inputBorderWidth = StyleSheet.hairlineWidth
 const inputBorderRadius = 10
@@ -20,12 +21,14 @@ const styles = StyleSheet.create(
       paddingHorizontal: 8, paddingVertical: 5,
       textAlignVertical: 'center',
       textAlign: 'right',
-      minWidth: 100
+      minWidth: 100,
+      fontSize: FontSizes.standard
       //borderColor: NexaColours.GreyDark, borderWidth: inputBorderWidth,
       //borderTopLeftRadius: inputBorderRadius,
       //borderBottomLeftRadius: inputBorderRadius
     },
     inputBox: {
+      fontSize: FontSizes.standard,
       //borderColor: NexaColours.GreyDark,
       //borderBottomWidth: inputBorderWidth,
       //borderTopWidth: inputBorderWidth,

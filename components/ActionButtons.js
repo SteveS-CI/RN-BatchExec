@@ -5,6 +5,7 @@ import {optimalForeColor} from '../Utils/utils'
 import NexaColours from '../constants/NexaColours'
 import i18n from 'i18n-js'
 import ButtonStyles, {ButtonStyleProps} from '../constants/ButtonStyles'
+import {FontSizes} from '../constants/Layout'
 
 const styles = 
   {
@@ -14,12 +15,12 @@ const styles =
       alignSelf: 'flex-start',
       borderRadius: 12,
       elevation: 8,
-      minWidth: 60,
+      minWidth: '10%',
       borderWidth: StyleSheet.hairlineWidth * 2,
       backgroundColor: NexaColours.GreyUltraLight
     },
     text: {
-      //fontSize: 30,
+      fontSize: FontSizes.buttons,
       textAlign: 'center'
     }
   }

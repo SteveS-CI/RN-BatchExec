@@ -34,7 +34,7 @@ export default class TestScreen5 extends React.Component {
   }
 
   componentDidMount() {
-    this.ws = new Sockette('ws://192.168.1.96:8800', {
+    this.ws = new Sockette('ws://192.168.1.225:8800', {
       timeout: 5e3,
       maxAttempts: 10,
       onopen: e => console.log('Socket Connected!'),
@@ -53,13 +53,13 @@ export default class TestScreen5 extends React.Component {
   }
 
   onPress = (name) => {
-    if (name === 'cancel') this.props.navigation.navigate('BatchList')
+    if (name === 'cancel') this.props.navigation.navigate('Dev')
   }
 
   render() {
     const buttons = [ButtonStyles.Previous, ButtonStyles.No, ButtonStyles.Yes]
     const value = this.state.reading.value
-    const color = this.state.reading.pass ? NexaColours.Green : NexaColours.Red
+    const color = this.state.reading.stable ? NexaColours.Green : NexaColours.GreenAccent
     const digitStyle = StyleSheet.flatten([styles.balance, {color: color}])
     return (
       <View style={{ flexDirection: 'column', flex: 1 }}>

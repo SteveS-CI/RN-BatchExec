@@ -4,8 +4,9 @@ import { View, Text, StyleSheet, Image } from 'react-native'
 import LoadingOverlay from './LoadingOverlay'
 import api from '../api/api'
 import NexaColours from '../constants/NexaColours';
+import Layout from '../constants/Layout'
 
-const imageDim = 300
+const imageWidth = Math.min(Layout.screen.width, Layout.screen.height) * 0.8
 
 const styles = StyleSheet.create(
   {
@@ -13,7 +14,7 @@ const styles = StyleSheet.create(
       borderWidth: 2, borderRadius: 8,
       margin: 8,
       borderColor: NexaColours.Blue,
-      alignSelf: 'flex-start'
+      alignSelf: 'center'
     },
     image: {
       margin: 5,
@@ -24,7 +25,7 @@ const styles = StyleSheet.create(
 export default class ActionImage extends Component {
   constructor(props) {
     super(props)
-    this.state = { error: false, loading: false, height: imageDim, width: imageDim }
+    this.state = { error: false, loading: false, height: imageWidth, width: imageWidth }
   }
 
   static propTypes = {
@@ -39,9 +40,9 @@ export default class ActionImage extends Component {
     const source = api.defaults.baseURL + '/File/Image?name=' + this.props.fileName
     Image.getSize(source, (w, h) => {
       if (w > h) {
-        this.setState({ height: (imageDim / w) * h, width: imageDim })
+        this.setState({ height: (imageWidth / w) * h, width: imageWidth })
       } else {
-        this.setState({ height: imageDim, width: (imageDim / h) * w })
+        this.setState({ height: imageWidth, width: (imageWidth / h) * w })
       }
     })
   }

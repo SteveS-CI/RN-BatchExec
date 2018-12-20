@@ -5,6 +5,7 @@ import SmallPropWindow from './SmallPropWindow'
 import FontAwesome, { Icons } from 'react-native-fontawesome';
 import NexaColours from '../constants/NexaColours';
 import {EquipmentProps, ComponentProps} from './SmallDisplayProps';
+import {FontSizes} from '../constants/Layout'
 
 export default class AdditionPropDisplay extends PureComponent {
 
@@ -27,9 +28,9 @@ export default class AdditionPropDisplay extends PureComponent {
     const node = this.props.node
     const hasData = (node && node.actionType === 'Addition')
     if (hasData) {
-      const equip = EquipmentProps(node.equipment) // <SmallPropWindow title='Equipment' headers={this.equipmentHeaders} data={node.equipment} baseBackColor='Yellow' />
-      const comp = ComponentProps(node.component) //<SmallPropWindow title='Component' headers={this.componentHeaders} data={node.component} baseBackColor='Green' />
-      const arrow = <FontAwesome style={{ fontSize: 32, marginHorizontal: 8, marginTop: 36 }}>{Icons.chevronRight}</FontAwesome>
+      const equip = EquipmentProps(node.equipment)
+      const comp = ComponentProps(node.component)
+      const arrow = <FontAwesome style={{ fontSize: FontSizes.iconButton, marginHorizontal: 8, marginTop: 36 }}>{Icons.chevronRight}</FontAwesome>
       return (
         <View style={this.styles.container}>
           {comp}

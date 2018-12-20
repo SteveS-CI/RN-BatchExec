@@ -60,7 +60,7 @@ export default class TestScreen2 extends React.Component {
   }
 
   onPress = (name) => {
-    if (name === 'cancel') this.props.navigation.navigate('BatchList')
+    if (name === 'cancel') this.props.navigation.navigate('Dev')
   }
 
   onScrollRefresh = () => {

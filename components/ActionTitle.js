@@ -16,7 +16,7 @@ const styles = StyleSheet.create(
       borderBottomColor: 'black',
       borderTopWidth: borderWidth,
       borderBottomWidth: borderWidth,
-      //      fontSize: 20,
+      fontWeight: 'bold',
       zIndex: 1
     }
   }

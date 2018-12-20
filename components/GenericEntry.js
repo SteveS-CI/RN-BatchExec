@@ -6,6 +6,7 @@ import ErrorBar from './ErrorBar'
 import NexaColours from '../constants/NexaColours'
 import IconButton from './IconButton';
 import BarcodeReader from './BarcodeReader';
+import {FontSizes} from '../constants/Layout'
 
 import i18n from 'i18n-js'
 import parseDecimalNumber from 'parse-decimal-number'
@@ -26,7 +27,8 @@ const styles = StyleSheet.create(
       textAlignVertical: 'center',
       borderColor: NexaColours.GreyDark, borderWidth: inputBorderWidth,
       borderTopLeftRadius: inputBorderRadius,
-      borderBottomLeftRadius: inputBorderRadius
+      borderBottomLeftRadius: inputBorderRadius,
+      fontSize: FontSizes.standard
     },
     inputSuffix: {
       backgroundColor: NexaColours.GreyAccent,
@@ -34,14 +36,16 @@ const styles = StyleSheet.create(
       textAlignVertical: 'center',
       borderColor: NexaColours.GreyDark, borderWidth: inputBorderWidth,
       borderTopRightRadius: inputBorderRadius,
-      borderBottomRightRadius: inputBorderRadius
+      borderBottomRightRadius: inputBorderRadius,
+      fontSize: FontSizes.standard
     },
     inputBox: {
       borderColor: NexaColours.GreyDark,
       borderBottomWidth: inputBorderWidth,
       borderTopWidth: inputBorderWidth,
       paddingHorizontal: 8, paddingVertical: 5,
-      minWidth: 200
+      minWidth: '30%',
+      fontSize: FontSizes.standard,
     }
   }
 )
@@ -116,6 +120,7 @@ export default class GenericEntry extends PureComponent {
 
       if (type === 'Custom') { return this.checkRegEx(value, validation) }
 
+    } else {
       this.setState({ error: 'A value is required' })
       return false
     }

@@ -5,6 +5,7 @@ import NexaColours from '../constants/NexaColours'
 import { optimalForeColor } from '../Utils/utils'
 import FontAwesome, { Icons, parseIconFromClassName } from 'react-native-fontawesome';
 import SpinningIcon from 'react-native-fontawesome/SpinningIcon';
+import {FontSizes} from '../constants/Layout'
 
 const styles =
 {
@@ -14,11 +15,11 @@ const styles =
     alignSelf: 'flex-start',
     borderRadius: 12,
     elevation: 8,
-    minWidth: 45,
+    minWidth: FontSizes.iconButton,
     borderWidth: StyleSheet.hairlineWidth * 2
   },
   text: {
-    fontSize: 24,
+    fontSize: FontSizes.iconButton,
     textAlign: 'center'
   }
 }

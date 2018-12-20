@@ -17,6 +17,12 @@ export default class LocationSelectScreen extends Component {
     }
   }
 
+  static navigationOptions = () => {
+    return {
+      title: i18n.t('screens.locations.title')
+    }
+  }
+
   componentDidMount() {
     this.fetch()
   }
@@ -78,7 +84,6 @@ export default class LocationSelectScreen extends Component {
     return (
       <View style={{ flex: 1 }}>
         <ScreenHeader
-          title={i18n.t('screens.locations.title')}
           okCaption={i18n.t('button.captions.select')}
           onOK={this.selectClicked}
           onCancel={() => { this.props.navigation.navigate('BatchList') }}

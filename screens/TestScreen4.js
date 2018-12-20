@@ -17,7 +17,7 @@ export default class TestScreen4 extends React.Component {
   }
 
   onPress = (name) => {
-    if (name === 'cancel') this.props.navigation.navigate('BatchList')
+    if (name === 'cancel') this.props.navigation.navigate('Dev')
   }
 
   render() {
@@ -26,7 +26,7 @@ export default class TestScreen4 extends React.Component {
       <View style={{flexDirection: 'column', flex: 1}}>
         <ActionButtons onPress={this.onPress} buttons={buttons}/>
         <WebView
-          style={{ width: Layout.window.width * 0.9, marginLeft: 20 }}
+          style={{ width: Layout.screen.width * 0.9, marginLeft: 20 }}
           source={{
           html: `
           <h3 style='color: red'>Use a WebView to display html files</h3>
