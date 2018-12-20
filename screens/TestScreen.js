@@ -49,7 +49,7 @@ class StringEntry extends Component {
           <Text> (Kg)</Text>
         </View>
         <View style={{flexDirection: 'column', alignContent: 'center'}}>
-          <Picker style={{width: '50%', transform: [ {scale: 0.8} ] }}>
+          <Picker style={{width: '50%', transform: [ {scale: 1} ] }}>
             <Picker.Item label='One' value='One'/>
             <Picker.Item label='Two' value='Two'/>
             <Picker.Item label='Three' value='Three'/>
