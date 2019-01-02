@@ -9,11 +9,9 @@ export function NavChoice(batchData, navigation, locationCode) {
   switch (nodeCount) {
     case 0:
       const msg = (batchData.status === 'InProcess')
-        ? { title: 'Stage Complete', prompt: 'Stage is complete\nSelect another batch or move to another location.' }
-        : { title: 'Batch Complete', prompt: 'Batch is complete\nSelect another batch.' }
-      Alert.alert(msg.title, msg.prompt)
-      navigation.replace('BatchList', { refresh: true })
-      break
+        ? { title: 'Stage Complete', message: 'Stage is complete\nSelect another batch or move to another location.' }
+        : { title: 'Batch Complete', message: 'Batch is complete\nSelect another batch.' }
+      return msg
     case 1:
       const node = batchData.nodes[0]
       if (batchData.nodeDepth === 3) { // Action
@@ -28,10 +26,11 @@ export function NavChoice(batchData, navigation, locationCode) {
         console.log('NavChoice: Confirm')
         navigation.replace('NodeDetail', { batchData, locationCode })
       }
-      break
+      return null
     default: // Multiple nodes
       console.log('NavChoice: Multiple')
       navigation.replace('NodeSelect', { batchData, locationCode })
+      return null
   }
 
   function CompleteAction(batchData, navigation, location) {

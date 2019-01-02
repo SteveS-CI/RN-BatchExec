@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { Button, TouchableOpacity, Text, StyleSheet } from 'react-native'
 import NexaColours from '../constants/NexaColours'
 import { optimalForeColor } from '../Utils/utils'
-import {FontSizes} from '../constants/Layout'
+import { FontSizes } from '../constants/Layout'
 
 const styles =
 {
@@ -27,7 +27,7 @@ export default class RoundedButton extends PureComponent {
   static defaultProps = {
     title: 'Title',
     backColor: NexaColours.AlertGreen,
-    onPress: () => {},
+    onPress: () => { },
     disabled: false
   }
 

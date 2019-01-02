@@ -17,7 +17,7 @@ import LoadingOverlay from '../components/LoadingOverlay';
 import Signature from '../components/Signature'
 import Comments from '../components/Comments'
 import ErrorBar from '../components/ErrorBar'
-import {NavChoice} from '../Utils/utils'
+import { NavChoice } from '../Utils/utils'
 import ConsumePropDisplay from '../components/ConsumePropDisplay';
 import DischargePropDisplay from '../components/DischargePropDisplay';
 import AdditionPropDisplay from '../components/AdditionPropDisplay';
@@ -26,11 +26,20 @@ import WeighInfoProps from '../components/WeighInfoProps';
 import IdentContainerProps from '../components/IdentContainerProps'
 import IdentEquipmentProps from '../components/IdentEquipmentProps'
 import IdentWeighingProps from '../components/IdentWeighingProps'
+import ModalMessage from '../components/ModalMessage'
 
 export default class ActionDetailScreen extends Component {
   constructor(props) {
     super(props)
-    this.state = { node: null, loading: false, value: null, signing: false, approving: false, error: null }
+    this.state = {
+      node: null,
+      loading: false,
+      value: null,
+      signing: false,
+      approving: false,
+      error: null,
+      message: null
+    }
   }
 
   static navigationOptions = () => {
@@ -90,9 +99,9 @@ export default class ActionDetailScreen extends Component {
           location: this.locationCode,
         }
         methods.revertAction(postData).then(data => {
-          NavChoice(data, this.props.navigation, this.locationCode)
+          this.getNavChoice(data, this.props.navigation, this.locationCode)
         }).catch(error => {
-          console.log(JSON.stringify(error))
+          this.setError(error)
         })
         break
       case 'ok':
@@ -136,11 +145,9 @@ export default class ActionDetailScreen extends Component {
         deviation: comment
       }
       methods.signAction(postData).then(data => {
-        NavChoice(data, this.props.navigation, this.locationCode)
+        this.getNavChoice(data, this.props.navigation, this.locationCode)
       }).catch(error => {
-        this.setState({ loading: false })
-        Alert.alert('API Error', error.response.data.Message)
-        console.log(JSON.stringify(error))
+        this.setError(error)
       })
     }
   }
@@ -156,11 +163,9 @@ export default class ActionDetailScreen extends Component {
         deviation: comment
       }
       methods.approveAction(postData).then(data => {
-        NavChoice(data, this.props.navigation, this.locationCode)
+        this.getNavChoice(data, this.props.navigation, this.locationCode)
       }).catch(error => {
-        this.setState({ loading: false })
-        Alert.alert('API Error', error.response.data.Message)
-        console.log(JSON.stringify(error))
+        this.setError(error)
       })
     }
   }
@@ -180,12 +185,26 @@ export default class ActionDetailScreen extends Component {
       deviation: this.comment
     }
     methods.completeAction(postData).then(data => {
-      NavChoice(data, this.props.navigation, this.locationCode)
+      this.getNavChoice(data, this.props.navigation, this.locationCode)
     }).catch(error => {
-      console.log(JSON.stringify(error))
-      const msg = error.response.data.Message
-      this.setState({ loading: false, error: msg})
+      this.setError(error)
     })
+  }
+
+  getNavChoice(batchData, nav, location) {
+    const message = NavChoice(batchData, nav, location)
+    if (message) {this.setState({ message })}
+  }
+
+  onExit = () => {
+    this.setState({message: null})
+    this.props.navigation.replace('BatchList', { refresh: true })
+  }
+
+  setError = (error) => {
+    console.log(JSON.stringify(error))
+    const msg = error.response.data.Message
+    this.setState({ loading: false, error: msg })
   }
 
   entryValueChange = (value) => {
@@ -219,12 +238,12 @@ export default class ActionDetailScreen extends Component {
           <ActionTitle text={this.state.node.name} />
           <ActionSign node={node} />
           <ActionButtons buttons={buttons} onPress={this.onPress} />
-          <ScrollView style={{flex: 1}}>
+          <ScrollView style={{ flex: 1 }}>
             <KeyboardAvoidingView keyboardVerticalOffset={300} behavior='position' enabled={true}>
               <ActionPrompt prompt={node.prompt} notes={node.notes} />
               <ScrollView horizontal={true}>
-                <AdditionPropDisplay node={node}/>
-                <DischargePropDisplay node={node}/>
+                <AdditionPropDisplay node={node} />
+                <DischargePropDisplay node={node} />
                 <ConsumePropDisplay node={node} />
                 <PrintLabelProps node={node} />
                 <WeighInfoProps node={node} />
@@ -233,13 +252,14 @@ export default class ActionDetailScreen extends Component {
                 <IdentEquipmentProps node={node} />
               </ScrollView>
               <ActionImage fileName={node.picture} />
-              <ActionEntry ref={(ref) => {this.entry = ref}} value={this.state.value} entry={entry} onChange={this.entryValueChange} enabled={enabled} useCamera={allowCam} />
+              <ActionEntry ref={(ref) => { this.entry = ref }} value={this.state.value} entry={entry} onChange={this.entryValueChange} enabled={enabled} useCamera={allowCam} />
               <FileContent fileName={node.fileName} />
               <ErrorBar text={this.state.error} onPress={() => this.setState({ error: null })} />
               {/* These are all modal */}
               <Comments visible={this.state.commenting} onComment={this.onComment} />
               <Signature visible={this.state.signing} onSign={this.signed} isApproval={false} />
               <Signature visible={this.state.approving} onSign={this.approved} isApproval={true} />
+              <ModalMessage messageText={this.state.message} onExit={this.onExit}/>
               <LoadingOverlay loading={this.state.loading} />
             </KeyboardAvoidingView>
           </ScrollView>

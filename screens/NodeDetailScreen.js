@@ -7,29 +7,30 @@ import ActionButtons from '../components/ActionButtons'
 import ButtonStyles from '../constants/ButtonStyles'
 import Signature from '../components/Signature'
 import Comments from '../components/Comments'
-import {NavChoice} from '../Utils/utils'
+import { NavChoice } from '../Utils/utils'
+import ModalMessage from '../components/ModalMessage'
 
-const nodeTypes = ['Process','Stage','Operation']
-const nodeStates = ['Confirmation','Signature','Approval']
+const nodeTypes = ['Process', 'Stage', 'Operation']
+const nodeStates = ['Confirmation', 'Signature', 'Approval']
 
 export default class NodeDetailScreen extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { batchData: null, commenting: false, signing: false, approving: false};
+    this.state = { batchData: null, commenting: false, signing: false, approving: false, message: null };
   }
 
-  static navigationOptions = ({navigation}) => {
+  static navigationOptions = ({ navigation }) => {
     const data = navigation.getParam("batchData")
     const node = data.nodes[0]
     //0,1,2
     const nodeType = nodeTypes[data.nodeDepth]
     //2,3,4
-    const nodeState = nodeStates[node.statusEnum-2]
+    const nodeState = nodeStates[node.statusEnum - 2]
     return {
       title: nodeType + " " + nodeState
     }
   }
-  
+
   componentDidMount() {
     const batchData = this.props.navigation.getParam("batchData")
     const locationCode = this.props.navigation.getParam("locationCode")
@@ -39,7 +40,7 @@ export default class NodeDetailScreen extends React.Component {
   }
 
   getPrompt(data) {
-    const prompt = "A " + nodeStates[this.node.statusEnum-2] + " is required to complete this " + nodeTypes[data.nodeDepth]
+    const prompt = "A " + nodeStates[this.node.statusEnum - 2] + " is required to complete this " + nodeTypes[data.nodeDepth]
     return prompt
   }
 
@@ -74,26 +75,26 @@ export default class NodeDetailScreen extends React.Component {
     switch (name) {
       case "back":
         methods.revertAction(postData).then(data => {
-          NavChoice(data, this.props.navigation, this.locationCode)
+          this.getNavChoice(data, this.props.navigation, this.locationCode)
         }).catch(error => {
           console.log(JSON.stringify(error))
         })
         break
       case "confirm":
         methods.confirmAction(postData).then(data => {
-          NavChoice(data, this.props.navigation, this.locationCode)
+          this.getNavChoice(data, this.props.navigation, this.locationCode)
         }).catch(error => {
           console.log(JSON.stringify(error))
         })
         break
       case "sign":
-        this.setState({signing: true})
+        this.setState({ signing: true })
         break
       case "approve":
-        this.setState({approving: true})
+        this.setState({ approving: true })
         break
       case "comments":
-        this.setState({commenting: true})
+        this.setState({ commenting: true })
         break
       default: // Cancel
         this.props.navigation.replace('BatchList')
@@ -103,7 +104,7 @@ export default class NodeDetailScreen extends React.Component {
   signed = (success, token, comment) => {
     const data = this.state.batchData
     const node = data.nodes[0]
-    this.setState({signing: false})
+    this.setState({ signing: false })
     if (success) {
       const postData = {
         batchID: data.batchID,
@@ -113,7 +114,7 @@ export default class NodeDetailScreen extends React.Component {
         deviation: comment
       }
       methods.signAction(postData).then(data => {
-        NavChoice(data, this.props.navigation, this.locationCode)
+        this.getNavChoice(data, this.props.navigation, this.locationCode)
       }).catch(error => {
         console.log(JSON.stringify(error))
       })
@@ -123,7 +124,7 @@ export default class NodeDetailScreen extends React.Component {
   approved = (success, token, comment) => {
     const data = this.state.batchData
     const node = data.nodes[0]
-    this.setState({approving: false})
+    this.setState({ approving: false })
     if (success) {
       const postData = {
         batchID: data.batchID,
@@ -133,7 +134,7 @@ export default class NodeDetailScreen extends React.Component {
         deviation: comment
       }
       methods.approveAction(postData).then(data => {
-        NavChoice(data, this.props.navigation, this.locationCode)
+        this.getNavChoice(data, this.props.navigation, this.locationCode)
       }).catch(error => {
         console.log(JSON.stringify(error))
       })
@@ -146,7 +147,17 @@ export default class NodeDetailScreen extends React.Component {
     } else {
       this.comment = null
     }
-    this.setState({commenting: false})
+    this.setState({ commenting: false })
+  }
+
+  getNavChoice(batchData, nav, location) {
+    const message = NavChoice(batchData, nav, location)
+    if (message) { this.setState({ message }) }
+  }
+
+  onExit = () => {
+    this.setState({message: null})
+    this.props.navigation.replace('BatchList', { refresh: true })
   }
 
   render() {
@@ -156,13 +167,14 @@ export default class NodeDetailScreen extends React.Component {
       const prompt = this.getPrompt(data)
       const buttons = this.createButtons(node)
       return (
-        <View style={{flex: 1}}>
-          <ActionTitle text={node.name}/>
+        <View style={{ flex: 1 }}>
+          <ActionTitle text={node.name} />
           <ActionButtons buttons={buttons} onPress={this.onPress} />
-          <ActionPrompt prompt={prompt}/>
+          <ActionPrompt prompt={prompt} />
           <Comments visible={this.state.commenting} onComment={this.onComment} />
-          <Signature visible={this.state.signing} onSign={this.signed} isApproval={false}/>
-          <Signature visible={this.state.approving} onSign={this.approved} isApproval={true}/>
+          <Signature visible={this.state.signing} onSign={this.signed} isApproval={false} />
+          <Signature visible={this.state.approving} onSign={this.approved} isApproval={true} />
+          <ModalMessage messageText={this.state.message} onExit={this.onExit} />
         </View>
       )
     } else {
