@@ -16,7 +16,7 @@ const styles = StyleSheet.create(
       alignSelf: 'flex-start',
       marginHorizontal: 8, marginTop: 8, padding: 0,
       borderColor: NexaColours.GreyDark, borderWidth: inputBorderWidth,
-      borderRadius: inputBorderRadius,
+      //borderRadius: inputBorderRadius,
       backgroundColor: NexaColours.GreyLight
     },
     pickerLabel: {
@@ -24,8 +24,8 @@ const styles = StyleSheet.create(
       paddingHorizontal: 8, paddingVertical: 0,
       textAlignVertical: 'center',
       borderColor: NexaColours.GreyDark, borderWidth: inputBorderWidth,
-      borderTopLeftRadius: inputBorderRadius,
-      borderBottomLeftRadius: inputBorderRadius,
+      //borderTopLeftRadius: inputBorderRadius,
+      //borderBottomLeftRadius: inputBorderRadius,
       fontSize: FontSizes.standard
     },
     pickerSuffix: {
@@ -33,8 +33,8 @@ const styles = StyleSheet.create(
       paddingHorizontal: 8, paddingVertical: 0,
       textAlignVertical: 'center',
       borderColor: NexaColours.GreyDark, borderWidth: inputBorderWidth,
-      borderTopRightRadius: inputBorderRadius,
-      borderBottomRightRadius: inputBorderRadius,
+      //borderTopRightRadius: inputBorderRadius,
+      //borderBottomRightRadius: inputBorderRadius,
       fontSize: FontSizes.standard
     }
   }

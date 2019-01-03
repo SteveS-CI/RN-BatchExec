@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
-import { StyleSheet, ScrollView, View, Modal, Text } from 'react-native'
+import { StyleSheet, TouchableWithoutFeedback, ScrollView, View, Modal, Text } from 'react-native'
 import PropTypes from 'prop-types'
 import NexaColours from '../constants/NexaColours';
 import RoundedButton from './RoundedButton';
 import { FontSizes } from '../constants/Layout'
 import FontAwesome, { Icons } from 'react-native-fontawesome';
+import { ScreenSize } from '../constants/Layout'
 
 const styles = StyleSheet.create(
   {
@@ -39,18 +40,22 @@ const styles = StyleSheet.create(
       borderLeftWidth: 0
     },
     inner: {
-      position: 'absolute',
-      padding: 12, marginTop: 120,
+      flexDirection: 'column',
+      padding: 12,
       backgroundColor: 'white',
       borderWidth: 1,
       borderRadius: 12,
       borderColor: NexaColours.Blue,
       elevation: 8,
-      minWidth: '80%',
+      //minWidth: '80%',
+      //maxHeight: ScreenSize * 0.8
     },
     outer: {
-      flex: 1,
-      alignItems: 'center',
+      position: 'absolute',
+      top: 0,
+      bottom: 0,
+      left: 0,
+      right: 0,
       backgroundColor: 'rgba(0,0,0,0.5)'
     }
   }
@@ -82,7 +87,7 @@ class PickerInner extends Component {
     }
     )
     return (
-      <ScrollView>
+      <ScrollView style={{maxHeight: ScreenSize * 0.5}}>
         {list}
       </ScrollView>
     )
@@ -94,14 +99,17 @@ class PickerInner extends Component {
       const title = this.props.title
       const list = this.getItems()
       return (
-        <Modal onRequestClose={this.onCancel} transparent={true}>
-          <View style={styles.outer}>
-            <View style={styles.inner}>
-              {title && <Text style={styles.title}>{title}</Text>}
-              {list}
-              <RoundedButton title='OK' onPress={this.onExit} />
-            </View>
+        <Modal onRequestClose={() => this.onCancel()} transparent={true}>
+
+          <TouchableWithoutFeedback onPress={() => this.onCancel()}>
+            <View style={styles.outer} />
+          </TouchableWithoutFeedback>
+
+          <View style={styles.inner}>
+            {title && <Text style={styles.title}>{title}</Text>}
+            {list}
           </View>
+
         </Modal>
       )
     } else {
@@ -136,7 +144,7 @@ export default class CustomPicker extends Component {
   picked = (value) => {
     const newVal = value ? value : this.state.value
     this.props.onChange(newVal)
-    this.setState({value: newVal, editing: false})
+    this.setState({ value: newVal, editing: false })
   }
 
   startEdit = () => {
@@ -150,7 +158,7 @@ export default class CustomPicker extends Component {
       <View style={{ flexDirection: 'row' }}>
         <Text style={styles.entry} onPress={this.startEdit}>{value}</Text>
         {arrow}
-        <PickerInner visible={this.state.editing} title={this.props.title} items={this.props.items} onChange={this.picked} display={this.props.display}/>
+        <PickerInner visible={this.state.editing} title={this.props.title} items={this.props.items} onChange={this.picked} display={this.props.display} />
       </View>
     )
   }

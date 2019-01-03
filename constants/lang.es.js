@@ -10,6 +10,7 @@ export default es = {
   },
   menus: {
     dropdown: {
+      batchList: "Lista de lotes",
       changeLocation: "Cambiar locación",
       settings: "Ajustes",
       login: "Iniciar sesión",

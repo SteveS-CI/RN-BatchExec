@@ -15,6 +15,53 @@ import Comments from '../components/Comments'
 import TextEntry from '../components/TextEntry';
 import CustomPicker from '../components/CustomPicker';
 
+const LongList = [
+  "The",
+  "Quick",
+  "Brown",
+  "Fox",
+  "Jumps",
+  "Over",
+  "The",
+  "Lazy",
+  "Dog",
+  "The",
+  "Quick",
+  "Brown",
+  "Fox",
+  "Jumps",
+  "Over",
+  "The",
+  "Lazy",
+  "Dog",
+  "The",
+  "Quick",
+  "Brown",
+  "Fox",
+  "Jumps",
+  "Over",
+  "The",
+  "Lazy",
+  "Dog",
+  "The",
+  "Quick",
+  "Brown",
+  "Fox",
+  "Jumps",
+  "Over",
+  "The",
+  "Lazy",
+  "Dog"
+]
+
+const ShortList = [
+  "One",
+  "Two",
+  "Three",
+  "Four",
+  "Five"
+]
+
 const stringEntry = {
   label: 'Label',
   suffix: 'Suffix',
@@ -44,16 +91,16 @@ const styles = StyleSheet.create(
 class StringEntry extends Component {
   render() {
     return (
-      <View style={{flexDirection: 'column'}}>
-        <View style={{flexDirection: 'row'}}>
+      <View style={{ flexDirection: 'column' }}>
+        <View style={{ flexDirection: 'row' }}>
           <Text>A Label</Text>
           <Text> (Kg)</Text>
         </View>
-        <View style={{flexDirection: 'column', alignContent: 'center'}}>
-          <Picker style={{width: '50%', transform: [ {scale: 1} ] }}>
-            <Picker.Item label='One' value='One'/>
-            <Picker.Item label='Two' value='Two'/>
-            <Picker.Item label='Three' value='Three'/>
+        <View style={{ flexDirection: 'column', alignContent: 'center' }}>
+          <Picker style={{ width: '50%', transform: [{ scale: 1 }] }}>
+            <Picker.Item label='One' value='One' />
+            <Picker.Item label='Two' value='Two' />
+            <Picker.Item label='Three' value='Three' />
           </Picker>
         </View>
       </View>
@@ -95,7 +142,7 @@ export default class TestScreen extends Component {
   }
 
   pickerChange = (value) => {
-    this.setState({pickerValue: value})
+    this.setState({ pickerValue: value })
   }
 
   render() {
@@ -114,7 +161,7 @@ export default class TestScreen extends Component {
               <ActionEntry value={this.state.value} entry={stringEntry} onChange={(value) => this.setState({ value })} />
               <ActionEntry value={this.state.distinctValue} entry={distinctEntry4} onChange={(distinctValue) => this.setState({ distinctValue })} enabled={true} />
             </View>
-            <CustomPicker title='Custom Picker' items={["One","Two","Three","Four","Five"]} value={this.state.pickerValue} onChange={this.pickerChange} />
+            <CustomPicker title='Custom Picker' items={LongList} value={this.state.pickerValue} onChange={this.pickerChange} />
             <StringEntry
               label='Weight'
               suffix='Kg'

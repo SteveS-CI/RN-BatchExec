@@ -96,6 +96,7 @@ const LoginNav = createStackNavigator(
 // pointers to menus.dropdown.x
 const dropDownItems = {
   labels: [
+    'batchList',
     'changeLocation',
     'settings',
     'login',
@@ -103,7 +104,7 @@ const dropDownItems = {
     'about',
     'developer'
   ],
-  actions: ['LocationList','Settings','Login','EXIT', 'About', 'Dev']
+  actions: ['BatchList','LocationList','Settings','Login','EXIT', 'About', 'Dev']
 }
 
 export default AppNavigator = createStackNavigator(

@@ -10,6 +10,7 @@ export default en = {
   },
   menus: {
     dropdown: {
+      batchList: "Batch List",
       changeLocation: "Change Location",
       settings: "Settings",
       login: "Log In",
