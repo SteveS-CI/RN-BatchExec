@@ -13,6 +13,7 @@ import ActionEntry from '../components/ActionEntry'
 import Signature from '../components/Signature'
 import Comments from '../components/Comments'
 import TextEntry from '../components/TextEntry';
+import CustomPicker from '../components/CustomPicker';
 
 const stringEntry = {
   label: 'Label',
@@ -69,7 +70,8 @@ export default class TestScreen extends Component {
       distinctValue: '3',
       signing: false,
       approving: false,
-      commenting: false
+      commenting: false,
+      pickerValue: 'Original'
     }
   }
 
@@ -92,6 +94,10 @@ export default class TestScreen extends Component {
     this.setState({ commenting: false })
   }
 
+  pickerChange = (value) => {
+    this.setState({pickerValue: value})
+  }
+
   render() {
     const buttons = [ButtonStyles.Previous, ButtonStyles.No, ButtonStyles.Yes]
     return (
@@ -108,6 +114,7 @@ export default class TestScreen extends Component {
               <ActionEntry value={this.state.value} entry={stringEntry} onChange={(value) => this.setState({ value })} />
               <ActionEntry value={this.state.distinctValue} entry={distinctEntry4} onChange={(distinctValue) => this.setState({ distinctValue })} enabled={true} />
             </View>
+            <CustomPicker title='Custom Picker' items={["One","Two","Three","Four","Five"]} value={this.state.pickerValue} onChange={this.pickerChange} />
             <StringEntry
               label='Weight'
               suffix='Kg'

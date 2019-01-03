@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 import * as DataProps from '../constants/DataProps'
 import NexaColours from '../constants/NexaColours'
 import { FontSizes } from '../constants/Layout'
+import CustomPicker from './CustomPicker'
 
 const inputBorderWidth = StyleSheet.hairlineWidth * 2
 const inputBorderRadius = 10
@@ -71,21 +72,11 @@ export default class DistinctEntry extends PureComponent {
     const hasSuffix = entry.suffix ? true : false
     const validation = entry.validation
     const choices = validation.choices
-    const items = choices.map((item, idx) => {
-      return (
-        <Picker.Item key={idx} label={item} value={item} textStyle={{fontSize: 20 }} />
-      )
-    })
+    const title = (entry.label ? entry.label : null) + (entry.suffix ? ' (' + entry.suffix + ')' : null)
     return (
       <View style={styles.pickerContainer}>
         {hasLabel && <Text style={styles.pickerLabel}>{entry.label}</Text>}
-        <Picker style={{ minWidth: '30%'}} textStyle={{ fontSize: 20}}
-          selectedValue={this.props.value}
-          onValueChange={this.onValueChange}
-          enabled={this.props.enabled}
-          mode='dropdown'>
-          {items}
-        </Picker>
+        <CustomPicker title={title} items={choices} value={this.props.value} onChange={this.onValueChange} />
         {hasSuffix && <Text style={styles.pickerSuffix}>{entry.suffix}</Text>}
       </View>
     )

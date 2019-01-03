@@ -82,9 +82,9 @@ export default class SettingsScreen extends React.Component {
     this.setState({ settings })
   }
 
-  onLangChange = (value) => {
+  onLangChange = (language) => {
     let settings = this.state.settings
-    settings.language = value
+    settings.language = language.value
     this.setState({ settings })
   }
 
