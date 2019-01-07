@@ -14,6 +14,7 @@ import Signature from '../components/Signature'
 import Comments from '../components/Comments'
 import TextEntry from '../components/TextEntry';
 import CustomPicker from '../components/CustomPicker';
+import { methods } from '../api/api';
 
 const LongList = [
   "The",
@@ -62,10 +63,51 @@ const ShortList = [
   "Five"
 ]
 
-const stringEntry = {
+const stringEntry1 = {
+  entryType: 'String'
+}
+
+const stringEntry2 = {
+  label: 'Label',
+  entryType: 'String'
+}
+
+const stringEntry3 = {
+  suffix: 'Suffix',
+  entryType: 'String'
+}
+
+const stringEntry4 = {
   label: 'Label',
   suffix: 'Suffix',
   entryType: 'String'
+}
+
+const distinctEntry1 = {
+  entryType: 'Distinct',
+  validation: {
+    choices: [
+      'One', 'Two', 'Three'
+    ]
+  }
+}
+
+const distinctEntry2 = {
+  label: 'Weight',
+  entryType: 'Distinct',
+  validation: {
+    choices: [
+      'First', 'Second', 'Third'
+    ]
+  }
+}
+
+const distinctEntry3 = {
+  suffix: 'Kg',
+  entryType: 'Distinct',
+  validation: {
+    choices: LongList
+  }
 }
 
 const distinctEntry4 = {
@@ -118,7 +160,8 @@ export default class TestScreen extends Component {
       signing: false,
       approving: false,
       commenting: false,
-      pickerValue: 'Original'
+      pickerValue: 'Original',
+      comps: null, showComps: false
     }
   }
 
@@ -131,6 +174,11 @@ export default class TestScreen extends Component {
 
   onPress = (name) => {
     if (name === 'cancel') this.props.navigation.navigate('Dev')
+    if (name === 'components') {
+      methods.getComponents(12345, 23456).then(data => {
+        this.setState({comps: data, showComps: true})
+      })
+    }
   }
 
   onSign = (sign, token, comment) => {
@@ -146,7 +194,7 @@ export default class TestScreen extends Component {
   }
 
   render() {
-    const buttons = [ButtonStyles.Previous, ButtonStyles.No, ButtonStyles.Yes]
+    const buttons = [ButtonStyles.Previous, ButtonStyles.No, ButtonStyles.Yes, ButtonStyles.Components]
     return (
       <View style={{ flexDirection: 'column', flex: 1 }}>
         <ActionTitle text='The Action Name' />
@@ -158,15 +206,15 @@ export default class TestScreen extends Component {
             <RoundedButton title='Approval Test' onPress={() => this.setState({ approving: true })} />
             <RoundedButton title='Comment Test' onPress={() => this.setState({ commenting: true })} />
             <View>
-              <ActionEntry value={this.state.value} entry={stringEntry} onChange={(value) => this.setState({ value })} />
+              <ActionEntry value={this.state.value} entry={stringEntry1} onChange={(value) => this.setState({ value })} />
+              <ActionEntry value={this.state.value} entry={stringEntry2} onChange={(value) => this.setState({ value })} />
+              <ActionEntry value={this.state.value} entry={stringEntry3} onChange={(value) => this.setState({ value })} />
+              <ActionEntry value={this.state.value} entry={stringEntry4} onChange={(value) => this.setState({ value })} />
+              <ActionEntry value={this.state.distinctValue} entry={distinctEntry1} onChange={(distinctValue) => this.setState({ distinctValue })} enabled={true} />
+              <ActionEntry value={this.state.distinctValue} entry={distinctEntry2} onChange={(distinctValue) => this.setState({ distinctValue })} enabled={true} />
+              <ActionEntry value={this.state.distinctValue} entry={distinctEntry3} onChange={(distinctValue) => this.setState({ distinctValue })} enabled={true} />
               <ActionEntry value={this.state.distinctValue} entry={distinctEntry4} onChange={(distinctValue) => this.setState({ distinctValue })} enabled={true} />
             </View>
-            <CustomPicker title='Custom Picker' items={LongList} value={this.state.pickerValue} onChange={this.pickerChange} />
-            <StringEntry
-              label='Weight'
-              suffix='Kg'
-              value='1234'
-            />
             <ActionImage fileName='setup.jpg' />
             <ActionImage fileName='db_Russell_Sieve1.jpg' />
             <FileContent fileName='General05.txt' backColor={NexaColours.BlueAccent} />

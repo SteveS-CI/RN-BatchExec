@@ -9,20 +9,24 @@ export default {
   tabBarHeight: 65,
 };
 
-export const WindowSize = () => {
-  const size = Dimensions.get("screen")
-  const smaller = Math.min(size.height, size.width) * size.scale
-  return smaller
-}
+const { width, height } = Dimensions.get('screen');
 
-const ScreenSize = WindowSize()
+//Guideline sizes are based on standard ~5" screen mobile device
+const guidelineBaseWidth = 350
+const guidelineBaseHeight = 680
+
+const scale = size => width / guidelineBaseWidth * size
+const verticalScale = size => height / guidelineBaseHeight * size
+const moderateScale = (size, factor = 0.5) => size + ( scale(size) - size ) * factor
+
+export {scale, verticalScale, moderateScale}
 
 export const FontSizes = {
-  menuIconSize: ScreenSize / 28,
-  listHeader: ScreenSize / 72,
-  listRow: ScreenSize / 84,
-  standard: ScreenSize / 64,
-  smaller: ScreenSize / 72,
-  iconButton: ScreenSize / 48,
-  buttons: ScreenSize / 72
+  menuIconSize: moderateScale(38), // ScreenSize / 28,
+  listHeader: moderateScale(14), // ScreenSize / 72,
+  listRow: moderateScale(12), // ScreenSize / 84,
+  standard: moderateScale(16), // ScreenSize / 64,
+  smaller: moderateScale(14), // ScreenSize / 72,
+  iconButton: moderateScale(20), // ScreenSize / 48,
+  buttons: moderateScale(14) // ScreenSize / 72
 }

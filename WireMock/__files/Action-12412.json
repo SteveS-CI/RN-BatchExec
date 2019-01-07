@@ -30,8 +30,8 @@
 			},
 			"inputs": [
 				{
-					"entryType": "String",
-					"entryTypeEnum": 0,
+					"entryType": "Integer",
+					"entryTypeEnum": 1,
 					"label": "Weigh ID"
 				}
 			]

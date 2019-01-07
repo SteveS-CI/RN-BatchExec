@@ -10,7 +10,7 @@ import {FontSizes} from '../constants/Layout'
 const styles =
 {
   container: {
-    margin: 8,
+    marginHorizontal: 8,
     padding: 8,
     alignSelf: 'flex-start',
     borderRadius: 12,

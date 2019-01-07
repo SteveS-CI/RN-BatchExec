@@ -15,7 +15,7 @@ const styles = StyleSheet.create(
     },
     text: {
       color: 'white',
-      fontSize: FontSizes.smaller
+      fontSize: FontSizes.buttons
     }
   }
 ) 

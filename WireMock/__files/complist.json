@@ -1,0 +1,97 @@
+[
+  {
+    "id": 336250,
+    "lineNumber": 1,
+    "materialCode": "MMSMAT01",
+    "materialName": "Lactose",
+    "weighings": [
+      {
+        "id": 1263,
+        "weighingNumber": 1,
+        "weighingType": "ManualDispense",
+        "netWeight": "500.000 g",
+        "dispensedDate": "2019-01-07T11:39:05",
+        "scanned": true
+      },
+      {
+        "id": 1264,
+        "weighingNumber": 2,
+        "weighingType": "ManualDispense",
+        "netWeight": "500.000 g",
+        "dispensedDate": "2019-01-07T11:40:14",
+        "scanned": false
+      },
+      {
+        "id": 1265,
+        "weighingNumber": 3,
+        "weighingType": "ManualDispense",
+        "netWeight": "500.000 g",
+        "dispensedDate": "2019-01-07T11:41:19",
+        "scanned": false
+      },
+      {
+        "id": 1266,
+        "weighingNumber": 4,
+        "weighingType": "ManualDispense",
+        "netWeight": "500.000 g",
+        "dispensedDate": "2019-01-07T11:42:12",
+        "scanned": true
+      },
+      {
+        "id": 1267,
+        "weighingNumber": 5,
+        "weighingType": "ManualDispense",
+        "netWeight": "500.000 g",
+        "dispensedDate": "2019-01-07T11:43:06",
+        "scanned": false
+      }
+    ],
+    "componentType": "Input",
+    "targetStage": 29074,
+    "sourceStage": 0,
+    "quantity": "2.500 kg",
+    "status": "Dispense"
+  },
+  {
+    "id": 336251,
+    "lineNumber": 2,
+    "materialCode": "MMSMAT02",
+    "materialName": "Mannitol",
+    "weighings": [
+      {
+        "id": 1268,
+        "weighingNumber": 1,
+        "weighingType": "ManualDispense",
+        "netWeight": "3,600.000 g",
+        "dispensedDate": "2019-01-07T12:07:06",
+        "scanned": true
+      }
+    ],
+    "componentType": "Input",
+    "targetStage": 29074,
+    "sourceStage": 0,
+    "quantity": "3.600 kg",
+    "status": "Dispense"
+  },
+  {
+    "id": 336254,
+    "lineNumber": 6,
+    "materialCode": "PARACET",
+    "materialName": "Paracetamol",
+    "weighings": [
+      {
+        "id": 1269,
+        "weighingNumber": 1,
+        "weighingType": "ManualDispense",
+        "netWeight": "4,400.000 g",
+        "dispensedDate": "2019-01-07T12:07:48",
+        "scanned": false
+      }
+    ],
+    "componentType": "Input",
+    "targetStage": 29074,
+    "sourceStage": 0,
+    "quantity": "4.400 kg",
+    "status": "Dispense"
+  }
+]

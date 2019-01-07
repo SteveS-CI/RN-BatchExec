@@ -81,6 +81,10 @@ export const methods = {
     const request = { ...endpoints.batchlist, params: { locationCode } };
     return getData(request);
   },
+  getComponents: (batchID, stageID) => {
+    const request = { ...endpoints.compList, params: { batchID, stageID } };
+    return getData(request);
+  },
   nextProc: (postData) => {
     const request = {
       ...endpoints.nextProc,

@@ -37,6 +37,8 @@ export default class ActionDetailScreen extends Component {
       value: null,
       signing: false,
       approving: false,
+      commenting: false,
+      components: false,
       error: null,
       message: null
     }
@@ -128,6 +130,9 @@ export default class ActionDetailScreen extends Component {
         break
       case 'comments':
         this.setState({ commenting: true })
+        break
+      case 'components':
+        this.setState({ components: true })
         break
       default:
         this.props.navigation.replace('BatchList')

@@ -26,6 +26,17 @@ export const WeighingProps = PropTypes.shape({
   component: IngredientProps.isRequired
 })
 
+export const ComponentProps = PropTypes.shape({
+  id: PropTypes.number,
+  lineNumber: PropTypes.number.isRequired,
+  materialCode: PropTypes.string.isRequired,
+  materialName: PropTypes.string.isRequired,
+  componentType: PropTypes.string,
+  quantity: PropTypes.string.isRequired,
+  status: PropTypes.string,
+  weighings: PropTypes.arrayOf(WeighingProps)
+})
+
 export const EquipmentProps = PropTypes.shape({
   category: PropTypes.string.isRequired,
   model: PropTypes.string,

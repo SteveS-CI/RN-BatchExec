@@ -23,7 +23,7 @@ const styles = StyleSheet.create(
     },
     inputLabel: {
       backgroundColor: NexaColours.GreyAccent,
-      paddingHorizontal: 8, paddingVertical: 5,
+      paddingHorizontal: 8, paddingVertical: 8,
       textAlignVertical: 'center',
       borderColor: NexaColours.GreyDark, borderWidth: inputBorderWidth,
       borderTopLeftRadius: inputBorderRadius,
@@ -32,7 +32,7 @@ const styles = StyleSheet.create(
     },
     inputSuffix: {
       backgroundColor: NexaColours.GreyAccent,
-      paddingHorizontal: 8, paddingVertical: 5,
+      paddingHorizontal: 8, paddingVertical: 8,
       textAlignVertical: 'center',
       borderColor: NexaColours.GreyDark, borderWidth: inputBorderWidth,
       borderTopRightRadius: inputBorderRadius,
@@ -43,7 +43,7 @@ const styles = StyleSheet.create(
       borderColor: NexaColours.GreyDark,
       borderBottomWidth: inputBorderWidth,
       borderTopWidth: inputBorderWidth,
-      paddingHorizontal: 8, paddingVertical: 5,
+      paddingHorizontal: 8, paddingVertical: 8,
       minWidth: '30%',
       fontSize: FontSizes.standard,
     }

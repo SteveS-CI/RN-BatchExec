@@ -32,33 +32,20 @@ import AboutScreen from '../screens/AboutScreen'
 import DevScreen from '../screens/DevScreen'
 import DropdownMenu from '../components/DropdownMenu';
 import LocationHeader from '../components/LocationHeader'
-import { WindowSize, FontSizes } from '../constants/Layout';
-
-const screenHeaderStyling = {
-  headerTintColor: NexaColours.GreyLight,
-  headerStyle: { 
-    backgroundColor: NexaColours.Blue,
-  },
-  headerTitleStyle: { 
-    fontFamily: 'euro-demi', 
-    fontWeight: 'normal',
-    fontSize: 18,
-    textAlign: 'center',
-  }
-}
+import { FontSizes, scale, verticalScale } from '../constants/Layout';
 
 const mainStyle = {
   headerTintColor: NexaColours.GreyUltraLight,
   headerStyle: {
     backgroundColor: NexaColours.Blue,
-    height: WindowSize() / 20
+    height: verticalScale(52)
   },
   headerTitleStyle: { 
     fontFamily: 'euro-demi', 
     fontWeight: 'normal',
-    fontSize: WindowSize() / 60,
+    fontSize: FontSizes.standard,
     textAlign: 'left',
-    marginLeft: WindowSize() / 40,
+    marginLeft: scale(10),
     paddingLeft: 0
   }
 }
@@ -88,7 +75,8 @@ const LoginNav = createStackNavigator(
   },
   {
     navigationOptions: {
-      ...screenHeaderStyling
+      ...mainStyle,
+      title: 'Login'
     }
   }
 )

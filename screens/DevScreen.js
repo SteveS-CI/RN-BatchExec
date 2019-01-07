@@ -23,7 +23,7 @@ export default class DevScreen extends PureComponent {
   }
 
   static navigationOptions = {
-    title: 'About'
+    title: 'Developer'
   }
 
   resetHardware = () => {

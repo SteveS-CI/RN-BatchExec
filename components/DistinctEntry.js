@@ -6,8 +6,7 @@ import NexaColours from '../constants/NexaColours'
 import { FontSizes } from '../constants/Layout'
 import CustomPicker from './CustomPicker'
 
-const inputBorderWidth = StyleSheet.hairlineWidth * 2
-const inputBorderRadius = 10
+const inputBorderWidth = StyleSheet.hairlineWidth
 
 const styles = StyleSheet.create(
   {
@@ -16,7 +15,6 @@ const styles = StyleSheet.create(
       alignSelf: 'flex-start',
       marginHorizontal: 8, marginTop: 8, padding: 0,
       borderColor: NexaColours.GreyDark, borderWidth: inputBorderWidth,
-      //borderRadius: inputBorderRadius,
       backgroundColor: NexaColours.GreyLight
     },
     pickerLabel: {
@@ -24,8 +22,6 @@ const styles = StyleSheet.create(
       paddingHorizontal: 8, paddingVertical: 0,
       textAlignVertical: 'center',
       borderColor: NexaColours.GreyDark, borderWidth: inputBorderWidth,
-      //borderTopLeftRadius: inputBorderRadius,
-      //borderBottomLeftRadius: inputBorderRadius,
       fontSize: FontSizes.standard
     },
     pickerSuffix: {
@@ -33,8 +29,6 @@ const styles = StyleSheet.create(
       paddingHorizontal: 8, paddingVertical: 0,
       textAlignVertical: 'center',
       borderColor: NexaColours.GreyDark, borderWidth: inputBorderWidth,
-      //borderTopRightRadius: inputBorderRadius,
-      //borderBottomRightRadius: inputBorderRadius,
       fontSize: FontSizes.standard
     }
   }
@@ -72,7 +66,7 @@ export default class DistinctEntry extends PureComponent {
     const hasSuffix = entry.suffix ? true : false
     const validation = entry.validation
     const choices = validation.choices
-    const title = (entry.label ? entry.label : null) + (entry.suffix ? ' (' + entry.suffix + ')' : null)
+    const title = 'Title'//(entry.label ? entry.label : null) + (entry.suffix ? ' (' + entry.suffix + ')' : null)
     return (
       <View style={styles.pickerContainer}>
         {hasLabel && <Text style={styles.pickerLabel}>{entry.label}</Text>}

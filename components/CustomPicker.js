@@ -3,9 +3,8 @@ import { StyleSheet, TouchableWithoutFeedback, ScrollView, View, Modal, Text } f
 import PropTypes from 'prop-types'
 import NexaColours from '../constants/NexaColours';
 import RoundedButton from './RoundedButton';
-import { FontSizes } from '../constants/Layout'
+import { FontSizes, verticalScale, ScreenSize } from '../constants/Layout'
 import FontAwesome, { Icons } from 'react-native-fontawesome';
-import { ScreenSize } from '../constants/Layout'
 
 const styles = StyleSheet.create(
   {
@@ -15,7 +14,7 @@ const styles = StyleSheet.create(
       paddingLeft: 8,
       backgroundColor: NexaColours.GreyLight,
       borderColor: NexaColours.GreyDark,
-      borderWidth: StyleSheet.hairlineWidth * 2,
+      borderWidth: StyleSheet.hairlineWidth,
       borderRightWidth: 0,
       minWidth: '33%'
     },
@@ -36,19 +35,21 @@ const styles = StyleSheet.create(
       backgroundColor: NexaColours.GreyLight,
       paddingHorizontal: 4,
       borderColor: NexaColours.GreyDark,
-      borderWidth: StyleSheet.hairlineWidth * 2,
+      borderWidth: StyleSheet.hairlineWidth,
       borderLeftWidth: 0
     },
     inner: {
+      position: 'absolute',
       flexDirection: 'column',
       padding: 12,
       backgroundColor: 'white',
-      borderWidth: 1,
       borderRadius: 12,
-      borderColor: NexaColours.Blue,
       elevation: 8,
-      //minWidth: '80%',
-      //maxHeight: ScreenSize * 0.8
+      alignSelf: 'center',
+      minWidth: '30%',
+      //alignContent: 'center',
+      //justifyContent: 'center',
+      maxHeight: verticalScale(300)
     },
     outer: {
       position: 'absolute',
@@ -87,7 +88,7 @@ class PickerInner extends Component {
     }
     )
     return (
-      <ScrollView style={{maxHeight: ScreenSize * 0.5}}>
+      <ScrollView style={{ maxHeight: ScreenSize * 0.5 }}>
         {list}
       </ScrollView>
     )
@@ -102,13 +103,13 @@ class PickerInner extends Component {
         <Modal onRequestClose={() => this.onCancel()} transparent={true}>
 
           <TouchableWithoutFeedback onPress={() => this.onCancel()}>
-            <View style={styles.outer} />
+            <View style={styles.outer}>
+              <View style={styles.inner}>
+                {title && <Text style={styles.title}>{title}</Text>}
+                {list}
+              </View>
+            </View>
           </TouchableWithoutFeedback>
-
-          <View style={styles.inner}>
-            {title && <Text style={styles.title}>{title}</Text>}
-            {list}
-          </View>
 
         </Modal>
       )
