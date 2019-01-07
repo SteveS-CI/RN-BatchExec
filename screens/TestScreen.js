@@ -15,6 +15,7 @@ import Comments from '../components/Comments'
 import TextEntry from '../components/TextEntry';
 import CustomPicker from '../components/CustomPicker';
 import { methods } from '../api/api';
+import ComponentList from '../components/ComponentList';
 
 const LongList = [
   "The",
@@ -215,6 +216,7 @@ export default class TestScreen extends Component {
               <ActionEntry value={this.state.distinctValue} entry={distinctEntry3} onChange={(distinctValue) => this.setState({ distinctValue })} enabled={true} />
               <ActionEntry value={this.state.distinctValue} entry={distinctEntry4} onChange={(distinctValue) => this.setState({ distinctValue })} enabled={true} />
             </View>
+            <ComponentList components={this.state.comps} visible={this.state.showComps} onDismiss={() => this.setState({showComps: false})}/>
             <ActionImage fileName='setup.jpg' />
             <ActionImage fileName='db_Russell_Sieve1.jpg' />
             <FileContent fileName='General05.txt' backColor={NexaColours.BlueAccent} />

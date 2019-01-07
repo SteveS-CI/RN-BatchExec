@@ -44,6 +44,54 @@
         "netWeight": "500.000 g",
         "dispensedDate": "2019-01-07T11:43:06",
         "scanned": false
+      },
+      {
+        "id": 1268,
+        "weighingNumber": 6,
+        "weighingType": "ManualDispense",
+        "netWeight": "500.000 g",
+        "dispensedDate": "2019-01-07T11:42:12",
+        "scanned": true
+      },
+      {
+        "id": 1269,
+        "weighingNumber": 7,
+        "weighingType": "ManualDispense",
+        "netWeight": "500.000 g",
+        "dispensedDate": "2019-01-07T11:43:06",
+        "scanned": false
+      },
+      {
+        "id": 1270,
+        "weighingNumber": 8,
+        "weighingType": "ManualDispense",
+        "netWeight": "500.000 g",
+        "dispensedDate": "2019-01-07T11:42:12",
+        "scanned": true
+      },
+      {
+        "id": 1271,
+        "weighingNumber": 9,
+        "weighingType": "ManualDispense",
+        "netWeight": "500.000 g",
+        "dispensedDate": "2019-01-07T11:43:06",
+        "scanned": false
+      },
+      {
+        "id": 1272,
+        "weighingNumber": 10,
+        "weighingType": "ManualDispense",
+        "netWeight": "500.000 g",
+        "dispensedDate": "2019-01-07T11:43:06",
+        "scanned": false
+      },
+      {
+        "id": 1273,
+        "weighingNumber": 11,
+        "weighingType": "ManualDispense",
+        "netWeight": "500.000 g",
+        "dispensedDate": "2019-01-07T11:43:06",
+        "scanned": false
       }
     ],
     "componentType": "Input",

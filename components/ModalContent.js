@@ -49,11 +49,12 @@ export default class ModalContent extends Component {
 
           <TouchableWithoutFeedback onPress={() => this.onCancel()}>
             <View style={styles.outer}>
-              <View style={styles.inner}>
-                {this.props.children}
-              </View>
             </View>
           </TouchableWithoutFeedback>
+
+          <View style={styles.inner}>
+            {this.props.children}
+          </View>
 
         </Modal>
       )

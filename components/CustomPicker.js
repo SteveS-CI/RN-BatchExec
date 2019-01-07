@@ -104,12 +104,13 @@ class PickerInner extends Component {
 
           <TouchableWithoutFeedback onPress={() => this.onCancel()}>
             <View style={styles.outer}>
-              <View style={styles.inner}>
-                {title && <Text style={styles.title}>{title}</Text>}
-                {list}
-              </View>
             </View>
           </TouchableWithoutFeedback>
+
+          <View style={styles.inner}>
+            {title && <Text style={styles.title}>{title}</Text>}
+            {list}
+          </View>
 
         </Modal>
       )
