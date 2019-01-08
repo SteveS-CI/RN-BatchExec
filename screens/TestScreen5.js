@@ -35,22 +35,22 @@ export default class TestScreen5 extends React.Component {
   }
 
   componentDidMount() {
-    this.ws = new Sockette('ws://192.168.1.225:8800', {
-      timeout: 5e3,
-      maxAttempts: 10,
-      onopen: e => console.log('Socket Connected!'),
-      onmessage: e => this.onRx(e),
-      onreconnect: e => console.log('Socket reconnecting...'),
-      onmaximum: e => console.log('Socket stop attempting!'),
-      onclose: e => console.log('Socket closed'),
-      onerror: e => console.log('Socket Error:', e.data)
-    });
+    // this.ws = new Sockette('ws://192.168.1.225:8800', {
+    //   timeout: 5e3,
+    //   maxAttempts: 10,
+    //   onopen: e => console.log('Socket Connected!'),
+    //   onmessage: e => this.onRx(e),
+    //   onreconnect: e => console.log('Socket reconnecting...'),
+    //   onmaximum: e => console.log('Socket stop attempting!'),
+    //   onclose: e => console.log('Socket closed'),
+    //   onerror: e => console.log('Socket Error:', e.data)
+    // });
   }
 
   componentWillUnmount() {
-    console.log('CWU')
-    this.ws.close()
-    this.ws = null
+    // console.log('CWU')
+    // this.ws.close()
+    // this.ws = null
   }
 
   onPress = (name) => {
@@ -70,7 +70,7 @@ export default class TestScreen5 extends React.Component {
           It could be used to connect to balance interfaces.
         </Text>
         <Text style={digitStyle}>{value}</Text>
-        <VirtualBalance />
+        <VirtualBalance target={250}/>
       </View>
     )
   }
