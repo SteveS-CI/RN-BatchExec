@@ -4,21 +4,43 @@ import PropTypes from 'prop-types'
 import { ComponentProps } from '../constants/DataProps'
 import ModalContent from '../components/ModalContent'
 import NexaColours from '../constants/NexaColours';
+import { FontSizes, scale } from '../constants/Layout';
 
 const styles = StyleSheet.create({
+  outer: {
+    flexDirection: 'column',
+    flex: 1,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    marginBottom: scale(8)
+  },
+  componentContainer: {
+    flexDirection: 'row',
+  },
+  lineNumber: {
+    fontSize: FontSizes.standard,
+    borderRadius: scale(12),
+    borderWidth: StyleSheet.hairlineWidth,
+    textAlignVertical: 'center', textAlign: 'center',
+    marginRight: scale(5),
+    minWidth: scale(24), minHeight: scale(24),
+    backgroundColor: NexaColours.Yellow
+  },
   component: {
+    fontSize: FontSizes.standard,
+    marginHorizontal: scale(5)
   },
   weighlist: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    justifyContent: 'flex-start'
+    justifyContent: 'flex-start',
   },
   label: {
-    marginHorizontal: 3,
-    marginVertical: 5,
-    padding: 3,
-    borderRadius: 5,
-    borderWidth: StyleSheet.hairlineWidth
+    marginHorizontal: scale(3),
+    marginVertical: scale(5),
+    padding: scale(3),
+    borderRadius: scale(5),
+    borderWidth: StyleSheet.hairlineWidth,
+    fontSize: FontSizes.smaller
   }
 })
 
@@ -47,11 +69,11 @@ export default class ComponentList extends Component {
           )
         })
         return (
-          <View key={index} style={{ flexDirection: 'column' }}>
-            <View style={{ flexDirection: 'row' }}>
-              <Text>{comp.lineNumber}</Text>
-              <Text>{comp.materialCode}</Text>
-              <Text>{comp.materialName}</Text>
+          <View key={index} style={styles.outer}>
+            <View style={styles.componentContainer}>
+              <Text style={styles.lineNumber}>{comp.lineNumber}</Text>
+              <Text style={styles.component}>{comp.materialCode}</Text>
+              <Text style={styles.component}>{comp.materialName}</Text>
             </View>
             <View style={styles.weighlist}>
               {weighlist}

@@ -3,17 +3,18 @@ import { StyleSheet, TouchableWithoutFeedback, ScrollView, View, Modal, Text } f
 import PropTypes from 'prop-types'
 import NexaColours from '../constants/NexaColours';
 import RoundedButton from './RoundedButton';
-import { FontSizes, verticalScale, ScreenSize } from '../constants/Layout'
+import { FontSizes, scale, verticalScale, ScreenSize } from '../constants/Layout'
 import FontAwesome, { Icons } from 'react-native-fontawesome';
 
 const styles = StyleSheet.create(
   {
     inner: {
       position: 'absolute',
+      top: scale(60),
       flexDirection: 'column',
-      padding: 12,
+      padding: scale(12), margin: scale(20),
       backgroundColor: 'white',
-      borderRadius: 12,
+      borderRadius: scale(12),
       elevation: 8,
       alignSelf: 'center',
       minWidth: '30%',

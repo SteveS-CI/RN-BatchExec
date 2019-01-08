@@ -7,24 +7,24 @@ import ButtonStyles from '../constants/ButtonStyles'
 import ButtonBar from '../components/ButtonBar'
 import Comments from './Comments'
 import NexaColours from '../constants/NexaColours';
+import { scale, FontSizes } from '../constants/Layout'
 
 const styles = StyleSheet.create(
   {
     title: {
-//      fontSize: 18
+      fontSize: FontSizes.standard
     },
     inner: {
       position: 'absolute',
-      padding: 12, marginTop: 120,
+      padding: scale(12), marginTop: scale(60),
       backgroundColor: 'white',
-      borderWidth: 1,
-      borderRadius: 12,
+      borderWidth: StyleSheet.hairlineWidth,
+      borderRadius: scale(12),
       borderColor: NexaColours.Blue,
       elevation: 8
     },
     outer: {
       flex: 1,
-      //justifyContent: 'center',
       alignItems: 'center',
       backgroundColor: 'rgba(0,0,0,0.5)'
     }

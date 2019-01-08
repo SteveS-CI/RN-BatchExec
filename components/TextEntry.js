@@ -1,39 +1,27 @@
 import React, {PureComponent} from 'react'
-import {StyleSheet, View, Text, TextInput, Picker} from 'react-native'
+import {StyleSheet, View, Text, TextInput} from 'react-native'
 import PropTypes from 'prop-types'
-import TextBar from './TextBar'
 import NexaColours from '../constants/NexaColours'
-import {optimalForeColor} from '../Utils/utils'
-import {FontSizes} from '../constants/Layout'
-
-const inputBorderWidth = StyleSheet.hairlineWidth
-const inputBorderRadius = 10
+import { scale, FontSizes } from '../constants/Layout'
 
 const styles = StyleSheet.create(
   {
     inputContainer: {
       flexDirection: 'row',
-      marginHorizontal: 8, marginTop: 8,
+      marginHorizontal: scale(8), marginTop: scale(8),
       alignSelf: 'flex-start'
     },
     inputLabel: {
-      //backgroundColor: NexaColours.GreyAccent,
-      paddingHorizontal: 8, paddingVertical: 5,
+      paddingHorizontal: scale(8), paddingVertical: scale(5),
       textAlignVertical: 'center',
       textAlign: 'right',
-      minWidth: 100,
-      fontSize: FontSizes.standard
-      //borderColor: NexaColours.GreyDark, borderWidth: inputBorderWidth,
-      //borderTopLeftRadius: inputBorderRadius,
-      //borderBottomLeftRadius: inputBorderRadius
+      minWidth: '25%',
+      fontSize: FontSizes.smaller
     },
     inputBox: {
-      fontSize: FontSizes.standard,
-      //borderColor: NexaColours.GreyDark,
-      //borderBottomWidth: inputBorderWidth,
-      //borderTopWidth: inputBorderWidth,
-      paddingHorizontal: 8, paddingVertical: 5,
-      minWidth: 200
+      fontSize: FontSizes.smaller,
+      paddingHorizontal: scale(8), paddingVertical: scale(5),
+      minWidth: '50%'
     }
   }
 )

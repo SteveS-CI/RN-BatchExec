@@ -6,24 +6,24 @@ import ErrorBar from './ErrorBar'
 import NexaColours from '../constants/NexaColours'
 import IconButton from './IconButton';
 import BarcodeReader from './BarcodeReader';
-import {FontSizes} from '../constants/Layout'
+import {FontSizes, scale} from '../constants/Layout'
 
 import i18n from 'i18n-js'
 import parseDecimalNumber from 'parse-decimal-number'
 
-const inputBorderWidth = StyleSheet.hairlineWidth * 2
-const inputBorderRadius = 10
+const inputBorderWidth = StyleSheet.hairlineWidth
+const inputBorderRadius = scale(8)
 
 const styles = StyleSheet.create(
   {
     inputContainer: {
       flexDirection: 'row',
-      marginHorizontal: 8, marginTop: 8, padding: 0,
+      marginHorizontal: scale(8), marginTop: scale(8), padding: 0,
       alignSelf: 'flex-start'
     },
     inputLabel: {
       backgroundColor: NexaColours.GreyAccent,
-      paddingHorizontal: 8, paddingVertical: 8,
+      paddingHorizontal: scale(8), paddingVertical: scale(4),
       textAlignVertical: 'center',
       borderColor: NexaColours.GreyDark, borderWidth: inputBorderWidth,
       borderTopLeftRadius: inputBorderRadius,
@@ -32,7 +32,7 @@ const styles = StyleSheet.create(
     },
     inputSuffix: {
       backgroundColor: NexaColours.GreyAccent,
-      paddingHorizontal: 8, paddingVertical: 8,
+      paddingHorizontal: scale(8), paddingVertical: scale(4),
       textAlignVertical: 'center',
       borderColor: NexaColours.GreyDark, borderWidth: inputBorderWidth,
       borderTopRightRadius: inputBorderRadius,
@@ -43,7 +43,7 @@ const styles = StyleSheet.create(
       borderColor: NexaColours.GreyDark,
       borderBottomWidth: inputBorderWidth,
       borderTopWidth: inputBorderWidth,
-      paddingHorizontal: 8, paddingVertical: 8,
+      paddingHorizontal: scale(8), paddingVertical: scale(4),
       minWidth: '30%',
       fontSize: FontSizes.standard,
     }

@@ -4,6 +4,7 @@ import ButtonStyles from '../constants/ButtonStyles'
 import ActionButtons from '../components/ActionButtons'
 import Sockette from 'sockette'
 import NexaColours from '../constants/NexaColours';
+import VirtualBalance from '../components/VirtualBalance'
 
 const styles = StyleSheet.create({
   balance: {
@@ -69,6 +70,7 @@ export default class TestScreen5 extends React.Component {
           It could be used to connect to balance interfaces.
         </Text>
         <Text style={digitStyle}>{value}</Text>
+        <VirtualBalance />
       </View>
     )
   }

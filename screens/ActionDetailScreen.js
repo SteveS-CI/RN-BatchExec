@@ -27,6 +27,7 @@ import IdentContainerProps from '../components/IdentContainerProps'
 import IdentEquipmentProps from '../components/IdentEquipmentProps'
 import IdentWeighingProps from '../components/IdentWeighingProps'
 import ModalMessage from '../components/ModalMessage'
+import ComponentList from '../components/ComponentList'
 
 export default class ActionDetailScreen extends Component {
   constructor(props) {
@@ -38,7 +39,7 @@ export default class ActionDetailScreen extends Component {
       signing: false,
       approving: false,
       commenting: false,
-      components: false,
+      showComps: false,
       error: null,
       message: null
     }
@@ -132,7 +133,11 @@ export default class ActionDetailScreen extends Component {
         this.setState({ commenting: true })
         break
       case 'components':
-        this.setState({ components: true })
+        methods.getComponents(this.batchData.batchID, this.batchData.stageID).then(components => {
+          this.setState({ components, showComps: true })
+        }).catch(error => {
+          this.setError(error)
+        })
         break
       default:
         this.props.navigation.replace('BatchList')
@@ -198,11 +203,11 @@ export default class ActionDetailScreen extends Component {
 
   getNavChoice(batchData, nav, location) {
     const message = NavChoice(batchData, nav, location)
-    if (message) {this.setState({ message })}
+    if (message) { this.setState({ message }) }
   }
 
   onExit = () => {
-    this.setState({message: null})
+    this.setState({ message: null })
     this.props.navigation.replace('BatchList', { refresh: true })
   }
 
@@ -261,10 +266,11 @@ export default class ActionDetailScreen extends Component {
               <FileContent fileName={node.fileName} />
               <ErrorBar text={this.state.error} onPress={() => this.setState({ error: null })} />
               {/* These are all modal */}
+              <ComponentList components={this.state.components} visible={this.state.showComps} onDismiss={() => this.setState({ showComps: false })} />
               <Comments visible={this.state.commenting} onComment={this.onComment} />
               <Signature visible={this.state.signing} onSign={this.signed} isApproval={false} />
               <Signature visible={this.state.approving} onSign={this.approved} isApproval={true} />
-              <ModalMessage messageText={this.state.message} onExit={this.onExit}/>
+              <ModalMessage messageText={this.state.message} onExit={this.onExit} />
               <LoadingOverlay loading={this.state.loading} />
             </KeyboardAvoidingView>
           </ScrollView>

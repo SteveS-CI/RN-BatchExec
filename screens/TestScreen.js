@@ -187,6 +187,7 @@ export default class TestScreen extends Component {
   }
 
   onComment = (valid, comments) => {
+    console.log('onComment', comments)
     this.setState({ commenting: false })
   }
 

@@ -4,9 +4,9 @@ import PropTypes from 'prop-types'
 import * as DataProps from '../constants/DataProps'
 import NexaColours from '../constants/NexaColours'
 import { optimalForeColor } from '../Utils/utils'
-import Layout, {FontSizes} from '../constants/Layout'
+import Layout, {FontSizes, scale} from '../constants/Layout'
 
-const CharMultiplier = Layout.screen.width / 48
+const CharMultiplier = scale(10)
 
 const styles = StyleSheet.create(
   {
