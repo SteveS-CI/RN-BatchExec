@@ -9,7 +9,13 @@ export default {
   tabBarHeight: 65,
 };
 
-const { width, height } = Dimensions.get('screen');
+const currentWidth = Dimensions.get('screen').width
+const currentHeight = Dimensions.get('screen').height
+
+// 'width' is smaller of the dimensions
+const width = Math.min(currentWidth, currentHeight)
+// 'height' is the larger of the dimensions
+const height = Math.max(currentWidth, currentHeight)
 
 //Guideline sizes are based on standard ~5" screen mobile device
 const guidelineBaseWidth = 350

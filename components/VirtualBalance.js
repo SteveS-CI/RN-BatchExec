@@ -5,7 +5,7 @@ import { GestureHandler } from 'expo'
 import Layout, { scale, moderateScale, FontSizes } from '../constants/Layout'
 import NexaColours from '../constants/NexaColours';
 
-const { PanGestureHandler } = GestureHandler
+const { PanGestureHandler, TapGestureHandler } = GestureHandler
 
 const styles = StyleSheet.create({
   balance: {
@@ -16,54 +16,71 @@ const styles = StyleSheet.create({
     borderRadius: scale(12), borderWidth: StyleSheet.hairlineWidth * moderateScale(5),
     fontSize: FontSizes.balance, fontFamily: 'euro-demi',
     minWidth: '50%'
+  },
+  bar: {
+    height: 30,
+  },
+  limits: {
+    position: 'absolute',
+    top: 0,
+    height: 30,
+    backgroundColor: 'transparent',
+    borderColor: 'black',
+    borderLeftWidth: StyleSheet.hairlineWidth * 2,
+    borderRightWidth: StyleSheet.hairlineWidth * 2,
   }
 })
+
+const round = value => Math.round(value * 1000) / 1000
 
 export default class VirtualBalance extends Component {
   constructor(props) {
     super(props)
-    this.state = { value: 0 }
+    this.state = { scaleValue: 0, barRawValue: 0, maxWidth: null }
+  }
+
+  static defaultProps = {
+    lower: 0,
+    upper: 0
   }
 
   static propTypes = {
-    target: PropTypes.number
+    target: PropTypes.number,
+    lower: PropTypes.number,
+    upper: PropTypes.number
   }
 
   onPan = (e) => {
-    const { absoluteX, absoluteY, velocityX, velocityY, translationX, translationY, x, y, state } = e.nativeEvent
-    const vx = Math.round(velocityX)
-    const vy = Math.round(velocityY)
-    const ax = absoluteX / Layout.screen.width
-    const ay = absoluteY / Layout.screen.height
-    const rx = Math.round(x)
-    const ry = Math.round(y)
+    const x = e.nativeEvent.x
+    const range = this.props.upper + ((this.props.upper - this.props.lower) * 2)
+    const val = round((x / this.state.maxWidth) * range)
+    this.setState({ barRawValue: x, scaleValue: val })
+  }
 
-    const dx = Math.sign(ax-this.lastX)
-    const dy = Math.sign(ay-this.lastY)
-
-    //console.log('DX:', dx, '  DY:', dy)
-    //console.log('VX:', vx, '  VY:', vy)
-    console.log('AX:', ax, '  AY:', ay)
-    //console.log('RX:', rx, '  RY:', ry)
-    //console.log('TX:', Math.trunc(translationX/20), '  TY:', Math.trunc(translationY/20))
-
-    this.lastX = ax
-    this.lastY = ay
-
+  onLayout = (e) => {
+    this.setState({ maxWidth: e.nativeEvent.layout.width })
   }
 
   render() {
-    value = this.state.value
+    const scaleValue = this.state.scaleValue
+    const maxWidth = this.state.maxWidth
+    const barRawValue = this.state.barRawValue
+    const inSpec = (scaleValue >= this.props.lower && scaleValue <= this.props.upper)
+    const barColor = inSpec ? NexaColours.Green : NexaColours.Red
+    const barWidth = this.state.maxWidth ? barRawValue : 0
+    const barStyle = StyleSheet.flatten([styles.bar, { width: barWidth, backgroundColor: barColor }])
     return (
-      <PanGestureHandler
-        onGestureEvent={this.onPan}
-        activeOffsetX={[-10, 10]}
-        activeOffsetY={[-10, 10]}
-      >
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <Text style={styles.balance} >{value}</Text>
+      <View>
+        <View style={{ flexDirection: 'row' }}>
+          <Text style={styles.balance} >{scaleValue}</Text>
         </View>
-      </PanGestureHandler>
+        <PanGestureHandler onGestureEvent={this.onPan} activeOffsetX={[0, 0]} >
+          <View onLayout={this.onLayout} style={{ flexDirection: 'column', marginHorizontal: 12, backgroundColor: NexaColours.White, height: 30 }}>
+            <View style={barStyle} />
+            <View style={styles.limits} />
+          </View>
+        </PanGestureHandler>
+      </View>
     )
   }
 }

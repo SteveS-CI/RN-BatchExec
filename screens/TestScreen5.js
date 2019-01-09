@@ -70,7 +70,7 @@ export default class TestScreen5 extends React.Component {
           It could be used to connect to balance interfaces.
         </Text>
         <Text style={digitStyle}>{value}</Text>
-        <VirtualBalance target={250}/>
+        <VirtualBalance target={250} upper={260} lower={240}/>
       </View>
     )
   }
