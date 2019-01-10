@@ -5,18 +5,18 @@ import {optimalForeColor} from '../Utils/utils'
 import NexaColours from '../constants/NexaColours'
 import i18n from 'i18n-js'
 import ButtonStyles, {ButtonStyleProps} from '../constants/ButtonStyles'
-import {FontSizes} from '../constants/Layout'
+import {FontSizes, scale } from '../constants/Layout'
 
 const styles = 
   {
     container: {
-      margin: 8,
-      padding: 8,
+      margin: scale(8),
+      padding: scale(8),
       alignSelf: 'flex-start',
-      borderRadius: 12,
+      borderRadius: scale(12),
       elevation: 8,
       minWidth: '10%',
-      borderWidth: StyleSheet.hairlineWidth * 2,
+      borderWidth: scale(1),
       backgroundColor: NexaColours.GreyUltraLight
     },
     text: {
@@ -58,8 +58,12 @@ export class ActionButton extends PureComponent {
 
 export default class ActionButtons extends PureComponent {
 
+  static defaultProps = {
+    buttons: []
+  }
+
   static propTypes = {
-    buttons: PropTypes.arrayOf(ButtonStyleProps).isRequired,
+    buttons: PropTypes.arrayOf(ButtonStyleProps),
     onPress: PropTypes.func.isRequired
   }
 
