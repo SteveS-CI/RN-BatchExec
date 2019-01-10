@@ -12,7 +12,7 @@ const { PanGestureHandler, TapGestureHandler } = GestureHandler
 const styles = StyleSheet.create({
   balance: {
     flexDirection: 'row',
-    alignSelf: 'center',
+    alignSelf: 'flex-start',
     alignItems: 'center',
     backgroundColor: NexaColours.GreyUltraLight,
     margin: scale(12),
@@ -27,6 +27,10 @@ const styles = StyleSheet.create({
   uom: {
     marginLeft: scale(8),
     fontSize: FontSizes.standard, fontFamily: 'euro-demi'
+  },
+  info: {
+    flexDirection: 'column',
+    marginRight: scale(12)
   },
   outer: {
     flexDirection: 'column',
@@ -83,7 +87,7 @@ export default class VirtualBalance extends Component {
       delimiter: this.formats.thousands,
       precision: this.props.decimalPlaces
     }
-    this.format = value => i18n.toNumber(value, options)
+    this.formatNumber = value => i18n.toNumber(value, options)
 
     // Default values for limits (cannot use defaultProps coz I still want to know if limits were supplied)
     this.upper = this.props.upper ? this.props.upper : Number.MAX_VALUE
@@ -107,9 +111,21 @@ export default class VirtualBalance extends Component {
   onLayout = (e) => {
     // rawWidth = width of bar in device units
     this.physWidth = e.nativeEvent.layout.width
+    this.physThreshold = this.physWidth * 0.5
 
     // scaleWidth = width of bar in scale units (calculated from limits and target?)
-    this.scaleWidth = this.props.upper ? this.props.upper * 1.333333 : this.props.target * 1.333333
+    //this.scaleWidth = this.props.upper ? this.props.upper * 1.333333 : this.props.target * 1.333333
+
+    const limitDiff = (this.props.upper - this.props.lower)
+    // scaleThreshold = scaled point at which resolution changes
+    // i.e. values below will appear in the lower portion of the display bar
+    // and values above this value will appear in the upper portion
+    this.scaleThreshold = this.props.lower - (limitDiff / 2)
+
+    // coarseScale = physical units per scale unit (lower graph)
+    this.coarseScale = this.physThreshold / this.scaleThreshold
+    // fineScale = physical units per scale unit (upper graph)
+    this.fineScale = (this.physWidth - this.physThreshold) / (limitDiff * 2)
 
     // physical position of lower limit
     this.lowerPos = this.scaleToPhys(this.props.lower)
@@ -123,25 +139,39 @@ export default class VirtualBalance extends Component {
 
   // converts a (scale) value to a physical position
   scaleToPhys(scale) {
-    const phys = (scale / this.scaleWidth) * this.physWidth
-    return phys
+    if (scale > this.scaleThreshold) {
+      const phys = ((scale - this.scaleThreshold) * this.fineScale) + this.physThreshold
+      return phys
+    } else {
+      const phys = (scale * this.coarseScale)
+      return phys
+    }
   }
 
   // converts a physical position into a scale value
   physToScale(phys) {
-    const scale = (phys / this.physWidth) * this.scaleWidth
-    return scale
+    if (phys > this.physThreshold) {
+      const scale = ((phys - this.physThreshold) / this.fineScale) + this.scaleThreshold
+      return scale
+    } else {
+      const scale = (phys / this.coarseScale)
+      return scale
+    }
   }
 
   inSpec() {
     return (this.state.scaleValue >= this.lower) && (this.state.scaleValue <= this.upper)
   }
 
+  format(value) {
+    return this.formatNumber ? this.formatNumber(value) : '0'
+  }
+
   render() {
-    const displayValue = this.format ? this.format(this.state.scaleValue) : '0'
+    const displayValue = this.format(this.state.scaleValue)
     const inSpec = this.inSpec()
     const barColor = inSpec ? NexaColours.Green : NexaColours.Red
-    
+
     const barWidth = this.state.physBarPos
     const barStyle = StyleSheet.flatten([styles.bar, { width: barWidth, backgroundColor: barColor }])
 
@@ -153,12 +183,19 @@ export default class VirtualBalance extends Component {
 
     return (
       <View>
-        <TapGestureHandler onHandlerStateChange={this.onTapped} numberOfTaps={2} minPointers={1}>
-          <View style={balStyle}>
-            <Text style={styles.reading}>{displayValue}</Text>
-            <Text style={styles.uom}>{this.props.uom}</Text>
+        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+          <TapGestureHandler onHandlerStateChange={this.onTapped} numberOfTaps={2} minPointers={1}>
+            <View style={balStyle}>
+              <Text style={styles.reading}>{displayValue}</Text>
+              <Text style={styles.uom}>{this.props.uom}</Text>
+            </View>
+          </TapGestureHandler>
+          <View style={styles.info}>
+            {this.props.upper && <Text>Upper: {this.format(this.upper)}</Text>}
+            <Text>Target: {this.format(this.props.target)}</Text>
+            {this.props.lower && <Text>Lower: {this.format(this.lower)}</Text>}
           </View>
-        </TapGestureHandler>
+        </View>
         <PanGestureHandler onGestureEvent={this.onPan} activeOffsetX={[0, 0]} >
           <View onLayout={this.onLayout} style={styles.outer}>
             <View style={barStyle} />
