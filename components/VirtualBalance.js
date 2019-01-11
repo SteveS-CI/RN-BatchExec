@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-import { StyleSheet, View, Text, TouchableOpacity, TouchableWithoutFeedback } from 'react-native'
+import { StyleSheet, View, Text } from 'react-native'
 import PropTypes from 'prop-types'
 import { GestureHandler } from 'expo'
-import Layout, { scale, verticalScale, moderateScale, FontSizes } from '../constants/Layout'
+import { scale, verticalScale, FontSizes } from '../constants/Layout'
 import NexaColours from '../constants/NexaColours';
 import i18n from 'i18n-js'
 import { State } from 'react-native-gesture-handler';
@@ -29,8 +29,14 @@ const styles = StyleSheet.create({
     fontSize: FontSizes.standard, fontFamily: 'euro-demi'
   },
   info: {
+    borderColor: NexaColours.GreyDarkest,
+    borderRadius: scale(12), borderWidth: scale(1),
     flexDirection: 'column',
+    padding: scale(4),
     marginRight: scale(12)
+  },
+  infoText: {
+    fontSize: FontSizes.smallest
   },
   outer: {
     flexDirection: 'column',
@@ -71,11 +77,13 @@ export default class VirtualBalance extends Component {
   }
 
   static propTypes = {
-    target: PropTypes.number.isRequired,
-    lower: PropTypes.number,
-    upper: PropTypes.number,
-    decimalPlaces: PropTypes.number,
-    uom: PropTypes.string
+    scaleMax: PropTypes.number, // maximum scale limit
+    target: PropTypes.number, // measurement target
+    lower: PropTypes.number, // measurement lower limit
+    upper: PropTypes.number, // measurement upper limit
+    decimalPlaces: PropTypes.number, // decimal places to display
+    uom: PropTypes.string, // units of measure
+    factor: PropTypes.number // conversion factor (e.g. Kg -> L)
   }
 
   componentDidMount() {
@@ -88,17 +96,25 @@ export default class VirtualBalance extends Component {
       precision: this.props.decimalPlaces
     }
     this.formatNumber = value => i18n.toNumber(value, options)
+  }
 
-    // Default values for limits (cannot use defaultProps coz I still want to know if limits were supplied)
-    this.upper = this.props.upper ? this.props.upper : Number.MAX_VALUE
-    this.lower = this.props.lower ? this.props.lower : 0
+  componentDidUpdate(prevProps, prevState) {
+    // compare props
+    if ((prevProps.lower !== this.props.lower)
+      || (prevProps.target !== this.props.target)
+      || (prevProps.upper !== this.props.upper)
+      || (prevProps.uom !== this.props.uom)
+    ) {
+      this.reCalc()
+      this.setState({ physBarPos: this.scaleToPhys(this.state.scaleValue) })
+    }
   }
 
   onTapped = (e) => {
     const state = e.nativeEvent.state
-    if (state === State.END) {
-      const barVal = this.scaleToPhys(this.props.target)
-      this.setState({ physBarPos: barVal, scaleValue: this.props.target })
+    if (state === State.END && this.target) {
+      const barVal = this.scaleToPhys(this.target)
+      this.setState({ physBarPos: barVal, scaleValue: this.target })
     }
   }
 
@@ -111,50 +127,135 @@ export default class VirtualBalance extends Component {
   onLayout = (e) => {
     // rawWidth = width of bar in device units
     this.physWidth = e.nativeEvent.layout.width
+    this.reCalc()
+    this.setState({ physWidth: this.physWidth })
+  }
+
+  // returns a number (0-7) for each limit combination lower/target/upper
+  limitsToNumber() {
+    const L = this.props.lower ? 1 : 0
+    const T = this.props.target ? 2 : 0
+    const U = this.props.upper ? 4 : 0
+    return (L + T + U)
+  }
+
+  reCalc() {
+    const lower = this.props.lower
+    const upper = this.props.upper
+    const target = this.props.target
+    const scaleMax = this.props.scaleMax
+
+    this.forceCoarseScale = false
+    this.lowerPos = null
+    this.upperPos = null
+    this.targetPos = null
+
+    // split bar into 2 portions
     this.physThreshold = this.physWidth * 0.5
 
-    // scaleWidth = width of bar in scale units (calculated from limits and target?)
-    //this.scaleWidth = this.props.upper ? this.props.upper * 1.333333 : this.props.target * 1.333333
+    // Calculate scaleThreshold, coarseScale, fineScale, depending on what limits were supplied
+    const comb = this.limitsToNumber()
+    switch (comb) {
+      case 0: // no limits set
+      case 2: // only target set
+        this.forceCoarseScale = true
+        this.coarseScale = this.physWidth / scaleMax
+        this.lower = -Number.MAX_VALUE
+        this.upper = Number.MAX_VALUE
+        this.target = target
+        break
+      case 1: // only lower
+      case 4: // only upper
+        this.forceCoarseScale = true
+        this.coarseScale = this.physWidth / scaleMax
+        if (lower) {
+          this.lower = lower
+          this.upper = Number.MAX_VALUE
+        } else { // upper
+          this.upper = upper
+          this.lower = -Number.MAX_VALUE
+        }
+        this.target = null
+        break
+      case 5: // upper and lower (no target)
+      case 7: // all ULT
+        const limitDiff = (upper - lower)
+        // scaleThreshold = scaled point at which resolution changes
+        // i.e. values below will appear in the lower portion of the display bar
+        // and values above this value will appear in the upper portion
+        this.scaleThreshold = lower - (limitDiff / 2)
 
-    const limitDiff = (this.props.upper - this.props.lower)
-    // scaleThreshold = scaled point at which resolution changes
-    // i.e. values below will appear in the lower portion of the display bar
-    // and values above this value will appear in the upper portion
-    this.scaleThreshold = this.props.lower - (limitDiff / 2)
+        // coarseScale = physical units per scale unit (lower graph portion)
+        // fineScale = physical units per scale unit (upper graph portion)
+        this.coarseScale = this.physThreshold / this.scaleThreshold
+        this.fineScale = (this.physWidth - this.physThreshold) / (limitDiff * 2)
+        if (this.coarseScale > this.fineScale) {
+          this.coarseScale = this.physWidth / (upper + (limitDiff / 2))
+          this.forceCoarseScale = true
+        }
 
-    // coarseScale = physical units per scale unit (lower graph)
-    this.coarseScale = this.physThreshold / this.scaleThreshold
-    // fineScale = physical units per scale unit (upper graph)
-    this.fineScale = (this.physWidth - this.physThreshold) / (limitDiff * 2)
+        this.lower = lower
+        this.upper = upper
+        this.target = target ? target : null
+
+        break
+      case 3:
+        const tlDiff = target - lower
+        this.scaleThreshold = lower - tlDiff
+        this.coarseScale = this.physThreshold / this.scaleThreshold
+        this.fineScale = (this.physWidth - this.physThreshold) / (tlDiff * 4)
+        if (this.coarseScale > this.fineScale) {
+          this.coarseScale = this.physWidth / (tlDiff * 4)
+          this.forceCoarseScale = true
+        }
+        this.target = target
+        this.lower = lower
+        this.upper = Number.MAX_VALUE
+        break
+      case 6:
+        const utDiff = upper - target
+        this.scaleThreshold = target - (utDiff * 2)
+        this.coarseScale = this.physThreshold / this.scaleThreshold
+        this.fineScale = (this.physWidth - this.physThreshold) / (utDiff * 4)
+        if (this.coarseScale > this.fineScale) {
+          this.coarseScale = this.physWidth / (utDiff * 4)
+          this.forceCoarseScale = true
+        }
+        this.target = target
+        this.upper = upper
+        this.lower = -Number.MAX_VALUE
+        break
+      default:
+    }
 
     // physical position of lower limit
-    this.lowerPos = this.scaleToPhys(this.props.lower)
+    this.lowerPos = lower ? this.scaleToPhys(lower) : null
     // physical position of upper limit
-    this.upperPos = this.scaleToPhys(this.props.upper)
+    this.upperPos = upper ? this.scaleToPhys(upper) : null
     // physical position of target
-    this.targetPos = this.scaleToPhys(this.props.target)
+    this.targetPos = target ? this.scaleToPhys(target) : null
 
-    this.setState({ physWidth: this.physWidth })
+    return
   }
 
   // converts a (scale) value to a physical position
   scaleToPhys(scale) {
-    if (scale > this.scaleThreshold) {
-      const phys = ((scale - this.scaleThreshold) * this.fineScale) + this.physThreshold
+    if (scale < this.scaleThreshold || this.forceCoarseScale) {
+      const phys = (scale * this.coarseScale)
       return phys
     } else {
-      const phys = (scale * this.coarseScale)
+      const phys = ((scale - this.scaleThreshold) * this.fineScale) + this.physThreshold
       return phys
     }
   }
 
   // converts a physical position into a scale value
   physToScale(phys) {
-    if (phys > this.physThreshold) {
-      const scale = ((phys - this.physThreshold) / this.fineScale) + this.scaleThreshold
+    if (phys < this.physThreshold || this.forceCoarseScale) {
+      const scale = (phys / this.coarseScale)
       return scale
     } else {
-      const scale = (phys / this.coarseScale)
+      const scale = ((phys - this.physThreshold) / this.fineScale) + this.scaleThreshold
       return scale
     }
   }
@@ -184,26 +285,31 @@ export default class VirtualBalance extends Component {
     return (
       <View>
         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+
           <TapGestureHandler onHandlerStateChange={this.onTapped} numberOfTaps={2} minPointers={1}>
             <View style={balStyle}>
               <Text style={styles.reading}>{displayValue}</Text>
               <Text style={styles.uom}>{this.props.uom}</Text>
             </View>
           </TapGestureHandler>
+
           <View style={styles.info}>
-            {this.props.upper && <Text>Upper: {this.format(this.upper)}</Text>}
-            <Text>Target: {this.format(this.props.target)}</Text>
-            {this.props.lower && <Text>Lower: {this.format(this.lower)}</Text>}
+            {this.props.upper && <Text style={styles.infoText}>Upper: {this.format(this.props.upper)}</Text>}
+            {this.props.target && <Text style={styles.infoText}>Target: {this.format(this.props.target)}</Text>}
+            {this.props.lower && <Text style={styles.infoText}>Lower: {this.format(this.props.lower)}</Text>}
           </View>
+
         </View>
+
         <PanGestureHandler onGestureEvent={this.onPan} activeOffsetX={[0, 0]} >
           <View onLayout={this.onLayout} style={styles.outer}>
             <View style={barStyle} />
-            {this.props.lower && <View style={lowerStyle} />}
-            {this.props.upper && <View style={upperStyle} />}
-            <View style={targetStyle} />
+            {this.lowerPos && <View style={lowerStyle} />}
+            {this.upperPos && <View style={upperStyle} />}
+            {this.targetPos && <View style={targetStyle} />}
           </View>
         </PanGestureHandler>
+
       </View>
     )
   }

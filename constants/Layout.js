@@ -33,6 +33,7 @@ export const FontSizes = {
   listRow: moderateScale(12), // ScreenSize / 84,
   standard: moderateScale(16), // ScreenSize / 64,
   smaller: moderateScale(14), // ScreenSize / 72,
+  smallest: moderateScale(12), // ScreenSize / 72,
   larger: moderateScale(18),
   balance: moderateScale(40),
   iconButton: moderateScale(20), // ScreenSize / 48,
