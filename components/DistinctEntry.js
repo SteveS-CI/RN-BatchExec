@@ -48,7 +48,11 @@ export default class DistinctEntry extends PureComponent {
   }
 
   componentDidMount() {
-    this.onValueChange(this.props.entry.validation.choices[0])
+    if (this.props.value) {
+      this.onValueChange(this.props.value)
+    } else {
+      this.onValueChange(this.props.entry.validation.choices[0])
+    }
   }
 
   onValueChange = (itemValue, itemIndex) => {
@@ -66,7 +70,8 @@ export default class DistinctEntry extends PureComponent {
     const hasSuffix = entry.suffix ? true : false
     const validation = entry.validation
     const choices = validation.choices
-    const title = 'Title'//(entry.label ? entry.label : null) + (entry.suffix ? ' (' + entry.suffix + ')' : null)
+    const caption = (entry.label ? entry.label : '') + (entry.suffix ? ' (' + entry.suffix + ')' : '')
+    const title = caption ? caption : 'Select'
     return (
       <View style={styles.pickerContainer}>
         {hasLabel && <Text style={styles.pickerLabel}>{entry.label}</Text>}

@@ -7,16 +7,61 @@ import RoundedButton from '../components/RoundedButton'
 import Sockette from 'sockette'
 import NexaColours from '../constants/NexaColours';
 import VirtualBalance from '../components/VirtualBalance'
+import PickerSetting from '../components/PickerSetting'
+import DistinctEntry from '../components/DistinctEntry'
 import { scale, verticalScale } from '../constants/Layout'
 import { ScrollView } from 'react-native-gesture-handler';
+
+const targets = [
+  {label: 'None', value: null},
+  {label: '50', value: 50},
+  {label: '150', value: 150},
+  {label: '250', value: 250},
+  {label: '350', value: 350}
+]
+
+const lowers = [
+  {label: 'None', value: null},
+  {label: '150', value: 150},
+  {label: '200', value: 200},
+  {label: '240', value: 240},
+  {label: '245', value: 245},
+  {label: '350', value: 350}
+]
+
+const uppers = [
+  {label: 'None', value: null},
+  {label: '150', value: 150},
+  {label: '255', value: 255},
+  {label: '260', value: 260},
+  {label: '400', value: 400},
+  {label: '450', value: 450}
+]
+
+const scales = [
+  {label: '1', value: 1},
+  {label: '2', value: 2},
+  {label: '5', value: 5},
+  {label: '10', value: 10}
+]
+
+const dps = [
+  {label: '0', value: 0},
+  {label: '1', value: 1},
+  {label: '2', value: 2},
+  {label: '3', value: 3},
+  {label: '4', value: 4},
+]
 
 export default class TestScreen5 extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      lower: null, 
-      target: null, 
-      upper: null
+      L: 240,
+      T: 250,
+      U: 260,
+      sf: 1,
+      dp: 3
     }
   }
 
@@ -28,39 +73,77 @@ export default class TestScreen5 extends React.Component {
     if (name === 'cancel') this.props.navigation.navigate('Dev')
   }
 
+  onTargetChange = (item) => {
+    this.setState({T: item.value})
+  }
+
+  onLowerChange = (item) => {
+    this.setState({L: item.value})
+  }
+
+  onUpperChange = (item) => {
+    this.setState({U: item.value})
+  }
+
+  onScaleChange = (item) => {
+    this.setState({sf: item.value})
+  }
+
+  onDPChange = (item) => {
+    this.setState({dp: item.value})
+  }
+
   render() {
+    const scaleMax = 500
     return (
       <View style={{ flexDirection: 'column', flex: 1 }}>
         <ActionButtons onPress={this.onPress} />
         <ScrollView>
-          <Text style={{marginHorizontal: scale(12)}}>
-            A virtual ("keyboard") balance.
-            Move the slider to change the scale value.
-            Double-tap on the display to jump to target.
+          <Text style={{ marginHorizontal: scale(12) }}>
+            A virtual ("keyboard") balance.\n
+            Move the slider to change the scale value.\n
+            Double-tap on the display to jump to target,\n
+            (or the extreme left of the display to zero).
           </Text>
-          <ButtonBar justify='flex-start'>
-            <RoundedButton title='-|-|-' onPress={() => this.setState({lower: null, target: null, upper: null})}/>
-            <RoundedButton title='-|300|-' onPress={() => this.setState({lower: null, target: 300, upper: null})}/>
-            <RoundedButton title='300|-|-' onPress={() => this.setState({lower: 300, target: null, upper: null})}/>
-            <RoundedButton title='-|-|300' onPress={() => this.setState({lower: null, target: null, upper: 300})}/>
-          </ButtonBar>
-          <ButtonBar justify='flex-start'>
-            <RoundedButton title='280|300|-' onPress={() => this.setState({lower: 280, target: 300, upper: null})}/>
-            <RoundedButton title='-|300|320' onPress={() => this.setState({lower: null, target: 300, upper: 320})}/>
-            <RoundedButton title='280|-|320' onPress={() => this.setState({lower: 280, target: null, upper: 320})}/>
-            <RoundedButton title='280|300|320' onPress={() => this.setState({lower: 280, target: 300, upper: 320})}/>
-          </ButtonBar>
-          <ButtonBar justify='flex-start'>
-            <RoundedButton title='150|300|-' onPress={() => this.setState({lower: 150, target: 300, upper: null})}/>
-            <RoundedButton title='-|300|450' onPress={() => this.setState({lower: null, target: 300, upper: 450})}/>
-            <RoundedButton title='150|-|450' onPress={() => this.setState({lower: 150, target: null, upper: 450})}/>
-            <RoundedButton title='150|300|450' onPress={() => this.setState({lower: 150, target: 300, upper: 450})}/>
-          </ButtonBar>
-          <ButtonBar justify='flex-start'>
-            <RoundedButton title='200|300|320' onPress={() => this.setState({lower: 200, target: 300, upper: 320})}/>
-            <RoundedButton title='280|300|400' onPress={() => this.setState({lower: 280, target: 300, upper: 400})}/>
-          </ButtonBar>
-          <VirtualBalance scaleMax={500} target={this.state.target} upper={this.state.upper} lower={this.state.lower} decimalPlaces={3} uom='Kg'/>
+          <PickerSetting 
+              value={this.state.U}
+              values={uppers}
+              title='Upper'
+              onValueChange={this.onUpperChange}
+          />
+          <PickerSetting 
+              value={this.state.T}
+              values={targets}
+              title='Target'
+              onValueChange={this.onTargetChange}
+          />
+          <PickerSetting 
+              value={this.state.L}
+              values={lowers}
+              title='Lower'
+              onValueChange={this.onLowerChange}
+          />
+          <PickerSetting 
+              value={this.state.sf}
+              values={scales}
+              title='Scale Factor'
+              onValueChange={this.onScaleChange}
+          />
+          <PickerSetting 
+              value={this.state.dp}
+              values={dps}
+              title='Decimal Places'
+              onValueChange={this.onDPChange}
+          />
+          <VirtualBalance
+            scaleMax={scaleMax}
+            scaleFactor={this.state.sf}
+            target={this.state.T}
+            upperLimit={this.state.U}
+            lowerLimit={this.state.L}
+            decimalPlaces={this.state.dp}
+            uom='gr'
+            showBal />
         </ScrollView>
       </View>
     )

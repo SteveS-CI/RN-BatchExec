@@ -3,7 +3,7 @@ import { StyleSheet, TouchableWithoutFeedback, ScrollView, View, Modal, Text } f
 import PropTypes from 'prop-types'
 import NexaColours from '../constants/NexaColours';
 import RoundedButton from './RoundedButton';
-import { FontSizes, verticalScale, ScreenSize } from '../constants/Layout'
+import { scale, FontSizes, verticalScale, ScreenSize } from '../constants/Layout'
 import FontAwesome, { Icons } from 'react-native-fontawesome';
 
 const styles = StyleSheet.create(
@@ -11,7 +11,7 @@ const styles = StyleSheet.create(
     entry: {
       fontSize: FontSizes.standard,
       textAlignVertical: 'center',
-      paddingLeft: 8,
+      paddingLeft: scale(8),
       backgroundColor: NexaColours.GreyLight,
       borderColor: NexaColours.GreyDark,
       borderWidth: StyleSheet.hairlineWidth,
@@ -19,21 +19,21 @@ const styles = StyleSheet.create(
       minWidth: '33%'
     },
     title: {
-      fontSize: FontSizes.standard,
+      fontSize: FontSizes.smaller,
       fontWeight: 'bold',
       textAlign: 'center',
-      marginBottom: 8,
+      marginBottom: verticalScale(8),
       borderBottomWidth: StyleSheet.hairlineWidth
     },
     items: {
-      fontSize: FontSizes.standard,
-      marginVertical: 8
+      fontSize: FontSizes.smaller,
+      marginVertical: verticalScale(8)
     },
     arrow: {
-      fontSize: FontSizes.standard * 2,
+      fontSize: FontSizes.smaller * 2,
       color: NexaColours.Grey,
       backgroundColor: NexaColours.GreyLight,
-      paddingHorizontal: 4,
+      paddingHorizontal: scale(4),
       borderColor: NexaColours.GreyDark,
       borderWidth: StyleSheet.hairlineWidth,
       borderLeftWidth: 0
@@ -41,9 +41,9 @@ const styles = StyleSheet.create(
     inner: {
       position: 'absolute',
       flexDirection: 'column',
-      padding: 12,
+      padding: scale(12),
       backgroundColor: 'white',
-      borderRadius: 12,
+      borderRadius: scale(12),
       elevation: 8,
       alignSelf: 'center',
       minWidth: '30%',
@@ -69,6 +69,7 @@ class PickerInner extends Component {
     items: PropTypes.arrayOf(PropTypes.any),
     display: PropTypes.string,
     visible: PropTypes.bool,
+    value: PropTypes.any,
     onChange: PropTypes.func.isRequired
   }
 
@@ -160,7 +161,7 @@ export default class CustomPicker extends Component {
       <View style={{ flexDirection: 'row' }}>
         <Text style={styles.entry} onPress={this.startEdit}>{value}</Text>
         {arrow}
-        <PickerInner visible={this.state.editing} title={this.props.title} items={this.props.items} onChange={this.picked} display={this.props.display} />
+        <PickerInner visible={this.state.editing} value={value} title={this.props.title} items={this.props.items} onChange={this.picked} display={this.props.display} />
       </View>
     )
   }
