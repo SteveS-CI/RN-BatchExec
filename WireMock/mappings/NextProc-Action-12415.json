@@ -1,6 +1,6 @@
 {
 	"request": {
-		"url": "/api/Batch/Complete",
+		"url": "/api/Batch/NextProc",
 		"method": "POST",
 		"bodyPatterns" : [
 			{
@@ -8,7 +8,7 @@
 				"ignoreExtraElements" : true
 			},
 			{
-				"equalToJson" : {"procID": 12414},
+				"equalToJson" : {"procID": 12415},
 				"ignoreExtraElements" : true
 			}
 		]

@@ -9,7 +9,7 @@ import NexaColours from '../constants/NexaColours';
 import VirtualBalance from '../components/VirtualBalance'
 import PickerSetting from '../components/PickerSetting'
 import DistinctEntry from '../components/DistinctEntry'
-import { scale, verticalScale } from '../constants/Layout'
+import { scale, verticalScale, FontSizes } from '../constants/Layout'
 import { ScrollView } from 'react-native-gesture-handler';
 
 const targets = [
@@ -99,10 +99,10 @@ export default class TestScreen5 extends React.Component {
       <View style={{ flexDirection: 'column', flex: 1 }}>
         <ActionButtons onPress={this.onPress} />
         <ScrollView>
-          <Text style={{ marginHorizontal: scale(12) }}>
-            A virtual ("keyboard") balance.\n
-            Move the slider to change the scale value.\n
-            Double-tap on the display to jump to target,\n
+          <Text style={{ marginHorizontal: scale(12), fontSize: FontSizes.smaller }}>
+            A virtual ("keyboard") balance.
+            Move the slider to change the scale value.
+            Double-tap on the display to jump to target,
             (or the extreme left of the display to zero).
           </Text>
           <PickerSetting 
@@ -136,14 +136,16 @@ export default class TestScreen5 extends React.Component {
               onValueChange={this.onDPChange}
           />
           <VirtualBalance
-            scaleMax={scaleMax}
+            balanceMax={scaleMax}
+            balanceMode='measure'
             scaleFactor={this.state.sf}
             target={this.state.T}
             upperLimit={this.state.U}
             lowerLimit={this.state.L}
             decimalPlaces={this.state.dp}
-            uom='gr'
-            showBal />
+            balanceUOM='gr'
+            displayUOM='it'
+            showBalReading={true} />
         </ScrollView>
       </View>
     )

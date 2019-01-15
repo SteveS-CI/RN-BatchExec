@@ -73,8 +73,7 @@ export default class VirtualBalance extends Component {
       scaleValue: 0,
       rawScale: 0,
       physBarPos: 0,
-      physWidth: null,
-      error: null
+      physWidth: null
     }
   }
 
@@ -82,20 +81,23 @@ export default class VirtualBalance extends Component {
     decimalPlaces: 3,
     scaleFactor: 1,
     zeroOffset: 0,
-    tareOffset: 0
+    tareOffset: 0,
+    showBalReading: false
   }
 
   static propTypes = {
-    scaleMax: PropTypes.number, // maximum scale limit
+    balanceMax: PropTypes.number, // maximum scale capacity
+    balanceMode: PropTypes.oneOf(["zero","tare","measure"]).isRequired,
     target: PropTypes.number, // measurement target
     lowerLimit: PropTypes.number, // measurement lower limit
     upperLimit: PropTypes.number, // measurement upper limit
     decimalPlaces: PropTypes.number, // decimal places to display
-    uom: PropTypes.string, // units of measure
+    balanceUOM: PropTypes.string.isRequired, // balance units of measure (zero/tare)
+    displayUOM: PropTypes.string.isRequired, // display units of measure
     scaleFactor: PropTypes.number, // conversion factor (e.g. Kg -> L)
-    zeroOffset: PropTypes.number,
+    zeroOffset: PropTypes.number, 
     tareOffset: PropTypes.number,
-    showBal: PropTypes.bool // show the actual balance reading
+    showBalReading: PropTypes.bool // show the actual balance reading (for development only)
   }
 
   componentDidMount() {
@@ -109,13 +111,14 @@ export default class VirtualBalance extends Component {
     if ((prevProps.lowerLimit !== this.props.lowerLimit)
       || (prevProps.target !== this.props.target)
       || (prevProps.upperLimit !== this.props.upperLimit)
-      || (prevProps.uom !== this.props.uom)
+      || (prevProps.balanceUOM !== this.props.balanceUOM)
+      || (prevProps.displayUOM !== this.props.displayUOM)
       || (prevProps.scaleFactor !== this.props.scaleFactor)
       || (prevProps.decimalPlaces !== this.props.decimalPlaces)
     ) {
-      const error = !this.reCalc()
+      this.reCalc()
       this.makeFormatFunc()
-      this.setState({ physBarPos: this.scaleToPhys(this.state.scaleValue), error })
+      this.setState({ physBarPos: this.scaleToPhys(this.state.scaleValue)})
     }
   }
 
@@ -143,15 +146,15 @@ export default class VirtualBalance extends Component {
 
   onPan = (e) => {
     const x = e.nativeEvent.x
-    const { raw, scaled } = this.physToScale(x - 1)
+    const { raw, scaled } = this.physToScale(x)
     this.setState({ physBarPos: x, rawScale: raw, scaleValue: scaled })
   }
 
   onLayout = (e) => {
     // rawWidth = width of bar in device units
     this.physWidth = e.nativeEvent.layout.width
-    const error = !this.reCalc()
-    this.setState({ physWidth: this.physWidth, error })
+    this.reCalc()
+    this.setState({ physWidth: this.physWidth})
   }
 
   // returns a number (0-7) for each limit combination lower/target/upper
@@ -166,16 +169,12 @@ export default class VirtualBalance extends Component {
     const lower = this.props.lowerLimit
     const upper = this.props.upperLimit
     const target = this.props.target
-    const scaleMax = this.props.scaleMax
+    const balanceMax = this.props.balanceMax
 
     this.forceCoarseScale = false
     this.lowerPos = null
     this.upperPos = null
     this.targetPos = null
-
-    if ((lower && lower > target) || (upper && upper < target)) {
-      return false
-    }
 
     // split bar into 2 portions
     this.physThreshold = this.physWidth * 0.5
@@ -186,7 +185,7 @@ export default class VirtualBalance extends Component {
       case 0: // no limits set
       case 2: // only target set
         this.forceCoarseScale = true
-        this.coarseScale = this.physWidth / scaleMax
+        this.coarseScale = this.physWidth / balanceMax
         this.lower = -Number.MAX_VALUE
         this.upper = Number.MAX_VALUE
         this.target = target
@@ -194,7 +193,7 @@ export default class VirtualBalance extends Component {
       case 1: // only lower
       case 4: // only upper
         this.forceCoarseScale = true
-        this.coarseScale = this.physWidth / scaleMax
+        this.coarseScale = this.physWidth / balanceMax
         if (lower) {
           this.lower = lower
           this.upper = Number.MAX_VALUE
@@ -256,13 +255,13 @@ export default class VirtualBalance extends Component {
     }
 
     // physical position of lower limit
-    this.lowerPos = lower ? this.scaleToPhys(lower) : null
+    this.lowerPos = lower ? this.scaleToPhys(lower) - 1 : null
     // physical position of upper limit
-    this.upperPos = upper ? this.scaleToPhys(upper) : null
+    this.upperPos = upper ? this.scaleToPhys(upper) - 1 : null
     // physical position of target
-    this.targetPos = target ? this.scaleToPhys(target) : null
+    this.targetPos = target ? this.scaleToPhys(target) - 1 : null
 
-    return true
+    return
   }
 
   // converts a (balance) value to a physical position
@@ -302,7 +301,7 @@ export default class VirtualBalance extends Component {
   }
 
   render() {
-    const displayValue = this.state.error ? 'ERROR!' : this.format(this.state.scaleValue)
+    const displayValue = this.format(this.state.scaleValue)
     const inSpec = this.inSpec()
     const barColor = inSpec ? NexaColours.Green : NexaColours.Red
 
@@ -315,6 +314,8 @@ export default class VirtualBalance extends Component {
     const upperStyle = StyleSheet.flatten([styles.limit, { left: this.upperPos }])
     const targetStyle = StyleSheet.flatten([styles.target, { left: this.targetPos }])
 
+    const UOM = (this.props.balanceMode === 'measure') ? this.props.displayUOM : this.props.balanceUOM
+
     return (
       <View>
         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -322,7 +323,7 @@ export default class VirtualBalance extends Component {
           <TapGestureHandler onHandlerStateChange={this.onTapped} numberOfTaps={2} minPointers={1}>
             <View style={balStyle}>
               <Text style={styles.reading}>{displayValue}</Text>
-              <Text style={styles.uom}>{this.props.uom}</Text>
+              <Text style={styles.uom}>{UOM}</Text>
             </View>
           </TapGestureHandler>
 
@@ -340,7 +341,7 @@ export default class VirtualBalance extends Component {
             {this.lowerPos && <View style={lowerStyle} />}
             {this.upperPos && <View style={upperStyle} />}
             {this.targetPos && <View style={targetStyle} />}
-            {this.props.showBal && <Text style={{ margin: scale(6) }}>{i18n.toNumber(this.state.rawScale)}</Text>}
+            {this.props.showBalReading && <Text style={{ margin: scale(4), fontSize: FontSizes.standard }}>{i18n.toNumber(this.state.rawScale)} {this.props.balanceUOM}</Text>}
           </View>
         </PanGestureHandler>
 

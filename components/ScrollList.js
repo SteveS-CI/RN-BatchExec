@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import NexaColours from '../constants/NexaColours'
 import TextBar from '../components/TextBar'
 import {ListHeaderProps} from '../constants/DataProps'
-import {FontSizes} from '../constants/Layout'
+import {scale, FontSizes} from '../constants/Layout'
 
 const styles = StyleSheet.create({
   listContainer: {
@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
   },
   listColumn: {
     color: 'white',
-    padding: 8,
+    padding: scale(8),
     fontWeight: 'bold',
     borderColor: NexaColours.GreyDark,
     borderRightWidth: StyleSheet.hairlineWidth
@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
   },
   listRows: {
     color: NexaColours.GreyDark,
-    padding: 8,
+    padding: scale(8),
     borderColor: NexaColours.GreyDark,
     borderRightWidth: StyleSheet.hairlineWidth
   },
@@ -57,7 +57,7 @@ export class ListHeader extends Component {
     var cols = headers.map((col, idx) => {
       const flex = col.flex ? col.flex : 1
       const align = col.align ? col.align : "left"
-      const colStyle = StyleSheet.flatten([styles.listColumn, {flex: flex, textAlign: align, flexWrap: 'wrap'}]) // , fontSizeStyle])
+      const colStyle = StyleSheet.flatten([styles.listColumn, {flex: flex, textAlign: align, flexWrap: 'wrap'}, fontSizeStyle])
       return (
         <Text
           key={idx}
@@ -100,7 +100,7 @@ export class ListRow extends Component {
     const cols = headers.map((col, idx) => {
       const flex = col.flex ? col.flex : 1
       const align = col.align ? col.align : "left"
-      const colStyle = StyleSheet.flatten([styles.listRows, {flex: flex, textAlign: align}]) //, fontSizeStyle])
+      const colStyle = StyleSheet.flatten([styles.listRows, {flex: flex, textAlign: align}, fontSizeStyle])
       return (
         <Text key={idx} style={colStyle}>
           {data[col.source]}

@@ -102,6 +102,24 @@
 			"name": "Identify Equipment",
 			"notes": "Allow entry of equipment serial number",
 			"path": "Batch/Stage/Operation/"
+		},
+		{
+			"procID": 12415,
+			"name": "Balance Zero",
+			"notes": "Present user with a balance display and prompt to zero",
+			"path": "Batch/Stage/Operation/"
+		},
+		{
+			"procID": 12416,
+			"name": "Balance Tare",
+			"notes": "Present user with a balance display and prompt to tare",
+			"path": "Batch/Stage/Operation/"
+		},
+		{
+			"procID": 12417,
+			"name": "Balance Measure",
+			"notes": "Present user with a balance display for measurement",
+			"path": "Batch/Stage/Operation/"
 		}
 	]
 }

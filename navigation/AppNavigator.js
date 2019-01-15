@@ -1,6 +1,7 @@
 import React from 'react'
 import i18n from 'i18n-js'
 import {
+  createAppContainer,
   createStackNavigator,
   createDrawerNavigator,
   createBottomTabNavigator,
@@ -95,7 +96,7 @@ const dropDownItems = {
   actions: ['BatchList','LocationList','Settings','Login','EXIT', 'About', 'Dev']
 }
 
-export default AppNavigator = createStackNavigator(
+const MainNavigator = createStackNavigator(
   {
     BatchList: BatchSelectScreen,
     BatchDetail: BatchNav,
@@ -117,7 +118,7 @@ export default AppNavigator = createStackNavigator(
   },
   {
     headerMode: "float",
-    navigationOptions: ({ navigation, props }) => {
+    defaultNavigationOptions: ({ navigation, props }) => {
       return {
         title: i18n.t('screens.batchDetail.title'),
         ...mainStyle,
@@ -127,3 +128,7 @@ export default AppNavigator = createStackNavigator(
     }
   }
 )
+
+const AppNavigator = createAppContainer(MainNavigator)
+
+export default AppNavigator
