@@ -6,42 +6,53 @@ import { scale, verticalScale, FontSizes } from '../constants/Layout'
 import NexaColours from '../constants/NexaColours';
 import i18n from 'i18n-js'
 import { State } from 'react-native-gesture-handler';
+import ModalMessage from '../components/ModalMessage'
+import Sockette from 'sockette'
 
 const { PanGestureHandler, TapGestureHandler } = GestureHandler
 
 const styles = StyleSheet.create({
-  balance: {
+  balanceInfo: {
+    color: NexaColours.Blue,
+    marginTop: verticalScale(4),
+    marginHorizontal: scale(8),
+    fontSize: FontSizes.standard
+  },
+  balanceOuter: {
     flexDirection: 'row',
     alignSelf: 'flex-start',
     alignItems: 'center',
     backgroundColor: NexaColours.GreyUltraLight,
-    margin: scale(12),
+    marginHorizontal: scale(8),
+    marginVertical: verticalScale(4),
     paddingHorizontal: scale(8), paddingVertical: verticalScale(4),
     borderColor: NexaColours.GreyDarkest,
     borderRadius: scale(12), borderWidth: scale(3),
     minWidth: '50%'
   },
-  reading: {
+  balanceReading: {
+    color: NexaColours.GreyDarkest,
     fontSize: FontSizes.balance, fontFamily: 'euro-demi',
   },
   uom: {
     marginLeft: scale(8),
     fontSize: FontSizes.standard, fontFamily: 'euro-demi'
   },
-  info: {
+  limitInfo: {
     borderColor: NexaColours.GreyDarkest,
-    borderRadius: scale(12), borderWidth: scale(1),
+    borderRadius: scale(8), borderWidth: scale(1),
     flexDirection: 'column',
     padding: scale(4),
-    marginRight: scale(12)
+    marginRight: scale(8)
   },
-  infoText: {
+  limitText: {
     fontSize: FontSizes.smallest
   },
-  outer: {
+  barContainer: {
     flexDirection: 'column',
-    marginHorizontal: scale(12),
-    backgroundColor: NexaColours.White,
+    marginTop: verticalScale(4),
+    marginHorizontal: scale(8),
+    backgroundColor: NexaColours.GreyUltraLight,
     height: verticalScale(32),
     borderWidth: StyleSheet.hairlineWidth
   },
@@ -66,14 +77,16 @@ const styles = StyleSheet.create({
   }
 })
 
-export default class VirtualBalance extends Component {
+export default class Balance extends Component {
   constructor(props) {
     super(props)
     this.state = {
       scaleValue: 0,
       rawScale: 0,
       physBarPos: 0,
-      physWidth: null
+      physWidth: null,
+      stable: true,
+      error: null
     }
   }
 
@@ -86,8 +99,10 @@ export default class VirtualBalance extends Component {
   }
 
   static propTypes = {
+    balanceName: PropTypes.string,
+    balanceSource: PropTypes.string,
     balanceMax: PropTypes.number, // maximum scale capacity
-    balanceMode: PropTypes.oneOf(["zero","tare","measure"]).isRequired,
+    balanceMode: PropTypes.oneOf(["zero", "tare", "measure"]).isRequired,
     target: PropTypes.number, // measurement target
     lowerLimit: PropTypes.number, // measurement lower limit
     upperLimit: PropTypes.number, // measurement upper limit
@@ -95,15 +110,61 @@ export default class VirtualBalance extends Component {
     balanceUOM: PropTypes.string.isRequired, // balance units of measure (zero/tare)
     displayUOM: PropTypes.string.isRequired, // display units of measure
     scaleFactor: PropTypes.number, // conversion factor (e.g. Kg -> L)
-    zeroOffset: PropTypes.number, 
+    zeroOffset: PropTypes.number,
     tareOffset: PropTypes.number,
     showBalReading: PropTypes.bool // show the actual balance reading (for development only)
+  }
+
+  getReading() {
+    const stable = this.state.stable
+    const passed = this.inSpec()
+    const value = this.format(this.state.scaleValue)
+    if (!passed) {
+      this.setState({ error: "Balance reading is out of range" })
+    } else if (!stable) {
+      this.setState({ error: "Balance is unstable" })
+    }
+    const valid  = (stable && passed)
+    return { value, valid }
   }
 
   componentDidMount() {
     this.locale = i18n.currentLocale()
     this.formats = i18n.translations[this.locale].formats
+    this.reCalc()
     this.makeFormatFunc()
+
+    // Web socket
+    if (this.props.balanceSource) {
+      this.socket = new Sockette(`ws://${this.props.balanceSource}`, {
+        timeout: 5e3,
+        maxAttempts: 10,
+        //onopen: e => console.log('Connected!', e),
+        onmessage: this.socketReceive
+        //onreconnect: e => console.log('Reconnecting...', e),
+        //onmaximum: e => console.log('Stop Attempting!', e),
+        //onclose: e => console.log('Closed!', e),
+        //onerror: e => console.log('Error:', e)
+      })
+    }
+
+  }
+
+  socketConnected = () => {
+    console.log('Connected')
+  }
+
+  socketReceive = (e) => {
+    const value = Number.parseFloat(e.data) * this.props.scaleFactor
+    const barVal = this.scaleToPhys(value)
+    const { raw } = this.physToScale(barVal)
+    this.setState({ physBarPos: barVal, rawScale: raw, scaleValue: value })
+}
+
+  componentWillUnmount() {
+    if (this.socket) {
+      this.socket.close()
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -118,7 +179,7 @@ export default class VirtualBalance extends Component {
     ) {
       this.reCalc()
       this.makeFormatFunc()
-      this.setState({ physBarPos: this.scaleToPhys(this.state.scaleValue)})
+      this.setState({ physBarPos: this.scaleToPhys(this.state.scaleValue) })
     }
   }
 
@@ -136,11 +197,9 @@ export default class VirtualBalance extends Component {
     const state = e.nativeEvent.state
     if (state === State.END) {
       const adjustVal = e.nativeEvent.x < 50 ? 0 : this.target
-      if (this.target) {
-        const barVal = this.scaleToPhys(adjustVal)
-        const { raw } = this.physToScale(barVal)
-        this.setState({ physBarPos: barVal, rawScale: raw, scaleValue: adjustVal })
-      }
+      const barVal = this.scaleToPhys(adjustVal)
+      const { raw } = this.physToScale(barVal)
+      this.setState({ physBarPos: barVal, rawScale: raw, scaleValue: adjustVal })
     }
   }
 
@@ -154,14 +213,14 @@ export default class VirtualBalance extends Component {
     // rawWidth = width of bar in device units
     this.physWidth = e.nativeEvent.layout.width
     this.reCalc()
-    this.setState({ physWidth: this.physWidth})
+    this.setState({ physWidth: this.physWidth })
   }
 
   // returns a number (0-7) for each limit combination lower/target/upper
   limitsToNumber() {
-    const L = this.props.lowerLimit ? 1 : 0
-    const T = this.props.target ? 2 : 0
-    const U = this.props.upperLimit ? 4 : 0
+    const L = this.props.lowerLimit != null ? 1 : 0
+    const T = this.props.target != null ? 2 : 0
+    const U = this.props.upperLimit != null ? 4 : 0
     return (L + T + U)
   }
 
@@ -255,11 +314,11 @@ export default class VirtualBalance extends Component {
     }
 
     // physical position of lower limit
-    this.lowerPos = lower ? this.scaleToPhys(lower) - 1 : null
+    this.lowerPos = lower != null ? this.scaleToPhys(lower) - 1 : null
     // physical position of upper limit
-    this.upperPos = upper ? this.scaleToPhys(upper) - 1 : null
+    this.upperPos = upper != null ? this.scaleToPhys(upper) - 1 : null
     // physical position of target
-    this.targetPos = target ? this.scaleToPhys(target) - 1 : null
+    this.targetPos = target != null ? this.scaleToPhys(target) - 1 : null
 
     return
   }
@@ -301,6 +360,7 @@ export default class VirtualBalance extends Component {
   }
 
   render() {
+
     const displayValue = this.format(this.state.scaleValue)
     const inSpec = this.inSpec()
     const barColor = inSpec ? NexaColours.Green : NexaColours.Red
@@ -308,7 +368,7 @@ export default class VirtualBalance extends Component {
     const barWidth = this.state.physBarPos
     const barStyle = StyleSheet.flatten([styles.bar, { width: barWidth, backgroundColor: barColor }])
 
-    const balStyle = StyleSheet.flatten([styles.balance, { borderColor: barColor }])
+    const balStyle = StyleSheet.flatten([styles.balanceOuter, { borderColor: barColor }])
 
     const lowerStyle = StyleSheet.flatten([styles.limit, { left: this.lowerPos }])
     const upperStyle = StyleSheet.flatten([styles.limit, { left: this.upperPos }])
@@ -316,27 +376,35 @@ export default class VirtualBalance extends Component {
 
     const UOM = (this.props.balanceMode === 'measure') ? this.props.displayUOM : this.props.balanceUOM
 
+    const messageText = this.state.error ? {title: 'Balance Error', message: this.state.error} : null
+
     return (
-      <View>
+      <View style={{ flexDirection: 'column' }}>
+
+        <View style={{ flexDirection: 'row' }} >
+          {this.props.balanceName && <Text style={styles.balanceInfo}>{this.props.balanceName}</Text>}
+          {/*<Text style={styles.balanceInfo}>{this.props.balanceMax} {this.props.balanceUOM}</Text>*/}
+        </View>
+
         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
 
           <TapGestureHandler onHandlerStateChange={this.onTapped} numberOfTaps={2} minPointers={1}>
             <View style={balStyle}>
-              <Text style={styles.reading}>{displayValue}</Text>
+              <Text style={styles.balanceReading}>{displayValue}</Text>
               <Text style={styles.uom}>{UOM}</Text>
             </View>
           </TapGestureHandler>
 
-          <View style={styles.info}>
-            {this.props.upperLimit && <Text style={styles.infoText}>Upper: {this.format(this.props.upperLimit)}</Text>}
-            {this.props.target && <Text style={styles.infoText}>Target: {this.format(this.props.target)}</Text>}
-            {this.props.lowerLimit && <Text style={styles.infoText}>Lower: {this.format(this.props.lowerLimit)}</Text>}
+          <View style={styles.limitInfo}>
+            {(this.props.upperLimit != null) && <Text style={styles.limitText}>Upper: {this.format(this.props.upperLimit)}</Text>}
+            {(this.props.target != null) && <Text style={styles.limitText}>Target: {this.format(this.props.target)}</Text>}
+            {(this.props.lowerLimit != null) && <Text style={styles.limitText}>Lower: {this.format(this.props.lowerLimit)}</Text>}
           </View>
 
         </View>
 
         <PanGestureHandler onGestureEvent={this.onPan} activeOffsetX={[0, 0]} >
-          <View onLayout={this.onLayout} style={styles.outer}>
+          <View onLayout={this.onLayout} style={styles.barContainer}>
             <View style={barStyle} />
             {this.lowerPos && <View style={lowerStyle} />}
             {this.upperPos && <View style={upperStyle} />}
@@ -344,6 +412,7 @@ export default class VirtualBalance extends Component {
             {this.props.showBalReading && <Text style={{ margin: scale(4), fontSize: FontSizes.standard }}>{i18n.toNumber(this.state.rawScale)} {this.props.balanceUOM}</Text>}
           </View>
         </PanGestureHandler>
+        <ModalMessage messageText={messageText} onExit={() => this.setState({ error: null })} />
 
       </View>
     )

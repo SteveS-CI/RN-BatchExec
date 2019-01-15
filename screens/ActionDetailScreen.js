@@ -11,6 +11,7 @@ import ActionPrompt from '../components/ActionPrompt'
 import ActionEntry from '../components/ActionEntry'
 import ActionImage from '../components/ActionImage'
 import FileContent from '../components/FileContent'
+import Balance from '../components/Balance'
 
 import { methods } from '../api/api'
 import LoadingOverlay from '../components/LoadingOverlay';
@@ -112,6 +113,11 @@ export default class ActionDetailScreen extends Component {
           if (this.entry.validate(this.state.value)) {
             // Validated OK; complete
             this.completeAction()
+          }
+        } else if (this.balance) { // a balance was used; validate
+          const { value, valid } = this.balance.getReading()
+          if (valid) {
+            this.completeAction(value)
           }
         } else { //No entry, complete without validation
           this.completeAction()
@@ -251,6 +257,7 @@ export default class ActionDetailScreen extends Component {
           <ScrollView style={{ flex: 1 }}>
             <KeyboardAvoidingView keyboardVerticalOffset={300} behavior='position' enabled={true}>
               <ActionPrompt prompt={node.prompt} notes={node.notes} />
+              {node.balance && <Balance ref={(ref) => { this.balance = ref }} {...node.balance} />}
               <ScrollView horizontal={true}>
                 <AdditionPropDisplay node={node} />
                 <DischargePropDisplay node={node} />
@@ -262,7 +269,7 @@ export default class ActionDetailScreen extends Component {
                 <IdentEquipmentProps node={node} />
               </ScrollView>
               <ActionImage fileName={node.picture} />
-              <ActionEntry ref={(ref) => { this.entry = ref }} value={this.state.value} entry={entry} onChange={this.entryValueChange} enabled={enabled} useCamera={allowCam} />
+              {entry && <ActionEntry ref={(ref) => { this.entry = ref }} value={this.state.value} entry={entry} onChange={this.entryValueChange} enabled={enabled} useCamera={allowCam} />}
               <FileContent fileName={node.fileName} />
               <ErrorBar text={this.state.error} onPress={() => this.setState({ error: null })} />
               {/* These are all modal */}

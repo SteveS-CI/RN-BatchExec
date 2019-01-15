@@ -4,9 +4,8 @@ import ButtonStyles from '../constants/ButtonStyles'
 import ActionButtons from '../components/ActionButtons'
 import ButtonBar from '../components/ButtonBar'
 import RoundedButton from '../components/RoundedButton'
-import Sockette from 'sockette'
 import NexaColours from '../constants/NexaColours';
-import VirtualBalance from '../components/VirtualBalance'
+import Balance from '../components/Balance'
 import PickerSetting from '../components/PickerSetting'
 import DistinctEntry from '../components/DistinctEntry'
 import { scale, verticalScale, FontSizes } from '../constants/Layout'
@@ -14,6 +13,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 
 const targets = [
   {label: 'None', value: null},
+  {label: 'Zero', value: 0},
   {label: '50', value: 50},
   {label: '150', value: 150},
   {label: '250', value: 250},
@@ -22,6 +22,7 @@ const targets = [
 
 const lowers = [
   {label: 'None', value: null},
+  {label: '-10', value: -10},
   {label: '150', value: 150},
   {label: '200', value: 200},
   {label: '240', value: 240},
@@ -31,6 +32,7 @@ const lowers = [
 
 const uppers = [
   {label: 'None', value: null},
+  {label: '10', value: 10},
   {label: '150', value: 150},
   {label: '255', value: 255},
   {label: '260', value: 260},
@@ -135,7 +137,9 @@ export default class TestScreen5 extends React.Component {
               title='Decimal Places'
               onValueChange={this.onDPChange}
           />
-          <VirtualBalance
+          <Balance
+            balanceName='Keyboard1'
+            balanceSource='192.168.1.225:8800'
             balanceMax={scaleMax}
             balanceMode='measure'
             scaleFactor={this.state.sf}

@@ -3,7 +3,7 @@ import {StyleSheet, View, Modal, Text} from 'react-native'
 import PropTypes from 'prop-types'
 import NexaColours from '../constants/NexaColours';
 import RoundedButton from './RoundedButton';
-import { FontSizes } from '../constants/Layout'
+import { scale, verticalScale, FontSizes } from '../constants/Layout'
 
 const styles = StyleSheet.create(
   {
@@ -16,10 +16,10 @@ const styles = StyleSheet.create(
     },
     inner: {
       position: 'absolute',
-      padding: 12, marginTop: 120,
+      padding: scale(12), marginTop: verticalScale(80),
       backgroundColor: 'white',
       borderWidth: 1,
-      borderRadius: 12,
+      borderRadius: scale(12),
       borderColor: NexaColours.Blue,
       elevation: 8
     },
