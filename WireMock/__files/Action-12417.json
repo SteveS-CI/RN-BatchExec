@@ -24,16 +24,16 @@
       "path": "Batch/Stage/Operation/Balance Measure",
       "balance": {
         "balanceName": "Keyboard-1",
-        "balanceSource": "192.168.1.225:8800",
+        "balanceSource": "192.168.1.182:8900",
         "balanceMax": 500,
         "balanceMode": "measure",
-        "target": 100,
-        "lowerLimit": 80,
-        "upperLimit": 120,
+        "target": 250,
+        "lowerLimit": 240,
+        "upperLimit": 260,
         "decimalPlaces": 3,
         "balanceUOM": "Kg",
         "displayUOM": "Kg",
-        "scaleFactor": 0.5,
+        "scaleFactor": 1,
         "zeroOffset": 0.154,
         "tareOffset": 2.247
       }

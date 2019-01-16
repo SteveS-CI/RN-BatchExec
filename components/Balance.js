@@ -131,14 +131,15 @@ export default class Balance extends Component {
   componentDidMount() {
     this.locale = i18n.currentLocale()
     this.formats = i18n.translations[this.locale].formats
+    this.interactive = (this.props.balanceSource == null)
     this.reCalc()
     this.makeFormatFunc()
 
     // Web socket
-    if (this.props.balanceSource) {
+    if (!this.interactive) {
       this.socket = new Sockette(`ws://${this.props.balanceSource}`, {
         timeout: 5e3,
-        maxAttempts: 10,
+        maxAttempts: 20,
         //onopen: e => console.log('Connected!', e),
         onmessage: this.socketReceive
         //onreconnect: e => console.log('Reconnecting...', e),
@@ -146,6 +147,7 @@ export default class Balance extends Component {
         //onclose: e => console.log('Closed!', e),
         //onerror: e => console.log('Error:', e)
       })
+      this.timeOut = setTimeout(this.TimedOut, 5000);
     }
 
   }
@@ -154,7 +156,16 @@ export default class Balance extends Component {
     console.log('Connected')
   }
 
+  TimedOut = () => {
+    clearTimeout(this.timeOut)
+    this.setState({error: 'No response from balance'})
+  }
+
   socketReceive = (e) => {
+    if (this.timeOut) {
+      clearTimeout(this.timeOut)
+      this.timeOut = setTimeout(this.TimedOut, 2000);
+    }
     const value = Number.parseFloat(e.data) * this.props.scaleFactor
     const barVal = this.scaleToPhys(value)
     const { raw } = this.physToScale(barVal)
@@ -162,9 +173,8 @@ export default class Balance extends Component {
 }
 
   componentWillUnmount() {
-    if (this.socket) {
-      this.socket.close()
-    }
+    if (this.timeout) { clearTimeout(this.timeout) }
+    if (this.socket) { this.socket.close() }
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -383,12 +393,12 @@ export default class Balance extends Component {
 
         <View style={{ flexDirection: 'row' }} >
           {this.props.balanceName && <Text style={styles.balanceInfo}>{this.props.balanceName}</Text>}
-          {/*<Text style={styles.balanceInfo}>{this.props.balanceMax} {this.props.balanceUOM}</Text>*/}
+          <Text style={styles.balanceInfo}>{this.props.balanceMax} {this.props.balanceUOM}</Text>
         </View>
 
         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
 
-          <TapGestureHandler onHandlerStateChange={this.onTapped} numberOfTaps={2} minPointers={1}>
+          <TapGestureHandler onHandlerStateChange={this.onTapped} numberOfTaps={2} minPointers={1} enabled={this.interactive}>
             <View style={balStyle}>
               <Text style={styles.balanceReading}>{displayValue}</Text>
               <Text style={styles.uom}>{UOM}</Text>
@@ -403,13 +413,13 @@ export default class Balance extends Component {
 
         </View>
 
-        <PanGestureHandler onGestureEvent={this.onPan} activeOffsetX={[0, 0]} >
+        <PanGestureHandler onGestureEvent={this.onPan} activeOffsetX={[0, 0]} enabled={this.interactive}>
           <View onLayout={this.onLayout} style={styles.barContainer}>
             <View style={barStyle} />
             {this.lowerPos && <View style={lowerStyle} />}
             {this.upperPos && <View style={upperStyle} />}
             {this.targetPos && <View style={targetStyle} />}
-            {this.props.showBalReading && <Text style={{ margin: scale(4), fontSize: FontSizes.standard }}>{i18n.toNumber(this.state.rawScale)} {this.props.balanceUOM}</Text>}
+            {this.props.showBalReading && <Text style={{ margin: scale(4), fontSize: FontSizes.standard }}>{this.format(this.state.rawScale)} {this.props.balanceUOM}</Text>}
           </View>
         </PanGestureHandler>
         <ModalMessage messageText={messageText} onExit={() => this.setState({ error: null })} />
