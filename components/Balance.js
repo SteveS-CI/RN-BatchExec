@@ -124,7 +124,7 @@ export default class Balance extends Component {
     } else if (!stable) {
       this.setState({ error: "Balance is unstable" })
     }
-    const valid  = (stable && passed)
+    const valid = (stable && passed)
     return { value, valid }
   }
 
@@ -134,47 +134,84 @@ export default class Balance extends Component {
     this.interactive = (this.props.balanceSource == null)
     this.reCalc()
     this.makeFormatFunc()
+    this.connectSocket()
+  }
 
+  connectSocket() {
     // Web socket
     if (!this.interactive) {
       this.socket = new Sockette(`ws://${this.props.balanceSource}`, {
         timeout: 5e3,
-        maxAttempts: 20,
-        //onopen: e => console.log('Connected!', e),
-        onmessage: this.socketReceive
-        //onreconnect: e => console.log('Reconnecting...', e),
-        //onmaximum: e => console.log('Stop Attempting!', e),
-        //onclose: e => console.log('Closed!', e),
-        //onerror: e => console.log('Error:', e)
+        maxAttempts: 12,
+        onopen: e => this.socketOpen(e),
+        onmessage: e => this.socketReceive(e),
+        onreconnect: e => this.socketReconnect(e),
+        onmaximum: e => this.socketMaximum(e),
+        onclose: e => this.socketClose(e),
+        onerror: e => this.socketError(e)
       })
-      this.timeOut = setTimeout(this.TimedOut, 5000);
+      this.createTimeOut()
     }
-
   }
 
-  socketConnected = () => {
-    console.log('Connected')
+  socketOpen = (e) => {
+    console.log('Socket opened')
   }
 
-  TimedOut = () => {
-    clearTimeout(this.timeOut)
-    this.setState({error: 'No response from balance'})
+  socketMaximum = (e) => {
+    console.log('Socket maximum reached')
+  }
+
+  socketReconnect = (e) => {
+    console.log('Socket reconnected')
+  }
+
+  socketClose = (e) => {
+    console.log('Socket closed')
+  }
+
+  socketError = (e) => {
+    console.log('Socket error')
   }
 
   socketReceive = (e) => {
-    if (this.timeOut) {
-      clearTimeout(this.timeOut)
-      this.timeOut = setTimeout(this.TimedOut, 2000);
-    }
+    console.log('Balance:socketReceive', e.data)
+    this.createTimeOut()
     const value = Number.parseFloat(e.data) * this.props.scaleFactor
     const barVal = this.scaleToPhys(value)
     const { raw } = this.physToScale(barVal)
     this.setState({ physBarPos: barVal, rawScale: raw, scaleValue: value })
-}
+  }
+
+  timedOut = () => {
+    console.log('Balance:timeOut')
+    this.removeTimeOut()
+    this.setState({ error: 'No response from balance' })
+  }
+
+  createTimeOut() {
+    this.removeTimeOut()
+    this.timeOut = setTimeout(this.timedOut, 5000)
+  }
+
+  removeTimeOut() {
+    console.log('Balance:removeTimeOut')
+    if (this.timeOut !== null) {
+      clearTimeout(this.timeOut)
+      this.timeOut = null
+      console.log('timeout removed')
+    }
+  }
+
+  resume = () => {
+    this.setState({error: null})
+    this.connectSocket()
+  }
 
   componentWillUnmount() {
-    if (this.timeout) { clearTimeout(this.timeout) }
-    if (this.socket) { this.socket.close() }
+    console.log('Balance:CWU')
+    this.removeTimeOut()
+    if (this.socket) { this.socket.close(1000) }
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -386,7 +423,7 @@ export default class Balance extends Component {
 
     const UOM = (this.props.balanceMode === 'measure') ? this.props.displayUOM : this.props.balanceUOM
 
-    const messageText = this.state.error ? {title: 'Balance Error', message: this.state.error} : null
+    const messageText = this.state.error ? { title: 'Balance Error', message: this.state.error } : null
 
     return (
       <View style={{ flexDirection: 'column' }}>
@@ -422,7 +459,7 @@ export default class Balance extends Component {
             {this.props.showBalReading && <Text style={{ margin: scale(4), fontSize: FontSizes.standard }}>{this.format(this.state.rawScale)} {this.props.balanceUOM}</Text>}
           </View>
         </PanGestureHandler>
-        <ModalMessage messageText={messageText} onExit={() => this.setState({ error: null })} />
+        <ModalMessage messageText={messageText} onExit={this.resume} />
 
       </View>
     )

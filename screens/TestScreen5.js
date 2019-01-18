@@ -72,7 +72,9 @@ export default class TestScreen5 extends React.Component {
   }
 
   onPress = (name) => {
-    if (name === 'cancel') this.props.navigation.navigate('Dev')
+    if (name === 'cancel') {
+      this.props.navigation.navigate('Dev')
+    }
   }
 
   onTargetChange = (item) => {
@@ -109,8 +111,7 @@ export default class TestScreen5 extends React.Component {
           </Text>
           <PickerSetting 
               value={this.state.U}
-              values={uppers}
-              title='Upper'
+              values={uppers}              title='Upper'
               onValueChange={this.onUpperChange}
           />
           <PickerSetting 
@@ -139,7 +140,7 @@ export default class TestScreen5 extends React.Component {
           />
           <Balance
             balanceName='Keyboard1'
-            balanceSource='192.168.1.225:8800'
+            balanceSource='192.168.1.182:8900'
             balanceMax={scaleMax}
             balanceMode='measure'
             scaleFactor={this.state.sf}
