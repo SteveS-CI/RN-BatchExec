@@ -6372,11 +6372,6 @@ snapdragon@^0.8.1:
     source-map-resolve "^0.5.0"
     use "^3.1.0"
 
-sockette@^2.0.3:
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/sockette/-/sockette-2.0.3.tgz#f9204f67accae3505cacaf696c780d15fead22b1"
-  integrity sha512-sKe0MFmTRHRH6YNqG6HGyCf/cvyHJYSsHIHUOEazwJhqvnTokCMlGkVYs1r2Ac6eE0i5ep5wJcog7EYrfIDAKw==
-
 source-map-resolve@^0.5.0:
   version "0.5.2"
   resolved "https://registry.yarnpkg.com/source-map-resolve/-/source-map-resolve-0.5.2.tgz#72e2cc34095543e43b2c62b2c4c10d4a9054f259"

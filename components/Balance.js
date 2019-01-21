@@ -7,7 +7,6 @@ import NexaColours from '../constants/NexaColours';
 import i18n from 'i18n-js'
 import { State } from 'react-native-gesture-handler';
 import ModalMessage from '../components/ModalMessage'
-import Sockette from 'sockette'
 
 const { PanGestureHandler, TapGestureHandler } = GestureHandler
 
@@ -88,6 +87,7 @@ export default class Balance extends Component {
       stable: true,
       error: null
     }
+    this.active = false // when false DO NOT make changes to state
   }
 
   static defaultProps = {
@@ -116,6 +116,7 @@ export default class Balance extends Component {
   }
 
   getReading() {
+    if (!this.active) { return { value: 0, valid: false } }
     const stable = this.state.stable
     const passed = this.inSpec()
     const value = this.format(this.state.scaleValue)
@@ -137,33 +138,32 @@ export default class Balance extends Component {
     this.connectSocket()
   }
 
+  componentWillUnmount() {
+    this.active = false
+    this.removeTimeOut()
+    if (this.socket) {
+      this.socket.close(1000)
+      this.socket = null
+    }
+  }
+
   connectSocket() {
     // Web socket
     if (!this.interactive) {
-      this.socket = new Sockette(`ws://${this.props.balanceSource}`, {
-        timeout: 5e3,
-        maxAttempts: 12,
-        onopen: e => this.socketOpen(e),
-        onmessage: e => this.socketReceive(e),
-        onreconnect: e => this.socketReconnect(e),
-        onmaximum: e => this.socketMaximum(e),
-        onclose: e => this.socketClose(e),
-        onerror: e => this.socketError(e)
-      })
+
+      this.socket = new WebSocket(`ws://${this.props.balanceSource}`)
+      this.socket.addEventListener('open', (e) => this.socketOpen(e) )
+      this.socket.addEventListener('close', (e) => this.socketClose(e) )
+      this.socket.addEventListener('message', (e) => this.socketReceive(e) )
+      this.socket.addEventListener('error', (e) => this.socketError(e) )
+
       this.createTimeOut()
     }
+    this.active = true
   }
 
   socketOpen = (e) => {
     console.log('Socket opened')
-  }
-
-  socketMaximum = (e) => {
-    console.log('Socket maximum reached')
-  }
-
-  socketReconnect = (e) => {
-    console.log('Socket reconnected')
   }
 
   socketClose = (e) => {
@@ -175,7 +175,7 @@ export default class Balance extends Component {
   }
 
   socketReceive = (e) => {
-    console.log('Balance:socketReceive', e.data)
+    if (!this.active) return
     this.createTimeOut()
     const value = Number.parseFloat(e.data) * this.props.scaleFactor
     const barVal = this.scaleToPhys(value)
@@ -184,7 +184,7 @@ export default class Balance extends Component {
   }
 
   timedOut = () => {
-    console.log('Balance:timeOut')
+    if (!this.active) return
     this.removeTimeOut()
     this.setState({ error: 'No response from balance' })
   }
@@ -195,23 +195,15 @@ export default class Balance extends Component {
   }
 
   removeTimeOut() {
-    console.log('Balance:removeTimeOut')
     if (this.timeOut !== null) {
       clearTimeout(this.timeOut)
       this.timeOut = null
-      console.log('timeout removed')
     }
   }
 
   resume = () => {
-    this.setState({error: null})
+    this.setState({ error: null })
     this.connectSocket()
-  }
-
-  componentWillUnmount() {
-    console.log('Balance:CWU')
-    this.removeTimeOut()
-    if (this.socket) { this.socket.close(1000) }
   }
 
   componentDidUpdate(prevProps, prevState) {
