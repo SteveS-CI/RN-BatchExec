@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StyleSheet, View, Text } from 'react-native'
+import { StyleSheet, View, Text, ToastAndroid } from 'react-native'
 import PropTypes from 'prop-types'
 import { GestureHandler } from 'expo'
 import { scale, verticalScale, FontSizes } from '../constants/Layout'
@@ -152,12 +152,13 @@ export default class Balance extends Component {
     if (!this.interactive) {
 
       this.socket = new WebSocket(`ws://${this.props.balanceSource}`)
-      this.socket.addEventListener('open', (e) => this.socketOpen(e) )
-      this.socket.addEventListener('close', (e) => this.socketClose(e) )
-      this.socket.addEventListener('message', (e) => this.socketReceive(e) )
-      this.socket.addEventListener('error', (e) => this.socketError(e) )
+      this.socket.addEventListener('open', (e) => this.socketOpen(e))
+      this.socket.addEventListener('close', (e) => this.socketClose(e))
+      this.socket.addEventListener('message', (e) => this.socketReceive(e))
+      this.socket.addEventListener('error', (e) => this.socketError(e))
 
       this.createTimeOut()
+
     }
     this.active = true
   }
@@ -175,7 +176,7 @@ export default class Balance extends Component {
   }
 
   socketReceive = (e) => {
-    if (!this.active) return
+    if (!this.active) return // Ignore if no longer active
     this.createTimeOut()
     const value = Number.parseFloat(e.data) * this.props.scaleFactor
     const barVal = this.scaleToPhys(value)
@@ -184,8 +185,8 @@ export default class Balance extends Component {
   }
 
   timedOut = () => {
-    if (!this.active) return
     this.removeTimeOut()
+    if (!this.active) return
     this.setState({ error: 'No response from balance' })
   }
 
