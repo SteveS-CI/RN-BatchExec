@@ -102,7 +102,7 @@ export default class Balance extends Component {
     balanceName: PropTypes.string,
     balanceSource: PropTypes.string,
     balanceMax: PropTypes.number, // maximum scale capacity
-    balanceMode: PropTypes.oneOf(["zero", "tare", "measure"]).isRequired,
+    balanceMode: PropTypes.oneOf([0,1,2]).isRequired,
     target: PropTypes.number, // measurement target
     lowerLimit: PropTypes.number, // measurement lower limit
     upperLimit: PropTypes.number, // measurement upper limit
@@ -139,6 +139,10 @@ export default class Balance extends Component {
   }
 
   componentWillUnmount() {
+    this.disconnectSocket()
+  }
+
+  disconnectSocket() {
     this.active = false
     this.removeTimeOut()
     if (this.socket) {
@@ -178,10 +182,18 @@ export default class Balance extends Component {
   socketReceive = (e) => {
     if (!this.active) return // Ignore if no longer active
     this.createTimeOut()
-    const value = Number.parseFloat(e.data) * this.props.scaleFactor
-    const barVal = this.scaleToPhys(value)
-    const { raw } = this.physToScale(barVal)
-    this.setState({ physBarPos: barVal, rawScale: raw, scaleValue: value })
+    const value = Number.parseFloat(e.data)
+    let adjusted = value
+    if (this.props.balanceMode === 1) {
+      // Tare mode: only adjust with zeroOffset
+      adjusted = value - this.props.zeroOffset
+    }
+    if (this.props.balanceMode === 2) {
+      // Measure mode: adjust zeroOffset, tareOffset and scaleFactor
+      adjusted = (value - this.props.zeroOffset - this.props.tareOffset) * this.props.scaleFactor
+    }
+    const barVal = this.scaleToPhys(adjusted)
+    this.setState({ physBarPos: barVal, rawScale: value, scaleValue: adjusted })
   }
 
   timedOut = () => {
@@ -208,6 +220,14 @@ export default class Balance extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
+    if (prevProps.balanceSource !== this.props.balanceSource) {
+      this.interactive = (this.props.balanceSource == null)
+      if (this.interactive) {
+        this.disconnectSocket()
+      } else {
+        this.connectSocket()
+      }
+    }
     // compare props
     if ((prevProps.lowerLimit !== this.props.lowerLimit)
       || (prevProps.target !== this.props.target)
@@ -250,7 +270,7 @@ export default class Balance extends Component {
   }
 
   onLayout = (e) => {
-    // rawWidth = width of bar in device units
+    // physWidth = width of bar in device units
     this.physWidth = e.nativeEvent.layout.width
     this.reCalc()
     this.setState({ physWidth: this.physWidth })
@@ -269,16 +289,19 @@ export default class Balance extends Component {
     const upper = this.props.upperLimit
     const target = this.props.target
     const balanceMax = this.props.balanceMax
+    const scaling = this.props.scaleFactor
 
     this.forceCoarseScale = false
     this.lowerPos = null
     this.upperPos = null
     this.targetPos = null
-
+    
     // split bar into 2 portions
     this.physThreshold = this.physWidth * 0.5
 
-    // Calculate scaleThreshold, coarseScale, fineScale, depending on what limits were supplied
+    // Calculate scaleThreshold, coarseScale, fineScale, 
+    // depending on what limits were supplied
+    // and the balanceMode value
     const comb = this.limitsToNumber()
     switch (comb) {
       case 0: // no limits set
@@ -303,19 +326,19 @@ export default class Balance extends Component {
         this.target = null
         break
       case 5: // upper and lower (no target)
-      case 7: // all ULT
-        const limitDiff = (upper - lower)
+      case 7: // ALL, upper, lower and target
+        const limitDiff = (upper - lower) / scaling
         // scaleThreshold = scaled point at which resolution changes
         // i.e. values below will appear in the lower portion of the display bar
         // and values above this value will appear in the upper portion
-        this.scaleThreshold = lower - (limitDiff / 2)
+        this.scaleThreshold = (lower/scaling) - (limitDiff / 2)
 
         // coarseScale = physical units per scale unit (lower graph portion)
         // fineScale = physical units per scale unit (upper graph portion)
         this.coarseScale = this.physThreshold / this.scaleThreshold
         this.fineScale = (this.physWidth - this.physThreshold) / (limitDiff * 2)
         if (this.coarseScale > this.fineScale) {
-          this.coarseScale = this.physWidth / (upper + (limitDiff / 2))
+          this.coarseScale = this.physWidth / ((upper/scaling) + (limitDiff / 2))
           this.forceCoarseScale = true
         }
 
@@ -324,7 +347,7 @@ export default class Balance extends Component {
         this.target = target ? target : null
 
         break
-      case 3:
+      case 3: // lower and target
         const tlDiff = target - lower
         this.scaleThreshold = lower - tlDiff
         this.coarseScale = this.physThreshold / this.scaleThreshold
@@ -337,7 +360,7 @@ export default class Balance extends Component {
         this.lower = lower
         this.upper = Number.MAX_VALUE
         break
-      case 6:
+      case 6: // upper and target
         const utDiff = upper - target
         this.scaleThreshold = target - (utDiff * 2)
         this.coarseScale = this.physThreshold / this.scaleThreshold
@@ -365,7 +388,7 @@ export default class Balance extends Component {
 
   // converts a (balance) value to a physical position
   scaleToPhys(value) {
-    const scaled = (value * this.props.scaleFactor)
+    const scaled = (value / this.props.scaleFactor)
     if (scaled < this.scaleThreshold || this.forceCoarseScale) {
       const phys = (scaled * this.coarseScale)
       return phys
@@ -380,10 +403,12 @@ export default class Balance extends Component {
     const offset = phys
     if (offset < this.physThreshold || this.forceCoarseScale) {
       const scaleValue = (offset / this.coarseScale)
-      return { raw: scaleValue, scaled: scaleValue / this.props.scaleFactor }
+      const rawValue = scaleValue + this.props.zeroOffset + this.props.tareOffset
+      return { raw: rawValue, scaled: scaleValue * this.props.scaleFactor }
     } else {
       const scaleValue = ((offset - this.physThreshold) / this.fineScale) + this.scaleThreshold
-      return { raw: scaleValue, scaled: scaleValue / this.props.scaleFactor }
+      const rawValue = scaleValue + this.props.zeroOffset + this.props.tareOffset
+      return { raw: rawValue, scaled: scaleValue * this.props.scaleFactor }
     }
   }
 
@@ -414,7 +439,7 @@ export default class Balance extends Component {
     const upperStyle = StyleSheet.flatten([styles.limit, { left: this.upperPos }])
     const targetStyle = StyleSheet.flatten([styles.target, { left: this.targetPos }])
 
-    const UOM = (this.props.balanceMode === 'measure') ? this.props.displayUOM : this.props.balanceUOM
+    const UOM = (this.props.balanceMode === 2) ? this.props.displayUOM : this.props.balanceUOM
 
     const messageText = this.state.error ? { title: 'Balance Error', message: this.state.error } : null
 
@@ -424,6 +449,7 @@ export default class Balance extends Component {
         <View style={{ flexDirection: 'row' }} >
           {this.props.balanceName && <Text style={styles.balanceInfo}>{this.props.balanceName}</Text>}
           <Text style={styles.balanceInfo}>{this.props.balanceMax} {this.props.balanceUOM}</Text>
+          <Text style={styles.balanceInfo}>{['Zero','Tare','Measure'][this.props.balanceMode]} </Text>
         </View>
 
         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>

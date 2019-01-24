@@ -10,60 +10,23 @@ import PickerSetting from '../components/PickerSetting'
 import DistinctEntry from '../components/DistinctEntry'
 import { scale, verticalScale, FontSizes } from '../constants/Layout'
 import { ScrollView } from 'react-native-gesture-handler';
-
-const targets = [
-  {label: 'None', value: null},
-  {label: 'Zero', value: 0},
-  {label: '50', value: 50},
-  {label: '150', value: 150},
-  {label: '250', value: 250},
-  {label: '350', value: 350}
-]
-
-const lowers = [
-  {label: 'None', value: null},
-  {label: '-10', value: -10},
-  {label: '150', value: 150},
-  {label: '200', value: 200},
-  {label: '240', value: 240},
-  {label: '245', value: 245},
-  {label: '350', value: 350}
-]
-
-const uppers = [
-  {label: 'None', value: null},
-  {label: '10', value: 10},
-  {label: '150', value: 150},
-  {label: '255', value: 255},
-  {label: '260', value: 260},
-  {label: '400', value: 400},
-  {label: '450', value: 450}
-]
-
-const scales = [
-  {label: '1', value: 1},
-  {label: '2', value: 2},
-  {label: '5', value: 5},
-  {label: '10', value: 10}
-]
-
-const dps = [
-  {label: '0', value: 0},
-  {label: '1', value: 1},
-  {label: '2', value: 2},
-  {label: '3', value: 3},
-  {label: '4', value: 4},
-]
+import SwitchSetting from '../components/SwitchSetting';
 
 export default class TestScreen5 extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      L: 240,
-      T: 250,
-      U: 260,
+      mode: 2, // Measure
+      zeroOffset: 0,
+      tareOffset: 0,
+      T: 100,
+      L: 95,
+      U: 105,
       sf: 1,
-      dp: 3
+      dp: 3,
+      source: null,
+      interactive: true,
+      displayUOM: 'KG'
     }
   }
 
@@ -77,24 +40,87 @@ export default class TestScreen5 extends React.Component {
     }
   }
 
-  onTargetChange = (item) => {
-    this.setState({T: item.value})
+  setModeZero = () => {
+    this.setState(
+      {
+        mode: 0, // Zero
+        zeroOffset: 0,
+        tareOffset: 0,
+        T: 0,
+        L: -0.2,
+        U: 0.2,
+        sf: 1,
+        displayUOM: 'KG'
+      }
+    )
   }
 
-  onLowerChange = (item) => {
-    this.setState({L: item.value})
+  setModeTare = () => {
+    this.setState(
+      {
+        mode: 1, // Tare
+        zeroOffset: 0.1,
+        tareOffset: 0,
+        T: null,
+        L: null,
+        U: null,
+        sf: 1,
+        displayUOM: 'KG'
+      }
+    )
   }
 
-  onUpperChange = (item) => {
-    this.setState({U: item.value})
+  setModeMeasure = () => {
+    this.setState(
+      {
+        mode: 2, // Measure
+        zeroOffset: 0.1,
+        tareOffset: 2,
+        T: 100,
+        L: 95,
+        U: 105,
+        sf: 1,
+        displayUOM: 'L'
+      }
+    )
   }
 
-  onScaleChange = (item) => {
-    this.setState({sf: item.value})
+  setScaleLow = () => {
+    this.setState(
+      {
+        mode: 2, // Measure
+        zeroOffset: 0.1,
+        tareOffset: 2,
+        T: 100,
+        L: 95,
+        U: 105,
+        sf: 0.5,
+        displayUOM: 'L'
+      }
+    )
   }
 
-  onDPChange = (item) => {
-    this.setState({dp: item.value})
+  setScaleHigh = () => {
+    this.setState(
+      {
+        mode: 2, // Measure
+        zeroOffset: 0.1,
+        tareOffset: 2,
+        T: 100,
+        L: 95,
+        U: 105,
+        sf: 2,
+        displayUOM: 'L'
+      }
+    )
+  }
+
+  changeInteractive = (value) => {
+    if (value) {
+      this.setState({source: null, interactive: true})
+    } else {
+      this.setState({source: '192.168.1.182:8900', interactive: false})
+    }
   }
 
   render() {
@@ -109,47 +135,31 @@ export default class TestScreen5 extends React.Component {
             Double-tap on the display to jump to target,
             (or the extreme left of the display to zero).
           </Text>
-          <PickerSetting 
-              value={this.state.U}
-              values={uppers}              title='Upper'
-              onValueChange={this.onUpperChange}
-          />
-          <PickerSetting 
-              value={this.state.T}
-              values={targets}
-              title='Target'
-              onValueChange={this.onTargetChange}
-          />
-          <PickerSetting 
-              value={this.state.L}
-              values={lowers}
-              title='Lower'
-              onValueChange={this.onLowerChange}
-          />
-          <PickerSetting 
-              value={this.state.sf}
-              values={scales}
-              title='Scale Factor'
-              onValueChange={this.onScaleChange}
-          />
-          <PickerSetting 
-              value={this.state.dp}
-              values={dps}
-              title='Decimal Places'
-              onValueChange={this.onDPChange}
-          />
+          <View style={{flexDirection: 'row'}}>
+            <RoundedButton title='Mode: Zero' onPress={this.setModeZero} />
+            <RoundedButton title='Mode: Tare' onPress={this.setModeTare} />
+            <RoundedButton title='Mode: Measure' onPress={this.setModeMeasure} />
+          </View>
+          <View style={{flexDirection: 'row'}}>
+            <RoundedButton title='Normal: 1:1' onPress={this.setModeMeasure} />
+            <RoundedButton title='Scaled: (0.5)' onPress={this.setScaleLow} />
+            <RoundedButton title='Scaled: (2)' onPress={this.setScaleHigh} />
+          </View>
+          <SwitchSetting value={this.state.interactive} title='Interactive' onValueChange={this.changeInteractive}/>
           <Balance
             balanceName='Keyboard1'
-            balanceSource='192.168.1.182:8900'
+            balanceSource={this.state.source}
             balanceMax={scaleMax}
-            balanceMode='measure'
+            balanceMode={this.state.mode}
             scaleFactor={this.state.sf}
             target={this.state.T}
             upperLimit={this.state.U}
             lowerLimit={this.state.L}
             decimalPlaces={this.state.dp}
-            balanceUOM='gr'
-            displayUOM='it'
+            zeroOffset={this.state.zeroOffset}
+            tareOffset={this.state.tareOffset}
+            balanceUOM='KG'
+            displayUOM={this.state.displayUOM}
             showBalReading={true} />
         </ScrollView>
       </View>

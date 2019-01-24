@@ -34,8 +34,8 @@
         "balanceUOM": "Kg",
         "displayUOM": "Kg",
         "scaleFactor": 1,
-        "zeroOffset": 0.154,
-        "tareOffset": 2.247
+        "zeroOffset": 0.1,
+        "tareOffset": 2
       }
     }
   ]
