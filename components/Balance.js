@@ -1,14 +1,14 @@
-import React, { Component } from 'react'
-import { StyleSheet, View, Text, ToastAndroid } from 'react-native'
-import PropTypes from 'prop-types'
-import { GestureHandler } from 'expo'
-import { scale, verticalScale, FontSizes } from '../constants/Layout'
-import NexaColours from '../constants/NexaColours';
-import i18n from 'i18n-js'
-import { State } from 'react-native-gesture-handler';
-import ModalMessage from '../components/ModalMessage'
+import React, { Component } from "react";
+import { StyleSheet, View, Text, ToastAndroid } from "react-native";
+import PropTypes from "prop-types";
+import { GestureHandler } from "expo";
+import { scale, verticalScale, FontSizes } from "../constants/Layout";
+import NexaColours from "../constants/NexaColours";
+import i18n from "i18n-js";
+import { State } from "react-native-gesture-handler";
+import ModalMessage from "../components/ModalMessage";
 
-const { PanGestureHandler, TapGestureHandler } = GestureHandler
+const { PanGestureHandler, TapGestureHandler } = GestureHandler;
 
 const styles = StyleSheet.create({
   balanceInfo: {
@@ -18,29 +18,35 @@ const styles = StyleSheet.create({
     fontSize: FontSizes.standard
   },
   balanceOuter: {
-    flexDirection: 'row',
-    alignSelf: 'flex-start',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignSelf: "flex-start",
+    alignItems: "center",
     backgroundColor: NexaColours.GreyUltraLight,
     marginHorizontal: scale(8),
     marginVertical: verticalScale(4),
-    paddingHorizontal: scale(8), paddingVertical: verticalScale(4),
+    paddingHorizontal: scale(8),
+    paddingVertical: verticalScale(4),
     borderColor: NexaColours.GreyDarkest,
-    borderRadius: scale(12), borderWidth: scale(3),
-    minWidth: '50%'
+    borderRadius: scale(12),
+    borderWidth: scale(3),
+    minWidth: "50%"
   },
   balanceReading: {
     color: NexaColours.GreyDarkest,
-    fontSize: FontSizes.balance, fontFamily: 'euro-demi',
+    fontSize: FontSizes.balance,
+    fontFamily: "euro-demi"
   },
   uom: {
     marginLeft: scale(8),
-    fontSize: FontSizes.standard, fontFamily: 'euro-demi'
+    marginTop: scale(4),
+    fontSize: FontSizes.standard,
+    fontFamily: "euro-demi"
   },
   limitInfo: {
     borderColor: NexaColours.GreyDarkest,
-    borderRadius: scale(8), borderWidth: scale(1),
-    flexDirection: 'column',
+    borderRadius: scale(8),
+    borderWidth: scale(1),
+    flexDirection: "column",
     padding: scale(4),
     marginRight: scale(8)
   },
@@ -48,7 +54,7 @@ const styles = StyleSheet.create({
     fontSize: FontSizes.smallest
   },
   barContainer: {
-    flexDirection: 'column',
+    flexDirection: "column",
     marginTop: verticalScale(4),
     marginHorizontal: scale(8),
     backgroundColor: NexaColours.GreyUltraLight,
@@ -56,38 +62,48 @@ const styles = StyleSheet.create({
     borderWidth: StyleSheet.hairlineWidth
   },
   bar: {
-    position: 'absolute',
-    top: 0, left: 0,
-    height: verticalScale(32),
+    position: "absolute",
+    top: 0,
+    left: 0,
+    height: verticalScale(32)
   },
   limit: {
-    position: 'absolute',
+    position: "absolute",
     top: verticalScale(8),
     height: verticalScale(16),
     backgroundColor: NexaColours.Black,
     width: scale(1)
   },
   target: {
-    position: 'absolute',
+    position: "absolute",
     top: 0,
     height: verticalScale(32),
     backgroundColor: NexaColours.Black,
     width: scale(1)
+  },
+  indicator: {
+    alignSelf: 'center',
+    borderRadius: scale(8),
+    borderColor: NexaColours.Black,
+    borderWidth: scale(1),
+    padding: scale(4),
+    marginLeft: scale(4)
   }
-})
+});
 
 export default class Balance extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       scaleValue: 0,
       rawScale: 0,
       physBarPos: 0,
       physWidth: null,
       stable: true,
+      readToggle: false,
       error: null
-    }
-    this.active = false // when false DO NOT make changes to state
+    };
+    this.active = false; // when false DO NOT make changes to state
   }
 
   static defaultProps = {
@@ -96,13 +112,13 @@ export default class Balance extends Component {
     zeroOffset: 0,
     tareOffset: 0,
     showBalReading: false
-  }
+  };
 
   static propTypes = {
     balanceName: PropTypes.string,
     balanceSource: PropTypes.string,
     balanceMax: PropTypes.number, // maximum scale capacity
-    balanceMode: PropTypes.oneOf([0,1,2]).isRequired,
+    balanceMode: PropTypes.oneOf([0, 1, 2]).isRequired,
     target: PropTypes.number, // measurement target
     lowerLimit: PropTypes.number, // measurement lower limit
     upperLimit: PropTypes.number, // measurement upper limit
@@ -113,133 +129,145 @@ export default class Balance extends Component {
     zeroOffset: PropTypes.number,
     tareOffset: PropTypes.number,
     showBalReading: PropTypes.bool // show the actual balance reading (for development only)
-  }
+  };
 
   getReading() {
-    if (!this.active) { return { value: 0, valid: false } }
-    const stable = this.state.stable
-    const passed = this.inSpec()
-    const value = this.format(this.state.scaleValue)
-    if (!passed) {
-      this.setState({ error: "Balance reading is out of range" })
-    } else if (!stable) {
-      this.setState({ error: "Balance is unstable" })
+    if (!this.active) {
+      return { value: 0, valid: false };
     }
-    const valid = (stable && passed)
-    return { value, valid }
+    const stable = this.state.stable;
+    const passed = this.inSpec();
+    const value = this.format(this.state.scaleValue);
+    if (!passed) {
+      this.setState({ error: "Balance reading is out of range" });
+    } else if (!stable) {
+      this.setState({ error: "Balance is unstable" });
+    }
+    const valid = stable && passed;
+    return { value, valid };
   }
 
   componentDidMount() {
-    this.locale = i18n.currentLocale()
-    this.formats = i18n.translations[this.locale].formats
-    this.interactive = (this.props.balanceSource == null)
-    this.reCalc()
-    this.makeFormatFunc()
-    this.connectSocket()
+    this.locale = i18n.currentLocale();
+    this.formats = i18n.translations[this.locale].formats;
+    this.interactive = this.props.balanceSource == null;
+    this.reCalc();
+    this.makeFormatFunc();
+    this.connectSocket();
   }
 
   componentWillUnmount() {
-    this.disconnectSocket()
+    this.disconnectSocket();
   }
 
   disconnectSocket() {
-    this.active = false
-    this.removeTimeOut()
+    this.active = false;
+    this.removeTimeOut();
     if (this.socket) {
-      this.socket.close(1000)
-      this.socket = null
+      this.socket.close(1000);
+      this.socket = null;
     }
   }
 
   connectSocket() {
     // Web socket
     if (!this.interactive) {
+      this.socket = new WebSocket(`ws://${this.props.balanceSource}`);
+      this.socket.addEventListener("open", e => this.socketOpen(e));
+      this.socket.addEventListener("close", e => this.socketClose(e));
+      this.socket.addEventListener("message", e => this.socketReceive(e));
+      this.socket.addEventListener("error", e => this.socketError(e));
 
-      this.socket = new WebSocket(`ws://${this.props.balanceSource}`)
-      this.socket.addEventListener('open', (e) => this.socketOpen(e))
-      this.socket.addEventListener('close', (e) => this.socketClose(e))
-      this.socket.addEventListener('message', (e) => this.socketReceive(e))
-      this.socket.addEventListener('error', (e) => this.socketError(e))
-
-      this.createTimeOut()
-
+      this.createTimeOut();
     }
-    this.active = true
+    this.active = true;
   }
 
-  socketOpen = (e) => {
-    console.log('Socket opened')
-  }
+  socketOpen = e => {
+    console.log("Socket opened");
+  };
 
-  socketClose = (e) => {
-    console.log('Socket closed')
-  }
+  socketClose = e => {
+    console.log("Socket closed");
+  };
 
-  socketError = (e) => {
-    console.log('Socket error')
-  }
+  socketError = e => {
+    console.log("Socket error");
+  };
 
-  socketReceive = (e) => {
-    if (!this.active) return // Ignore if no longer active
-    this.createTimeOut()
-    const value = Number.parseFloat(e.data)
-    let adjusted = value
+  socketReceive = e => {
+    if (!this.active) return; // Ignore if no longer active
+    this.createTimeOut();
+    const value = Number.parseFloat(e.data);
+    let adjusted = value;
     if (this.props.balanceMode === 1) {
       // Tare mode: only adjust with zeroOffset
-      adjusted = value - this.props.zeroOffset
+      adjusted = value - this.props.zeroOffset;
     }
     if (this.props.balanceMode === 2) {
       // Measure mode: adjust zeroOffset, tareOffset and scaleFactor
-      adjusted = (value - this.props.zeroOffset - this.props.tareOffset) * this.props.scaleFactor
+      adjusted =
+        (value - this.props.zeroOffset - this.props.tareOffset) *
+        this.props.scaleFactor;
     }
-    const barVal = this.scaleToPhys(adjusted)
-    this.setState({ physBarPos: barVal, rawScale: value, scaleValue: adjusted })
-  }
+    const barVal = this.scaleToPhys(adjusted);
+    const tog = !this.state.readToggle
+    this.setState({
+      physBarPos: barVal,
+      rawScale: value,
+      scaleValue: adjusted,
+      readToggle: tog
+    });
+  };
 
   timedOut = () => {
-    this.removeTimeOut()
-    if (!this.active) return
-    this.setState({ error: 'No response from balance' })
-  }
+    this.removeTimeOut();
+    if (!this.active) return;
+    this.setState({ error: "No response from balance" });
+  };
 
   createTimeOut() {
-    this.removeTimeOut()
-    this.timeOut = setTimeout(this.timedOut, 5000)
+    this.removeTimeOut();
+    this.timeOut = setTimeout(this.timedOut, 5000);
   }
 
   removeTimeOut() {
     if (this.timeOut !== null) {
-      clearTimeout(this.timeOut)
-      this.timeOut = null
+      clearTimeout(this.timeOut);
+      this.timeOut = null;
     }
   }
 
   resume = () => {
-    this.setState({ error: null })
-    this.connectSocket()
-  }
+    this.setState({ error: null });
+    this.connectSocket();
+  };
 
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.balanceSource !== this.props.balanceSource) {
-      this.interactive = (this.props.balanceSource == null)
+      this.interactive = this.props.balanceSource === null;
       if (this.interactive) {
-        this.disconnectSocket()
+        this.disconnectSocket();
       } else {
-        this.connectSocket()
+        this.connectSocket();
       }
+      this.reCalc();
+      this.makeFormatFunc();
+      this.setState({ physBarPos: this.scaleToPhys(this.state.scaleValue) });
     }
     // compare props
-    if ((prevProps.lowerLimit !== this.props.lowerLimit)
-      || (prevProps.target !== this.props.target)
-      || (prevProps.upperLimit !== this.props.upperLimit)
-      || (prevProps.balanceUOM !== this.props.balanceUOM)
-      || (prevProps.displayUOM !== this.props.displayUOM)
-      || (prevProps.scaleFactor !== this.props.scaleFactor)
-      || (prevProps.decimalPlaces !== this.props.decimalPlaces)
+    if (
+      prevProps.lowerLimit !== this.props.lowerLimit ||
+      prevProps.target !== this.props.target ||
+      prevProps.upperLimit !== this.props.upperLimit ||
+      prevProps.balanceUOM !== this.props.balanceUOM ||
+      prevProps.displayUOM !== this.props.displayUOM ||
+      prevProps.scaleFactor !== this.props.scaleFactor ||
+      prevProps.decimalPlaces !== this.props.decimalPlaces
     ) {
-      this.reCalc()
-      this.makeFormatFunc()
-      this.setState({ physBarPos: this.scaleToPhys(this.state.scaleValue) })
+      this.reCalc();
+      this.makeFormatFunc();
+      this.setState({ physBarPos: this.scaleToPhys(this.state.scaleValue) });
     }
   }
 
@@ -249,238 +277,316 @@ export default class Balance extends Component {
       separator: this.formats.decimal,
       delimiter: this.formats.thousands,
       precision: this.props.decimalPlaces
-    }
-    this.formatNumber = value => i18n.toNumber(value, options)
+    };
+    this.formatNumber = value => i18n.toNumber(value, options);
   }
 
-  onTapped = (e) => {
-    const state = e.nativeEvent.state
+  onTapped = e => {
+    const state = e.nativeEvent.state;
     if (state === State.END) {
-      const adjustVal = e.nativeEvent.x < 50 ? 0 : this.target
-      const barVal = this.scaleToPhys(adjustVal)
-      const { raw } = this.physToScale(barVal)
-      this.setState({ physBarPos: barVal, rawScale: raw, scaleValue: adjustVal })
+      const adjustVal = e.nativeEvent.x < 50 ? 0 : this.target;
+      const barVal = this.scaleToPhys(adjustVal);
+      const { raw } = this.physToScale(barVal);
+      this.setState({
+        physBarPos: barVal,
+        rawScale: raw,
+        scaleValue: adjustVal
+      });
     }
-  }
+  };
 
-  onPan = (e) => {
-    const x = e.nativeEvent.x
-    const { raw, scaled } = this.physToScale(x)
-    this.setState({ physBarPos: x, rawScale: raw, scaleValue: scaled })
-  }
+  onPan = e => {
+    const x = e.nativeEvent.x;
+    const { raw, scaled } = this.physToScale(x);
+    this.setState({ physBarPos: x, rawScale: raw, scaleValue: scaled });
+  };
 
-  onLayout = (e) => {
+  onLayout = e => {
     // physWidth = width of bar in device units
-    this.physWidth = e.nativeEvent.layout.width
-    this.reCalc()
-    this.setState({ physWidth: this.physWidth })
-  }
+    this.physWidth = e.nativeEvent.layout.width;
+    this.reCalc();
+    this.setState({ physWidth: this.physWidth });
+  };
 
   // returns a number (0-7) for each limit combination lower/target/upper
   limitsToNumber() {
-    const L = this.props.lowerLimit != null ? 1 : 0
-    const T = this.props.target != null ? 2 : 0
-    const U = this.props.upperLimit != null ? 4 : 0
-    return (L + T + U)
+    const L = this.props.lowerLimit != null ? 1 : 0;
+    const T = this.props.target != null ? 2 : 0;
+    const U = this.props.upperLimit != null ? 4 : 0;
+    return L + T + U;
   }
 
   reCalc() {
-    const lower = this.props.lowerLimit
-    const upper = this.props.upperLimit
-    const target = this.props.target
-    const balanceMax = this.props.balanceMax
-    const scaling = this.props.scaleFactor
+    const lower = this.props.lowerLimit;
+    const upper = this.props.upperLimit;
+    const target = this.props.target;
+    const balanceMax = this.props.balanceMax;
+    const scaling = this.props.scaleFactor;
 
-    this.forceCoarseScale = false
-    this.lowerPos = null
-    this.upperPos = null
-    this.targetPos = null
-    
+    this.forceCoarseScale = false;
+    this.lowerPos = null;
+    this.upperPos = null;
+    this.targetPos = null;
+
     // split bar into 2 portions
-    this.physThreshold = this.physWidth * 0.5
+    this.physThreshold = this.physWidth * 0.5;
 
-    // Calculate scaleThreshold, coarseScale, fineScale, 
+    // Calculate scaleThreshold, coarseScale, fineScale,
     // depending on what limits were supplied
     // and the balanceMode value
-    const comb = this.limitsToNumber()
+    const comb = this.limitsToNumber();
     switch (comb) {
       case 0: // no limits set
+        this.forceCoarseScale = true;
+        this.coarseScale = this.physWidth / balanceMax;
+        this.lower = -Number.MAX_VALUE;
+        this.upper = Number.MAX_VALUE;
+        this.target = target;
+        break;
       case 2: // only target set
-        this.forceCoarseScale = true
-        this.coarseScale = this.physWidth / balanceMax
-        this.lower = -Number.MAX_VALUE
-        this.upper = Number.MAX_VALUE
-        this.target = target
-        break
+        this.forceCoarseScale = true;
+        this.coarseScale = this.physWidth / (target * 1.3333);
+        this.lower = -Number.MAX_VALUE;
+        this.upper = Number.MAX_VALUE;
+        this.target = target;
+        break;
       case 1: // only lower
       case 4: // only upper
-        this.forceCoarseScale = true
-        this.coarseScale = this.physWidth / balanceMax
+        this.forceCoarseScale = true;
         if (lower) {
-          this.lower = lower
-          this.upper = Number.MAX_VALUE
-        } else { // upper
-          this.upper = upper
-          this.lower = -Number.MAX_VALUE
+          this.coarseScale = this.physWidth / (lower * 2);
+          this.lower = lower;
+          this.upper = Number.MAX_VALUE;
+        } else {
+          // upper
+          this.coarseScale = this.physWidth / (upper * 2);
+          this.upper = upper;
+          this.lower = -Number.MAX_VALUE;
         }
-        this.target = null
-        break
+        this.target = null;
+        break;
       case 5: // upper and lower (no target)
       case 7: // ALL, upper, lower and target
-        const limitDiff = (upper - lower) / scaling
+        const limitDiff = (upper - lower) / scaling;
         // scaleThreshold = scaled point at which resolution changes
         // i.e. values below will appear in the lower portion of the display bar
         // and values above this value will appear in the upper portion
-        this.scaleThreshold = (lower/scaling) - (limitDiff / 2)
+        this.scaleThreshold = lower / scaling - limitDiff / 2;
 
         // coarseScale = physical units per scale unit (lower graph portion)
         // fineScale = physical units per scale unit (upper graph portion)
-        this.coarseScale = this.physThreshold / this.scaleThreshold
-        this.fineScale = (this.physWidth - this.physThreshold) / (limitDiff * 2)
+        this.coarseScale = this.physThreshold / this.scaleThreshold;
+        this.fineScale =
+          (this.physWidth - this.physThreshold) / (limitDiff * 2);
         if (this.coarseScale > this.fineScale) {
-          this.coarseScale = this.physWidth / ((upper/scaling) + (limitDiff / 2))
-          this.forceCoarseScale = true
+          this.coarseScale = this.physWidth / (upper / scaling + limitDiff / 2);
+          this.forceCoarseScale = true;
         }
 
-        this.lower = lower
-        this.upper = upper
-        this.target = target ? target : null
+        this.lower = lower;
+        this.upper = upper;
+        this.target = target ? target : null;
 
-        break
+        break;
       case 3: // lower and target
-        const tlDiff = target - lower
-        this.scaleThreshold = lower - tlDiff
-        this.coarseScale = this.physThreshold / this.scaleThreshold
-        this.fineScale = (this.physWidth - this.physThreshold) / (tlDiff * 4)
+        const tlDiff = target - lower;
+        this.scaleThreshold = lower - tlDiff;
+        this.coarseScale = this.physThreshold / this.scaleThreshold;
+        this.fineScale = (this.physWidth - this.physThreshold) / (tlDiff * 4);
         if (this.coarseScale > this.fineScale) {
-          this.coarseScale = this.physWidth / (tlDiff * 4)
-          this.forceCoarseScale = true
+          this.coarseScale = this.physWidth / (tlDiff * 4);
+          this.forceCoarseScale = true;
         }
-        this.target = target
-        this.lower = lower
-        this.upper = Number.MAX_VALUE
-        break
+        this.target = target;
+        this.lower = lower;
+        this.upper = Number.MAX_VALUE;
+        break;
       case 6: // upper and target
-        const utDiff = upper - target
-        this.scaleThreshold = target - (utDiff * 2)
-        this.coarseScale = this.physThreshold / this.scaleThreshold
-        this.fineScale = (this.physWidth - this.physThreshold) / (utDiff * 4)
+        const utDiff = upper - target;
+        this.scaleThreshold = target - utDiff * 2;
+        this.coarseScale = this.physThreshold / this.scaleThreshold;
+        this.fineScale = (this.physWidth - this.physThreshold) / (utDiff * 4);
         if (this.coarseScale > this.fineScale) {
-          this.coarseScale = this.physWidth / (utDiff * 4)
-          this.forceCoarseScale = true
+          this.coarseScale = this.physWidth / (utDiff * 4);
+          this.forceCoarseScale = true;
         }
-        this.target = target
-        this.upper = upper
-        this.lower = -Number.MAX_VALUE
-        break
+        this.target = target;
+        this.upper = upper;
+        this.lower = -Number.MAX_VALUE;
+        break;
       default:
     }
 
     // physical position of lower limit
-    this.lowerPos = lower != null ? this.scaleToPhys(lower) - 1 : null
+    this.lowerPos = lower != null ? this.scaleToPhys(lower) - 1 : null;
     // physical position of upper limit
-    this.upperPos = upper != null ? this.scaleToPhys(upper) - 1 : null
+    this.upperPos = upper != null ? this.scaleToPhys(upper) - 1 : null;
     // physical position of target
-    this.targetPos = target != null ? this.scaleToPhys(target) - 1 : null
+    this.targetPos = target != null ? this.scaleToPhys(target) - 1 : null;
 
-    return
+    return;
   }
 
   // converts a (balance) value to a physical position
   scaleToPhys(value) {
-    const scaled = (value / this.props.scaleFactor)
+    const scaled = value / this.props.scaleFactor;
     if (scaled < this.scaleThreshold || this.forceCoarseScale) {
-      const phys = (scaled * this.coarseScale)
-      return phys
+      const phys = scaled * this.coarseScale;
+      return phys;
     } else {
-      const phys = ((scaled - this.scaleThreshold) * this.fineScale) + this.physThreshold
-      return phys
+      const phys =
+        (scaled - this.scaleThreshold) * this.fineScale + this.physThreshold;
+      return phys;
     }
   }
 
   // converts a physical position into a scale value (raw and scaled)
   physToScale(phys) {
-    const offset = phys
+    const offset = phys;
     if (offset < this.physThreshold || this.forceCoarseScale) {
-      const scaleValue = (offset / this.coarseScale)
-      const rawValue = scaleValue + this.props.zeroOffset + this.props.tareOffset
-      return { raw: rawValue, scaled: scaleValue * this.props.scaleFactor }
+      const scaleValue = offset / this.coarseScale;
+      const rawValue =
+        scaleValue + this.props.zeroOffset + this.props.tareOffset;
+      return { raw: rawValue, scaled: scaleValue * this.props.scaleFactor };
     } else {
-      const scaleValue = ((offset - this.physThreshold) / this.fineScale) + this.scaleThreshold
-      const rawValue = scaleValue + this.props.zeroOffset + this.props.tareOffset
-      return { raw: rawValue, scaled: scaleValue * this.props.scaleFactor }
+      const scaleValue =
+        (offset - this.physThreshold) / this.fineScale + this.scaleThreshold;
+      const rawValue =
+        scaleValue + this.props.zeroOffset + this.props.tareOffset;
+      return { raw: rawValue, scaled: scaleValue * this.props.scaleFactor };
     }
   }
 
   inSpec() {
     if (this.state.error) {
-      return false
+      return false;
     } else {
-      return (this.state.scaleValue >= this.lower) && (this.state.scaleValue <= this.upper)
+      return (
+        this.state.scaleValue >= this.lower &&
+        this.state.scaleValue <= this.upper
+      );
     }
   }
 
   format(value) {
-    return this.formatNumber ? this.formatNumber(value) : '0'
+    return this.formatNumber ? this.formatNumber(value) : "0";
   }
 
   render() {
+    const displayValue = this.format(this.state.scaleValue);
+    const inSpec = this.inSpec();
+    const barColor = inSpec ? NexaColours.Green : NexaColours.Red;
 
-    const displayValue = this.format(this.state.scaleValue)
-    const inSpec = this.inSpec()
-    const barColor = inSpec ? NexaColours.Green : NexaColours.Red
+    const barWidth = this.state.physBarPos;
+    const barStyle = StyleSheet.flatten([
+      styles.bar,
+      { width: barWidth, backgroundColor: barColor }
+    ]);
 
-    const barWidth = this.state.physBarPos
-    const barStyle = StyleSheet.flatten([styles.bar, { width: barWidth, backgroundColor: barColor }])
+    const balStyle = StyleSheet.flatten([
+      styles.balanceOuter,
+      { borderColor: barColor }
+    ]);
 
-    const balStyle = StyleSheet.flatten([styles.balanceOuter, { borderColor: barColor }])
+    const lowerStyle = StyleSheet.flatten([
+      styles.limit,
+      { left: this.lowerPos }
+    ]);
+    const upperStyle = StyleSheet.flatten([
+      styles.limit,
+      { left: this.upperPos }
+    ]);
+    const targetStyle = StyleSheet.flatten([
+      styles.target,
+      { left: this.targetPos }
+    ]);
 
-    const lowerStyle = StyleSheet.flatten([styles.limit, { left: this.lowerPos }])
-    const upperStyle = StyleSheet.flatten([styles.limit, { left: this.upperPos }])
-    const targetStyle = StyleSheet.flatten([styles.target, { left: this.targetPos }])
+    const indColor = this.state.readToggle ? NexaColours.Yellow : NexaColours.White
+    const indicatorStyle = StyleSheet.flatten([styles.indicator, {backgroundColor: indColor}])
 
-    const UOM = (this.props.balanceMode === 2) ? this.props.displayUOM : this.props.balanceUOM
+    const UOM =
+      this.props.balanceMode === 2
+        ? this.props.displayUOM
+        : this.props.balanceUOM;
 
-    const messageText = this.state.error ? { title: 'Balance Error', message: this.state.error } : null
+    const messageText = this.state.error
+      ? { title: "Balance Error", message: this.state.error }
+      : null;
 
     return (
-      <View style={{ flexDirection: 'column' }}>
-
-        <View style={{ flexDirection: 'row' }} >
-          {this.props.balanceName && <Text style={styles.balanceInfo}>{this.props.balanceName}</Text>}
-          <Text style={styles.balanceInfo}>{this.props.balanceMax} {this.props.balanceUOM}</Text>
-          <Text style={styles.balanceInfo}>{['Zero','Tare','Measure'][this.props.balanceMode]} </Text>
+      <View style={{ flexDirection: "column" }}>
+        <View style={{ flexDirection: "row" }}>
+          {this.props.balanceName && (
+            <Text style={styles.balanceInfo}>{this.props.balanceName}</Text>
+          )}
+          <Text style={styles.balanceInfo}>
+            {this.props.balanceMax} {this.props.balanceUOM}
+          </Text>
+          <Text style={styles.balanceInfo}>
+            {["Zero", "Tare", "Measure"][this.props.balanceMode]}{" "}
+          </Text>
         </View>
 
-        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-
-          <TapGestureHandler onHandlerStateChange={this.onTapped} numberOfTaps={2} minPointers={1} enabled={this.interactive}>
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between"
+          }}
+        >
+          <TapGestureHandler
+            onHandlerStateChange={this.onTapped}
+            numberOfTaps={2}
+            minPointers={1}
+            enabled={this.interactive}
+          >
             <View style={balStyle}>
               <Text style={styles.balanceReading}>{displayValue}</Text>
-              <Text style={styles.uom}>{UOM}</Text>
+              <View style={{flexDirection: 'column'}}>
+                <View style={indicatorStyle}/>
+                <Text style={styles.uom}>{UOM}</Text>
+              </View>
             </View>
           </TapGestureHandler>
 
           <View style={styles.limitInfo}>
-            {(this.props.upperLimit != null) && <Text style={styles.limitText}>Upper: {this.format(this.props.upperLimit)}</Text>}
-            {(this.props.target != null) && <Text style={styles.limitText}>Target: {this.format(this.props.target)}</Text>}
-            {(this.props.lowerLimit != null) && <Text style={styles.limitText}>Lower: {this.format(this.props.lowerLimit)}</Text>}
+            {this.props.upperLimit != null && (
+              <Text style={styles.limitText}>
+                Upper: {this.format(this.props.upperLimit)}
+              </Text>
+            )}
+            {this.props.target != null && (
+              <Text style={styles.limitText}>
+                Target: {this.format(this.props.target)}
+              </Text>
+            )}
+            {this.props.lowerLimit != null && (
+              <Text style={styles.limitText}>
+                Lower: {this.format(this.props.lowerLimit)}
+              </Text>
+            )}
           </View>
-
         </View>
 
-        <PanGestureHandler onGestureEvent={this.onPan} activeOffsetX={[0, 0]} enabled={this.interactive}>
+        <PanGestureHandler
+          onGestureEvent={this.onPan}
+          activeOffsetX={[0, 0]}
+          enabled={this.interactive}
+        >
           <View onLayout={this.onLayout} style={styles.barContainer}>
             <View style={barStyle} />
             {this.lowerPos && <View style={lowerStyle} />}
             {this.upperPos && <View style={upperStyle} />}
             {this.targetPos && <View style={targetStyle} />}
-            {this.props.showBalReading && <Text style={{ margin: scale(4), fontSize: FontSizes.standard }}>{this.format(this.state.rawScale)} {this.props.balanceUOM}</Text>}
+            {this.props.showBalReading && (
+              <Text style={{ margin: scale(4), fontSize: FontSizes.standard }}>
+                {this.format(this.state.rawScale)} {this.props.balanceUOM}
+              </Text>
+            )}
           </View>
         </PanGestureHandler>
         <ModalMessage messageText={messageText} onExit={this.resume} />
-
       </View>
-    )
+    );
   }
 }

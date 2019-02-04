@@ -1,16 +1,25 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import ButtonStyles from '../constants/ButtonStyles'
+import { View, Text, ScrollView } from 'react-native';
 import ActionButtons from '../components/ActionButtons'
-import ButtonBar from '../components/ButtonBar'
 import RoundedButton from '../components/RoundedButton'
 import NexaColours from '../constants/NexaColours';
 import Balance from '../components/Balance'
-import PickerSetting from '../components/PickerSetting'
-import DistinctEntry from '../components/DistinctEntry'
-import { scale, verticalScale, FontSizes } from '../constants/Layout'
-import { ScrollView } from 'react-native-gesture-handler';
-import SwitchSetting from '../components/SwitchSetting';
+import CustomPicker from '../components/CustomPicker'
+import { scale, FontSizes } from '../constants/Layout'
+
+const limits = [
+  {label: '--- --- ---', value: {lower: null, target: null, upper: null}},
+  {label: '190 --- ---', value: {lower: 190, target: null, upper: null}},
+  {label: '--- 200 ---', value: {lower: null, target: 200, upper: null}},
+  {label: '190 200 ---', value: {lower: 190, target: 200, upper: null}},
+  {label: '--- --- 210', value: {lower: null, target: null, upper: 210}},
+  {label: '190 --- 210', value: {lower: 190, target: null, upper: 210}},
+  {label: '--- 200 210', value: {lower: null, target: 200, upper: 210}},
+  {label: '190 200 210', value: {lower: 190, target: 200, upper: 210}},
+  {label: '100 200 ---', value: {lower: 100, target: 200, upper: null}},
+  {label: '100 --- 300', value: {lower: 100, target: null, upper: 300}},
+  {label: '--- 200 300', value: {lower: null, target: 200, upper: 300}},
+]
 
 export default class TestScreen5 extends React.Component {
   constructor(props) {
@@ -26,7 +35,8 @@ export default class TestScreen5 extends React.Component {
       dp: 3,
       source: null,
       interactive: true,
-      displayUOM: 'KG'
+      displayUOM: 'KG',
+      pickerValue: limits[0]
     }
   }
 
@@ -46,9 +56,9 @@ export default class TestScreen5 extends React.Component {
         mode: 0, // Zero
         zeroOffset: 0,
         tareOffset: 0,
-        T: 0,
-        L: -0.2,
-        U: 0.2,
+        T: null,
+        L: null,
+        U: null,
         sf: 1,
         displayUOM: 'KG'
       }
@@ -61,7 +71,7 @@ export default class TestScreen5 extends React.Component {
         mode: 1, // Tare
         zeroOffset: 0.1,
         tareOffset: 0,
-        T: null,
+        T: 2,
         L: null,
         U: null,
         sf: 1,
@@ -115,12 +125,18 @@ export default class TestScreen5 extends React.Component {
     )
   }
 
-  changeInteractive = (value) => {
+  changeInteractive = () => {
+    const value = !this.state.interactive
     if (value) {
       this.setState({source: null, interactive: true})
     } else {
       this.setState({source: '192.168.1.182:8900', interactive: false})
     }
+  }
+
+  onPickerChange = (picked) => {
+    const {upper, lower, target} = picked.value
+    this.setState({pickerValue: picked, U: upper, L: lower, T: target})
   }
 
   render() {
@@ -145,7 +161,8 @@ export default class TestScreen5 extends React.Component {
             <RoundedButton title='Scaled: (0.5)' onPress={this.setScaleLow} />
             <RoundedButton title='Scaled: (2)' onPress={this.setScaleHigh} />
           </View>
-          <SwitchSetting value={this.state.interactive} title='Interactive' onValueChange={this.changeInteractive}/>
+          <CustomPicker title='Scale Limits' value={this.state.pickerValue} items={limits} display='label' onChange={this.onPickerChange} />
+          <RoundedButton title='Interactive' onPress={this.changeInteractive} backColor={this.state.interactive ? NexaColours.Yellow : NexaColours.YellowAccent}/>
           <Balance
             balanceName='Keyboard1'
             balanceSource={this.state.source}

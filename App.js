@@ -100,6 +100,7 @@ export default class App extends React.Component {
   };
 
   _handleFinishLoading = () => {
+    console.log('Checking API address')
     methods.getInfo().then((response) => {
       this.setState({ isLoadingComplete: true })
     }).catch((error) => {

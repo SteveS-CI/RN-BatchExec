@@ -3,18 +3,16 @@ import axios from "axios";
 import endpoints from "./endpoints";
 import i18n from 'i18n-js'
 
-const api = axios.create();
+const api = axios.create({timeout: 1000});
 
 export default api;
 
 function getData(request) {
-  //console.log('TX: ', JSON.stringify(request))
   return new Promise((resolve, reject) => {
     api
       .request(request)
       .then(response => {
         if (response.headers["content-type"].includes("application/json")) {
-          //console.log('RX: ', JSON.stringify(response.data))
           resolve(response.data);
         } else {
           reject(null);
