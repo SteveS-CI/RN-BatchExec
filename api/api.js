@@ -3,7 +3,7 @@ import axios from "axios";
 import endpoints from "./endpoints";
 import i18n from 'i18n-js'
 
-const api = axios.create({timeout: 1000});
+const api = axios.create({timeout: 5000});
 
 export default api;
 
