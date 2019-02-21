@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, View, Alert } from 'react-native';
+import {StyleSheet, View, Alert, ToastAndroid } from 'react-native';
 import {ScreenOrientation, Updates, AppLoading, Asset, Font, Icon } from 'expo';
 import AppNavigator from './navigation/AppNavigator';
 import i18n from 'i18n-js';
@@ -100,7 +100,7 @@ export default class App extends React.Component {
   };
 
   _handleFinishLoading = () => {
-    console.log('Checking API address')
+    ToastAndroid.showWithGravity("Contacting API Server...",ToastAndroid.LONG, ToastAndroid.CENTER);
     methods.getInfo().then((response) => {
       this.setState({ isLoadingComplete: true })
     }).catch((error) => {

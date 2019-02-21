@@ -145,6 +145,13 @@ export default {
     headers: postHeaders
   },
 
+  // {location}
+  testPrint: {
+    method: 'post',
+    url: 'Diagnostics/TestPrint',
+    headers: postHeaders
+  },
+
   //
   resetHardware: {
     method: 'post',
