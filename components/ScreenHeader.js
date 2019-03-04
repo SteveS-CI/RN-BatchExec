@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
+import PropTypes from 'prop-types';
+import i18n from 'i18n-js';
 import NexaColours from '../constants/NexaColours';
-import PropTypes from 'prop-types'
-import i18n from 'i18n-js'
-import RoundedButton from '../components/RoundedButton'
-import IconButton from '../components/IconButton'
-import {FontSizes} from '../constants/Layout'
+import RoundedButton from './RoundedButton';
+import IconButton from './IconButton';
+import { FontSizes } from '../constants/Layout';
 
 const styles = StyleSheet.create(
   {
@@ -16,13 +16,13 @@ const styles = StyleSheet.create(
       marginTop: 8,
       marginBottom: 0,
       textAlign: 'center',
-    }
-  }
-)
+    },
+  },
+);
 
 export default class ScreenHeader extends Component {
   constructor(props) {
-    super(props)
+    super(props);
   }
 
   static defaultProps = {
@@ -30,7 +30,7 @@ export default class ScreenHeader extends Component {
     showOK: true,
     onOK: this.nullFunction,
     onCancel: this.nullFunction,
-    okDisabled: false
+    okDisabled: false,
   }
 
   static propTypes = {
@@ -38,20 +38,22 @@ export default class ScreenHeader extends Component {
     okCaption: PropTypes.string,
     onOK: PropTypes.func,
     onCancel: PropTypes.func.isRequired,
-    okDisabled: PropTypes.bool
+    okDisabled: PropTypes.bool,
   }
 
   nullFunction = () => { }
 
   render() {
     const right = this.props.okCaption
-      ? <RoundedButton
-        backColor={NexaColours.AlertGreen}
-        title={this.props.okCaption}
-        onPress={this.props.onOK}
-        disabled={this.props.okDisabled}
-      />
-      : <Text style={{ width: 80 }} />
+      ? (
+        <RoundedButton
+          backColor={NexaColours.AlertGreen}
+          title={this.props.okCaption}
+          onPress={this.props.onOK}
+          disabled={this.props.okDisabled}
+        />
+      )
+      : <Text style={{ width: 80 }} />;
     return (
       <View style={{ flexDirection: 'row', justifyContent: 'space-between', backgroundColor: NexaColours.GreyLight }}>
         <RoundedButton
@@ -64,6 +66,6 @@ export default class ScreenHeader extends Component {
         </Text>
         {right}
       </View>
-    )
+    );
   }
 }

@@ -19,6 +19,6 @@ const CIColours = {
 
   // Recording Microbalances
   Turquoise: '#16A993',
-}
+};
 
-export default CIColours
+export default CIColours;

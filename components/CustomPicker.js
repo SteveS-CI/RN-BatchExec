@@ -1,10 +1,14 @@
-import React, { Component } from 'react'
-import { StyleSheet, TouchableWithoutFeedback, ScrollView, View, Modal, Text } from 'react-native'
-import PropTypes from 'prop-types'
+import React, { Component } from 'react';
+import {
+  StyleSheet, TouchableWithoutFeedback, ScrollView, View, Modal, Text,
+} from 'react-native';
+import PropTypes from 'prop-types';
+import FontAwesome, { Icons } from 'react-native-fontawesome';
 import NexaColours from '../constants/NexaColours';
 import RoundedButton from './RoundedButton';
-import { scale, FontSizes, verticalScale, ScreenSize } from '../constants/Layout'
-import FontAwesome, { Icons } from 'react-native-fontawesome';
+import {
+  scale, FontSizes, verticalScale, ScreenSize,
+} from '../constants/Layout';
 
 const styles = StyleSheet.create(
   {
@@ -16,18 +20,18 @@ const styles = StyleSheet.create(
       borderColor: NexaColours.GreyDark,
       borderWidth: StyleSheet.hairlineWidth,
       borderRightWidth: 0,
-      minWidth: '33%'
+      minWidth: '33%',
     },
     title: {
       fontSize: FontSizes.smaller,
       fontWeight: 'bold',
       textAlign: 'center',
       marginBottom: verticalScale(8),
-      borderBottomWidth: StyleSheet.hairlineWidth
+      borderBottomWidth: StyleSheet.hairlineWidth,
     },
     items: {
       fontSize: FontSizes.smaller,
-      marginVertical: verticalScale(8)
+      marginVertical: verticalScale(8),
     },
     arrow: {
       fontSize: FontSizes.smaller * 2,
@@ -36,7 +40,7 @@ const styles = StyleSheet.create(
       paddingHorizontal: scale(4),
       borderColor: NexaColours.GreyDark,
       borderWidth: StyleSheet.hairlineWidth,
-      borderLeftWidth: 0
+      borderLeftWidth: 0,
     },
     inner: {
       position: 'absolute',
@@ -47,9 +51,9 @@ const styles = StyleSheet.create(
       elevation: 8,
       alignSelf: 'center',
       minWidth: '30%',
-      //alignContent: 'center',
-      //justifyContent: 'center',
-      maxHeight: verticalScale(300)
+      // alignContent: 'center',
+      // justifyContent: 'center',
+      maxHeight: verticalScale(300),
     },
     outer: {
       position: 'absolute',
@@ -57,55 +61,52 @@ const styles = StyleSheet.create(
       bottom: 0,
       left: 0,
       right: 0,
-      backgroundColor: 'rgba(0,0,0,0.5)'
-    }
-  }
-)
+      backgroundColor: 'rgba(0,0,0,0.5)',
+    },
+  },
+);
 
 class PickerInner extends Component {
-
   static propTypes = {
     title: PropTypes.string,
     items: PropTypes.arrayOf(PropTypes.any),
     display: PropTypes.string,
     visible: PropTypes.bool,
     value: PropTypes.any,
-    onChange: PropTypes.func.isRequired
+    onChange: PropTypes.func.isRequired,
   }
 
   valueChange = (value) => {
-    this.props.onChange(value)
+    this.props.onChange(value);
   }
 
   onCancel = () => {
-    this.props.onChange(null)
+    this.props.onChange(null);
   }
 
   getItems() {
-    const items = this.props.items
+    const { items } = this.props;
     const list = items.map((item, idx) => {
-      const display = this.props.display ? item[this.props.display] : item
-      return <Text key={idx} style={styles.items} onPress={() => this.valueChange(item)}>{display}</Text>
-    }
-    )
+      const display = this.props.display ? item[this.props.display] : item;
+      return <Text key={idx} style={styles.items} onPress={() => this.valueChange(item)}>{display}</Text>;
+    });
     return (
       <ScrollView style={{ maxHeight: ScreenSize * 0.5 }}>
         {list}
       </ScrollView>
-    )
+    );
   }
 
   render() {
-    const visible = this.props.visible
+    const { visible } = this.props;
     if (visible) {
-      const title = this.props.title
-      const list = this.getItems()
+      const { title } = this.props;
+      const list = this.getItems();
       return (
-        <Modal onRequestClose={() => this.onCancel()} transparent={true}>
+        <Modal onRequestClose={() => this.onCancel()} transparent>
 
           <TouchableWithoutFeedback onPress={() => this.onCancel()}>
-            <View style={styles.outer}>
-            </View>
+            <View style={styles.outer} />
           </TouchableWithoutFeedback>
 
           <View style={styles.inner}>
@@ -114,26 +115,25 @@ class PickerInner extends Component {
           </View>
 
         </Modal>
-      )
-    } else {
-      return null
+      );
     }
+    return null;
   }
 }
 
 export default class CustomPicker extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = (
       {
         value: null,
-        editing: false
+        editing: false,
       }
-    )
+    );
   }
 
   static defaultProps = {
-    display: null
+    display: null,
   }
 
   static propTypes = {
@@ -141,30 +141,29 @@ export default class CustomPicker extends Component {
     items: PropTypes.arrayOf(PropTypes.any),
     display: PropTypes.string,
     value: PropTypes.any,
-    onChange: PropTypes.func.isRequired
+    onChange: PropTypes.func.isRequired,
   }
 
   picked = (value) => {
-    const newVal = value ? value : this.state.value
-    this.props.onChange(newVal)
-    this.setState({ value: newVal, editing: false })
+    const newVal = value || this.state.value;
+    this.props.onChange(newVal);
+    this.setState({ value: newVal, editing: false });
   }
 
   startEdit = () => {
-    this.setState({ editing: true })
+    this.setState({ editing: true });
   }
 
   render() {
-    const arrow = <FontAwesome style={styles.arrow} onPress={this.startEdit}>{Icons.caretDown}</FontAwesome>
-    const value = this.props.display ? this.props.value[this.props.display] : this.props.value
-    console.log(value)
+    const arrow = <FontAwesome style={styles.arrow} onPress={this.startEdit}>{Icons.caretDown}</FontAwesome>;
+    const value = this.props.display ? this.props.value[this.props.display] : this.props.value;
+    console.log(value);
     return (
       <View style={{ flexDirection: 'row' }}>
         <Text style={styles.entry} onPress={this.startEdit}>{value}</Text>
         {arrow}
         <PickerInner visible={this.state.editing} value={value} title={this.props.title} items={this.props.items} onChange={this.picked} display={this.props.display} />
       </View>
-    )
+    );
   }
-
 }

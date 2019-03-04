@@ -96,6 +96,12 @@
 			"name": "Entry (custom)",
 			"notes": "Checked against regular expression",
 			"path": "Batch/Stage/Operation/"
+		},
+		{
+			"procID": 12614,
+			"name": "Entry (multiple)",
+			"notes": "Multiple entries",
+			"path": "Batch/Stage/Operation/"
 		}
 	]
 }

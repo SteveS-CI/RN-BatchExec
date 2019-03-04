@@ -1,63 +1,72 @@
-import React, { PureComponent } from 'react'
-import { StyleSheet, View, Text, TextInput } from 'react-native'
-import PropTypes from 'prop-types'
-import * as DataProps from '../constants/DataProps'
-import ErrorBar from './ErrorBar'
-import NexaColours from '../constants/NexaColours'
+import React, { PureComponent } from 'react';
+import {
+  StyleSheet, View, Text, TextInput,
+} from 'react-native';
+import PropTypes from 'prop-types';
+import i18n from 'i18n-js';
+import parseDecimalNumber from 'parse-decimal-number';
+import * as DataProps from '../constants/DataProps';
+import ErrorBar from './ErrorBar';
+import NexaColours from '../constants/NexaColours';
 import IconButton from './IconButton';
 import BarcodeReader from './BarcodeReader';
-import {FontSizes, scale} from '../constants/Layout'
+import { FontSizes, scale } from '../constants/Layout';
 
-import i18n from 'i18n-js'
-import parseDecimalNumber from 'parse-decimal-number'
 
-const inputBorderWidth = StyleSheet.hairlineWidth
-const inputBorderRadius = scale(8)
+const inputBorderWidth = StyleSheet.hairlineWidth;
+const inputBorderRadius = scale(8);
 
 const styles = StyleSheet.create(
   {
     inputContainer: {
       flexDirection: 'row',
-      marginHorizontal: scale(8), marginTop: scale(8), padding: 0,
-      alignSelf: 'flex-start'
+      marginHorizontal: scale(8),
+      marginTop: scale(8),
+      padding: 0,
+      alignSelf: 'flex-start',
     },
     inputLabel: {
       backgroundColor: NexaColours.GreyAccent,
-      paddingHorizontal: scale(8), paddingVertical: scale(4),
+      paddingHorizontal: scale(8),
+      paddingVertical: scale(4),
       textAlignVertical: 'center',
-      borderColor: NexaColours.GreyDark, borderWidth: inputBorderWidth,
+      borderColor: NexaColours.GreyDark,
+      borderWidth: inputBorderWidth,
       borderTopLeftRadius: inputBorderRadius,
       borderBottomLeftRadius: inputBorderRadius,
-      fontSize: FontSizes.standard
+      fontSize: FontSizes.standard,
     },
     inputSuffix: {
       backgroundColor: NexaColours.GreyAccent,
-      paddingHorizontal: scale(8), paddingVertical: scale(4),
+      paddingHorizontal: scale(8),
+      paddingVertical: scale(4),
       textAlignVertical: 'center',
-      borderColor: NexaColours.GreyDark, borderWidth: inputBorderWidth,
+      borderColor: NexaColours.GreyDark,
+      borderWidth: inputBorderWidth,
       borderTopRightRadius: inputBorderRadius,
       borderBottomRightRadius: inputBorderRadius,
-      fontSize: FontSizes.standard
+      fontSize: FontSizes.standard,
     },
     inputBox: {
       borderColor: NexaColours.GreyDark,
       borderBottomWidth: inputBorderWidth,
       borderTopWidth: inputBorderWidth,
-      paddingHorizontal: scale(8), paddingVertical: scale(4),
+      paddingHorizontal: scale(8),
+      paddingVertical: scale(4),
       minWidth: '30%',
       fontSize: FontSizes.standard,
-    }
-  }
-)
+    },
+  },
+);
 
 export default class GenericEntry extends PureComponent {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       editing: false,
       showCam: false,
-      error: null
-    }
+      error: null,
+    };
   }
 
   static defaultProps = {
@@ -65,7 +74,7 @@ export default class GenericEntry extends PureComponent {
     autoFocus: false,
     useCamera: false,
     onChange: () => { },
-    showCam: false
+    showCam: false,
   }
 
   static propTypes = {
@@ -78,166 +87,164 @@ export default class GenericEntry extends PureComponent {
   }
 
   componentDidMount() {
-    this.suppressNextKey = false
-    this.locale = i18n.currentLocale()
-    this.formats = i18n.translations[this.locale].formats
+    this.suppressNextKey = false;
+    this.locale = i18n.currentLocale();
+    this.formats = i18n.translations[this.locale].formats;
     // Shortened parse function
-    this.parse = parseDecimalNumber.withOptions(this.formats)
+    this.parse = parseDecimalNumber.withOptions(this.formats);
     // Set initial value if entry object has it (will need to be redisplayed on signature/approval)
-    if (this.props.entry.value) { this.onChangeText(this.props.entry.value)}
+    if (this.props.entry.value) { this.onChangeText(this.props.entry.value); }
   }
 
   scanned = (type, data) => {
-    this.setState({ showCam: false })
+    this.setState({ showCam: false });
     if (type === 0) {
-      this.props.onChange('', false)
+      this.props.onChange('', false);
     } else {
-      this.props.onChange(data, true)
+      this.props.onChange(data, true);
     }
   }
 
   validate(value) {
-    const entry = this.props.entry
-    const validation = entry.validation
+    const { entry } = this.props;
+    const { validation } = entry;
     if (value) {
-      const type = entry.entryType
+      const type = entry.entryType;
 
       if (type === 'Integer' || type === 'Decimal') { // Numerics
         // Convert to 'standard' number
-        const realVal = this.parse(value)
+        const realVal = this.parse(value);
         if (isNaN(realVal)) {
-          this.setState({ error: 'Not a valid number' })
-          return false
+          this.setState({ error: 'Not a valid number' });
+          return false;
         }
         if (type === 'Integer' && (realVal % 1 > 0)) {
-          this.setState({ error: 'Value must be an integer, not a decimal' })
-          return false
+          this.setState({ error: 'Value must be an integer, not a decimal' });
+          return false;
         }
-        return this.checkNumericLimits(realVal, validation)
+        return this.checkNumericLimits(realVal, validation);
       }
 
-      if (type === 'String') { return this.checkStringLimits(value, validation) }
+      if (type === 'String') { return this.checkStringLimits(value, validation); }
 
-      if (type === 'Custom') { return this.checkRegEx(value, validation) }
-
+      if (type === 'Custom') { return this.checkRegEx(value, validation); }
     } else {
-      this.setState({ error: 'A value is required' })
-      return false
+      this.setState({ error: 'A value is required' });
+      return false;
     }
   }
 
   checkStringLimits(value, validation) {
     if (validation) {
       if (validation.minLength && (value.length < validation.minLength)) {
-        this.setState({ error: `Length is less than the minimum of ${validation.minLength}` })
-        return false
-      } else if (validation.maxLength && (value.length > validation.maxLength)) {
-        this.setState({ error: `Length is greater than the maximum of ${validation.maxLength}` })
-        return false
+        this.setState({ error: `Length is less than the minimum of ${validation.minLength}` });
+        return false;
+      } if (validation.maxLength && (value.length > validation.maxLength)) {
+        this.setState({ error: `Length is greater than the maximum of ${validation.maxLength}` });
+        return false;
       }
     }
-    return true
+    return true;
   }
 
   checkNumericLimits(value, validation) {
     if (validation) {
       if (validation.lower && value < validation.lower) {
-        this.setState({ error: `Value is less than lower limit of ${validation.lower}` })
-        return false
-      } else if (validation.upper && value > validation.upper) {
-        this.setState({ error: `Value is greater than the upper limit of ${validation.upper}` })
-        return false
-      } else if (validation.increment && (value % validation.increment > 0)) {
-        this.setState({ error: `Value should be in increments of ${validation.increment}` })
-        return false
-      } else {
-        return true
+        this.setState({ error: `Value is less than lower limit of ${validation.lower}` });
+        return false;
+      } if (validation.upper && value > validation.upper) {
+        this.setState({ error: `Value is greater than the upper limit of ${validation.upper}` });
+        return false;
+      } if (validation.increment && (value % validation.increment > 0)) {
+        this.setState({ error: `Value should be in increments of ${validation.increment}` });
+        return false;
       }
-    } else {
-      return true
+      return true;
     }
+    return true;
   }
 
   checkRegEx(value, validation) {
     if (validation) {
-      const exp = validation.regExp
+      const exp = validation.regExp;
       if (exp) {
-        const test = new RegExp(`^${exp}$`).test(value)
+        const test = new RegExp(`^${exp}$`).test(value);
         if (!test) {
-          this.setState({ error: `Value does not match the required pattern: ${exp}` })
-          return false
+          this.setState({ error: `Value does not match the required pattern: ${exp}` });
+          return false;
         }
       }
     }
-    return true
+    return true;
   }
 
   onBlur = () => {
-    this.setState({ editing: false })
-    this.validate(this.props.value)
+    this.setState({ editing: false });
+    this.validate(this.props.value);
   }
 
   onChangeText = (value) => {
     if (this.suppressNextKey) {
-      this.suppressNextKey=false
-      this.props.onChange(this.props.value)
+      this.suppressNextKey = false;
+      this.props.onChange(this.props.value);
     } else {
-      this.props.onChange(value.toString())
+      this.props.onChange(value.toString());
     }
-    this.setState({ error: null })
+    this.setState({ error: null });
   }
 
   onKeyPress = (e) => {
-    const type = this.props.entry.entryType
-    const key = e.nativeEvent.key
-    if (type === "Decimal") {
-      if (key === this.formats.thousands || key === " ") {this.suppressNextKey = true}
+    const type = this.props.entry.entryType;
+    const { key } = e.nativeEvent;
+    if (type === 'Decimal') {
+      if (key === this.formats.thousands || key === ' ') { this.suppressNextKey = true; }
     } else if (type === 'Integer') {
-      if (key === this.formats.decimal || key === this.formats.thousands || key === " ") {this.suppressNextKey = true}
+      if (key === this.formats.decimal || key === this.formats.thousands || key === ' ') { this.suppressNextKey = true; }
     }
   }
 
   render() {
-    const showCam = this.state.showCam
-    const editing = this.state.editing
-    const entry = this.props.entry
-    const hasLabel = entry.label ? true : false
-    const hasSuffix = entry.suffix ? true : false
-    const keyboardType = (entry.entryType === 'Integer' || entry.entryType === 'Decimal') ? 'number-pad' : 'default'
-    const boxColor = editing ? NexaColours.GreyUltraLight : NexaColours.GreyLight
+    const { showCam } = this.state;
+    const { editing } = this.state;
+    const { entry } = this.props;
+    const hasLabel = !!entry.label;
+    const hasSuffix = !!entry.suffix;
+    const keyboardType = (entry.entryType === 'Integer' || entry.entryType === 'Decimal') ? 'number-pad' : 'default';
+    const boxColor = editing ? NexaColours.GreyUltraLight : NexaColours.GreyLight;
     const boxLeft = !hasSuffix ? {
       borderTopRightRadius: inputBorderRadius,
       borderBottomRightRadius: inputBorderRadius,
-      borderRightWidth: inputBorderWidth
-    } : null
+      borderRightWidth: inputBorderWidth,
+    } : null;
     const boxRight = !hasLabel ? {
       borderTopLeftRadius: inputBorderRadius,
       borderBottomLeftRadius: inputBorderRadius,
-      borderLeftWidth: inputBorderWidth
-    } : null
-    const boxStyle = StyleSheet.flatten([styles.inputBox, { backgroundColor: boxColor }, boxLeft, boxRight])
+      borderLeftWidth: inputBorderWidth,
+    } : null;
+    const boxStyle = StyleSheet.flatten([styles.inputBox, { backgroundColor: boxColor }, boxLeft, boxRight]);
     return (
       <View style={{ flexDirection: 'column' }}>
         <View style={styles.inputContainer}>
           {hasLabel && <Text style={styles.inputLabel}>{entry.label}</Text>}
-          <TextInput style={boxStyle}
+          <TextInput
+            style={boxStyle}
             value={this.props.value}
             onChangeText={this.onChangeText}
-            blurOnSubmit={true}
+            blurOnSubmit
             onFocus={() => this.setState({ editing: true })}
             onBlur={this.onBlur}
-            underlineColorAndroid='transparent'
+            underlineColorAndroid="transparent"
             editable={this.props.enabled}
             autoFocus={this.props.autoFocus}
             keyboardType={keyboardType}
             onKeyPress={this.onKeyPress}
           />
           {hasSuffix && <Text style={styles.inputSuffix}>{entry.suffix}</Text>}
-          {this.props.useCamera && <IconButton iconName='camera' onPress={() => this.setState({ showCam: true })} />}
+          {this.props.useCamera && <IconButton iconName="camera" onPress={() => this.setState({ showCam: true })} />}
           <BarcodeReader visible={showCam} onScanned={this.scanned} />
         </View>
         <ErrorBar text={this.state.error} onPress={() => this.setState({ error: null })} />
       </View>
-    )
+    );
   }
 }

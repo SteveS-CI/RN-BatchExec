@@ -1,13 +1,13 @@
-import React from "react";
-import { View, Text } from "react-native";
-import i18n from 'i18n-js'
-import NexaColours from "../constants/NexaColours";
-import ButtonBar from '../components/ButtonBar'
-import RoundedButton from "../components/RoundedButton";
-import TextBar from '../components/TextBar'
-import ScrollList from '../components/ScrollList'
-import { methods } from '../api/api'
-import {NavChoice} from '../Utils/utils'
+import React from 'react';
+import { View, Text } from 'react-native';
+import i18n from 'i18n-js';
+import NexaColours from '../constants/NexaColours';
+import ButtonBar from '../components/ButtonBar';
+import RoundedButton from '../components/RoundedButton';
+import TextBar from '../components/TextBar';
+import ScrollList from '../components/ScrollList';
+import { methods } from '../api/api';
+import { NavChoice } from '../Utils/utils';
 
 export default class NodeSelectScreen extends React.Component {
   constructor(props) {
@@ -16,40 +16,40 @@ export default class NodeSelectScreen extends React.Component {
       batchData: null,
       selectedIndex: -1,
       selectedItemID: 0,
-      loading: false
+      loading: false,
     };
   }
 
-  static navigationOptions = ({navigation}) => {
-    const batchData = navigation.getParam("batchData")
-    var name = 'default'
+  static navigationOptions = ({ navigation }) => {
+    const batchData = navigation.getParam('batchData');
+    let name = 'default';
     if (batchData) {
-      const nodeDepth = batchData.nodeDepth
-      name = NodeSelectScreen.nodeName(nodeDepth, false)
+      const { nodeDepth } = batchData;
+      name = NodeSelectScreen.nodeName(nodeDepth, false);
     }
     return {
-      title: i18n.t('screens.nodeSelect.title', {name})
-    }
+      title: i18n.t('screens.nodeSelect.title', { name }),
+    };
   };
 
   static nodeName(depth, plural) {
-    const count = plural ? 2 : 1
-    const nodeName = i18n.t('node.names.' + ['','stage','operation','action'][depth], {count})
-    return nodeName
+    const count = plural ? 2 : 1;
+    const nodeName = i18n.t(`node.names.${['', 'stage', 'operation', 'action'][depth]}`, { count });
+    return nodeName;
   }
 
   componentDidMount() {
-    const batchData = this.props.navigation.getParam("batchData")
-    const locationCode = this.props.navigation.getParam("locationCode")
-    this.locationCode = locationCode
-    this.setState({ batchData })
+    const batchData = this.props.navigation.getParam('batchData');
+    const locationCode = this.props.navigation.getParam('locationCode');
+    this.locationCode = locationCode;
+    this.setState({ batchData });
   }
 
   rowClicked = (index, node) => {
     this.node = node;
     this.setState({
       selectedItemID: node.procID,
-      selectedIndex: index
+      selectedIndex: index,
     });
   };
 
@@ -61,14 +61,14 @@ export default class NodeSelectScreen extends React.Component {
       const postData = {
         batchID: this.state.batchData.batchID,
         procID: this.state.selectedItemID,
-        location: this.locationCode
-      }
+        location: this.locationCode,
+      };
       methods.nextProc(postData)
-        .then(data => {
+        .then((data) => {
           this.setState({ loading: false });
-          NavChoice(data, nav, this.locationCode)
+          NavChoice(data, nav, this.locationCode);
         })
-        .catch(error => {
+        .catch((error) => {
           this.setState({ loading: false });
           console.log(JSON.stringify(error));
         });
@@ -76,26 +76,26 @@ export default class NodeSelectScreen extends React.Component {
   };
 
   render() {
-    const nav = this.props.navigation
-    const batchData = this.state.batchData
+    const nav = this.props.navigation;
+    const { batchData } = this.state;
     if (batchData) {
-      const depth = this.state.batchData.nodeDepth
-      const name = i18n.t('node.names.' + ['stage', 'operation', 'action'][depth - 1], {count: 1})
+      const depth = this.state.batchData.nodeDepth;
+      const name = i18n.t(`node.names.${['stage', 'operation', 'action'][depth - 1]}`, { count: 1 });
       const headers = [
-        { caption: i18n.t('nodeSelect.header.id'), source: "procID", flex: 1 },
-        { caption: i18n.t('nodeSelect.header.name', {name}), source: "name", flex: 2 },
-        { caption: i18n.t('nodeSelect.header.notes'), source: "notes", flex: 4 }
-      ]
-      const level = i18n.t('node.names.' + ['stage', 'operation', 'action'][depth - 1], {count: 2})
-      const prompt = i18n.t('screens.nodeSelect.prompt', {name: level})
+        { caption: i18n.t('nodeSelect.header.id'), source: 'procID', flex: 1 },
+        { caption: i18n.t('nodeSelect.header.name', { name }), source: 'name', flex: 2 },
+        { caption: i18n.t('nodeSelect.header.notes'), source: 'notes', flex: 4 },
+      ];
+      const level = i18n.t(`node.names.${['stage', 'operation', 'action'][depth - 1]}`, { count: 2 });
+      const prompt = i18n.t('screens.nodeSelect.prompt', { name: level });
       return (
-        <View style={{ flex: 1}}>
+        <View style={{ flex: 1 }}>
           <ButtonBar justify="space-between">
             <RoundedButton
               backColor={NexaColours.GreyUltraLight}
               title={i18n.t('button.captions.cancel')}
               onPress={() => {
-                nav.replace("BatchList");
+                nav.replace('BatchList');
               }}
             />
             <RoundedButton
@@ -113,9 +113,8 @@ export default class NodeSelectScreen extends React.Component {
             onPress={this.rowClicked}
           />
         </View>
-      )
-    } else {
-      return null
+      );
     }
+    return null;
   }
 }

@@ -1,7 +1,7 @@
-import React, {PureComponent} from 'react'
-import {StyleSheet, View, ActivityIndicator} from 'react-native'
-import PropTypes from 'prop-types'
-import NexaColours from '../constants/NexaColours'
+import React, { PureComponent } from 'react';
+import { StyleSheet, View, ActivityIndicator } from 'react-native';
+import PropTypes from 'prop-types';
+import NexaColours from '../constants/NexaColours';
 
 const styles = StyleSheet.create({
   loading: {
@@ -11,23 +11,24 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignContent: 'center',
     alignItems: 'center',
-    alignSelf: 'center'
-  }
-})
+    alignSelf: 'center',
+  },
+});
 
 export default class LoadingOverlay extends PureComponent {
-
   static propTypes = {
-    loading: PropTypes.bool.isRequired
+    loading: PropTypes.bool.isRequired,
   }
 
   render() {
     return (
       this.props.loading
-      ? <View style={styles.loading}>
-          <ActivityIndicator animating={true} color={NexaColours.AlertCyan} size={90}/>
-        </View>
-      : null
-    )
+        ? (
+          <View style={styles.loading}>
+            <ActivityIndicator animating color={NexaColours.AlertCyan} size={90} />
+          </View>
+        )
+        : null
+    );
   }
 }

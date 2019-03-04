@@ -1,128 +1,128 @@
 import React from 'react';
-import {View, Text, StyleSheet } from 'react-native';
-import ButtonStyles from '../constants/ButtonStyles'
-import ActionButtons from '../components/ActionButtons'
-import ScrollList from '../components/ScrollList'
-import Styles from '../constants/Styles'
-import ActionEntry from '../components/ActionEntry'
-import SmallPropWindow from '../components/SmallPropWindow'
+import { View, Text, StyleSheet } from 'react-native';
+import ButtonStyles from '../constants/ButtonStyles';
+import ActionButtons from '../components/ActionButtons';
+import ScrollList from '../components/ScrollList';
+import Styles from '../constants/Styles';
+import ActionEntry from '../components/ActionEntry';
+import SmallPropWindow from '../components/SmallPropWindow';
 
 const ListHeaders = [
   {
-    caption: "Column One",
-    source: "valueA",
+    caption: 'Column One',
+    source: 'valueA',
     flex: 2,
-    align: 'left'
+    align: 'left',
   },
   {
-    caption: "Column Two",
-    source: "valueB",
+    caption: 'Column Two',
+    source: 'valueB',
     flex: 4,
-    align: 'center'
+    align: 'center',
   },
   {
-    caption: "Column Three",
-    source: "valueC",
+    caption: 'Column Three',
+    source: 'valueC',
     flex: 3,
-    align: 'right'
-  }
-]
+    align: 'right',
+  },
+];
 
 const ListData = [
   {
-    valueA: "One",
-    valueB: "Two",
-    valueC: "Three"
+    valueA: 'One',
+    valueB: 'Two',
+    valueC: 'Three',
   },
   {
-    valueA: "First",
-    valueB: "Second",
-    valueC: "Third"
+    valueA: 'First',
+    valueB: 'Second',
+    valueC: 'Third',
   },
   {
-    valueA: "Primary",
-    valueB: "Secondary",
-    valueC: "Tertiary"
-  }
-]
+    valueA: 'Primary',
+    valueB: 'Secondary',
+    valueC: 'Tertiary',
+  },
+];
 
 export default class TestScreen2 extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       selectedRow: 0,
-      scrollLoading: false
-    }
+      scrollLoading: false,
+    };
   }
 
   static navigationOptions = {
-    title: 'Test Screen 2'
+    title: 'Test Screen 2',
   }
 
   onPress = (name) => {
-    if (name === 'cancel') this.props.navigation.navigate('Dev')
+    if (name === 'cancel') this.props.navigation.navigate('Dev');
   }
 
   onScrollRefresh = () => {
-    this.setState({scrollLoading: true})
+    this.setState({ scrollLoading: true });
   }
 
   render() {
-    const buttons = [ButtonStyles.Previous, ButtonStyles.No, ButtonStyles.Yes]
-    const oddRow = StyleSheet.flatten([Styles.scrollList.listRows, Styles.scrollList.rowBackColorOdd])    
-    const evenRow = StyleSheet.flatten([Styles.scrollList.listRows, Styles.scrollList.rowBackColorEven])    
+    const buttons = [ButtonStyles.Previous, ButtonStyles.No, ButtonStyles.Yes];
+    const oddRow = StyleSheet.flatten([Styles.scrollList.listRows, Styles.scrollList.rowBackColorOdd]);
+    const evenRow = StyleSheet.flatten([Styles.scrollList.listRows, Styles.scrollList.rowBackColorEven]);
     return (
-      <View style={{flexDirection: 'column', flex: 1, justifyContent: 'flex-start'}}>
-        <ActionButtons onPress={this.onPress} buttons={buttons}/>
-          <ScrollList
-            headers={ListHeaders}
-            data={ListData}
-            onPress={(index, data) => this.setState({selectedRow: index})}
-            selectedIndex={this.state.selectedRow}
-            loading={this.state.scrollLoading}
-            onRefresh={this.onScrollRefresh}
-          />
+      <View style={{ flexDirection: 'column', flex: 1, justifyContent: 'flex-start' }}>
+        <ActionButtons onPress={this.onPress} buttons={buttons} />
+        <ScrollList
+          headers={ListHeaders}
+          data={ListData}
+          onPress={(index, data) => this.setState({ selectedRow: index })}
+          selectedIndex={this.state.selectedRow}
+          loading={this.state.scrollLoading}
+          onRefresh={this.onScrollRefresh}
+        />
         <View>
-          <ActionEntry entry={{label: 'ID', entryType: 'Integer', entryTypeEnum: 1}} useCamera={true} />
+          <ActionEntry entry={{ label: 'ID', entryType: 'Integer', entryTypeEnum: 1 }} useCamera />
         </View>
         <Text style={oddRow}>Hello World!</Text>
-        <View style={{flexDirection: 'row'}}>
+        <View style={{ flexDirection: 'row' }}>
           <SmallPropWindow
-            title='Equipment'
+            title="Equipment"
             headers={
               [
                 {
                   caption: 'Category',
-                  source: 'category'
+                  source: 'category',
                 },
                 {
                   caption: 'Model',
-                  source: 'model'
+                  source: 'model',
                 },
                 {
                   caption: 'Serial No.',
-                  source: 'serial'
-                }
+                  source: 'serial',
+                },
               ]
             }
             data={
               {
                 category: 'Granulation',
                 model: 'Model One',
-                serial: 'XYZ1234'
+                serial: 'XYZ1234',
               }
             }
-            baseBackColor='Orange'
+            baseBackColor="Orange"
           />
           <SmallPropWindow
             title="Component"
-            headers={[{caption: 'Code', source: 'materialCode'},{caption: 'Name', source: 'materialName'},{caption: 'Quantity', source: 'quantity'}]}
-            data={{materialCode: 'MC-45124', materialName: 'Lactose (Milled)', quantity: '123.45 kg'}}
+            headers={[{ caption: 'Code', source: 'materialCode' }, { caption: 'Name', source: 'materialName' }, { caption: 'Quantity', source: 'quantity' }]}
+            data={{ materialCode: 'MC-45124', materialName: 'Lactose (Milled)', quantity: '123.45 kg' }}
           />
         </View>
         <Text style={oddRow}>Hello World!</Text>
         <Text style={evenRow}>Hello World!</Text>
       </View>
-    )
+    );
   }
 }

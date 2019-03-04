@@ -1,16 +1,13 @@
-import React from 'react'
-import i18n from 'i18n-js'
+import React from 'react';
+import i18n from 'i18n-js';
 import {
   createAppContainer,
   createStackNavigator,
-  createDrawerNavigator,
-  createBottomTabNavigator,
-  createSwitchNavigator,
-  createMaterialTopTabNavigator
+  createMaterialTopTabNavigator,
 }
   from 'react-navigation';
 
-import NexaColours from '../constants/NexaColours'
+import NexaColours from '../constants/NexaColours';
 
 import BatchSelectScreen from '../screens/BatchSelectScreen';
 import NodeSelectScreen from '../screens/NodeSelectScreen';
@@ -23,39 +20,39 @@ import BatchEquipScreen from '../screens/BatchEquipScreen';
 import LoginScreen from '../screens/LoginScreen';
 import LocationListScreen from '../screens/LocationListScreen';
 import LocationScanScreen from '../screens/LocationScanScreen';
-import TestScreen from '../screens/TestScreen'
-import TestScreen2 from '../screens/TestScreen2'
-import TestScreen3 from '../screens/TestScreen3'
-import TestScreen4 from '../screens/TestScreen4'
-import TestScreen5 from '../screens/TestScreen5'
-import TestScreen6 from '../screens/TestScreen6'
-import AboutScreen from '../screens/AboutScreen'
-import DevScreen from '../screens/DevScreen'
+import TestScreen from '../screens/TestScreen';
+import TestScreen2 from '../screens/TestScreen2';
+import TestScreen3 from '../screens/TestScreen3';
+import TestScreen4 from '../screens/TestScreen4';
+import TestScreen5 from '../screens/TestScreen5';
+import TestScreen6 from '../screens/TestScreen6';
+import AboutScreen from '../screens/AboutScreen';
+import DevScreen from '../screens/DevScreen';
 import DropdownMenu from '../components/DropdownMenu';
-import LocationHeader from '../components/LocationHeader'
+import LocationHeader from '../components/LocationHeader';
 import { FontSizes, scale, verticalScale } from '../constants/Layout';
 
 const mainStyle = {
   headerTintColor: NexaColours.GreyUltraLight,
   headerStyle: {
     backgroundColor: NexaColours.Blue,
-    height: verticalScale(52)
+    height: verticalScale(52),
   },
-  headerTitleStyle: { 
-    fontFamily: 'euro-demi', 
+  headerTitleStyle: {
+    fontFamily: 'euro-demi',
     fontWeight: 'normal',
     fontSize: FontSizes.standard,
     textAlign: 'left',
     marginLeft: scale(10),
-    paddingLeft: 0
-  }
-}
+    paddingLeft: 0,
+  },
+};
 
 const BatchNav = createMaterialTopTabNavigator(
   {
     BatchProps: BatchPropsScreen,
     BatchComps: BatchCompsScreen,
-    BatchEquip: BatchEquipScreen
+    BatchEquip: BatchEquipScreen,
   },
   {
     tabBarPosition: 'top',
@@ -64,23 +61,23 @@ const BatchNav = createMaterialTopTabNavigator(
       upperCaseLabel: false,
       activeTintColor: '#FFFFFF',
       inactiveTintColor: NexaColours.GreyLight,
-      labelStyle: {fontSize: FontSizes.standard },
-      style: { backgroundColor: NexaColours.BlueAccent }
-    }
-  }
-)
+      labelStyle: { fontSize: FontSizes.standard },
+      style: { backgroundColor: NexaColours.BlueAccent },
+    },
+  },
+);
 
 const LoginNav = createStackNavigator(
   {
-    Login: LoginScreen
+    Login: LoginScreen,
   },
   {
     navigationOptions: {
       ...mainStyle,
-      title: 'Login'
-    }
-  }
-)
+      title: 'Login',
+    },
+  },
+);
 
 // pointers to menus.dropdown.x
 const dropDownItems = {
@@ -91,10 +88,10 @@ const dropDownItems = {
     'login',
     'exit',
     'about',
-    'developer'
+    'developer',
   ],
-  actions: ['BatchList','LocationList','Settings','Login','EXIT', 'About', 'Dev']
-}
+  actions: ['BatchList', 'LocationList', 'Settings', 'Login', 'EXIT', 'About', 'Dev'],
+};
 
 const MainNavigator = createStackNavigator(
   {
@@ -114,21 +111,19 @@ const MainNavigator = createStackNavigator(
     Test3: TestScreen3,
     Test4: TestScreen4,
     Test5: TestScreen5,
-    Test6: TestScreen6
+    Test6: TestScreen6,
   },
   {
-    headerMode: "float",
-    defaultNavigationOptions: ({ navigation, props }) => {
-      return {
-        title: i18n.t('screens.batchDetail.title'),
-        ...mainStyle,
-        headerLeft: <DropdownMenu data={dropDownItems} navigation={navigation} />,
-        headerRight: <LocationHeader navigation={navigation}/>
-      }
-    }
-  }
-)
+    headerMode: 'float',
+    defaultNavigationOptions: ({ navigation }) => ({
+      title: i18n.t('screens.batchDetail.title'),
+      ...mainStyle,
+      headerLeft: <DropdownMenu data={dropDownItems} navigation={navigation} />,
+      headerRight: <LocationHeader navigation={navigation} />,
+    }),
+  },
+);
 
-const AppNavigator = createAppContainer(MainNavigator)
+const AppNavigator = createAppContainer(MainNavigator);
 
-export default AppNavigator
+export default AppNavigator;

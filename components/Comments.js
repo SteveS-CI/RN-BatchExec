@@ -1,66 +1,73 @@
-import React, { Component } from 'react'
-import { StyleSheet, View, Modal, Text, TextInput, Switch, Picker } from 'react-native'
-import PropTypes from 'prop-types'
-import ActionButtons from './ActionButtons'
-import ButtonStyles from '../constants/ButtonStyles'
-import TextEntry from '../components/TextEntry'
-import CustomPicker from '../components/CustomPicker'
-import NexaColours from '../constants/NexaColours'
-import { scale, FontSizes } from '../constants/Layout'
+import React, { Component } from 'react';
+import {
+  StyleSheet, View, Modal, Text, TextInput, Switch, Picker,
+} from 'react-native';
+import PropTypes from 'prop-types';
+import ActionButtons from './ActionButtons';
+import ButtonStyles from '../constants/ButtonStyles';
+import TextEntry from './TextEntry';
+import CustomPicker from './CustomPicker';
+import NexaColours from '../constants/NexaColours';
+import { scale, FontSizes } from '../constants/Layout';
 
 const styles = StyleSheet.create(
   {
     title: {
-      fontSize: FontSizes.standard
+      fontSize: FontSizes.standard,
     },
     inner: {
       position: 'absolute',
-      padding: scale(12), marginTop: scale(60),
+      padding: scale(12),
+      marginTop: scale(60),
       backgroundColor: 'white',
-      borderWidth: StyleSheet.hairlineWidth, borderRadius: scale(12),
+      borderWidth: StyleSheet.hairlineWidth,
+      borderRadius: scale(12),
       borderColor: NexaColours.Blue,
       elevation: 8,
-      minWidth: '80%'
+      minWidth: '80%',
     },
     outer: {
       flex: 1,
       alignItems: 'center',
-      backgroundColor: 'rgba(0,0,0,0.5)'
+      backgroundColor: 'rgba(0,0,0,0.5)',
     },
     comment: {
       backgroundColor: NexaColours.GreyLight,
-      textAlign: 'left', textAlignVertical: 'top'
+      textAlign: 'left',
+      textAlignVertical: 'top',
     },
     switchContainer: {
       flexDirection: 'row',
       alignContent: 'space-between',
-      marginVertical: scale(8)
+      marginVertical: scale(8),
     },
     pickerContainer: {
-    }
-  }
-)
+    },
+  },
+);
 
 export default class Comments extends Component {
   constructor(props) {
-    super(props)
-    this.state = { comment: null, isDeviation: false, editing: false, severity: 'None', reference: null }
+    super(props);
+    this.state = {
+      comment: null, isDeviation: false, editing: false, severity: 'None', reference: null,
+    };
   }
 
   static defaultProps = {
     visible: false,
-    isApproval: false
+    isApproval: false,
   }
 
   static propTypes = {
     visible: PropTypes.bool,
-    onComment: PropTypes.func.isRequired
+    onComment: PropTypes.func.isRequired,
   }
 
   severityLevels = [
     { label: 'MinorX', value: 'Minor' },
     { label: 'MajorX', value: 'Major' },
-    { label: 'CriticalX', value: 'Critical' }
+    { label: 'CriticalX', value: 'Critical' },
   ]
 
   onPress = (name) => {
@@ -68,42 +75,43 @@ export default class Comments extends Component {
       const deviation = {
         comment: this.state.comment,
         severity: this.state.severity,
-        reference: this.state.reference
-      }
-      this.props.onComment(true, deviation)
+        reference: this.state.reference,
+      };
+      this.props.onComment(true, deviation);
     } else {
-      this.props.onComment(false, null)
-      this.setState({ severity: 'None' })
+      this.props.onComment(false, null);
+      this.setState({ severity: 'None' });
     }
   }
 
   isDeviation = (value) => {
-    this.setState({ isDeviation: value })
+    this.setState({ isDeviation: value });
     if (value) {
-      this.setState({ severity: 'Minor' })
+      this.setState({ severity: 'Minor' });
     } else {
-      this.setState({ severity: 'None', reference: null })
+      this.setState({ severity: 'None', reference: null });
     }
   }
 
   referenceChange = (value) => {
-    this.setState({ reference: value })
+    this.setState({ reference: value });
   }
 
   render() {
     if (this.props.visible) {
-      const buttons = [ButtonStyles.OK]
-      const bgColor = this.state.editing ? NexaColours.GreyUltraLight : NexaColours.GreyLight
-      const commentStyle = StyleSheet.flatten([styles.comment, { backgroundColor: bgColor }])
-      const item = this.severityLevels.find((item) => { return item.value === this.state.severity })
+      const buttons = [ButtonStyles.OK];
+      const bgColor = this.state.editing ? NexaColours.GreyUltraLight : NexaColours.GreyLight;
+      const commentStyle = StyleSheet.flatten([styles.comment, { backgroundColor: bgColor }]);
+      const item = this.severityLevels.find(item => item.value === this.state.severity);
       return (
-        <Modal onRequestClose={() => this.props.onComment(false)} transparent={true}>
+        <Modal onRequestClose={() => this.props.onComment(false)} transparent>
           <View style={styles.outer}>
             <View style={styles.inner}>
               <Text style={styles.title}>Comments</Text>
               <TextInput
                 value={this.state.comment}
-                multiline={true} numberOfLines={5}
+                multiline
+                numberOfLines={5}
                 style={commentStyle}
                 onFocus={() => this.setState({ editing: true })}
                 onBlur={() => this.setState({ editing: false })}
@@ -116,29 +124,30 @@ export default class Comments extends Component {
                 />
                 <Text style={styles.title}>Is Deviation</Text>
               </View>
-              {this.state.isDeviation &&
+              {this.state.isDeviation
+                && (
                 <View>
                   <View style={styles.pickerContainer}>
-                    <CustomPicker title='Severity'
+                    <CustomPicker
+                      title="Severity"
                       items={this.severityLevels}
                       value={item}
-                      display='label'
-                      onChange={(item) => this.setState({ severity: item.value })}
+                      display="label"
+                      onChange={item => this.setState({ severity: item.value })}
                     />
                   </View>
                   <View>
-                    <TextEntry label='Deviation Ref.' value={this.state.reference} onChange={this.referenceChange} />
+                    <TextEntry label="Deviation Ref." value={this.state.reference} onChange={this.referenceChange} />
                   </View>
                 </View>
+                )
               }
               <ActionButtons buttons={buttons} onPress={this.onPress} />
             </View>
           </View>
         </Modal>
-      )
-    } else {
-      return null
+      );
     }
+    return null;
   }
-
 }

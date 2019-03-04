@@ -1,18 +1,18 @@
-import React, { PureComponent } from 'react'
-import PropTypes from 'prop-types'
-import * as DataProps from '../constants/DataProps'
-import GenericEntry from './GenericEntry'
-import DistinctEntry from './DistinctEntry'
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
+import * as DataProps from '../constants/DataProps';
+import GenericEntry from './GenericEntry';
+import DistinctEntry from './DistinctEntry';
 
 export default class ActionEntry extends PureComponent {
   constructor(props) {
-    super(props)
-    this.state = { editing: false }
+    super(props);
+    this.state = { editing: false };
   }
 
   static defaultProps = {
     enabled: true,
-    autoFocus: false
+    autoFocus: false,
   }
 
   static propTypes = {
@@ -21,29 +21,27 @@ export default class ActionEntry extends PureComponent {
     onChange: PropTypes.func,
     enabled: PropTypes.bool,
     autoFocus: PropTypes.bool,
-    useCamera: PropTypes.bool
+    useCamera: PropTypes.bool,
   }
 
   validate(value) {
-    if (this.entry) { return this.entry.validate(value) }
-    else { return true }
+    if (this.entry) { return this.entry.validate(value); }
+    return true;
   }
 
   render() {
-    const hasEntry = this.props.entry ? true : false
+    const hasEntry = !!this.props.entry;
     if (hasEntry) {
-      const entryType = this.props.entry.entryType
+      const { entryType } = this.props.entry;
       if (entryType === 'Distinct') {
         return (
-          <DistinctEntry ref={(ref) => { this.entry = ref }} {...this.props} />
-        )
-      } else {
-        return (
-          <GenericEntry ref={(ref) => { this.entry = ref }} {...this.props} />
-        )
+          <DistinctEntry ref={(ref) => { this.entry = ref; }} {...this.props} />
+        );
       }
-    } else {
-      return null
+      return (
+        <GenericEntry ref={(ref) => { this.entry = ref; }} {...this.props} />
+      );
     }
+    return null;
   }
 }

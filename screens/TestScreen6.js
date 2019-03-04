@@ -1,33 +1,32 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
   NativeModules,
   StyleSheet,
-  View
+  View,
 } from 'react-native';
-import RoundedButton from '../components/RoundedButton'
+import RoundedButton from '../components/RoundedButton';
 
-import MyCustomKeyboard from '../components/CustomKeyboard'
+import MyCustomKeyboard from '../components/CustomKeyboard';
 
 export default class TestScreen6 extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     state = {
-      value: ''
-    }
+      value: '',
+    };
   }
 
-  onChangeText = text => {
-    this.setState({value: text});
+  onChangeText = (text) => {
+    this.setState({ value: text });
   }
 
   render() {
-    const install = NativeModules.insertText
-    console.log(JSON.stringify(install)) 
+    const install = NativeModules.insertText;
+    console.log(JSON.stringify(install));
     return (
       <View style={styles.container}>
-        <RoundedButton title='Cancel' onPress={() => this.props.navigation.navigate('Dev')} />
-        <MyCustomKeyboard
-        />
+        <RoundedButton title="Cancel" onPress={() => this.props.navigation.navigate('Dev')} />
+        <MyCustomKeyboard />
       </View>
     );
   }
@@ -41,10 +40,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#F5FCFF',
   },
   input: {
-    backgroundColor: "#ffffff",
+    backgroundColor: '#ffffff',
     borderWidth: 1,
-    borderColor: "grey",
+    borderColor: 'grey',
     width: 270,
     fontSize: 19,
-  }
+  },
 });

@@ -1,9 +1,9 @@
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 
 export const HeaderProps = PropTypes.shape({
   caption: PropTypes.string.isRequired,
-  source: PropTypes.string.isRequired
-})
+  source: PropTypes.string.isRequired,
+});
 
 export const IngredientProps = PropTypes.shape({
   id: PropTypes.number,
@@ -12,8 +12,8 @@ export const IngredientProps = PropTypes.shape({
   materialName: PropTypes.string.isRequired,
   componentType: PropTypes.string,
   quantity: PropTypes.string.isRequired,
-  status: PropTypes.string
-})
+  status: PropTypes.string,
+});
 
 export const WeighingProps = PropTypes.shape({
   id: PropTypes.number,
@@ -23,8 +23,8 @@ export const WeighingProps = PropTypes.shape({
   dispensedDate: PropTypes.string,
   used: PropTypes.bool,
   scanned: PropTypes.bool.isRequired,
-  component: IngredientProps.isRequired
-})
+  component: IngredientProps.isRequired,
+});
 
 export const WeighProps = PropTypes.shape({
   id: PropTypes.number,
@@ -33,7 +33,7 @@ export const WeighProps = PropTypes.shape({
   netWeight: PropTypes.string.isRequired,
   dispensedDate: PropTypes.string,
   scanned: PropTypes.bool.isRequired,
-})
+});
 
 export const ComponentProps = PropTypes.shape({
   id: PropTypes.number,
@@ -43,35 +43,35 @@ export const ComponentProps = PropTypes.shape({
   componentType: PropTypes.string,
   quantity: PropTypes.string.isRequired,
   status: PropTypes.string,
-  weighings: PropTypes.arrayOf(WeighProps)
-})
+  weighings: PropTypes.arrayOf(WeighProps),
+});
 
 export const EquipmentProps = PropTypes.shape({
   category: PropTypes.string.isRequired,
   model: PropTypes.string,
-  serial: PropTypes.string
-})
+  serial: PropTypes.string,
+});
 
 export const DeviationProps = PropTypes.shape({
   comment: PropTypes.string,
   severity: PropTypes.oneOf(['None', 'Minor', 'Major', 'Critical']),
-  reference: PropTypes.string
-})
+  reference: PropTypes.string,
+});
 
 export const ListHeaderProps = PropTypes.shape({
   caption: PropTypes.string.isRequired,
   source: PropTypes.string.isRequired,
   flex: PropTypes.number,
-  align: PropTypes.oneOf(['left', 'center', 'right'])
-})
+  align: PropTypes.oneOf(['left', 'center', 'right']),
+});
 
 export const PostDataProps = PropTypes.shape({
   batchID: PropTypes.Integer,
   procID: PropTypes.Integer,
   location: PropTypes.String,
   input: PropTypes.String,
-  deviation: DeviationProps
-})
+  deviation: DeviationProps,
+});
 
 export const ValidationProps = PropTypes.shape({
   upper: PropTypes.String,
@@ -80,8 +80,8 @@ export const ValidationProps = PropTypes.shape({
   minLength: PropTypes.String,
   maxLength: PropTypes.String,
   choices: PropTypes.String,
-  regExp: PropTypes.String
-})
+  regExp: PropTypes.String,
+});
 
 export const EntryProps = PropTypes.shape({
   name: PropTypes.String,
@@ -91,5 +91,5 @@ export const EntryProps = PropTypes.shape({
   entryType: PropTypes.String,
   entryTypeEnum: PropTypes.Integer,
   validation: ValidationProps,
-  value: PropTypes.String
-})
+  value: PropTypes.String,
+});

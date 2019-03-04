@@ -1,32 +1,30 @@
-import React, { PureComponent } from 'react'
-import { StyleSheet, View } from 'react-native'
-import PropTypes from 'prop-types'
-import {ContainerProps} from './SmallDisplayProps';
+import React, { PureComponent } from 'react';
+import { StyleSheet, View } from 'react-native';
+import PropTypes from 'prop-types';
+import { ContainerProps } from './SmallDisplayProps';
 
 export default class IdentifyContainerProps extends PureComponent {
-
   styles = StyleSheet.create({
     container: {
-      flexDirection: 'row'
-    }
+      flexDirection: 'row',
+    },
   })
 
   static propTypes = {
-    node: PropTypes.object
+    node: PropTypes.object,
   }
 
   render() {
-    const node = this.props.node
-    const hasData = (node && node.actionType === 'IdentifyContainer')
+    const { node } = this.props;
+    const hasData = (node && node.actionType === 'IdentifyContainer');
     if (hasData) {
-      const equip = ContainerProps(node.equipment)
+      const equip = ContainerProps(node.equipment);
       return (
         <View style={this.styles.container}>
           {equip}
         </View>
-      )
-    } else {
-      return null
+      );
     }
+    return null;
   }
 }

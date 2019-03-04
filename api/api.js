@@ -1,7 +1,7 @@
-import React from "react";
-import axios from "axios";
-import endpoints from "./endpoints";
-import i18n from "i18n-js";
+import React from 'react';
+import axios from 'axios';
+import i18n from 'i18n-js';
+import endpoints from './endpoints';
 
 const api = axios.create({ timeout: 30000 });
 
@@ -11,36 +11,36 @@ function getData(request) {
   return new Promise((resolve, reject) => {
     api
       .request(request)
-      .then(response => {
-        if (response.headers["content-type"].includes("application/json")) {
+      .then((response) => {
+        if (response.headers['content-type'].includes('application/json')) {
           resolve(response.data);
         } else {
           reject(null);
         }
       })
-      .catch(error => {
+      .catch((error) => {
         reject(error);
       });
   });
 }
 
 export function getTextFile(name) {
-  const locale = i18n.locale;
+  const { locale } = i18n;
   const request = {
     ...endpoints.getTextFile,
-    params: { name, language: locale }
+    params: { name, language: locale },
   };
   return new Promise((resolve, reject) => {
     api
       .request(request)
-      .then(response => {
-        if (response.headers["content-type"].includes("text/plain")) {
+      .then((response) => {
+        if (response.headers['content-type'].includes('text/plain')) {
           resolve({ success: true, data: response.data });
         } else {
           reject({ success: false, data: null });
         }
       })
-      .catch(error => {
+      .catch((error) => {
         reject(error);
       });
   });
@@ -51,16 +51,16 @@ export function getImageFile(name) {
   return new Promise((resolve, reject) => {
     api
       .request(request)
-      .then(response => {
+      .then((response) => {
         if (
-          response.headers["content-type"].includes("application/octet-stream")
+          response.headers['content-type'].includes('application/octet-stream')
         ) {
           resolve({ success: true, data: response.data });
         } else {
           reject({ success: false, data: null });
         }
       })
-      .catch(error => {
+      .catch((error) => {
         reject(error);
       });
   });
@@ -79,11 +79,11 @@ export const methods = {
   getBatch: (batchID, locationCode) => {
     const request = {
       ...endpoints.getBatch,
-      params: { batchID, locationCode }
+      params: { batchID, locationCode },
     };
     return getData(request);
   },
-  getBatchList: locationCode => {
+  getBatchList: (locationCode) => {
     const request = { ...endpoints.batchlist, params: { locationCode } };
     return getData(request);
   },
@@ -91,65 +91,65 @@ export const methods = {
     const request = { ...endpoints.compList, params: { batchID, stageID } };
     return getData(request);
   },
-  nextProc: postData => {
+  nextProc: (postData) => {
     const request = {
       ...endpoints.nextProc,
-      data: { ...postData }
+      data: { ...postData },
     };
     return getData(request);
   },
-  completeAction: postData => {
+  completeAction: (postData) => {
     const request = {
       ...endpoints.completeAction,
-      data: { ...postData }
+      data: { ...postData },
     };
     return getData(request);
   },
-  confirmAction: postData => {
+  confirmAction: (postData) => {
     const request = {
       ...endpoints.confirmAction,
-      data: { ...postData }
+      data: { ...postData },
     };
     return getData(request);
   },
-  signAction: postData => {
+  signAction: (postData) => {
     const request = {
       ...endpoints.signAction,
-      data: { ...postData }
+      data: { ...postData },
     };
     return getData(request);
   },
-  approveAction: postData => {
+  approveAction: (postData) => {
     const request = {
       ...endpoints.approveAction,
-      data: { ...postData }
+      data: { ...postData },
     };
     return getData(request);
   },
-  revertAction: postData => {
+  revertAction: (postData) => {
     const request = {
       ...endpoints.revertAction,
-      data: { ...postData }
+      data: { ...postData },
     };
     return getData(request);
   },
-  testPrint: postData => {
+  testPrint: (postData) => {
     const request = {
       ...endpoints.testPrint,
-      data: { ...postData }
+      data: { ...postData },
     };
     return getData(request);
   },
   resetHardware: () => {
     const request = {
-      ...endpoints.resetHardware
+      ...endpoints.resetHardware,
     };
     return getData(request);
   },
   clearCache: () => {
     const request = {
-      ...endpoints.clearCache
+      ...endpoints.clearCache,
     };
     return getData(request);
-  }
+  },
 };

@@ -2,35 +2,35 @@
  * Batch Execution API Endpoints
  *
  * @see BatchListPropType
- * 
+ *
  * @namespace endpoints
  * @memberof module:interfaces
  */
 
 const getHeaders = {
   'Content-Type': 'application/json',
-  'Accept-Charset' : 'utf-8',
-  'Accept-Language': 'en-GB'
-}
+  'Accept-Charset': 'utf-8',
+  'Accept-Language': 'en-GB',
+};
 
 const postHeaders = {
   'Content-Type': 'application/json',
-  'Accept-Charset' : 'utf-8',
-  'Accept-Language': 'en-GB'
-}
+  'Accept-Charset': 'utf-8',
+  'Accept-Language': 'en-GB',
+};
 
 const textHeaders = {
   'Content-Type': 'text/plain',
-  'Accept-Charset' : 'utf-8'
-}
+  'Accept-Charset': 'utf-8',
+};
 
 const imageHeaders = {
   'Content-Type': 'application/octet-stream',
-  'Accept-Charset' : 'utf-8'
-}
+  'Accept-Charset': 'utf-8',
+};
 
 export default {
-  /** 
+  /**
    * Gets basic iformation about the API
    * Request Type: GET
    * @param none
@@ -38,10 +38,10 @@ export default {
   info: {
     method: 'get',
     url: '/Info/GetInfo',
-    headers: getHeaders
+    headers: getHeaders,
   },
 
-  /** 
+  /**
    * Gets the list of batches, see BatchListPropType
    * Request Type: GET
    * @param locationCode location of machine
@@ -49,10 +49,10 @@ export default {
   batchlist: {
     method: 'get',
     url: '/Batch/BatchList',
-    headers: getHeaders
+    headers: getHeaders,
   },
 
-  /** 
+  /**
    * Gets the list of locations, see LocationsPropType
    * Request Type: GET
    * @param none
@@ -60,22 +60,22 @@ export default {
   locations: {
     method: 'get',
     url: '/Batch/Locations',
-    headers: getHeaders
+    headers: getHeaders,
   },
 
-  /** 
+  /**
    * Gets a single batch - LOADS THE BATCH INTO CACHE ON THE SERVER
    * Request Type: GET
-   * @param batchID 
+   * @param batchID
    * @param locationCode site location e.g. Granulation Suite
    */
   getBatch: {
     method: 'get',
     url: '/Batch/GetBatch',
-    headers: getHeaders
+    headers: getHeaders,
   },
 
-  /** 
+  /**
    * Gets the content of a text file
    * Request Type: GET
    * @param name the name of the required text file
@@ -83,10 +83,10 @@ export default {
   getTextFile: {
     method: 'get',
     url: '/File/Text',
-    headers: textHeaders
+    headers: textHeaders,
   },
 
-  /** 
+  /**
    * Gets the content of an image file
    * Request Type: GET
    * @param name the name of the required image file
@@ -94,10 +94,10 @@ export default {
   getImageFile: {
     method: 'get',
     url: '/File/Image',
-    headers: imageHeaders
+    headers: imageHeaders,
   },
 
-  /** 
+  /**
    * Gets the next action or process for the stated batch
    * Request Type: GET
    * @param batchID the id of the current batch
@@ -107,70 +107,69 @@ export default {
   nextProc: {
     method: 'post',
     url: '/Batch/NextProc',
-    headers: postHeaders
+    headers: postHeaders,
   },
 
-  //{batchID, procID, input, location, deviation}
+  // {batchID, procID, input, location, deviation}
   completeAction: {
     method: 'post',
     url: '/Batch/Complete',
-    headers: postHeaders
+    headers: postHeaders,
   },
 
-  //{batchID, procID, input, location, deviation}
+  // {batchID, procID, input, location, deviation}
   confirmAction: {
     method: 'post',
     url: '/Batch/Confirm',
-    headers: postHeaders
+    headers: postHeaders,
   },
-  
-  //{batchID, procID, input, location, deviation}
+
+  // {batchID, procID, input, location, deviation}
   signAction: {
     method: 'post',
     url: '/Batch/Sign',
-    headers: postHeaders
+    headers: postHeaders,
   },
-  
-  //{batchID, procID, input, location, deviation}
+
+  // {batchID, procID, input, location, deviation}
   approveAction: {
     method: 'post',
     url: '/Batch/Approve',
-    headers: postHeaders
+    headers: postHeaders,
   },
- 
-  //{batchID, procID, input, location, deviation}
+
+  // {batchID, procID, input, location, deviation}
   revertAction: {
     method: 'post',
     url: '/Batch/Revert',
-    headers: postHeaders
+    headers: postHeaders,
   },
 
   // {location}
   testPrint: {
     method: 'post',
     url: 'Diagnostics/TestPrint',
-    headers: postHeaders
+    headers: postHeaders,
   },
 
   //
   resetHardware: {
     method: 'post',
     url: '/Demo/HardwareReset',
-    headers: postHeaders
+    headers: postHeaders,
   },
 
   clearCache: {
     method: 'post',
     url: 'Demo/ClearCache',
-    headers: postHeaders
+    headers: postHeaders,
   },
 
-  //{StageID}
+  // {StageID}
   compList: {
     method: 'get',
     url: '/Batch/CompList',
-    headers: getHeaders
-  }
+    headers: getHeaders,
+  },
 
-}
-
+};

@@ -1,35 +1,34 @@
-import React, { PureComponent } from 'react'
-import { View, Text, Dimensions, PixelRatio } from 'react-native'
-import ScreenHeader from '../components/ScreenHeader'
-import PropList from '../components/PropList'
-import { Constants } from 'expo'
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
+import { View } from 'react-native';
+import { Constants } from 'expo';
+import ScreenHeader from '../components/ScreenHeader';
+import PropList from '../components/PropList';
 
 export default class AboutScreen extends PureComponent {
+  static navigationOptions = () => ({
+    title: 'About',
+  })
 
-  static navigationOptions = () => {
-    return {
-      title: 'About'
-    }
+  static propTypes = {
+    navigation: PropTypes.shape({
+      navigation: PropTypes.object,
+    }).isRequired,
   }
 
   render() {
-    const nav = this.props.navigation
+    const { navigation } = this.props;
     const headers = [
       { display: 'Name', source: 'name' },
       { display: 'Description', source: 'description' },
       { display: 'Version', source: 'version' },
       { display: 'SDK Version', source: 'sdkVersion' },
-    ]
-    data = {
-      ...Constants.manifest,
-
-    }
+    ];
     return (
       <View style={{ flexDirection: 'column', flex: 1 }}>
-        <ScreenHeader onCancel={() => nav.navigate('BatchList')} />
+        <ScreenHeader onCancel={() => navigation.navigate('BatchList')} />
         <PropList headers={headers} data={Constants.manifest} />
       </View>
-    )
+    );
   }
-
 }

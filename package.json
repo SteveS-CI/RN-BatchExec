@@ -7,6 +7,7 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "eject": "expo eject",
+    "lint": "eslint --fix .",
     "test": "node ./node_modules/jest/bin/jest.js --watchAll"
   },
   "jest": {
@@ -34,7 +35,13 @@
   "devDependencies": {
     "@babel/core": "^7.1.6",
     "babel": "^6.23.0",
+    "babel-eslint": "^10.0.1",
     "babel-preset-expo": "^5.0.0",
+    "eslint": "^5.14.1",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-plugin-import": "^2.16.0",
+    "eslint-plugin-jsx-a11y": "^6.2.1",
+    "eslint-plugin-react": "^7.12.4",
     "jest-expo": "32.0.0"
   }
 }

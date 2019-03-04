@@ -1,16 +1,50 @@
-import React, { Component } from "react";
-import { View } from "react-native"
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { View } from 'react-native';
 import i18n from 'i18n-js';
-import ButtonBar from "../components/ButtonBar"
-import TextBar from "../components/TextBar"
-import RoundedButton from "../components/RoundedButton"
-import ScrollList from '../components/ScrollList'
-import NexaColours from "../constants/NexaColours";
-import Settings from "../Store/Settings";
-import { methods } from '../api/api'
-import { NavChoice, MeasureTextLength } from '../Utils/utils'
+import ButtonBar from '../components/ButtonBar';
+import TextBar from '../components/TextBar';
+import RoundedButton from '../components/RoundedButton';
+import ScrollList from '../components/ScrollList';
+import NexaColours from '../constants/NexaColours';
+import Settings from '../Store/Settings';
+import { methods } from '../api/api';
+import { NavChoice } from '../Utils/utils';
 
 export default class BatchSelectScreen extends Component {
+  static propTypes = {
+    navigation: PropTypes.shape({
+      navigation: PropTypes.object,
+    }).isRequired,
+  }
+
+  static navigationOptions = () => ({
+    title: i18n.t('screens.batchList.title'),
+  });
+
+  headers = [
+    {
+      caption: i18n.t('batchList.header.product'),
+      source: 'product',
+      flex: 4,
+    },
+    {
+      caption: i18n.t('batchList.header.batchCode'),
+      source: 'code',
+      flex: 2,
+    },
+    {
+      caption: i18n.t('batchList.header.quantity'),
+      source: 'quantity',
+      flex: 2,
+    },
+    {
+      caption: i18n.t('batchList.header.status'),
+      source: 'state',
+      flex: 2,
+    },
+  ]
+
   constructor(props) {
     super(props);
     this.state = {
@@ -18,58 +52,18 @@ export default class BatchSelectScreen extends Component {
       selectedIndex: -1,
       selectedItemID: 0,
       loading: false,
-      continueDisabled: false
+      continueDisabled: false,
     };
+    console.log(JSON.stringify(props));
   }
 
-  static navigationOptions = () => {
-    return {
-      title: i18n.t('screens.batchList.title')
-    }
-  };
-
-  headers = [
-    {
-      caption: i18n.t('batchList.header.product'),
-      source: "product",
-      flex: 4
-    },
-    {
-      caption: i18n.t("batchList.header.batchCode"),
-      source: "code",
-      flex: 2
-    },
-    {
-      caption: i18n.t("batchList.header.quantity"),
-      source: "quantity",
-      flex: 2
-    },
-    {
-      caption: i18n.t("batchList.header.status"),
-      source: "state",
-      flex: 2
-    }
-  ]
-
   componentDidMount() {
-    Settings.readObject("location").then(location => {
+    Settings.readObject('location').then((location) => {
       if (location) {
         this.locationCode = location.code;
         this.fetchBatchList(location.code);
       }
     });
-  }
-
-  fetchBatchList(locationCode) {
-    this.setState({ batchList: null, loading: true })
-    methods.getBatchList(locationCode)
-      .then(data => {
-        this.setState({ batchList: data, loading: false });
-      })
-      .catch(error => {
-        console.log(JSON.stringify(error));
-        this.setState({ loading: false });
-      });
   }
 
   listOnPress = (index, item) => {
@@ -81,24 +75,25 @@ export default class BatchSelectScreen extends Component {
 
   detailClicked = () => {
     if (this.batch) {
+      const { navigation } = this.props;
       // set loading prior to request
       this.setState({ loading: true });
       methods.getBatch(this.batch.batchID, this.locationCode)
-        .then(data => {
+        .then((data) => {
           this.setState({ loading: false });
           this.batch = data;
           // Navigate to the TabNavigator, not a specific screen (Props/Comps/Equip)
           // The parameter is passed to all screens of the TabNavigator
           // (all screens are rendered at once)
-          this.props.navigation.navigate("BatchDetail", {
+          navigation.navigate('BatchDetail', {
             batch: {
               ...data,
-              state: i18n.t("enums.BatchStatus." + data.status)
+              state: i18n.t(`enums.BatchStatus.${data.status}`),
             },
-            locationCode: this.locationCode
+            locationCode: this.locationCode,
           });
         })
-        .catch(error => {
+        .catch((error) => {
           this.setState({ loading: false });
           console.log(JSON.stringify(error));
         });
@@ -107,19 +102,19 @@ export default class BatchSelectScreen extends Component {
 
   continueClicked = () => {
     if (this.batch) {
-      const nav = this.props.navigation;
+      const { navigation } = this.props;
       // set loading prior to request
-      this.setState({ loading: true })
+      this.setState({ loading: true });
       const postData = {
         batchID: this.batch.batchID,
         procID: 0,
-        location: this.locationCode
-      }
+        location: this.locationCode,
+      };
       methods.nextProc(postData)
-        .then(batchData => {
-          NavChoice(batchData, nav, this.locationCode)
+        .then((batchData) => {
+          NavChoice(batchData, navigation, this.locationCode);
         })
-        .catch(error => {
+        .catch((error) => {
           this.setState({ loading: false });
           console.log('continueClicked-ERROR: ', JSON.stringify(error));
         });
@@ -127,56 +122,72 @@ export default class BatchSelectScreen extends Component {
   };
 
   listOnRefresh = () => {
-    this.fetchBatchList(this.locationCode)
+    this.fetchBatchList(this.locationCode);
   }
 
   transform = (row) => {
     const newRow = {
       ...row,
-      product: row.productCode + '\n' + row.productName,
-      state: i18n.t("enums.BatchStatus." + row.status)
-    }
-    return newRow
+      product: `${row.productCode}\n${row.productName}`,
+      state: i18n.t(`enums.BatchStatus.${row.status}`),
+    };
+    return newRow;
+  }
+
+  fetchBatchList(locationCode) {
+    this.setState({ batchList: null, loading: true });
+    methods.getBatchList(locationCode)
+      .then((data) => {
+        this.setState({ batchList: data, loading: false });
+      })
+      .catch((error) => {
+        console.log(JSON.stringify(error));
+        this.setState({ loading: false });
+      });
   }
 
   render() {
-    const batchData = this.state.batchList;
-    let batchList = null;
+    const warn = 'There is no Location set';
+    const {
+      batchList, selectedIndex, loading, continueDisabled, selectedItemID,
+    } = this.state;
+    let list = null;
     let contDisabled = true;
     if (!this.locationCode) {
-      batchList = (
-        <TextBar backColor={NexaColours.AlertOrange} style={{ marginTop: 12 }}>
-          There is no Location set
-        </TextBar>
-      )
+      list = (
+        <TextBar backColor={NexaColours.AlertOrange} style={{ marginTop: 12 }}>{warn}</TextBar>
+      );
     } else {
-      batchList = <ScrollList
-        headers={this.headers} data={batchData}
-        selectedIndex={this.state.selectedIndex}
-        onPress={this.listOnPress}
-        noData='No Batches are available'
-        loading={this.state.loading}
-        onRefresh={this.listOnRefresh}
-        topMargin={false}
-        transform={this.transform}
-      />
+      list = (
+        <ScrollList
+          headers={this.headers}
+          data={batchList}
+          selectedIndex={selectedIndex}
+          onPress={this.listOnPress}
+          noData="No Batches are available"
+          loading={loading}
+          onRefresh={this.listOnRefresh}
+          topMargin={false}
+          transform={this.transform}
+        />
+      );
     }
-    contDisabled = this.state.continueDisabled || this.state.selectedItemID == 0;
+    contDisabled = continueDisabled || selectedItemID === 0;
     return (
       <View style={{ flex: 1 }}>
         <ButtonBar justify="flex-end">
           <RoundedButton
-            disabled={this.state.selectedItemID == 0}
-            title={i18n.t("button.captions.details")}
+            disabled={selectedItemID === 0}
+            title={i18n.t('button.captions.details')}
             onPress={this.detailClicked}
           />
           <RoundedButton
             disabled={contDisabled}
-            title={i18n.t("button.captions.continue")}
+            title={i18n.t('button.captions.continue')}
             onPress={this.continueClicked}
           />
         </ButtonBar>
-        {batchList}
+        {list}
       </View>
     );
   }

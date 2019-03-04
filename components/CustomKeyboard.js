@@ -1,12 +1,14 @@
-import React, {Component} from 'react'
-import {StyleSheet, View, TouchableOpacity, Text} from 'react-native'
+import React, { Component } from 'react';
+import {
+  StyleSheet, View, TouchableOpacity, Text,
+} from 'react-native';
 
 const styles = StyleSheet.create({
   buttonLabel: {
     borderWidth: 0.5,
-    borderColor: "#d6d7da",
+    borderColor: '#d6d7da',
     padding: 10,
-    textAlign: "center",
+    textAlign: 'center',
     justifyContent: 'center',
     alignItems: 'center',
     paddingTop: 13,
@@ -14,12 +16,11 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   button: {
-    width: "33.333333333%",
+    width: '33.333333333%',
   },
 });
 
 export default class MyCustomKeyboard extends Component {
-
   onPress1 = () => {
     insertText(this.props.tag, '1');
   }
@@ -31,7 +32,7 @@ export default class MyCustomKeyboard extends Component {
   onPress3 = () => {
     insertText(this.props.tag, '3');
   }
-  
+
   onPress4 = () => {
     insertText(this.props.tag, '4');
   }
@@ -39,7 +40,7 @@ export default class MyCustomKeyboard extends Component {
   onPress5 = () => {
     insertText(this.props.tag, '5');
   }
-  
+
   onPress6 = () => {
     insertText(this.props.tag, '6');
   }
@@ -55,15 +56,15 @@ export default class MyCustomKeyboard extends Component {
   onPress9 = () => {
     insertText(this.props.tag, '9');
   }
-  
+
   onPressBackSpace = () => {
     backSpace(this.props.tag);
   }
-  
+
   onPress0= () => {
     insertText(this.props.tag, '0');
   }
-  
+
   onPressHideKeyboard = () => {
     hideKeyboard(this.props.tag);
   }
@@ -71,10 +72,25 @@ export default class MyCustomKeyboard extends Component {
   render() {
     return (
       <View>
-        <View style={{flexDirection: "row"}}>
+        <View style={{ flexDirection: 'row' }}>
           <View style={styles.button}>
             <TouchableOpacity onPress={this.onPress1}>
               <Text style={styles.buttonLabel}>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                 1
               </Text>
             </TouchableOpacity>
@@ -82,6 +98,21 @@ export default class MyCustomKeyboard extends Component {
           <View style={styles.button}>
             <TouchableOpacity onPress={this.onPress2}>
               <Text style={styles.buttonLabel}>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                 2
               </Text>
             </TouchableOpacity>
@@ -89,15 +120,45 @@ export default class MyCustomKeyboard extends Component {
           <View style={styles.button}>
             <TouchableOpacity onPress={this.onPress3}>
               <Text style={styles.buttonLabel}>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                 3
               </Text>
             </TouchableOpacity>
           </View>
         </View>
-        <View style={{flexDirection: "row"}}>
+        <View style={{ flexDirection: 'row' }}>
           <View style={styles.button}>
             <TouchableOpacity onPress={this.onPress4}>
               <Text style={styles.buttonLabel}>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                 4
               </Text>
             </TouchableOpacity>
@@ -105,6 +166,21 @@ export default class MyCustomKeyboard extends Component {
           <View style={styles.button}>
             <TouchableOpacity onPress={this.onPress5}>
               <Text style={styles.buttonLabel}>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                 5
               </Text>
             </TouchableOpacity>
@@ -112,15 +188,45 @@ export default class MyCustomKeyboard extends Component {
           <View style={styles.button}>
             <TouchableOpacity onPress={this.onPress6}>
               <Text style={styles.buttonLabel}>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                 6
               </Text>
             </TouchableOpacity>
           </View>
         </View>
-        <View style={{flexDirection: "row"}}>
+        <View style={{ flexDirection: 'row' }}>
           <View style={styles.button}>
             <TouchableOpacity onPress={this.onPress7}>
               <Text style={styles.buttonLabel}>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                 7
               </Text>
             </TouchableOpacity>
@@ -128,6 +234,21 @@ export default class MyCustomKeyboard extends Component {
           <View style={styles.button}>
             <TouchableOpacity onPress={this.onPress8}>
               <Text style={styles.buttonLabel}>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                 8
               </Text>
             </TouchableOpacity>
@@ -135,15 +256,45 @@ export default class MyCustomKeyboard extends Component {
           <View style={styles.button}>
             <TouchableOpacity onPress={this.onPress9}>
               <Text style={styles.buttonLabel}>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                 9
               </Text>
             </TouchableOpacity>
           </View>
         </View>
-        <View style={{flexDirection: "row"}}>
+        <View style={{ flexDirection: 'row' }}>
           <View style={styles.button}>
             <TouchableOpacity onPress={this.onPressBackSpace}>
               <Text style={styles.buttonLabel}>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                 &larr;
               </Text>
             </TouchableOpacity>
@@ -151,6 +302,21 @@ export default class MyCustomKeyboard extends Component {
           <View style={styles.button}>
             <TouchableOpacity onPress={this.onPress0}>
               <Text style={styles.buttonLabel}>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                 0
               </Text>
             </TouchableOpacity>
@@ -158,6 +324,21 @@ export default class MyCustomKeyboard extends Component {
           <View style={styles.button}>
             <TouchableOpacity onPress={this.onPressHideKeyboard}>
               <Text style={styles.buttonLabel}>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                 &crarr;
               </Text>
             </TouchableOpacity>
