@@ -5,23 +5,21 @@ import GenericEntry from './GenericEntry';
 import DistinctEntry from './DistinctEntry';
 
 export default class ActionEntry extends PureComponent {
-  constructor(props) {
-    super(props);
-    this.state = { editing: false };
-  }
-
   static defaultProps = {
     enabled: true,
     autoFocus: false,
+    useCamera: false,
+    index: 0
   }
 
   static propTypes = {
-    entry: DataProps.EntryProps,
+    entry: DataProps.EntryProps.isRequired,
     value: PropTypes.any,
-    onChange: PropTypes.func,
+    onChange: PropTypes.func.isRequired,
     enabled: PropTypes.bool,
     autoFocus: PropTypes.bool,
     useCamera: PropTypes.bool,
+    index: PropTypes.number
   }
 
   validate(value) {
@@ -30,9 +28,10 @@ export default class ActionEntry extends PureComponent {
   }
 
   render() {
-    const hasEntry = !!this.props.entry;
+    const { entry } = this.props;
+    const hasEntry = !!entry;
     if (hasEntry) {
-      const { entryType } = this.props.entry;
+      const { entryType } = entry;
       if (entryType === 'Distinct') {
         return (
           <DistinctEntry ref={(ref) => { this.entry = ref; }} {...this.props} />

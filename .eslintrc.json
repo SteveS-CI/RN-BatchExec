@@ -23,6 +23,7 @@
       "react/jsx-filename-extension": ["error", { "extensions": [".jsx", ".js"] }],
       "linebreak-style": ["error","windows"],
       "react/forbid-prop-types": ["warn", {"forbid": ["any", "array", "object"],"checkContextTypes": true,"checkChildContextTypes": true}],
-      "comma-dangle": ["error", "always-multiline"]
+      "comma-dangle": ["error", "only-multiline"],
+      "padded-blocks": ["error", {"blocks": "never"}]
       }
 }

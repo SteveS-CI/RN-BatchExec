@@ -91,6 +91,11 @@ export default class MyCustomKeyboard extends Component {
 
 
 
+
+
+
+
+
                 1
               </Text>
             </TouchableOpacity>
@@ -113,6 +118,11 @@ export default class MyCustomKeyboard extends Component {
 
 
 
+
+
+
+
+
                 2
               </Text>
             </TouchableOpacity>
@@ -120,6 +130,11 @@ export default class MyCustomKeyboard extends Component {
           <View style={styles.button}>
             <TouchableOpacity onPress={this.onPress3}>
               <Text style={styles.buttonLabel}>
+
+
+
+
+
 
 
 
@@ -159,6 +174,11 @@ export default class MyCustomKeyboard extends Component {
 
 
 
+
+
+
+
+
                 4
               </Text>
             </TouchableOpacity>
@@ -181,6 +201,11 @@ export default class MyCustomKeyboard extends Component {
 
 
 
+
+
+
+
+
                 5
               </Text>
             </TouchableOpacity>
@@ -188,6 +213,11 @@ export default class MyCustomKeyboard extends Component {
           <View style={styles.button}>
             <TouchableOpacity onPress={this.onPress6}>
               <Text style={styles.buttonLabel}>
+
+
+
+
+
 
 
 
@@ -227,6 +257,11 @@ export default class MyCustomKeyboard extends Component {
 
 
 
+
+
+
+
+
                 7
               </Text>
             </TouchableOpacity>
@@ -249,6 +284,11 @@ export default class MyCustomKeyboard extends Component {
 
 
 
+
+
+
+
+
                 8
               </Text>
             </TouchableOpacity>
@@ -256,6 +296,11 @@ export default class MyCustomKeyboard extends Component {
           <View style={styles.button}>
             <TouchableOpacity onPress={this.onPress9}>
               <Text style={styles.buttonLabel}>
+
+
+
+
+
 
 
 
@@ -295,6 +340,11 @@ export default class MyCustomKeyboard extends Component {
 
 
 
+
+
+
+
+
                 &larr;
               </Text>
             </TouchableOpacity>
@@ -317,6 +367,11 @@ export default class MyCustomKeyboard extends Component {
 
 
 
+
+
+
+
+
                 0
               </Text>
             </TouchableOpacity>
@@ -324,6 +379,11 @@ export default class MyCustomKeyboard extends Component {
           <View style={styles.button}>
             <TouchableOpacity onPress={this.onPressHideKeyboard}>
               <Text style={styles.buttonLabel}>
+
+
+
+
+
 
 
 

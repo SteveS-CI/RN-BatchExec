@@ -105,6 +105,11 @@ export default class SmallPropWindow extends PureComponent {
 
 
 
+
+
+
+
+
 :
         </Text>
         <Text style={textRightStyle}>{data[header.source]}</Text>

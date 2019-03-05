@@ -163,6 +163,11 @@ export default class TestScreen5 extends React.Component {
 
 
 
+
+
+
+
+
             A virtual ("keyboard") balance.
             Move the slider to change the scale value.
             Double-tap on the display to jump to target,

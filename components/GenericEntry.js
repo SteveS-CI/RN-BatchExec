@@ -1,6 +1,9 @@
 import React, { PureComponent } from 'react';
 import {
-  StyleSheet, View, Text, TextInput,
+  StyleSheet,
+  View,
+  Text,
+  TextInput
 } from 'react-native';
 import PropTypes from 'prop-types';
 import i18n from 'i18n-js';
@@ -11,7 +14,6 @@ import NexaColours from '../constants/NexaColours';
 import IconButton from './IconButton';
 import BarcodeReader from './BarcodeReader';
 import { FontSizes, scale } from '../constants/Layout';
-
 
 const inputBorderWidth = StyleSheet.hairlineWidth;
 const inputBorderRadius = scale(8);
@@ -60,21 +62,12 @@ const styles = StyleSheet.create(
 );
 
 export default class GenericEntry extends PureComponent {
-  constructor(props) {
-    super(props);
-    this.state = {
-      editing: false,
-      showCam: false,
-      error: null,
-    };
-  }
-
   static defaultProps = {
     enabled: true,
     autoFocus: false,
     useCamera: false,
-    onChange: () => { },
-    showCam: false,
+    index: 0,
+    onChange: () => { }
   }
 
   static propTypes = {
@@ -84,53 +77,64 @@ export default class GenericEntry extends PureComponent {
     enabled: PropTypes.bool,
     autoFocus: PropTypes.bool,
     useCamera: PropTypes.bool,
+    index: PropTypes.number
+  }
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      editing: false,
+      showCam: false,
+      error: null,
+    };
   }
 
   componentDidMount() {
+    const { entry } = this.props;
     this.suppressNextKey = false;
     this.locale = i18n.currentLocale();
     this.formats = i18n.translations[this.locale].formats;
     // Shortened parse function
     this.parse = parseDecimalNumber.withOptions(this.formats);
     // Set initial value if entry object has it (will need to be redisplayed on signature/approval)
-    if (this.props.entry.value) { this.onChangeText(this.props.entry.value); }
+    if (entry.value) { this.onChangeText(entry.value); }
   }
 
   scanned = (type, data) => {
+    const { onChange } = this.props;
     this.setState({ showCam: false });
     if (type === 0) {
-      this.props.onChange('', false);
+      onChange('', false);
     } else {
-      this.props.onChange(data, true);
+      onChange(data, true);
     }
   }
 
-  validate(value) {
-    const { entry } = this.props;
-    const { validation } = entry;
-    if (value) {
-      const type = entry.entryType;
+  onBlur = () => {
+    const { value } = this.props;
+    this.setState({ editing: false });
+    this.validate(value);
+  }
 
-      if (type === 'Integer' || type === 'Decimal') { // Numerics
-        // Convert to 'standard' number
-        const realVal = this.parse(value);
-        if (isNaN(realVal)) {
-          this.setState({ error: 'Not a valid number' });
-          return false;
-        }
-        if (type === 'Integer' && (realVal % 1 > 0)) {
-          this.setState({ error: 'Value must be an integer, not a decimal' });
-          return false;
-        }
-        return this.checkNumericLimits(realVal, validation);
-      }
-
-      if (type === 'String') { return this.checkStringLimits(value, validation); }
-
-      if (type === 'Custom') { return this.checkRegEx(value, validation); }
+  onChangeText = (newValue) => {
+    const { onChange, value, index } = this.props;
+    if (this.suppressNextKey) {
+      this.suppressNextKey = false;
+      onChange(value, index);
     } else {
-      this.setState({ error: 'A value is required' });
-      return false;
+      onChange(newValue.toString(), index);
+    }
+    this.setState({ error: null });
+  }
+
+  onKeyPress = (e) => {
+    const { entry } = this.props;
+    const type = entry.entryType;
+    const { key } = e.nativeEvent;
+    if (type === 'Decimal') {
+      if (key === this.formats.thousands || key === ' ') { this.suppressNextKey = true; }
+    } else if (type === 'Integer') {
+      if (key === this.formats.decimal || key === this.formats.thousands || key === ' ') { this.suppressNextKey = true; }
     }
   }
 
@@ -178,35 +182,44 @@ export default class GenericEntry extends PureComponent {
     return true;
   }
 
-  onBlur = () => {
-    this.setState({ editing: false });
-    this.validate(this.props.value);
-  }
+  validate(value) {
+    const { entry } = this.props;
+    const { validation } = entry;
+    if (value) {
+      const type = entry.entryType;
 
-  onChangeText = (value) => {
-    if (this.suppressNextKey) {
-      this.suppressNextKey = false;
-      this.props.onChange(this.props.value);
+      if (type === 'Integer' || type === 'Decimal') { // Numerics
+        // Convert to 'standard' number
+        const realVal = this.parse(value);
+        if (isNaN(realVal)) {
+          this.setState({ error: 'Not a valid number' });
+          return false;
+        }
+        if (type === 'Integer' && (realVal % 1 > 0)) {
+          this.setState({ error: 'Value must be an integer, not a decimal' });
+          return false;
+        }
+        return this.checkNumericLimits(realVal, validation);
+      }
+
+      if (type === 'String') { return this.checkStringLimits(value, validation); }
+
+      if (type === 'Custom') { return this.checkRegEx(value, validation); }
     } else {
-      this.props.onChange(value.toString());
-    }
-    this.setState({ error: null });
-  }
-
-  onKeyPress = (e) => {
-    const type = this.props.entry.entryType;
-    const { key } = e.nativeEvent;
-    if (type === 'Decimal') {
-      if (key === this.formats.thousands || key === ' ') { this.suppressNextKey = true; }
-    } else if (type === 'Integer') {
-      if (key === this.formats.decimal || key === this.formats.thousands || key === ' ') { this.suppressNextKey = true; }
+      this.setState({ error: 'A value is required' });
+      return false;
     }
   }
 
   render() {
-    const { showCam } = this.state;
-    const { editing } = this.state;
-    const { entry } = this.props;
+    const { showCam, editing, error } = this.state;
+    const {
+      entry,
+      value,
+      enabled,
+      autoFocus,
+      useCamera
+    } = this.props;
     const hasLabel = !!entry.label;
     const hasSuffix = !!entry.suffix;
     const keyboardType = (entry.entryType === 'Integer' || entry.entryType === 'Decimal') ? 'number-pad' : 'default';
@@ -221,29 +234,35 @@ export default class GenericEntry extends PureComponent {
       borderBottomLeftRadius: inputBorderRadius,
       borderLeftWidth: inputBorderWidth,
     } : null;
-    const boxStyle = StyleSheet.flatten([styles.inputBox, { backgroundColor: boxColor }, boxLeft, boxRight]);
+    const boxStyle = StyleSheet.flatten(
+      [styles.inputBox,
+        { backgroundColor: boxColor },
+        boxLeft,
+        boxRight
+      ]
+    );
     return (
       <View style={{ flexDirection: 'column' }}>
         <View style={styles.inputContainer}>
           {hasLabel && <Text style={styles.inputLabel}>{entry.label}</Text>}
           <TextInput
             style={boxStyle}
-            value={this.props.value}
+            value={value}
             onChangeText={this.onChangeText}
             blurOnSubmit
             onFocus={() => this.setState({ editing: true })}
             onBlur={this.onBlur}
             underlineColorAndroid="transparent"
-            editable={this.props.enabled}
-            autoFocus={this.props.autoFocus}
+            editable={enabled}
+            autoFocus={autoFocus}
             keyboardType={keyboardType}
             onKeyPress={this.onKeyPress}
           />
           {hasSuffix && <Text style={styles.inputSuffix}>{entry.suffix}</Text>}
-          {this.props.useCamera && <IconButton iconName="camera" onPress={() => this.setState({ showCam: true })} />}
+          {useCamera && <IconButton iconName="camera" onPress={() => this.setState({ showCam: true })} />}
           <BarcodeReader visible={showCam} onScanned={this.scanned} />
         </View>
-        <ErrorBar text={this.state.error} onPress={() => this.setState({ error: null })} />
+        <ErrorBar text={error} onPress={() => this.setState({ error: null })} />
       </View>
     );
   }

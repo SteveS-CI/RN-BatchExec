@@ -10,6 +10,7 @@ import ActionTitle from '../components/ActionTitle';
 import ActionSign from '../components/ActionWarning';
 import ActionPrompt from '../components/ActionPrompt';
 import ActionEntry from '../components/ActionEntry';
+import ActionEntryArray from '../components/ActionEntryArray';
 import ActionImage from '../components/ActionImage';
 import FileContent from '../components/FileContent';
 import Balance from '../components/Balance';
@@ -73,7 +74,7 @@ export default class ActionDetailScreen extends Component {
     this.state = {
       node: null,
       loading: false,
-      value: null,
+      values: [null, null, null, null, null, null, null, null, null, null],
       signing: false,
       approving: false,
       commenting: false,
@@ -215,8 +216,10 @@ export default class ActionDetailScreen extends Component {
     this.setState({ loading: false, error: msg });
   }
 
-  entryValueChange = (value) => {
-    this.setState({ value, error: null });
+  entryValueChange = (value, index) => {
+    const { values } = this.state;
+    values[index] = value;
+    this.setState({ values, error: null });
   }
 
   onComment = (valid, comment) => {
@@ -260,21 +263,14 @@ export default class ActionDetailScreen extends Component {
 
   render() {
     const {
-      node,
-      value,
-      error,
-      showComps,
-      components,
-      commenting,
-      approving,
-      signing,
-      loading,
-      message,
+      node, values, error, showComps, components, commenting,
+      approving, signing, loading, message
     } = this.state;
     if (node) {
       const buttons = ActionDetailScreen.createButtons(node);
       const allowCam = this.allowCamera(node);
-      const entry = node.inputs ? node.inputs[0] : null;
+      const { inputs } = node;
+      const entry = inputs ? inputs[0] : null;
       const enabled = (node.status === 'NotStarted');
       return (
         <View style={{ flex: 1 }}>
@@ -297,6 +293,16 @@ export default class ActionDetailScreen extends Component {
                 <IdentEquipmentProps node={node} />
               </ScrollView>
               {entry && (
+              <ActionEntryArray
+                ref={(ref) => { this.entry = ref; }}
+                values={values}
+                entries={inputs}
+                onChange={this.entryValueChange}
+                enabled={enabled}
+                useCamera={allowCam}
+              />
+              /*
+              {entry && (
               <ActionEntry
                 ref={(ref) => { this.entry = ref; }}
                 value={value}
@@ -305,6 +311,7 @@ export default class ActionDetailScreen extends Component {
                 enabled={enabled}
                 useCamera={allowCam}
               />
+              */
               )
               }
               <ActionImage fileName={node.picture} />
