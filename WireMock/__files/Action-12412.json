@@ -30,6 +30,7 @@
 			},
 			"inputs": [
 				{
+          "name": "Identify Weighing",
 					"entryType": "Integer",
 					"entryTypeEnum": 1,
 					"label": "Weigh ID"

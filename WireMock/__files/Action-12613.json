@@ -25,6 +25,7 @@
 			"path": "Batch/Stage/Operation/Entry (decimal)",
 			"inputs": [
 				{
+          "name": "Entry (custom)",
 					"entryType": "Custom",
           "entryTypeEnum": 4,
           "validation": {

@@ -24,6 +24,7 @@
 			"path": "Batch/Stage/Operation/Value Entry",
 			"inputs": [
 				{
+          "name": "Value Entry",
 					"entryType": "Decimal",
 					"entryTypeEnum": 2,
 					"label": "Weight",

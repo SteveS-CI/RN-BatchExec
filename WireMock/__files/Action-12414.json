@@ -28,6 +28,7 @@
       },
       "inputs": [
         {
+          "name": "Serial",
           "entryType": "String",
           "entryTypeEnum": 0,
           "label": "Serial No"

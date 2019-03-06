@@ -24,6 +24,7 @@
 			"path": "Batch/Stage/Operation/Scan Weighing",
 			"inputs": [
 				{
+          "name": "Scan Weighing",
 					"entryType": "Integer",
 					"entryTypeEnum": 1,
 					"label": "Weigh ID"

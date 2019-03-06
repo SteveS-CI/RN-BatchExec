@@ -26,6 +26,7 @@
     "react-native-custom-keyboard": "^1.0.4",
     "react-native-exit-app": "^1.0.0",
     "react-native-fontawesome": "^6.0.0",
+    "react-native-keyboard-aware-scroll-view": "^0.8.0",
     "react-native-measure-text": "^1.0.0-alpha.2",
     "react-native-ping": "^1.1.1",
     "react-native-vector-icons": "^5.0.0",

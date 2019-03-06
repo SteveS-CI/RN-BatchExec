@@ -28,6 +28,7 @@
 			},
 			"inputs": [
 				{
+          "name": "Identify Container",
 					"entryType": "String",
 					"entryTypeEnum": 0,
 					"label": "Serial No"

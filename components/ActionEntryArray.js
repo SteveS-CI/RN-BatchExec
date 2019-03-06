@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { ScrollView } from 'react-native';
+import { ScrollView, KeyboardAvoidingView } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import PropTypes from 'prop-types';
 import { EntryProps } from '../constants/DataProps';
 import ActionEntry from './ActionEntry';
@@ -8,8 +9,7 @@ import ActionEntry from './ActionEntry';
 export default class ActionEntryArray extends Component {
 
   static propTypes = {
-    entries: PropTypes.arrayOf(EntryProps).isRequired,
-    onChange: PropTypes.func.isRequired,
+    inputs: PropTypes.arrayOf(EntryProps).isRequired,
     enabled: PropTypes.bool,
     autoFocus: PropTypes.bool,
     useCamera: PropTypes.bool
@@ -23,38 +23,52 @@ export default class ActionEntryArray extends Component {
 
   constructor(props) {
     super(props);
-    this.entries = [];
-    this.values = [];
+    this.entries = []; // references to each of the ActionEntries, needed for calling validate
+    const values = [];
+    const { inputs } = this.props;
+    values.length = inputs.length; // Values should match number of inputs
+    this.state = { values };
   }
 
-  onChange = (value) => {
-
+  onChange = (value, index) => {
+    const { values } = this.state;
+    values[index] = value;
+    this.setState({ values });
   }
 
-  validate(value) {
+  value() {
+    // return a single value, or a concatenated set of values
+    const { values } = this.state;
+    return values.join('|');
+  }
 
+  validate() {
+    let result = true;
+    const { values } = this.state;
+    values.forEach((value, index) => {
+      result = result && this.entries[index].validate(value);
+    });
+    return result;
   }
 
   render() {
     // build elements from props
     const {
-      entries,
-      onChange,
+      inputs,
       enabled,
       autoFocus,
       useCamera
     } = this.props;
     let list = null;
-    list = entries.map((entry, index) => {
-      this.values.push(null);
-      console.log(entry.name);
+    list = inputs.map((entry, index) => {
+      const { values } = this.state;
       return (
         <ActionEntry
           key={entry.name}
           ref={(ref) => { this.entries.push(ref); }}
           entry={entry}
-          value={this.values[index]}
-          onChange={onChange}
+          value={values[index]}
+          onChange={this.onChange}
           enabled={enabled}
           autoFocus={autoFocus}
           useCamera={useCamera}
@@ -63,9 +77,11 @@ export default class ActionEntryArray extends Component {
       );
     });
     return (
-      <ScrollView>
-        {list}
-      </ScrollView>
+      <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={300} style={{ flex: 1 }}>
+        <ScrollView>
+          {list}
+        </ScrollView>
+      </KeyboardAvoidingView>
     );
   }
 }

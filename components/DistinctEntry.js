@@ -1,7 +1,5 @@
 import React, { PureComponent } from 'react';
-import {
-  StyleSheet, View, Text, Picker,
-} from 'react-native';
+import { StyleSheet, View, Text } from 'react-native';
 import PropTypes from 'prop-types';
 import * as DataProps from '../constants/DataProps';
 import NexaColours from '../constants/NexaColours';
@@ -46,6 +44,8 @@ const styles = StyleSheet.create(
 export default class DistinctEntry extends PureComponent {
   static defaultProps = {
     enabled: true,
+    index: 0,
+    onChange: () => { }
   }
 
   static propTypes = {
@@ -53,27 +53,31 @@ export default class DistinctEntry extends PureComponent {
     value: PropTypes.any,
     onChange: PropTypes.func,
     enabled: PropTypes.bool,
+    index: PropTypes.number
   }
 
   componentDidMount() {
-    if (this.props.value) {
-      this.onValueChange(this.props.value);
+    const { value, entry } = this.props;
+    if (value) {
+      this.onValueChange(value);
     } else {
-      this.onValueChange(this.props.entry.validation.choices[0]);
+      this.onValueChange(entry.validation.choices[0]);
     }
   }
 
-  onValueChange = (itemValue, itemIndex) => {
-    if (this.props.onChange) this.props.onChange(itemValue);
+  onValueChange = (itemValue) => {
+    const { onChange, index } = this.props;
+    if (onChange) onChange(itemValue, index);
   }
 
-  validate(value) {
+  // eslint-disable-next-line class-methods-use-this
+  validate() {
     // Distinct entries will always validate true
     return true;
   }
 
   render() {
-    const { entry } = this.props;
+    const { entry, value } = this.props;
     const hasLabel = !!entry.label;
     const hasSuffix = !!entry.suffix;
     const { validation } = entry;
@@ -83,7 +87,7 @@ export default class DistinctEntry extends PureComponent {
     return (
       <View style={styles.pickerContainer}>
         {hasLabel && <Text style={styles.pickerLabel}>{entry.label}</Text>}
-        <CustomPicker title={title} items={choices} value={this.props.value} onChange={this.onValueChange} />
+        <CustomPicker title={title} items={choices} value={value} onChange={this.onValueChange} />
         {hasSuffix && <Text style={styles.pickerSuffix}>{entry.suffix}</Text>}
       </View>
     );

@@ -25,6 +25,7 @@
     "path": "Batch/Stage/Operation/Entry (string)",
     "inputs": [
       {
+        "name": "Entry (string)",
         "entryType": "String",
         "entryTypeEnum": 0,
         "validation": {

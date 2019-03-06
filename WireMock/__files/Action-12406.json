@@ -35,6 +35,7 @@
 			},
 			"inputs": [
 				{
+          "name": "Addition",
 					"entryType": "Distinct",
 					"entryTypeEnum": 3,
 					"label": "Addition Method",

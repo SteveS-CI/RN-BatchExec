@@ -74,7 +74,7 @@ export default class ActionDetailScreen extends Component {
     this.state = {
       node: null,
       loading: false,
-      values: [null, null, null, null, null, null, null, null, null, null],
+      value: null,
       signing: false,
       approving: false,
       commenting: false,
@@ -121,9 +121,9 @@ export default class ActionDetailScreen extends Component {
       }
       case 'ok':
         if (this.entry) { // There is an entry; validate
-          if (this.entry.validate(value)) {
+          if (this.entry.validate()) {
             // Validated OK; complete
-            this.completeAction();
+            this.completeAction(this.entry.value());
           }
         } else if (this.balance) { // a balance was used; validate
           const { balanceValue, readingValid } = this.balance.getReading();
@@ -263,14 +263,14 @@ export default class ActionDetailScreen extends Component {
 
   render() {
     const {
-      node, values, error, showComps, components, commenting,
+      node, error, showComps, components, commenting,
       approving, signing, loading, message
     } = this.state;
     if (node) {
       const buttons = ActionDetailScreen.createButtons(node);
       const allowCam = this.allowCamera(node);
       const { inputs } = node;
-      const entry = inputs ? inputs[0] : null;
+      const hasInputs = !!inputs;
       const enabled = (node.status === 'NotStarted');
       return (
         <View style={{ flex: 1 }}>
@@ -279,56 +279,41 @@ export default class ActionDetailScreen extends Component {
           <ActionSign node={node} />
           <ActionButtons buttons={buttons} onPress={this.onPress} />
           <ScrollView style={{ flex: 1 }}>
-            <KeyboardAvoidingView keyboardVerticalOffset={300} behavior="position" enabled>
-              <ActionPrompt prompt={node.prompt} notes={node.notes} />
-              {node.balance && <Balance ref={(ref) => { this.balance = ref; }} {...node.balance} />}
-              <ScrollView horizontal>
-                <AdditionPropDisplay node={node} />
-                <DischargePropDisplay node={node} />
-                <ConsumePropDisplay node={node} />
-                <PrintLabelProps node={node} />
-                <WeighInfoProps node={node} />
-                <IdentWeighingProps node={node} />
-                <IdentContainerProps node={node} />
-                <IdentEquipmentProps node={node} />
-              </ScrollView>
-              {entry && (
+            <ActionPrompt prompt={node.prompt} notes={node.notes} />
+            {node.balance && <Balance ref={(ref) => { this.balance = ref; }} {...node.balance} />}
+            <ScrollView horizontal>
+              <AdditionPropDisplay node={node} />
+              <DischargePropDisplay node={node} />
+              <ConsumePropDisplay node={node} />
+              <PrintLabelProps node={node} />
+              <WeighInfoProps node={node} />
+              <IdentWeighingProps node={node} />
+              <IdentContainerProps node={node} />
+              <IdentEquipmentProps node={node} />
+            </ScrollView>
+            {hasInputs && (
               <ActionEntryArray
                 ref={(ref) => { this.entry = ref; }}
-                values={values}
-                entries={inputs}
-                onChange={this.entryValueChange}
+                inputs={inputs}
                 enabled={enabled}
                 useCamera={allowCam}
               />
-              /*
-              {entry && (
-              <ActionEntry
-                ref={(ref) => { this.entry = ref; }}
-                value={value}
-                entry={entry}
-                onChange={this.entryValueChange}
-                enabled={enabled}
-                useCamera={allowCam}
-              />
-              */
-              )
+            )
               }
-              <ActionImage fileName={node.picture} />
-              <FileContent fileName={node.fileName} />
-              <ErrorBar text={error} onPress={() => this.setState({ error: null })} />
-              {/* These are all modal */}
-              <ComponentList
-                components={components}
-                visible={showComps}
-                onDismiss={() => this.setState({ showComps: false })}
-              />
-              <Comments visible={commenting} onComment={this.onComment} />
-              <Signature visible={signing} onSign={this.signed} isApproval={false} />
-              <Signature visible={approving} onSign={this.approved} isApproval />
-              <ModalMessage messageText={message} onExit={this.onExit} />
-              <LoadingOverlay loading={loading} />
-            </KeyboardAvoidingView>
+            <ActionImage fileName={node.picture} />
+            <FileContent fileName={node.fileName} />
+            <ErrorBar text={error} onPress={() => this.setState({ error: null })} />
+            {/* These are all modal */}
+            <ComponentList
+              components={components}
+              visible={showComps}
+              onDismiss={() => this.setState({ showComps: false })}
+            />
+            <Comments visible={commenting} onComment={this.onComment} />
+            <Signature visible={signing} onSign={this.signed} isApproval={false} />
+            <Signature visible={approving} onSign={this.approved} isApproval />
+            <ModalMessage messageText={message} onExit={this.onExit} />
+            <LoadingOverlay loading={loading} />
           </ScrollView>
         </View>
       );

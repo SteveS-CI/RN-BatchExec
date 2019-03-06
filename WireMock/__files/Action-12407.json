@@ -35,6 +35,7 @@
 			},
 			"inputs": [
 				{
+          "name": "Discharge",
 					"entryType": "Distinct",
 					"entryTypeEnum": 3,
 					"label": "Discharge Method",

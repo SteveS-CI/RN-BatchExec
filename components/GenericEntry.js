@@ -110,6 +110,7 @@ export default class GenericEntry extends PureComponent {
     }
   }
 
+  // Validate when keyboard closed
   onBlur = () => {
     const { value } = this.props;
     this.setState({ editing: false });
@@ -201,14 +202,11 @@ export default class GenericEntry extends PureComponent {
         }
         return this.checkNumericLimits(realVal, validation);
       }
-
       if (type === 'String') { return this.checkStringLimits(value, validation); }
-
-      if (type === 'Custom') { return this.checkRegEx(value, validation); }
-    } else {
-      this.setState({ error: 'A value is required' });
-      return false;
+      if (type === 'Custom' || type === 'Date') { return this.checkRegEx(value, validation); }
     }
+    this.setState({ error: 'A value is required' });
+    return false;
   }
 
   render() {

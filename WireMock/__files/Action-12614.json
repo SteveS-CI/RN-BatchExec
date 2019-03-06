@@ -32,8 +32,7 @@
           "entryTypeEnum": 0,
           "validation": {
             "minLength": "3",
-            "maxLength": "7",
-            "regExp": "^(0|1|2|3)[0-9]\\/(0[0-9]|1[1-2])\\/(1|2)[0-9]{3}$"
+            "maxLength": "7"
           },
           "value": ""
         },
@@ -45,8 +44,7 @@
           "entryTypeEnum": 1,
           "validation": {
             "upper": "110",
-            "lower": "90",
-            "regExp": "^(0|1|2|3)[0-9]\\/(0[0-9]|1[1-2])\\/(1|2)[0-9]{3}$"
+            "lower": "90"
           },
           "value": ""
         },
@@ -58,8 +56,7 @@
           "entryTypeEnum": 2,
           "validation": {
             "upper": "101",
-            "lower": "99",
-            "regExp": "^(0|1|2|3)[0-9]\\/(0[0-9]|1[1-2])\\/(1|2)[0-9]{3}$"
+            "lower": "99"
           },
           "value": ""
         },
@@ -81,8 +78,7 @@
           "entryType": "Distinct",
           "entryTypeEnum": 4,
           "validation": {
-            "choices": ["1", "2", "3", "4", "5"],
-            "regExp": "^(0|1|2|3)[0-9]\\/(0[0-9]|1[1-2])\\/(1|2)[0-9]{3}$"
+            "choices": ["1", "2", "3", "4", "5"]
           },
           "value": ""
         },
@@ -93,7 +89,7 @@
           "entryType": "Custom",
           "entryTypeEnum": 5,
           "validation": {
-            "regExp": "^(0|1|2|3)[0-9]\\/(0[0-9]|1[1-2])\\/(1|2)[0-9]{3}$"
+            "regExp": "^[A-E][0-9]$"
           },
           "value": ""
         }
