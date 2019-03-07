@@ -19,6 +19,7 @@
       "actionTypeEnum": 3,
 			"name": "Value Entry",
 			"prompt": "Enter a value please",
+			"picture": "tall.jpg",
 			"status": "NotStarted",
 			"statusEnum": 0,
 			"path": "Batch/Stage/Operation/Value Entry",

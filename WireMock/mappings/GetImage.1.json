@@ -1,0 +1,13 @@
+{
+  "request": {
+    "url": "/api/File/Image?name=tall.jpg",
+    "method": "GET"
+  },
+  "response": {
+    "status": 200,
+	"headers": {
+		"content-type": "application/octet-stream"
+	},
+    "bodyFileName": "tall.jpg"
+  }
+}

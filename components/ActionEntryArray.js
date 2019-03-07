@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { ScrollView, KeyboardAvoidingView } from 'react-native';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import PropTypes from 'prop-types';
 import { EntryProps } from '../constants/DataProps';
 import ActionEntry from './ActionEntry';

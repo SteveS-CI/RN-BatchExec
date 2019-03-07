@@ -19,7 +19,7 @@
       "actionTypeEnum": 0,
 			"name": "Instruction (image)",
 			"prompt": "Instruction with image",
-			"picture": "chocolate.gif",
+			"picture": "wide.jpg",
 			"status": "NotStarted",
 			"statusEnum": 0,
 			"path": "Batch/Stage/Operation/Instruction (image)"

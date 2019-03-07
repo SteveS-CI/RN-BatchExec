@@ -1,6 +1,6 @@
 {
   "request": {
-    "urlPathPattern": "/api/File/Image.*",
+    "url": "/api/File/Image?name=wide.jpg",
     "method": "GET"
   },
   "response": {
@@ -8,6 +8,6 @@
 	"headers": {
 		"content-type": "application/octet-stream"
 	},
-    "bodyFileName": "chocolate.gif"
+    "bodyFileName": "wide.jpg"
   }
 }
