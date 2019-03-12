@@ -101,9 +101,9 @@ export default class Balance extends Component {
     zeroOffset: 0,
     tareOffset: 0,
     showBalReading: false,
-    target: 0,
-    lowerLimit: 0,
-    upperLimit: 0,
+    target: null,
+    lowerLimit: null,
+    upperLimit: null,
   };
 
   static propTypes = {
@@ -237,6 +237,10 @@ export default class Balance extends Component {
     });
   };
 
+  socketError = (e) => {
+    console.log('error');
+  }
+
   timedOut = () => {
     this.removeTimeOut();
     if (!this.active) return;
@@ -246,6 +250,12 @@ export default class Balance extends Component {
   resume = () => {
     this.setState({ error: null });
     this.connectSocket();
+  };
+
+  onLayout = (e) => {
+    // physWidth = width of bar in device units
+    this.physWidth = e.nativeEvent.layout.width;
+    this.reCalc();
   };
 
   onTapped = (e) => {
@@ -264,69 +274,9 @@ export default class Balance extends Component {
 
   onPan = (e) => {
     const { x } = e.nativeEvent;
-    const { raw, scaled } = this.physToScale(x);
-    this.setState({ physBarPos: x, rawScale: raw, scaleValue: scaled });
+    const result = this.physToScale(x);
+    this.setState({ physBarPos: x, rawScale: result.raw, scaleValue: result.scaled });
   };
-
-  onLayout = (e) => {
-    // physWidth = width of bar in device units
-    this.physWidth = e.nativeEvent.layout.width;
-    this.reCalc();
-  };
-
-  makeFormatFunc() {
-    // Shortened format function
-    const { decimalPlaces } = this.props;
-    const options = {
-      separator: this.formats.decimal,
-      delimiter: this.formats.thousands,
-      precision: decimalPlaces,
-    };
-    this.formatNumber = value => i18n.toNumber(value, options);
-  }
-
-  createTimeOut() {
-    this.removeTimeOut();
-    this.timeOut = setTimeout(this.timedOut, 5000);
-  }
-
-  removeTimeOut() {
-    if (this.timeOut !== null) {
-      clearTimeout(this.timeOut);
-      this.timeOut = null;
-    }
-  }
-
-  connectSocket() {
-    // Web socket
-    if (!this.interactive) {
-      const { balanceSource } = this.props;
-      this.socket = new WebSocket(`ws://${balanceSource}`);
-      this.socket.addEventListener('message', e => this.socketReceive(e));
-      this.socket.addEventListener('error', e => this.socketError(e));
-
-      this.createTimeOut();
-    }
-    this.active = true;
-  }
-
-  disconnectSocket() {
-    this.active = false;
-    this.removeTimeOut();
-    if (this.socket) {
-      this.socket.close(1000);
-      this.socket = null;
-    }
-  }
-
-  // returns a number (0-7) for each limit combination lower/target/upper
-  limitsToNumber() {
-    const { target, lowerLimit, upperLimit } = this.props;
-    const L = lowerLimit != null ? 1 : 0;
-    const T = target != null ? 2 : 0;
-    const U = upperLimit != null ? 4 : 0;
-    return L + T + U;
-  }
 
   reCalc() {
     const {
@@ -460,13 +410,15 @@ export default class Balance extends Component {
   physToScale(phys) {
     const { zeroOffset, tareOffset, scaleFactor } = this.props;
     const offset = phys;
+    let scaleValue;
+    let rawValue;
     if (offset < this.physThreshold || this.forceCoarseScale) {
-      const scaleValue = offset / this.coarseScale;
-      const rawValue = scaleValue + zeroOffset + tareOffset;
+      scaleValue = offset / this.coarseScale;
+      rawValue = scaleValue + zeroOffset + tareOffset;
       return { raw: rawValue, scaled: scaleValue * scaleFactor };
     }
-    const scaleValue = (offset - this.physThreshold) / this.fineScale + this.scaleThreshold;
-    const rawValue = scaleValue + zeroOffset + tareOffset;
+    scaleValue = (offset - this.physThreshold) / this.fineScale + this.scaleThreshold;
+    rawValue = scaleValue + zeroOffset + tareOffset;
     return { raw: rawValue, scaled: scaleValue * scaleFactor };
   }
 
@@ -482,6 +434,60 @@ export default class Balance extends Component {
 
   format(value) {
     return this.formatNumber ? this.formatNumber(value) : '0';
+  }
+
+  // returns a number (0-7) for each limit combination lower/target/upper
+  limitsToNumber() {
+    const { target, lowerLimit, upperLimit } = this.props;
+    const L = lowerLimit !== null ? 1 : 0;
+    const T = target !== null ? 2 : 0;
+    const U = upperLimit !== null ? 4 : 0;
+    return L + T + U;
+  }
+
+  connectSocket() {
+    // Web socket
+    if (!this.interactive) {
+      const { balanceSource } = this.props;
+      this.socket = new WebSocket(`ws://${balanceSource}`);
+      this.socket.addEventListener('message', e => this.socketReceive(e));
+      this.socket.addEventListener('error', e => this.socketError(e));
+
+      this.createTimeOut();
+    }
+    this.active = true;
+  }
+
+  disconnectSocket() {
+    this.active = false;
+    this.removeTimeOut();
+    if (this.socket) {
+      this.socket.close(1000);
+      this.socket = null;
+    }
+  }
+
+  removeTimeOut() {
+    if (this.timeOut !== null) {
+      clearTimeout(this.timeOut);
+      this.timeOut = null;
+    }
+  }
+
+  createTimeOut() {
+    this.removeTimeOut();
+    this.timeOut = setTimeout(this.timedOut, 5000);
+  }
+
+  makeFormatFunc() {
+    // Shortened format function
+    const { decimalPlaces } = this.props;
+    const options = {
+      separator: this.formats.decimal,
+      delimiter: this.formats.thousands,
+      precision: decimalPlaces,
+    };
+    this.formatNumber = value => i18n.toNumber(value, options);
   }
 
   render() {
@@ -503,6 +509,7 @@ export default class Balance extends Component {
       upperLimit,
       showBalReading
     } = this.props;
+
     const displayValue = this.format(scaleValue);
     const inSpec = this.inSpec();
     const barColor = inSpec ? NexaColours.Green : NexaColours.Red;
@@ -539,21 +546,20 @@ export default class Balance extends Component {
     const messageText = error ? { title: 'Balance Error', message: error }
       : null;
 
+    const balMax = `${balanceMax} ${balanceUOM}`;
+    const balMode = ['Zero', 'Tare', 'Measure'][balanceMode];
+    const rawVal = `${this.format(rawScale)} ${balanceUOM}`;
+
+    const dispUpper = `Upper: ${this.format(upperLimit)}`;
+    const dispLower = `Lower: ${this.format(lowerLimit)}`;
+    const dispTarget = `Target: ${this.format(target)}`;
+
     return (
       <View style={{ flexDirection: 'column' }}>
         <View style={{ flexDirection: 'row' }}>
-          {balanceName && (
-            <Text style={styles.balanceInfo}>{balanceName}</Text>
-          )}
-          <Text style={styles.balanceInfo}>
-            {balanceMax}
-            {' '}
-            {balanceUOM}
-          </Text>
-          <Text style={styles.balanceInfo}>
-            {['Zero', 'Tare', 'Measure'][balanceMode]}
-            {' '}
-          </Text>
+          <Text style={styles.balanceInfo}>{balanceName}</Text>
+          <Text style={styles.balanceInfo}>{balMax}</Text>
+          <Text style={styles.balanceInfo}>{balMode}</Text>
         </View>
 
         <View
@@ -580,28 +586,13 @@ export default class Balance extends Component {
 
           <View style={styles.limitInfo}>
             {upperLimit != null && (
-              // eslint-disable-next-line react/jsx-one-expression-per-line
-              <Text style={styles.limitText}>
-                Upper:
-                {' '}
-                {this.format(upperLimit)}
-              </Text>
+              <Text style={styles.limitText}>{dispUpper}</Text>
             )}
             {target != null && (
-              // eslint-disable-next-line react/jsx-one-expression-per-line
-              <Text style={styles.limitText}>
-                Target:
-                {' '}
-                {this.format(target)}
-              </Text>
+              <Text style={styles.limitText}>{dispTarget}</Text>
             )}
             {lowerLimit != null && (
-              // eslint-disable-next-line react/jsx-one-expression-per-line
-              <Text style={styles.limitText}>
-                Lower:
-                {' '}
-                {this.format(lowerLimit)}
-              </Text>
+              <Text style={styles.limitText}>{dispLower}</Text>
             )}
           </View>
         </View>
@@ -613,18 +604,13 @@ export default class Balance extends Component {
         >
           <View onLayout={this.onLayout} style={styles.barContainer}>
             <View style={barStyle} />
-            {this.lowerPos && <View style={lowerStyle} />}
-            {this.upperPos && <View style={upperStyle} />}
-            {this.targetPos && <View style={targetStyle} />}
-            {showBalReading && (
-              <Text style={{ margin: scale(4), fontSize: FontSizes.standard }}>
-                {this.format(rawScale)}
-                {' '}
-                {balanceUOM}
-              </Text>
-            )}
+            {this.lowerPos !== null && <View style={lowerStyle} />}
+            {this.upperPos !== null && <View style={upperStyle} />}
+            {this.targetPos !== null && <View style={targetStyle} />}
+            {showBalReading === true && <Text style={{ margin: scale(4), fontSize: FontSizes.standard }}>{rawVal}</Text>}
           </View>
         </PanGestureHandler>
+
         <ModalMessage messageText={messageText} onExit={this.resume} />
       </View>
     );

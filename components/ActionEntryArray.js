@@ -45,7 +45,8 @@ export default class ActionEntryArray extends Component {
     let result = true;
     const { values } = this.state;
     values.forEach((value, index) => {
-      result = result && this.entries[index].validate(value);
+      const validate = this.entries[index].validate(value);
+      result = result && validate;
       console.log('V:', value, ' I:', index, ' R:', result);
     });
     return result;
