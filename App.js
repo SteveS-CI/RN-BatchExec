@@ -107,8 +107,8 @@ export default class App extends React.Component {
 
   handleFinishLoading = () => {
     ToastAndroid.showWithGravity(
-      'Contacting API Server...',
-      ToastAndroid.LONG,
+      'Connecting...',
+      ToastAndroid.SHORT,
       ToastAndroid.TOP
     );
     methods
