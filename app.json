@@ -23,7 +23,7 @@
       "permissions": ["CAMERA"]
     },
     "updates": {
-      "enabled": true
+      "enabled": false
     },
     "assetBundlePatterns": [
       "**/*"
