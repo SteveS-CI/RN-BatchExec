@@ -142,7 +142,7 @@ export default class DevScreen extends PureComponent {
           />
           <RoundedButton
             style={styles.button}
-            title="WebView Test"
+            title="Video Test"
             onPress={this.testScreen4}
             backColor={NexaColours.AlertYellow}
           />

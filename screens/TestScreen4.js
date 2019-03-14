@@ -1,41 +1,46 @@
-import React from 'react';
-import { View, WebView } from 'react-native';
-import Layout from '../constants/Layout';
-import ButtonStyles from '../constants/ButtonStyles';
-import ActionButtons from '../components/ActionButtons';
+import React from "react";
+import { Text, View, Dimensions, StyleSheet } from "react-native";
+import { Video } from 'expo';
+import ButtonStyles from "../constants/ButtonStyles";
+import ActionButtons from "../components/ActionButtons";
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center"
+  }
+});
 
 export default class TestScreen4 extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      entryValue: null,
-    };
-  }
 
   static navigationOptions = {
-    title: 'Test Screen 4',
-  }
+    title: "Video Test"
+  };
 
-  onPress = (name) => {
-    if (name === 'cancel') this.props.navigation.navigate('Dev');
-  }
+  onPress = name => {
+    if (name === "cancel") this.props.navigation.navigate("Dev");
+  };
 
   render() {
-    const buttons = [ButtonStyles.Previous, ButtonStyles.No, ButtonStyles.Yes];
+    const { width } = Dimensions.get("window");
     return (
-      <View style={{ flexDirection: 'column', flex: 1 }}>
-        <ActionButtons onPress={this.onPress} buttons={buttons} />
-        <WebView
-          style={{ width: Layout.screen.width * 0.9, marginLeft: 20 }}
-          source={{
-            html: `
-          <h3 style='color: red'>Use a WebView to display html files</h3>
-          <p style='color: blue'>
-            The <i style='color: green'>quick</i> brown <small style='color: magenta'>fox</small> jumps <em>over</em> the lazy dog.
-          </p>
-        `,
-          }}
-        />
+      <View style={{ flexDirection: 'column', flex: 1, justifyContent: 'flex-start' }}>
+        <ActionButtons onPress={this.onPress} />
+        <View style={styles.container}>
+          <Text style={{ textAlign: "center" }}> React Native Video </Text>
+          <Video
+            source={{uri: "http://192.168.1.96:8080/api/File/Image?name=mini_hopper_flow.mp4"}}
+            posterSource = {{uri: "http://192.168.1.96:8080/api/File/Image?name=video_loading.jpg"}}
+            shouldPlay
+            resizeMode="contain"
+            style={{ width, height: 300 }}
+            useNativeControls
+            usePoster
+            isLooping
+          />
+        </View>
       </View>
     );
   }
