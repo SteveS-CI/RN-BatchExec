@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import * as DataProps from '../constants/DataProps';
 import GenericEntry from './GenericEntry';
 import DistinctEntry from './DistinctEntry';
+import TimeEntry from './TimeEntry';
 
 export default class ActionEntry extends PureComponent {
   static defaultProps = {
@@ -35,6 +36,11 @@ export default class ActionEntry extends PureComponent {
       if (entryType === 'Distinct') {
         return (
           <DistinctEntry ref={(ref) => { this.entry = ref; }} {...this.props} />
+        );
+      }
+      if (entryType === 'Time') {
+        return (
+          <TimeEntry ref={(ref) => { this.entry = ref; }} {...this.props} />
         );
       }
       return (

@@ -72,12 +72,12 @@ export default class GenericEntry extends PureComponent {
 
   static propTypes = {
     entry: DataProps.EntryProps.isRequired,
-    value: PropTypes.any,
     onChange: PropTypes.func,
     enabled: PropTypes.bool,
     autoFocus: PropTypes.bool,
     useCamera: PropTypes.bool,
-    index: PropTypes.number
+    index: PropTypes.number,
+    value: PropTypes.any
   }
 
   constructor(props) {
@@ -183,8 +183,8 @@ export default class GenericEntry extends PureComponent {
     return true;
   }
 
-  validate(value) {
-    const { entry } = this.props;
+  validate() {
+    const { entry, value } = this.props;
     const { validation } = entry;
     if (value) {
       const type = entry.entryType;
@@ -213,10 +213,10 @@ export default class GenericEntry extends PureComponent {
     const { showCam, editing, error } = this.state;
     const {
       entry,
-      value,
       enabled,
       autoFocus,
-      useCamera
+      useCamera,
+      value
     } = this.props;
     const hasLabel = !!entry.label;
     const hasSuffix = !!entry.suffix;

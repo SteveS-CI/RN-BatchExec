@@ -5,7 +5,7 @@
     "slug": "batch-execution",
     "privacy": "public",
     "sdkVersion": "32.0.0",
-    "platforms": ["ios", "android"],
+    "platforms": ["android"],
     "version": "0.0.54 beta",
     "orientation": "default",
     "icon": "./assets/images/nexa-icon.png",
@@ -13,10 +13,6 @@
       "image": "./assets/images/nexa-logo-be.png",
       "resizeMode": "contain",
       "backgroundColor": "#FFF"
-    },
-    "ios": {
-      "bundleIdentifier": "com.ciprecision.batchexec.demo",
-      "supportsTablet": true
     },
     "android" : {
       "package": "com.ciprecision.batchexec.demo",

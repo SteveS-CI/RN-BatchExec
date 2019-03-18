@@ -20,6 +20,12 @@
 			"path": "Batch/Stage/Operation/"
 		},
 		{
+			"procID": 12615,
+			"name": "Entry (time)",
+			"notes": "Entry of a time value",
+			"path": "Batch/Stage/Operation/"
+		},
+		{
 			"procID": 12600,
 			"name": "Entry (string)",
 			"notes": "No limits.",

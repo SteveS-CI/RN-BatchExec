@@ -157,7 +157,6 @@ export default class CustomPicker extends Component {
   render() {
     const arrow = <FontAwesome style={styles.arrow} onPress={this.startEdit}>{Icons.caretDown}</FontAwesome>;
     const value = this.props.display ? this.props.value[this.props.display] : this.props.value;
-    console.log(value);
     return (
       <View style={{ flexDirection: 'row' }}>
         <Text style={styles.entry} onPress={this.startEdit}>{value}</Text>
