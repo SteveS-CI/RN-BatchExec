@@ -95,9 +95,9 @@ export default class TimeEntry extends PureComponent {
     }
   }
 
-  validate() {
+  validate(value) {
     const { entry } = this.props;
-    const { validation, value } = entry;
+    const { validation } = entry;
     if (value) {
       return this.checkRegEx(value, validation);
     }
@@ -121,13 +121,13 @@ export default class TimeEntry extends PureComponent {
 
   render() {
     const { error } = this.state;
-    const { entry, value } = this.props;
+    const { entry, value, enabled } = this.props;
     const hasLabel = !!entry.label;
     return (
       <View style={{ flexDirection: 'column' }}>
         <View style={styles.inputContainer}>
           {hasLabel && <Text style={styles.inputLabel}>{entry.label}</Text>}
-          <Text style={styles.inputBox} onPress={this.showDialog}>{value}</Text>
+          <Text style={styles.inputBox} onPress={this.showDialog} disabled={!enabled}>{value}</Text>
         </View>
         <ErrorBar text={error} onPress={() => this.setState({ error: null })} />
       </View>

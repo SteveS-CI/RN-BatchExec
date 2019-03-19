@@ -32,7 +32,6 @@ export default class ActionEntryArray extends Component {
   onChange = (value, index) => {
     const { values } = this.state;
     values[index] = value;
-    console.log('ActionEntryArray - onChange - value:', value, 'index:', index);
     this.setState({ values });
   }
 
@@ -47,16 +46,9 @@ export default class ActionEntryArray extends Component {
     const { values } = this.state;
     for (let index = 0; index < values.length; index += 1) {
       const value = values[index];
-      console.log('ActionEntryArray - validate - value:', value, 'index:', index);
-      const validate = this.entries[index].validate();
+      const validate = this.entries[index].validate(value);
       result = result && validate;
     }
-    return result;
-    values.forEach((value, index) => {
-      console.log('ActionEntryArray - validate - value:', value, 'index:', index);
-      const validate = this.entries[index].validate();
-      result = result && validate;
-    });
     return result;
   }
 
