@@ -33,6 +33,7 @@ export default class BarcodeReader extends PureComponent {
   }
 
   barcodeScanned = (value) => {
+    console.log(JSON.stringify(value));
     this.props.onScanned(value.type, value.data);
   }
 

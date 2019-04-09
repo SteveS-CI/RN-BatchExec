@@ -101,12 +101,12 @@ export default class GenericEntry extends PureComponent {
   }
 
   scanned = (type, data) => {
-    const { onChange } = this.props;
+    const { onChange, index } = this.props;
     this.setState({ showCam: false });
     if (type === 0) {
       onChange('', false);
     } else {
-      onChange(data, true);
+      onChange(data, index);
     }
   }
 
