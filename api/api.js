@@ -1,4 +1,3 @@
-import React from 'react';
 import axios from 'axios';
 import i18n from 'i18n-js';
 import endpoints from './endpoints';
@@ -15,7 +14,8 @@ function getData(request) {
         if (response.headers['content-type'].includes('application/json')) {
           resolve(response.data);
         } else {
-          reject(null);
+          const contentType = response.headers['content-type'];
+          reject(new Error(`Invalid content-type: ${contentType}, expected: application/json`));
         }
       })
       .catch((error) => {
@@ -37,7 +37,8 @@ export function getTextFile(name) {
         if (response.headers['content-type'].includes('text/plain')) {
           resolve({ success: true, data: response.data });
         } else {
-          reject({ success: false, data: null });
+          const contentType = response.headers['content-type'];
+          reject(new Error(`Invalid content-type: ${contentType}, expected: text/plain`));
         }
       })
       .catch((error) => {
@@ -57,7 +58,8 @@ export function getImageFile(name) {
         ) {
           resolve({ success: true, data: response.data });
         } else {
-          reject({ success: false, data: null });
+          const contentType = response.headers['content-type'];
+          reject(new Error(`Invalid content-type: ${contentType}, expected: application/octet-stream`));
         }
       })
       .catch((error) => {

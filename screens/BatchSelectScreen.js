@@ -12,6 +12,7 @@ import { methods } from '../api/api';
 import { NavChoice } from '../Utils/utils';
 
 export default class BatchSelectScreen extends Component {
+
   static propTypes = {
     navigation: PropTypes.shape({
       navigation: PropTypes.object,

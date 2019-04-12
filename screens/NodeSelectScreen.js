@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
 import i18n from 'i18n-js';
 import NexaColours from '../constants/NexaColours';
 import ButtonBar from '../components/ButtonBar';
@@ -10,15 +10,6 @@ import { methods } from '../api/api';
 import { NavChoice } from '../Utils/utils';
 
 export default class NodeSelectScreen extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      batchData: null,
-      selectedIndex: -1,
-      selectedItemID: 0,
-      loading: false,
-    };
-  }
 
   static navigationOptions = ({ navigation }) => {
     const batchData = navigation.getParam('batchData');
@@ -38,9 +29,19 @@ export default class NodeSelectScreen extends React.Component {
     return nodeName;
   }
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      batchData: null,
+      selectedIndex: -1,
+      selectedItemID: 0
+    };
+  }
+
   componentDidMount() {
-    const batchData = this.props.navigation.getParam('batchData');
-    const locationCode = this.props.navigation.getParam('locationCode');
+    const { navigation } = this.props;
+    const batchData = navigation.getParam('batchData');
+    const locationCode = navigation.getParam('locationCode');
     this.locationCode = locationCode;
     this.setState({ batchData });
   }
@@ -55,31 +56,29 @@ export default class NodeSelectScreen extends React.Component {
 
   selectClicked = () => {
     if (this.node) {
-      const nav = this.props.navigation;
+      const { navigation } = this.props;
+      const { batchData, selectedItemID } = this.state;
       // set loading prior to request
-      this.setState({ loading: true });
       const postData = {
-        batchID: this.state.batchData.batchID,
-        procID: this.state.selectedItemID,
+        batchID: batchData.batchID,
+        procID: selectedItemID,
         location: this.locationCode,
       };
       methods.nextProc(postData)
         .then((data) => {
-          this.setState({ loading: false });
-          NavChoice(data, nav, this.locationCode);
+          NavChoice(data, navigation, this.locationCode);
         })
         .catch((error) => {
-          this.setState({ loading: false });
           console.log(JSON.stringify(error));
         });
     }
   };
 
   render() {
-    const nav = this.props.navigation;
-    const { batchData } = this.state;
+    const { navigation } = this.props;
+    const { batchData, selectedItemID, selectedIndex } = this.state;
     if (batchData) {
-      const depth = this.state.batchData.nodeDepth;
+      const depth = batchData.nodeDepth;
       const name = i18n.t(`node.names.${['stage', 'operation', 'action'][depth - 1]}`, { count: 1 });
       const headers = [
         { caption: i18n.t('nodeSelect.header.id'), source: 'procID', flex: 1 },
@@ -95,21 +94,21 @@ export default class NodeSelectScreen extends React.Component {
               backColor={NexaColours.GreyUltraLight}
               title={i18n.t('button.captions.cancel')}
               onPress={() => {
-                nav.replace('BatchList');
+                navigation.replace('BatchList');
               }}
             />
             <RoundedButton
               backColor={NexaColours.AlertGreen}
               title={i18n.t('button.captions.select')}
               onPress={this.selectClicked}
-              disabled={this.state.selectedItemID == 0}
+              disabled={selectedItemID === 0}
             />
           </ButtonBar>
           <TextBar backColor={NexaColours.Cyan}>{prompt}</TextBar>
           <ScrollList
             headers={headers}
             data={batchData.nodes}
-            selectedIndex={this.state.selectedIndex}
+            selectedIndex={selectedIndex}
             onPress={this.rowClicked}
           />
         </View>

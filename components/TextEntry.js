@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import {
-  StyleSheet, View, Text, TextInput,
+  StyleSheet, View, Text, TextInput
 } from 'react-native';
 import PropTypes from 'prop-types';
 import NexaColours from '../constants/NexaColours';
@@ -32,12 +32,9 @@ const styles = StyleSheet.create(
 );
 
 export default class TextEntry extends PureComponent {
-  constructor(props) {
-    super(props);
-    this.state = { editing: false };
-  }
 
   static defaultProps = {
+    value: null,
     secure: false,
     enabled: true,
     autoFocus: false,
@@ -46,29 +43,37 @@ export default class TextEntry extends PureComponent {
   }
 
   static propTypes = {
-    label: PropTypes.any.isRequired,
-    value: PropTypes.any,
+    label: PropTypes.string.isRequired,
+    value: PropTypes.string,
     secure: PropTypes.bool,
-    onChange: PropTypes.func,
+    onChange: PropTypes.func.isRequired,
     enabled: PropTypes.bool,
     autoFocus: PropTypes.bool,
-    returnKeyType: PropTypes.string,
-    keyboardType: PropTypes.string,
+    returnKeyType: PropTypes.string.isRequired,
+    keyboardType: PropTypes.string.isRequired,
     blurOnSubmit: PropTypes.bool,
     onSubmit: PropTypes.func,
+  }
+
+  constructor(props) {
+    super(props);
+    this.state = { editing: false };
+  }
+
+  onChangeText = (value) => {
+    const { onChange } = this.props;
+    if (onChange) onChange(value);
   }
 
   focus() {
     this.ref.focus();
   }
 
-  onChangeText = (value) => {
-    if (this.props.onChange) this.props.onChange(value);
-  }
-
   render() {
     const { editing } = this.state;
-    const { label } = this.props;
+    const {
+      label, value, blurOnSubmit, enabled, secure, autoFocus, returnKeyType, keyboardType, onSubmit
+    } = this.props;
     const boxColor = editing ? NexaColours.GreyUltraLight : NexaColours.GreyLight;
     const boxStyle = StyleSheet.flatten([styles.inputBox, { backgroundColor: boxColor }]);
     return (
@@ -76,19 +81,19 @@ export default class TextEntry extends PureComponent {
         {label && <Text style={styles.inputLabel}>{label}</Text>}
         <TextInput
           style={boxStyle}
-          ref={ref => this.ref = ref}
-          value={this.props.value}
+          ref={(ref) => { this.ref = ref; }}
+          value={value}
           onChangeText={this.onChangeText}
-          blurOnSubmit={this.props.blurOnSubmit}
+          blurOnSubmit={blurOnSubmit}
           onFocus={() => this.setState({ editing: true })}
           onBlur={() => this.setState({ editing: false })}
           underlineColorAndroid="transparent"
-          editable={this.props.enabled}
-          secureTextEntry={this.props.secure}
-          autoFocus={this.props.autoFocus}
-          returnKeyType={this.props.returnKeyType}
-          keyboardType={this.props.keyboardType}
-          onSubmitEditing={this.props.onSubmit}
+          editable={enabled}
+          secureTextEntry={secure}
+          autoFocus={autoFocus}
+          returnKeyType={returnKeyType}
+          keyboardType={keyboardType}
+          onSubmitEditing={onSubmit}
         />
       </View>
     );

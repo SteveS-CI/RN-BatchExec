@@ -6,8 +6,8 @@
     "extends": "airbnb",
     "parser": "babel-eslint",
     "globals": {
-        "Atomics": "readable",
-        "SharedArrayBuffer": "readable"
+        "Atomics": "writable",
+        "SharedArrayBuffer": "writable"
     },
     "parserOptions": {
         "ecmaFeatures": {
@@ -24,6 +24,7 @@
       "linebreak-style": ["error","windows"],
       "react/forbid-prop-types": ["warn", {"forbid": ["any", "array", "object"],"checkContextTypes": true,"checkChildContextTypes": true}],
       "comma-dangle": ["error", "only-multiline"],
-      "padded-blocks": ["error", {"blocks": "never"}]
+      "padded-blocks": ["error", {"blocks": "never"}],
+      "max-len": ["warn", {"code": 120}]
       }
 }

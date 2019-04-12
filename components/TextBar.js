@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { StyleSheet, Text } from 'react-native';
 import PropTypes from 'prop-types';
 import NexaColours from '../constants/NexaColours';
@@ -18,24 +18,25 @@ const styles = StyleSheet.create(
   },
 );
 
-export default class TextBar extends React.Component {
+export default class TextBar extends PureComponent {
+
   static defaultProps = {
     backColor: NexaColours.AlertCyan,
     style: {},
   }
 
   static propTypes = {
-    backColor: PropTypes.oneOf(Object.values(NexaColours)).isRequired,
-    style: PropTypes.any,
+    backColor: PropTypes.oneOf(Object.values(NexaColours)),
+    style: PropTypes.object
   }
 
   render() {
-    const bc = this.props.backColor;
-    const fc = optimalForeColor(bc);
-    const style = StyleSheet.flatten([styles.base, { backgroundColor: bc, color: fc }, this.props.style]);
+    const { backColor, style, children } = this.props;
+    const fc = optimalForeColor(backColor);
+    const textStyle = StyleSheet.flatten([styles.base, { backgroundColor: backColor, color: fc }, style]);
     return (
-      <Text style={style}>
-        {this.props.children}
+      <Text style={textStyle}>
+        {children}
       </Text>
     );
   }

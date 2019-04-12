@@ -1,8 +1,9 @@
 import React, { PureComponent } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { View } from 'react-native';
 import PropTypes from 'prop-types';
 
 export default class ButtonBar extends PureComponent {
+
   static propTypes ={
     justify: PropTypes.oneOf([
       'center',
@@ -15,20 +16,14 @@ export default class ButtonBar extends PureComponent {
     children: PropTypes.oneOfType([
       PropTypes.object,
       PropTypes.array,
-    ]).isRequired,
-    style: PropTypes.object,
-  }
-
-  static defaultProps = {
-    style: {},
+    ]).isRequired
   }
 
   render() {
-    const { justify, style, children } = this.props;
+    const { justify, children } = this.props;
     const defStyle = { flexDirection: 'row', justifyContent: justify, alignItems: 'baseline' };
-    const viewStyle = StyleSheet.flatten([defStyle, style]);
     return (
-      <View style={viewStyle}>
+      <View style={defStyle}>
         {children}
       </View>
     );
