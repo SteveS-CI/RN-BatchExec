@@ -130,13 +130,6 @@ const en = {
       DirtyEmpty: 'Dirty (Empty)',
       Dirty: 'Dirty (Full)',
     },
-    Condition: {
-      NotApplicable: 'N/A',
-      Unserviceable: 'Unserviceable',
-      Faulty: 'Faulty',
-      UnderRepair: 'Under Repair',
-      Functional: 'Functional',
-    },
   },
   startErrors: {
     0: 'Another batch (stage) is already in progress at this location.',

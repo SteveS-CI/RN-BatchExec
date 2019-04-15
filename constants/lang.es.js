@@ -112,13 +112,6 @@ const es = {
       DirtyEmpty: 'Sucio (vacio)',
       Dirty: 'Sucio (no vacío)',
     },
-    Condition: {
-      NotApplicable: 'N/A',
-      Unserviceable: 'Inservible',
-      Faulty: 'Defectuoso',
-      UnderRepair: 'Bajo reparación',
-      Functional: 'Funcional',
-    },
   },
   startErrors: {
     0: 'Otro lote (etapa) ya está en progreso en esta ubicación.',

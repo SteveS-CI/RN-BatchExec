@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { View } from 'react-native';
-import { NavigationContainer } from 'react-navigation';
 import i18n from 'i18n-js';
 import Settings from '../Store/Settings';
 import ScreenHeader from '../components/ScreenHeader';
@@ -15,7 +14,7 @@ export default class LocationSelectScreen extends Component {
       update: PropTypes.func,
       refresh: PropTypes.func
     }).isRequired,
-    navigation: PropTypes.object
+    navigation: PropTypes.shape({ state: PropTypes.object }).isRequired
   }
 
   static navigationOptions = () => ({
@@ -52,8 +51,6 @@ export default class LocationSelectScreen extends Component {
 
   componentDidMount() {
     this.fetch();
-    const { navigation } = this.props;
-    console.log(JSON.stringify(navigation));
   }
 
   fetch = () => {
@@ -82,11 +79,14 @@ export default class LocationSelectScreen extends Component {
   }
 
   transform = (data) => {
+    let status = `${i18n.t(`enums.CleanStatus.${data.cleanStatus}`)}\n${
+      i18n.t(`enums.Availability.${data.availability}`)}`;
+    if (data.unavailableReason) {
+      status = status.concat(`\n${data.unavailableReason}`);
+    }
     const newData = {
       ...data,
-      status: `${i18n.t(`enums.Availability.${data.availability}`)}\n${
-        i18n.t(`enums.CleanStatus.${data.cleanStatus}`)}\n${
-        i18n.t(`enums.Condition.${data.condition}`)}`,
+      status
     };
     return newData;
   }

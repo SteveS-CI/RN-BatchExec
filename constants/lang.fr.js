@@ -114,13 +114,6 @@ const fr = {
       DirtyEmpty: 'Sale (vide)',
       Dirty: 'Sale (non vide)',
     },
-    Condition: {
-      NotApplicable: 'N/A',
-      Unserviceable: 'Inutilisable',
-      Faulty: 'Défectueux',
-      UnderRepair: 'En réparation',
-      Functional: 'Fonctionnel',
-    },
   },
   startErrors: {
     0: 'Un autre lot (étape) est déjà en cours à cet endroit.',
