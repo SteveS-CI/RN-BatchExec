@@ -6,7 +6,7 @@
     "privacy": "public",
     "sdkVersion": "32.0.0",
     "platforms": ["android"],
-    "version": "0.0.57 beta",
+    "version": "0.0.58 beta",
     "orientation": "default",
     "icon": "./assets/images/nexa-icon.png",
     "splash": {
