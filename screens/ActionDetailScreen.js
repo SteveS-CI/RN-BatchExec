@@ -211,6 +211,7 @@ export default class ActionDetailScreen extends Component {
   }
 
   setError = (error) => {
+    console.log('ActionDetailScreen:completeAction:ERROR:', JSON.stringify(error));
     const msg = error.response.data.Message;
     this.setState({ loading: false, error: msg });
   }

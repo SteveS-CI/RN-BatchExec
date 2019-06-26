@@ -72,30 +72,34 @@ export default class App extends React.Component {
     AsyncStorage.getItem('settings')
       .then((result) => {
         const settings = JSON.parse(result);
-        api.defaults.baseURL = settings.apiUrl;
+        api.defaults.baseURL = `http://${settings.apiUrl}:8080/api`;
 
         i18n.fallbacks = true;
         i18n.translations = Translations;
         i18n.locale = settings.language;
 
         setTheme(settings.useDarkTheme ? 'dark' : 'light');
+
+        this.url = settings.apiUrl;
       })
       .catch(() => {
         // could not read settings, create defaults
-        const defaults = {
-          apiUrl: 'http://192.168.1.182:8080/api',
+        const settings = {
+          apiUrl: '192.168.1.225',
           useDarkTheme: false,
           language: 'en',
         };
-        api.defaults.baseURL = defaults.apiUrl;
+        api.defaults.baseURL = `http://${settings.apiUrl}:8080/api`;
 
         i18n.fallbacks = true;
         i18n.translations = Translations;
-        i18n.locale = defaults.language;
+        i18n.locale = settings.language;
 
-        setTheme(defaults.useDarkTheme ? 'dark' : 'light');
+        setTheme(settings.useDarkTheme ? 'dark' : 'light');
 
-        Settings.saveSettings(defaults);
+        Settings.saveSettings(settings);
+
+        this.url = settings.apiUrl;
       }),
   ]);
 
@@ -111,6 +115,7 @@ export default class App extends React.Component {
       ToastAndroid.SHORT,
       ToastAndroid.TOP
     );
+
     methods
       .getInfo()
       .then(() => {

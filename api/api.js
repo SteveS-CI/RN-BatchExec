@@ -2,7 +2,7 @@ import axios from 'axios';
 import i18n from 'i18n-js';
 import endpoints from './endpoints';
 
-const api = axios.create({ timeout: 1000 });
+const api = axios.create({ timeout: 10000 });
 
 export default api;
 

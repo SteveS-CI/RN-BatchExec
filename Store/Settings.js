@@ -14,8 +14,8 @@ export default {
     await AsyncStorage.removeItem('settings');
   },
   readItem: async (key) => {
-    const value = await AsyncStorage.getItem(key);
-    return value;
+    const result = await AsyncStorage.getItem(key);
+    return result;
   },
   saveItem: async (key, value) => {
     await AsyncStorage.setItem(key, value);

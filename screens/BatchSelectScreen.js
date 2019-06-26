@@ -10,6 +10,7 @@ import NexaColours from '../constants/NexaColours';
 import Settings from '../Store/Settings';
 import { methods } from '../api/api';
 import { NavChoice } from '../Utils/utils';
+import ModalMessage from '../components/ModalMessage';
 
 export default class BatchSelectScreen extends Component {
 
@@ -54,8 +55,8 @@ export default class BatchSelectScreen extends Component {
       selectedItemID: 0,
       loading: false,
       continueDisabled: false,
+      message: null,
     };
-    console.log(JSON.stringify(props));
   }
 
   componentDidMount() {
@@ -113,11 +114,11 @@ export default class BatchSelectScreen extends Component {
       };
       methods.nextProc(postData)
         .then((batchData) => {
-          NavChoice(batchData, navigation, this.locationCode);
+          const message = NavChoice(batchData, navigation, this.locationCode);
+          if (message) { this.setState({ message, loading: false }); }
         })
         .catch((error) => {
-          this.setState({ loading: false });
-          console.log('continueClicked-ERROR: ', JSON.stringify(error));
+          this.setState({ message: error.message, loading: false });
         });
     }
   };
@@ -135,6 +136,10 @@ export default class BatchSelectScreen extends Component {
     return newRow;
   }
 
+  onExit = () => {
+    this.setState({ message: null });
+  }
+
   fetchBatchList(locationCode) {
     this.setState({ batchList: null, loading: true });
     methods.getBatchList(locationCode)
@@ -150,7 +155,7 @@ export default class BatchSelectScreen extends Component {
   render() {
     const warn = 'There is no Location set';
     const {
-      batchList, selectedIndex, loading, continueDisabled, selectedItemID,
+      batchList, selectedIndex, loading, continueDisabled, selectedItemID, message
     } = this.state;
     let list = null;
     let contDisabled = true;
@@ -189,6 +194,7 @@ export default class BatchSelectScreen extends Component {
           />
         </ButtonBar>
         {list}
+        <ModalMessage messageText={message} onExit={this.onExit} />
       </View>
     );
   }
