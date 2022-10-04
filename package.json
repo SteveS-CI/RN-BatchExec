@@ -16,7 +16,7 @@
   "dependencies": {
     "@expo/samples": "2.1.1",
     "axios": "^0.18.0",
-    "expo": "^32.0.0",
+    "expo": "^46.0.14",
     "got": "^9.6.0",
     "i18n-js": "^3.1.0",
     "parse-decimal-number": "^1.0.0",
